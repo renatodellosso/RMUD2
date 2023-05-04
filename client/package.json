@@ -1,0 +1,14 @@
+{
+  "name": "rmud2client",
+  "version": "0.1.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Rgamer43",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^24.2.0"
+  }
+}
