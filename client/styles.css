@@ -1,6 +1,15 @@
-body, html {
+* {
     margin: 0;
     padding: 0;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+    background: transparent;
+}
+
+html {
+    height: 100%;
 }
 
 body {
@@ -11,10 +20,22 @@ body {
     min-height: 100%;
 }
 
+p {
+    margin: 0;
+    padding: 0;
+}
+
 #mainText {
     width: 80%;
-    height: 90%;
+    height: 95%;
     border-right: 1px solid white;
     border-bottom: 1px solid white;
-    padding-left: 7px;
+    padding: 7px;
+}
+
+#input {
+    width: 80%;
+    height: 5%;
+    border-right: 1px solid white;
+    padding: 7px;
 }
