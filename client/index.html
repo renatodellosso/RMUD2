@@ -1,15 +1,20 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
         <title>RMUD 2</title>
     </head>
 
     <body>
-        <h1>RMUD 2</h1>
-        <p>
-            NodeJS Version <span id="node-version"></span> <br>
-            Chromium Version <span id="chrome-version"></span> <br>
-            Electron Version <span id="electron-version"></span>
-        </p>
+        <link rel="stylesheet" href="styles.css">
+
+        <p id="mainText">RMUD 2</p>
+
+        <span>
+            <script src="./scripts/config.js"></script>
+            <script src="./scripts/utils.js"></script>
+            <script src="./scripts/onload.js"></script>
+        </span>
     </body>
 </html>
