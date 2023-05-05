@@ -1,13 +1,21 @@
 #pragma once
-#include <winsock2.h>
+#include "tcpserver.h"
+#ifdef _WIN32
+	#include <WinSock2.h>
+#endif
+
 
 namespace http {
 	
 	class TcpServer {
 		public:
+			SOCKET socketID;
+			struct sockaddr_in address;
+
 			TcpServer();
 			~TcpServer();
-			SOCKET socketID;
+
+			void startListen();
 	};
 
 }
