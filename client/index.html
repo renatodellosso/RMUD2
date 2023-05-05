@@ -2,18 +2,25 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+        <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'"> -->
         <title>RMUD 2</title>
     </head>
 
     <body>
         <link rel="stylesheet" href="styles.css">
 
-        <div id="mainText">RMUD 2</div>
-        <div id="input">
-            <form id="inputForm" onsubmit="return false;">
-                <input id="inputField" type="text" autocomplete="off" autofocus>
-            </form>
+        <div id="contentHolder">
+            <div id="leftPane">
+                <div id="mainContent">RMUD 2</div>
+                <div id="input">
+                    <form id="inputForm" onsubmit="try { return onInputSubmit(); } catch {} return false;">
+                        <input id="inputField" type="text" autocomplete="off" autofocus />
+                    </form>
+                </div>
+            </div>
+            <div id="sidebar">
+                Hello world
+            </div>
         </div>
 
         <span>

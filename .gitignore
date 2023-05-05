@@ -1,1 +1,6 @@
 /client/node_modules
+
+/.vs/
+
+/server/.vs/
+/server/x64/
