@@ -5,31 +5,36 @@
 	#include <WinSock2.h>
 #endif
 
-http::TcpServer Network::tcpServer;
+namespace network {
 
-void networkInit() {
-	log("Initting network...");
+	TcpServer tcpServer;
 
-	Network::tcpServer.~TcpServer();
+	void networkInit() {
+		log("Initting network...");
 
-	Network::tcpServer = http::TcpServer();
+		//(& network::tcpServer).~TcpServer(); //Destroy the old one if it exists
 
-	log("Created socket: " + to_string(Network::tcpServer.socketID));
+		log("Creating socket...");
+		network::tcpServer = new TcpServer(true); //Make sure to use new
 
-	Network::tcpServer.startListen();
+		log("Created TcpServer: " + to_string(network::tcpServer.socketID));
 
-	log("Network initted");
-}
+		network::tcpServer.startListen();
 
-void startWSA() {
+		log("Network initted");
+	}
+
+	void startWSA() {
 #ifdef _WIN32
-	log("Starting WSA...");
+		log("Starting WSA...");
 
-	WSADATA wsaData;
+		WSADATA wsaData;
 
-	if (WSAStartup(MAKEWORD(2, 0), &wsaData) != 0)
-		exitWithError("WSAStartup failed: " + to_string(WSAGetLastError()));
+		if (WSAStartup(MAKEWORD(2, 0), &wsaData) != 0)
+			exitWithError("WSAStartup failed: " + to_string(WSAGetLastError()));
 
-	log("Started WSA. Version: " + to_string(wsaData.wVersion));
+		log("Started WSA. Version: " + to_string(wsaData.wVersion));
 #endif
+	}
+
 }

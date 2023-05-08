@@ -7,7 +7,7 @@ using namespace std;
 int main() {
 	log("\nServer initializing...\n");
 
-	networkInit();
+	network::networkInit();
 
 	log("\nInitialization complete\n");
 

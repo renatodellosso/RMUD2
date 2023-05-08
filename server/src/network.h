@@ -5,10 +5,9 @@
 	#include <WinSock2.h>
 #endif
 
-void networkInit();
-void startWSA();
+namespace network {
+	extern TcpServer tcpServer; //We use extern for vars in namespaces, then we declare them once in another file (network.cpp here)
 
-class Network {
-	public:
-		static http::TcpServer tcpServer;
+	void networkInit();
+	void startWSA();
 };

@@ -9,33 +9,43 @@
 	#include <WinSock2.h>
 #endif
 
-namespace http {
+namespace network {
 
 	TcpServer::TcpServer() {
-		log("Constructing TcpServer...");
+		//TcpServer(false);
+	}
 
-		startWSA();
+	TcpServer::TcpServer(bool shouldCreate = false) {
+		if (shouldCreate && network::tcpServer.socketID == 0) {
+			log("Constructing TcpServer...");
 
-		socketID = socket(AF_INET, SOCK_STREAM, 0);
+			startWSA();
 
-		if (socketID < 0)
-			exitWithError("Socket creation failed");
-		else {
-			address.sin_family = AF_INET;
-			address.sin_addr = in_addr{ 0, 0, 0, 0 };
-			address.sin_port = config.port;
+			socketID = socket(AF_INET, SOCK_STREAM, 0);
 
-			if (bind(socketID, (sockaddr*)&address, sizeof(address)) < 0)
-				exitWithError("Socket binding failed: "
+			if (socketID < 0)
+				exitWithError("Socket creation failed");
+			else {
+				address.sin_family = AF_INET;
+				address.sin_addr = in_addr{ 0, 0, 0, 0 };
+				address.sin_port = config.port;
+
+				log("Address Family: " + to_string(address.sin_family) + ", Port: " + to_string(address.sin_port));
+
+				if (bind(socketID, (sockaddr*)&address, sizeof(address)) < 0)
+					exitWithError("Socket binding failed: "
 #ifdef _WIN32
-					+ to_string(WSAGetLastError())
+						+ to_string(WSAGetLastError())
 #endif // _WIN32
-				);
+					);
+			}
+
+			log("Constructed TcpServer. Socket ID: " + to_string(socketID));
 		}
 	}
 
 	TcpServer::~TcpServer() {
-		log("Deconstructing TcpServer...");
+		log("Deconstructing TcpServer... Socket ID: " + to_string(socketID));
 
 		closesocket(socketID);
 
