@@ -1,1 +1,2 @@
-[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=renatodellosso&repo=rmud2)](https://github.com/anuraghazra/github-readme-stats)
+[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=renatodellosso&repo=rmud2&theme=merko)](https://github.com/anuraghazra/github-readme-stats)
+[![wakatime](https://wakatime.com/badge/github/renatodellosso/RMUD2.svg)](https://wakatime.com/badge/github/renatodellosso/RMUD2)
