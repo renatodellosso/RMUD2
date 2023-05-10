@@ -7,6 +7,12 @@ using System.Threading.Tasks;
 static class Config
 {
     
-    public static uint port = 1001;
+    public const uint PORT = 1001;
+
+    public const uint HANDLER_THREADS = 3;
+    /// <summary>
+    /// How long to sleep each handler thread after processing or checking for a request
+    /// </summary>
+    public const int HANDLER_SLEEP_INTERVAL = 50;
 
 }

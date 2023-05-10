@@ -30,9 +30,11 @@ const httpReq = (body) => {
     fetch(config.url, {
         method: "POST",
         body: body
-    }).then((response) => {
+    }).then(async (response) => {
         console.log("Response received");
         console.log(response);
+        console.log("Response body:");
+        console.log(await response.text())
     }).catch((error) => {
         console.error(error);
     });
