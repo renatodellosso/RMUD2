@@ -10,9 +10,11 @@ public class Session
 
     public static Dictionary<ObjectId, Session> sessions = new Dictionary<ObjectId, Session>();
 
-    public ObjectId account, id = new();
+    public ObjectId account, id = ObjectId.GenerateNewId();
 
-    public ObjectId createSession()
+    public bool signedIn;
+
+    public static ObjectId CreateSession()
     {
         Session session = new();
         

@@ -1,5 +1,11 @@
 const mainText = document.getElementById("mainContent");
 
+const inputMode = {
+    option: 0,
+    text: 1,
+    secret: 2
+}
+
 const log = (text) => {
     console.log(text);
     mainText.innerHTML += `<p>${text}</p><br/>`
@@ -34,10 +40,36 @@ const httpReq = (body) => {
         console.log("Response received");
         console.log(response);
         console.log("Response body:");
-        console.log(await response.text())
+
+        let responseData = await response.json();
+        console.log(responseData);
+
+        responseData.actions.forEach(action => {
+            serverActions[action.action](action.args);
+        });
     }).catch((error) => {
         console.error(error);
     });
 }
+
+const optionClicked = (option) => {
+    console.log("Option clicked: " + option);
+
+    httpReq({ 
+        token: typeof token !== "undefined" ? token : localStorage.getItem("rmud2Token"),
+        action: option,
+    });
+}
+
+//HTML Elements
+
+const button = (id, text) => {
+    let button = `<button id=${id}>${text}</button>`;
+
+    return button;
+}
+
+//End of HTML Elements
+
 
 console.log("Utils loaded");

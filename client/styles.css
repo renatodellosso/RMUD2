@@ -40,6 +40,25 @@ input {
     width: 100%;
 }
 
+button {
+    z-index: 1;
+    color: white;
+    font-family: monospace;
+    padding: 2px;
+    border: 1px solid white;
+    background-color: black;
+    flex-grow: 1;
+    transition: background-color 0.15s ease-in-out;
+}
+
+button:hover {
+    background-color: darkslategray;
+}
+
+button:active {
+    background-color: slategray;
+}
+
 #contentHolder {
     display: flex;
     height: 100%;
@@ -61,10 +80,11 @@ input {
 
 #input {
     /* height: 5%; */
-    padding: 7px;
+    /* margin: 7px; */
     padding-bottom: 0;
     margin-bottom: 0;
     width: 100%;
+    display: flex;
 }
 
 #sidebar {

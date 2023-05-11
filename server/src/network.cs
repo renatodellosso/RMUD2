@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using MongoDB.Bson;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -77,7 +78,11 @@ public static class Network
         HttpListenerRequest req = ctx.Request;
         HttpListenerResponse resp = ctx.Response;
 
-        Console.WriteLine("Received HTTP request. Method: " + req.HttpMethod + ", Body: ");
+        //Read body
+        string body = new StreamReader(ctx.Request.InputStream).ReadToEnd();
+        Console.WriteLine(body);
+
+        Console.WriteLine("Received HTTP request. Method: " + req.HttpMethod + ", Body: " + body);
 
         resp.StatusCode = (int)HttpStatusCode.OK;
         resp.StatusDescription = "Status OK";
@@ -93,22 +98,49 @@ public static class Network
 
         resp.Headers.Set("Content-Type", "text/plain");
 
-        //Read body
-        string body = new StreamReader(ctx.Request.InputStream).ReadToEnd();
-        Console.WriteLine(body);
-
-        string response = "";
-
         //Parse body
         ClientAction action = JsonConvert.DeserializeObject<ClientAction>(body);
 
+        ServerResponse response = new ServerResponse();
+
+        if(defaultClientActions.ContainsKey(action.action))
+        {
+            defaultClientActions[action.action](action, response);
+        }
+
+        string respJson = JsonConvert.SerializeObject(response);
+
         //Write response
-        Console.WriteLine("Writing response: " + response);
-        byte[] responseBytes = Encoding.UTF8.GetBytes(response);
+        Console.WriteLine("Writing response: " + respJson);
+        byte[] responseBytes = Encoding.UTF8.GetBytes(respJson);
         resp.ContentLength64 = responseBytes.Length;
         resp.OutputStream.Write(responseBytes, 0, responseBytes.Length);
 
         resp.Close();
     }
+
+    static readonly Dictionary<string, Action<ClientAction, ServerResponse>> defaultClientActions = new()
+    {
+        { "init", (action, response) =>
+            {
+                Console.WriteLine("Initting session...");
+
+                if(action.args == null || !Session.sessions.ContainsKey(new ObjectId(action.args)))
+                    response.Add(new ActionList.SetToken(Session.CreateSession().ToString()));
+                else
+                {
+                    Session session = Session.sessions[new ObjectId(action.args)];
+
+                    if(!session.signedIn)
+                    {
+                        response.Add(new ActionList.SetInput(
+                            new Input(InputMode.Option, "Create Account", "createAccount"), 
+                            new Input(InputMode.Option, "Sign In", "signIn")
+                        ));
+                    }
+                }
+            }
+        }
+    };
 
 }
