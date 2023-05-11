@@ -19,7 +19,6 @@ let serverActions = {
 
                 let buttonElement = document.getElementById(arg.id);
                 buttonElement.setAttribute("onClick", `javascript: optionClicked("${arg.id}")`);
-                console.log(buttonElement);
             }
         });
     }

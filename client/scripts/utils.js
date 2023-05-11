@@ -28,6 +28,9 @@ const onInputSubmit = (event) => {
 
 //From https://stackoverflow.com/a/73543460
 const httpReq = (body) => {
+    if(typeof token !== "undefined" || localStorage.getItem("rmud2Token") !== null)
+        body["token"] = typeof token !== "undefined" ? token : localStorage.getItem("rmud2Token"),
+
     console.log("Sending HTTP request... Body:");
     console.log(body);
 
@@ -55,8 +58,7 @@ const httpReq = (body) => {
 const optionClicked = (option) => {
     console.log("Option clicked: " + option);
 
-    httpReq({ 
-        token: typeof token !== "undefined" ? token : localStorage.getItem("rmud2Token"),
+    httpReq({
         action: option,
     });
 }
@@ -64,7 +66,7 @@ const optionClicked = (option) => {
 //HTML Elements
 
 const button = (id, text) => {
-    let button = `<button id=${id}>${text}</button>`;
+    let button = `<button id=${id}><p class="buttonText">${text}</p></button>`;
 
     return button;
 }

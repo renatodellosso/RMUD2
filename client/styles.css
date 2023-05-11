@@ -1,3 +1,8 @@
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -31,6 +36,7 @@ body {
 p {
     margin: 0;
     padding: 0;
+    animation: fadeIn 0.2s;
 }
 
 input {
@@ -48,12 +54,37 @@ button {
     border: 1px solid white;
     background-color: black;
     flex-grow: 1;
-    transition: background-color 0.15s ease-in-out;
+    transition: background-color 0.25s ease-in-out;
+}
+
+/* From https://www.30secondsofcode.org/css/s/hover-underline-animation/ */
+.buttonText {
+    display: inline-block;
+    position: relative;
+}
+
+.buttonText::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0);
+    height: 1px;
+    bottom: 0;
+    left: 0;
+    background-color: aliceblue;
+    transform-origin: bottom right;
+    transition: transform .5s ease-in-out;
+}
+
+.buttonText:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
 }
 
 button:hover {
     background-color: darkslategray;
 }
+
 
 button:active {
     background-color: slategray;

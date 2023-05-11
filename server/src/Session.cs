@@ -10,16 +10,26 @@ public class Session
 
     public static Dictionary<ObjectId, Session> sessions = new Dictionary<ObjectId, Session>();
 
-    public ObjectId account, id = ObjectId.GenerateNewId();
+    public ObjectId account = new(), id = ObjectId.GenerateNewId();
 
-    public bool signedIn;
+    public bool SignedIn => !account.Equals(new());
 
-    public static ObjectId CreateSession()
+    public Menu menu;
+    public List<Menu> menuHistory = new();
+
+    public static Session CreateSession()
     {
         Session session = new();
         
         sessions.Add(session.id, session);
-        return session.id;
+        return session;
+    }
+
+    public void SetMenu(Menu menu)
+    {
+        menuHistory.Add(this.menu);
+        this.menu = menu;
+        this.menu.session = this;
     }
 
 }

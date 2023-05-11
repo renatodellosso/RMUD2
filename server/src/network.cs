@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Collections.Specialized.BitVector32;
 
 public static class Network
 {
@@ -60,13 +61,23 @@ public static class Network
     {
         while (true)
         {
-            if (requests.Count > 0)
+            try
             {
-                Console.WriteLine("Request received by handler " + id);
-                HttpListenerContext ctx = requests[0];
+                if (requests.Count > 0)
+                {
+                    HttpListenerContext ctx = requests[0];
+                    Console.WriteLine("Request received by handler " + id);
 
-                requests.RemoveAt(0);
-                HandleRequest(ctx);
+                    if (requests.Count > 0)
+                    {
+                        requests.RemoveAt(0);
+                        HandleRequest(ctx);
+                    }
+                }
+            } catch (Exception e)
+            {
+                Console.WriteLine("Error in handler " + id + ": " + e.Message);
+                Console.Error.WriteLine(e.StackTrace);
             }
 
             Thread.Sleep(Config.HANDLER_SLEEP_INTERVAL);
@@ -101,12 +112,21 @@ public static class Network
         //Parse body
         ClientAction action = JsonConvert.DeserializeObject<ClientAction>(body);
 
-        ServerResponse response = new ServerResponse();
+        ServerResponse response = new();
 
         if(defaultClientActions.ContainsKey(action.action))
         {
             defaultClientActions[action.action](action, response);
         }
+
+        Console.WriteLine(action.token);
+        if (action.Session != null)
+        {
+            Session session = Session.sessions[new ObjectId(action.token)];
+            session.menu?.HandleInput(action, response); //? means if not null
+            response.Add(new ActionList.SetInput(session.menu?.GetInputs(response)));
+        }
+        else Console.WriteLine("Session is null!");
 
         string respJson = JsonConvert.SerializeObject(response);
 
@@ -124,21 +144,17 @@ public static class Network
         { "init", (action, response) =>
             {
                 Console.WriteLine("Initting session...");
+                Session session;
 
-                if(action.args == null || !Session.sessions.ContainsKey(new ObjectId(action.args)))
-                    response.Add(new ActionList.SetToken(Session.CreateSession().ToString()));
-                else
-                {
-                    Session session = Session.sessions[new ObjectId(action.args)];
-
-                    if(!session.signedIn)
-                    {
-                        response.Add(new ActionList.SetInput(
-                            new Input(InputMode.Option, "Create Account", "createAccount"), 
-                            new Input(InputMode.Option, "Sign In", "signIn")
-                        ));
-                    }
+                if(action.token == null || !Session.sessions.ContainsKey(new ObjectId(action.token))) {
+                    session = Session.CreateSession();
+                    action.token = session.id.ToString();
+                    response.Add(new ActionList.SetToken(session.id.ToString()));
                 }
+                else session = Session.sessions[new ObjectId(action.token)];
+
+                if(!session.SignedIn && session.menu == null)
+                    session.SetMenu(new Menus.LogInMenu());
             }
         }
     };
