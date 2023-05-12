@@ -20,6 +20,21 @@ let serverActions = {
                 let buttonElement = document.getElementById(arg.id);
                 buttonElement.setAttribute("onClick", `javascript: optionClicked("${arg.id}")`);
             }
+            else if(arg.mode == inputMode.text) {
+                
+            }
+        });
+    },
+
+    setLog: (args) => {
+        console.log("Setting log: ");
+        console.log(args);
+
+        let log = document.getElementById("log");
+        log.innerHTML = "";
+
+        args.forEach(arg => { 
+            log.innerHTML += `<p>${arg}</p><br/>`;
         });
     }
 

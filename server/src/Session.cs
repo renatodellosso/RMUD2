@@ -17,6 +17,8 @@ public class Session
     public Menu menu;
     public List<Menu> menuHistory = new();
 
+    public List<string> log = new();
+
     public static Session CreateSession()
     {
         Session session = new();
@@ -30,6 +32,16 @@ public class Session
         menuHistory.Add(this.menu);
         this.menu = menu;
         this.menu.session = this;
+    }
+
+    public void Log(string msg)
+    {
+        log.Add(msg);
+    }
+
+    public void ClearLog()
+    {
+        log.Clear();
     }
 
 }

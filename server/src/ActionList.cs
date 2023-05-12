@@ -9,16 +9,17 @@ namespace ActionList
 
     public class SetToken : ServerAction<object>
     {
-        public SetToken(string token) : base("setToken", token)
-        {
-        }
+        public SetToken(string token) : base("setToken", token) { }
     }
 
-        public class SetInput : ServerAction<object>
+    public class SetInput : ServerAction<object>
     {
-        public SetInput(params Input[] inputs) : base("setInput", inputs)
-        {
-        }
+        public SetInput(params Input[] inputs) : base("setInput", inputs) { }
+    }
+
+    public class SetLog : ServerAction<object>
+    {
+        public SetLog(List<string> log): base("setLog", log) { }
     }
 
 }

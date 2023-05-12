@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public class ServerAction<T>
+public abstract class ServerAction<T>
 {
 
     public string action;

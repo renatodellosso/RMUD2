@@ -125,6 +125,7 @@ public static class Network
             Session session = Session.sessions[new ObjectId(action.token)];
             session.menu?.HandleInput(action, response); //? means if not null
             response.Add(new ActionList.SetInput(session.menu?.GetInputs(response)));
+            response.Add(new ActionList.SetLog(session.log));
         }
         else Console.WriteLine("Session is null!");
 
@@ -154,7 +155,12 @@ public static class Network
                 else session = Session.sessions[new ObjectId(action.token)];
 
                 if(!session.SignedIn && session.menu == null)
+                {
                     session.SetMenu(new Menus.LogInMenu());
+                    
+                    session.ClearLog();
+                    session.Log("Welcome to RMUD2!");
+                }
             }
         }
     };

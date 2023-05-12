@@ -6,16 +6,6 @@ const inputMode = {
     secret: 2
 }
 
-const log = (text) => {
-    console.log(text);
-    mainText.innerHTML += `<p>${text}</p><br/>`
-}
-
-const clearLog = () => {
-    console.log("Clearing log...");
-    mainText.innerHTML = "";
-}
-
 const onInputSubmit = (event) => {
     try {
         event.preventDefault();
