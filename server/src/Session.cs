@@ -39,9 +39,20 @@ public class Session
         log.Add(msg);
     }
 
-    public void ClearLog()
+    /// <summary>
+    /// Removes the last entry in the log
+    /// </summary>
+    public void PopLog()
     {
-        log.Clear();
+        log.RemoveAt(log.Count - 1);
+    }
+
+    /// <summary>
+    /// Replaces the most recent message
+    /// </summary>
+    public void ReplaceLog(string msg)
+    {
+        log[log.Count - 1] = msg;
     }
 
 }

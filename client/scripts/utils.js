@@ -1,19 +1,16 @@
-const mainText = document.getElementById("mainContent");
-
 const inputMode = {
     option: 0,
     text: 1,
     secret: 2
 }
 
-const onInputSubmit = (event) => {
-    try {
-        event.preventDefault();
-    } catch(error) {
-        console.error(error);
-    }
-
-    return false;
+const hash = async (string) => {
+    const utf8 = new TextEncoder().encode(string);
+    const hashBuffer = await crypto.subtle.digest("SHA-256", utf8);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map((bytes) => bytes.toString(16).padStart(2, "0")).join("");
+    return hashHex;
+    
 }
 
 //From https://stackoverflow.com/a/73543460
@@ -53,12 +50,35 @@ const optionClicked = (option) => {
     });
 }
 
+const inputSubmitted = async (id) => {
+    console.log("Input submitted: " + id);
+
+    let input = document.getElementById(id);
+    let value = input.firstElementChild.value;
+
+    if(secret) value = await hash(value);
+
+    console.log("Value: " + value);
+
+    if(!(value == "" || value == null || value == undefined)) {
+        httpReq({
+            action: value
+        });
+    } else console.log("Value is empty, not sending action");
+}
+
 //HTML Elements
 
 const button = (id, text) => {
     let button = `<button id=${id}><p class="buttonText">${text}</p></button>`;
 
     return button;
+}
+
+const textInput = (id, placeholder) => {
+    let input = `<form id=${id}><input type="${secret ? "password" : "text"}" placeholder="${placeholder}"></form>`;
+
+    return input;
 }
 
 //End of HTML Elements

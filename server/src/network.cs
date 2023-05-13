@@ -123,7 +123,8 @@ public static class Network
         if (action.Session != null)
         {
             Session session = Session.sessions[new ObjectId(action.token)];
-            session.menu?.HandleInput(action, response); //? means if not null
+            if(!action.action.Equals("init")) session.menu?.HandleInput(action, response); //? means if not null
+            
             response.Add(new ActionList.SetInput(session.menu?.GetInputs(response)));
             response.Add(new ActionList.SetLog(session.log));
         }
@@ -157,8 +158,8 @@ public static class Network
                 if(!session.SignedIn && session.menu == null)
                 {
                     session.SetMenu(new Menus.LogInMenu());
-                    
-                    session.ClearLog();
+
+                    response.Add(new ActionList.ClearLog());
                     session.Log("Welcome to RMUD2!");
                 }
             }

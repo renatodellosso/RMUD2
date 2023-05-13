@@ -15,4 +15,6 @@ static class Config
     /// </summary>
     public const int HANDLER_SLEEP_INTERVAL = 50;
 
+    public const string ENV_PATH = "../../../.env";
+
 }

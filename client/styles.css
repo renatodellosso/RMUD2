@@ -39,11 +39,15 @@ p {
     animation: fadeIn 0.2s;
 }
 
+form {
+    width: 80%;
+}
+
 input {
     z-index: 1;
     color: white;
     font-family: monospace;
-    width: 100%;
+    width: 80%;
 }
 
 button {
