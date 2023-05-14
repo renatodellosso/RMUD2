@@ -19,4 +19,7 @@ static class Config
 
     public const int PBKDF2_ITERATIONS = 600000;
 
+    public const int MAX_SIGN_IN_TRIES = 5;
+    public static readonly TimeSpan LOCK_OUT_DURATION = new(0, 5, 0); //Hours, minutes, then seconds. Not sure why I can't use const here, but I can't, so I use static readonly
+
 }

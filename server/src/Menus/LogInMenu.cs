@@ -33,11 +33,31 @@ namespace Menus
 
         string username = "", password = "";
 
+        int tries = 0;
+        Timer lockOut;
+        TimeSpan lockOutDuration = Config.LOCK_OUT_DURATION;
+
         public override Input[] GetInputs(ServerResponse response)
         {
             List<Input> inputs = new();
 
-            if (!waiting)
+            if (lockOut != null)
+            {
+                if (lockOut.IsComplete)
+                {
+                    tries--;
+                    if (tries > 0)
+                    {
+                        lockOut = null;
+                        session.ReplaceLog("Enter your password:");
+                    }
+                    else lockOut = new Timer(Config.LOCK_OUT_DURATION);
+                }
+                else if (tries > Config.MAX_SIGN_IN_TRIES)
+                    session.ReplaceLog($"{Utils.Style("You have tried to sign in too many times.", "red")} Sign In Cooldown: {lockOut.FormattedTimeRemaining()}");
+            }
+
+            if (!waiting && tries <= Config.MAX_SIGN_IN_TRIES)
             {
                 if (state == State.Selection)
                 {
@@ -63,7 +83,7 @@ namespace Menus
 
         public override void HandleInput(ClientAction action, ServerResponse response)
         {
-            if (!waiting)
+            if (!waiting && tries <= Config.MAX_SIGN_IN_TRIES)
             {
                 if (mode == Mode.Selection && !action.action.Equals("") && !action.action.Equals("init"))
                 {
@@ -119,17 +139,17 @@ namespace Menus
                         else if (state == State.Password)
                         {
                             password = action.action;
+                            if(!session.log.Last().Contains("Password") && session.log.Where(msg => msg.Contains("Password")).Count() > 0) session.PopLog();
+                            session.ReplaceLog("Password: *****");
                             if (mode == Mode.CreateAccount)
                             {
                                 state = State.ConfirmPassword;
-                                session.ReplaceLog("Password: *****");
                                 session.Log("Reenter your password:");
                             }
                             else
                             {
                                 waiting = true;
                                 Task.Run(SignIn);
-                                session.ReplaceLog("Password: *****");
                                 session.Log("Signing in...");
                             }
                         }
@@ -174,7 +194,16 @@ namespace Menus
             }
             else
             {
+                tries++;
+                if (tries > Config.MAX_SIGN_IN_TRIES)
+                {
+                    lockOut = new Timer(lockOutDuration);
+                    lockOutDuration *= 2;
+                    Console.WriteLine($"User exceeded sign in limit. Cooldown: {lockOut.FormattedTimeRemaining()}");
+                }
+
                 session.ReplaceLog(Utils.Style("Invalid username or password", "red"));
+                Console.WriteLine("User failed sign in. Try: " + tries + "/" + Config.MAX_SIGN_IN_TRIES);
             }
             waiting = false;
         }
