@@ -10,9 +10,9 @@ public class Session
 
     public static Dictionary<ObjectId, Session> sessions = new Dictionary<ObjectId, Session>();
 
-    public ObjectId account = new(), id = ObjectId.GenerateNewId();
+    public ObjectId? accountId, id = ObjectId.GenerateNewId();
 
-    public bool SignedIn => !account.Equals(new());
+    public bool SignedIn => accountId != null;
 
     public Menu menu;
     public List<Menu> menuHistory = new();

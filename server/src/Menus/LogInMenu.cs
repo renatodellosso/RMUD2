@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -89,10 +91,24 @@ namespace Menus
                 {
                     if (state == State.Username)
                     {
-                        username = action.action;
-                        state = State.Password;
-                        session.ReplaceLog("Username: " + username);
-                        session.Log(mode == Mode.CreateAccount ? "Enter a password:" : "Enter your password:");
+                        if (mode == Mode.SignIn || !UsernameTaken(action.action))
+                        {
+                            if (mode == Mode.SignIn || Utils.IsInputSafe(action.action))
+                            {
+                                username = action.action;
+                                state = State.Password;
+                                session.ReplaceLog("Username: " + username);
+                                session.Log(mode == Mode.CreateAccount ? "Enter a password:" : "Enter your password:");
+                            }
+                            else
+                            {
+                                session.ReplaceLog(Utils.Style($"{action.action} is not a valid username.", "red") + " Please enter a new username:");
+                            }
+                        }
+                        else
+                        {
+                            session.ReplaceLog($"The username {action.action} is taken. Enter a new username:");
+                        }
                     }
                     else if (state == State.Password)
                     {
@@ -103,6 +119,19 @@ namespace Menus
                             session.ReplaceLog("Password: *****");
                             session.Log("Reenter your password:");
                         }
+                        else
+                        {
+                            ObjectId? result = VerifyCredentials();
+                            if(result != null)
+                            {
+                                session.Log(Utils.Style("Logged in!", "green"));
+                                session.accountId = result;
+                            }
+                            else
+                            {
+                                session.Log(Utils.Style("Invalid username or password", "red"));
+                            }
+                        }
                     }
                     else if(state == State.ConfirmPassword)
                     {
@@ -111,22 +140,70 @@ namespace Menus
                             state = State.FinalConfirmation;
                             session.ReplaceLog("Password confirmed");
                         }
-                        else session.ReplaceLog("Passwords do not match. Reenter your password:");
+                        else session.ReplaceLog(Utils.Style("Passwords do not match. Reenter your password:", "red"));
                     }
                     else if(state == State.FinalConfirmation && action.action.Equals("confirm"))
                     {
                         if(CreateAccount())
                         {
-                            session.Log("Account created!");
+                            session.Log(Utils.Style("Account created!", "green"));
                         }
                     }
                 }
             }
         }
 
-        public bool CreateAccount()
+        bool CreateAccount()
         {
+            Account account = new Account(username, password);
+            DB.accounts.InsertOne(account);
             return true;
+        }
+
+
+        /// <summary>
+        /// Checks if the given username is taken. Not case-sensitive
+        /// </summary>
+        /// <returns>Whether an account exists with this same username</returns>
+        static bool UsernameTaken(string username)
+        {
+            username = username.ToLower();
+
+            //The next 4 lines are the old search. I tried to make it case-insensitive, but it gave an error
+            //We have to create a filter before performing the search
+            //FilterDefinition<Account> filter = Builders<Account>.Filter.Eq(a => a.username != null ? a.username.ToLower() : "", username);
+            //IAsyncCursor<Account> found = DB.accounts.FindSync(filter);
+            //return found.Any();
+
+            //Case-insensitive search
+            return DB.accounts.AsQueryable().Where(a => a.username.ToLower().Contains(username)).Any();
+        }
+
+        /// <summary>
+        /// Checks if the username and password are correct
+        /// </summary>
+        /// <returns>The _id of the account that matches the provided credentials</returns>
+        ObjectId? VerifyCredentials()
+        {
+            Console.WriteLine($"Attempting sign in... Username: {username}");
+
+            //We have to create a filter before performing the search
+            FilterDefinition<Account> filter = Builders<Account>.Filter.Eq("username", username);
+            IAsyncCursor<Account> found = DB.accounts.FindSync(filter);
+
+            if (!found.Any()) return null;
+
+            found = DB.accounts.FindSync(filter); //Using .Any() consumes the cursor, so we need a new one
+
+            Account account = found.First();
+            bool success = account.password.Equals(Utils.PBKDF2Hash(password, account.salt));
+
+            if (success) Console.WriteLine($"{username} signed in");
+            else Console.WriteLine($"Someone failed to sign in to {username}");
+
+            found.Dispose();
+
+            return success ? account._id : null;
         }
         
     }

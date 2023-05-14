@@ -17,4 +17,6 @@ static class Config
 
     public const string ENV_PATH = "../../../.env";
 
+    public const int PBKDF2_ITERATIONS = 600000;
+
 }
