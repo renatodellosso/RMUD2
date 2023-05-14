@@ -91,9 +91,10 @@ public static class Network
 
         //Read body
         string body = new StreamReader(ctx.Request.InputStream).ReadToEnd();
-        Console.WriteLine(body);
+        //Console.WriteLine(body);
 
-        Console.WriteLine("Received HTTP request. Method: " + req.HttpMethod + ", Body: " + body);
+        //Console.WriteLine("Received HTTP request. Method: " + req.HttpMethod + ", Body: " + body);
+        Console.WriteLine("Received HTTP request");
 
         resp.StatusCode = (int)HttpStatusCode.OK;
         resp.StatusDescription = "Status OK";
@@ -119,11 +120,10 @@ public static class Network
             defaultClientActions[action.action](action, response);
         }
 
-        Console.WriteLine(action.token);
         if (action.Session != null)
         {
             Session session = Session.sessions[new ObjectId(action.token)];
-            if(!action.action.Equals("init")) session.menu?.HandleInput(action, response); //? means if not null
+            if(!defaultClientActions.ContainsKey(action.action)) session.menu?.HandleInput(action, response); //? means if not null
             
             response.Add(new ActionList.SetInput(session.menu?.GetInputs(response)));
             response.Add(new ActionList.SetLog(session.log));
@@ -133,7 +133,7 @@ public static class Network
         string respJson = JsonConvert.SerializeObject(response);
 
         //Write response
-        Console.WriteLine("Writing response: " + respJson);
+        //Console.WriteLine("Writing response: " + respJson);
         byte[] responseBytes = Encoding.UTF8.GetBytes(respJson);
         resp.ContentLength64 = responseBytes.Length;
         resp.OutputStream.Write(responseBytes, 0, responseBytes.Length);
@@ -162,6 +162,11 @@ public static class Network
                     response.Add(new ActionList.ClearLog());
                     session.Log("Welcome to RMUD2!");
                 }
+            }
+        },
+        { "heartbeat", (action, response) =>
+            {
+                Console.WriteLine("Received heartbeat from " + action.token);
             }
         }
     };

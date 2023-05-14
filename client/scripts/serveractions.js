@@ -10,29 +10,59 @@ let serverActions = {
         console.log("Setting input: ");
         console.log(args);
 
-        let input = document.getElementById("input");
-        input.innerHTML = "";
+        let shouldUpdate = typeof prevInput === "undefined";
+        console.log(`Prev Input (Updating: ${shouldUpdate}): `);
+        console.log(prevInput);
 
-        args.forEach(arg => {
-            if(arg.mode == inputMode.option) {
-                input.innerHTML += button(arg.id, arg.text);
+        if(!shouldUpdate) {
+            for(let i = 0; i < args.length; i++) {
+                if(i >= prevInput.length) {
+                    shouldUpdate = true;
+                    break;
+                }
+                else if(args[i].id != prevInput[i].id) {
+                    console.log("Input IDs don't match, updating");
+                    console.log("New input: ");
+                    console.log(args[i]);
+                    console.log("Old input: ");
+                    console.log(prevInput[i]);
 
-                let buttonElement = document.getElementById(arg.id);
-                buttonElement.setAttribute("onClick", `javascript: optionClicked("${arg.id}")`);
+                    shouldUpdate = true;
+                    break;
+                }
             }
-            else if(arg.mode == inputMode.text || arg.mode == inputMode.secret) {
-                secret = arg.mode == inputMode.secret;
+        }
 
-                input.innerHTML += textInput(arg.id, arg.text);
-                
-                let inputElement = document.getElementById(arg.id);
-                inputElement.addEventListener("submit", (event) => {
-                    event.preventDefault();
-                    inputSubmitted(arg.id);
-                    return false;
-                });
-            }
-        });
+        if(shouldUpdate) {
+            let input = document.getElementById("input");
+            
+            input.innerHTML = "";
+
+            args.forEach(arg => {
+                if(arg.mode == inputMode.option) {
+                    input.innerHTML += button(arg.id, arg.text);
+
+                    let buttonElement = document.getElementById(arg.id);
+                    buttonElement.setAttribute("onClick", `javascript: optionClicked("${arg.id}")`);
+                }
+                else if(arg.mode == inputMode.text || arg.mode == inputMode.secret) {
+                    secret = arg.mode == inputMode.secret;
+
+                    input.innerHTML += textInput(arg.id, arg.text);
+                    
+                    let inputElement = document.getElementById(arg.id);
+                    inputElement.addEventListener("submit", (event) => {
+                        event.preventDefault();
+                        inputSubmitted(arg.id);
+                        return false;
+                    });
+                }
+            });
+        }
+
+        prevInput = args;
+        console.log(`Prev Input (Updating: ${shouldUpdate}): `);
+        console.log(prevInput);
     },
 
     setLog: (args) => {

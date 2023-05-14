@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Konscious.Security.Cryptography;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
@@ -26,11 +27,23 @@ public static class Utils
     /// <param name="text">The password to hash</param>
     /// <param name="salt">The salt</param>
     /// <returns>The PBKDF2 hash</returns>
-    public static string PBKDF2Hash(string text, string salt)
+    public static string HashPassword(string text, string salt)
     {
-        Rfc2898DeriveBytes pbkdf2 = new(text, Encoding.UTF8.GetBytes(salt));
-        pbkdf2.IterationCount = Config.PBKDF2_ITERATIONS;
-        return Convert.ToBase64String(pbkdf2.GetBytes(32));
+        text = Env.instance.pepper + text; //Add the pepper to the password
+
+        //Old PBKDF2 hashing
+        //Rfc2898DeriveBytes pbkdf2 = new(text, Encoding.UTF8.GetBytes(salt));
+        //pbkdf2.IterationCount = Config.PBKDF2_ITERATIONS;
+        //return Convert.ToBase64String(pbkdf2.GetBytes(32));
+
+        Argon2id argon = new Argon2id(Encoding.UTF8.GetBytes(text));
+
+        argon.Salt = Encoding.UTF8.GetBytes(salt);
+        argon.DegreeOfParallelism = 8; //4 Cores
+        argon.Iterations = 5;
+        argon.MemorySize = 1024 * 1024; //1GB of RAM
+
+        return Convert.ToBase64String(argon.GetBytes(32));
     }
 
     public static string Style(string text, string color = "", bool bold = false, bool underline = false)

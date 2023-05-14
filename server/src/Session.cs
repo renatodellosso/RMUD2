@@ -23,7 +23,7 @@ public class Session
     {
         Session session = new();
         
-        sessions.Add(session.id, session);
+        sessions.Add((ObjectId)session.id, session);
         return session;
     }
 

@@ -13,10 +13,13 @@ const hash = async (string) => {
     
 }
 
+const getToken = () => {
+    return typeof token !== "undefined" ? token : localStorage.getItem("rmud2Token");
+}
+
 //From https://stackoverflow.com/a/73543460
 const httpReq = (body) => {
-    if(typeof token !== "undefined" || localStorage.getItem("rmud2Token") !== null)
-        body["token"] = typeof token !== "undefined" ? token : localStorage.getItem("rmud2Token"),
+    if(getToken() != null) body.token = getToken();
 
     console.log("Sending HTTP request... Body:");
     console.log(body);

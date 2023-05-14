@@ -1,4 +1,5 @@
 ﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,8 +23,64 @@ public class Account
         
         salt = Utils.RandomSalt();
         Console.WriteLine("Starting hash...");
-        this.password = Utils.PBKDF2Hash(password, salt);
+        this.password = Utils.HashPassword(password, salt);
         Console.WriteLine("Completed hash");
+    }
+
+    /// <summary>
+    /// Checks if the username and password are correct
+    /// </summary>
+    /// <returns>The _id of the account that matches the provided credentials. Returns null if the credentials are invalid</returns>
+    public static ObjectId? VerifyCredentials(string username, string password)
+    {
+        Console.WriteLine($"Attempting sign in... Username: {username}");
+
+        //We have to create a filter before performing the search
+        FilterDefinition<Account> filter = Builders<Account>.Filter.Eq("username", username);
+        IAsyncCursor<Account> found = DB.accounts.FindSync(filter);
+
+        if (!found.Any()) return null;
+
+        found = DB.accounts.FindSync(filter); //Using .Any() consumes the cursor, so we need a new one
+
+        Account account = found.First();
+        bool success = account.password.Equals(Utils.HashPassword(password, account.salt));
+
+        if (success) Console.WriteLine($"{username} signed in");
+        else Console.WriteLine($"Someone failed to sign in to {username}");
+
+        found.Dispose();
+
+        return success ? account._id : null;
+    }
+
+    /// <summary>
+    /// Checks if the given username is taken. Not case-sensitive
+    /// </summary>
+    /// <returns>Whether an account exists with this same username</returns>
+    public static bool UsernameTaken(string username)
+    {
+        username = username.ToLower();
+
+        //The next 4 lines are the old search. I tried to make it case-insensitive, but it gave an error
+        //We have to create a filter before performing the search
+        //FilterDefinition<Account> filter = Builders<Account>.Filter.Eq(a => a.username != null ? a.username.ToLower() : "", username);
+        //IAsyncCursor<Account> found = DB.accounts.FindSync(filter);
+        //return found.Any();
+
+        //Case-insensitive search
+        return DB.accounts.AsQueryable().Where(a => a.username.ToLower().Equals(username)).Any();
+    }
+
+    /// <summary>
+    /// Attempts to create an account with the given credentials
+    /// </summary>
+    /// <returns>The ObjectId of the account that was created</returns>
+    public static ObjectId? CreateAccount(string username, string password)
+    {
+        Account account = new Account(username, password);
+        DB.accounts.InsertOne(account);
+        return account._id;
     }
 
 }
