@@ -10,6 +10,7 @@ public class Env
     public static Env instance = new();
 
     public string mongoUri = "";
+    public string botKey = "";
 
     public string pepper = "";
 }

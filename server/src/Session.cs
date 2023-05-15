@@ -1,4 +1,5 @@
 ﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ public class Session
     public static Dictionary<ObjectId, Session> sessions = new Dictionary<ObjectId, Session>();
 
     public ObjectId? accountId, id = ObjectId.GenerateNewId();
+    public Account Account => DB.accounts.Find<Account>(Builders<Account>.Filter.Eq("_id", accountId)).First();
 
     public bool SignedIn => accountId != null;
 
@@ -53,6 +55,14 @@ public class Session
     public void ReplaceLog(string msg)
     {
         log[log.Count - 1] = msg;
+    }
+
+    /// <summary>
+    /// Clears the log portion of the screen for the user
+    /// </summary>
+    public void ClearLog()
+    {
+        log.Clear();
     }
 
 }

@@ -20,12 +20,12 @@ public static class Network
 
     public static void Init()
     {
-        Console.WriteLine("Initializing Network...");
+        Utils.Log("Initializing Network...");
 
         httpListener = new HttpListener();
 
         string prefix = "http://localhost:" + Config.PORT + "/";
-        Console.WriteLine("Adding prefix: " + prefix);
+        Utils.Log("Adding prefix: " + prefix);
         httpListener.Prefixes.Add(prefix);
 
         httpListener.Start();
@@ -38,12 +38,12 @@ public static class Network
             handlerTasks[i] = Task.Run(()=>HandlerThread(id));
         }
 
-        Console.WriteLine("Network initialized");
+        Utils.Log("Network initialized");
     }
 
     static void Start()
     {
-        Console.WriteLine("Started Network thread");
+        Utils.Log("Started Network thread");
 
         if (httpListener != null)
         {
@@ -54,7 +54,7 @@ public static class Network
             }
         }
 
-        Console.WriteLine("Stopping Network thread");
+        Utils.Log("Stopping Network thread");
     }
 
     static void HandlerThread(int id)
@@ -66,7 +66,7 @@ public static class Network
                 if (requests.Count > 0)
                 {
                     HttpListenerContext ctx = requests[0];
-                    Console.WriteLine("Request received by handler " + id);
+                    //Utils.Log("Request received by handler " + id);
 
                     if (requests.Count > 0)
                     {
@@ -76,7 +76,7 @@ public static class Network
                 }
             } catch (Exception e)
             {
-                Console.WriteLine("Error in handler " + id + ": " + e.Message);
+                Utils.Log("Error in handler " + id + ": " + e.Message);
                 Console.Error.WriteLine(e.StackTrace);
             }
 
@@ -91,10 +91,9 @@ public static class Network
 
         //Read body
         string body = new StreamReader(ctx.Request.InputStream).ReadToEnd();
-        //Console.WriteLine(body);
+        //Utils.Log(body);
 
-        //Console.WriteLine("Received HTTP request. Method: " + req.HttpMethod + ", Body: " + body);
-        Console.WriteLine("Received HTTP request");
+        //Utils.Log("Received HTTP request. Method: " + req.HttpMethod + ", Body: " + body);
 
         resp.StatusCode = (int)HttpStatusCode.OK;
         resp.StatusDescription = "Status OK";
@@ -113,6 +112,8 @@ public static class Network
         //Parse body
         ClientAction action = JsonConvert.DeserializeObject<ClientAction>(body);
 
+        if(!action.action.Equals("heartbeat")) Utils.Log("Received HTTP request");
+
         ServerResponse response = new();
 
         if(defaultClientActions.ContainsKey(action.action))
@@ -128,12 +129,12 @@ public static class Network
             response.Add(new ActionList.SetInput(session.menu?.GetInputs(response)));
             response.Add(new ActionList.SetLog(session.log));
         }
-        else Console.WriteLine("Session is null!");
+        else Utils.Log("Session is null!");
 
         string respJson = JsonConvert.SerializeObject(response);
 
         //Write response
-        //Console.WriteLine("Writing response: " + respJson);
+        //Utils.Log("Writing response: " + respJson);
         byte[] responseBytes = Encoding.UTF8.GetBytes(respJson);
         resp.ContentLength64 = responseBytes.Length;
         resp.OutputStream.Write(responseBytes, 0, responseBytes.Length);
@@ -145,7 +146,7 @@ public static class Network
     {
         { "init", (action, response) =>
             {
-                Console.WriteLine("Initting session...");
+                Utils.Log("Initting session...");
                 Session session;
 
                 if(action.token == null || !Session.sessions.ContainsKey(new ObjectId(action.token))) {
@@ -166,7 +167,7 @@ public static class Network
         },
         { "heartbeat", (action, response) =>
             {
-                Console.WriteLine("Received heartbeat from " + action.token);
+                //Utils.Log("Received heartbeat from " + action.token);
             }
         }
     };

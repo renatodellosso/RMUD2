@@ -16,15 +16,17 @@ public class Account
 
     public string? password, salt;
 
+    public string discordId;
+
     public Account(string username, string password)
     {
         _id = ObjectId.GenerateNewId();
         this.username = username;
         
         salt = Utils.RandomSalt();
-        Console.WriteLine("Starting hash...");
+        Utils.Log("Starting hash...");
         this.password = Utils.HashPassword(password, salt);
-        Console.WriteLine("Completed hash");
+        Utils.Log("Completed hash");
     }
 
     /// <summary>
@@ -33,7 +35,7 @@ public class Account
     /// <returns>The _id of the account that matches the provided credentials. Returns null if the credentials are invalid</returns>
     public static ObjectId? VerifyCredentials(string username, string password)
     {
-        Console.WriteLine($"Attempting sign in... Username: {username}");
+        Utils.Log($"Attempting sign in... Username: {username}");
 
         //We have to create a filter before performing the search
         FilterDefinition<Account> filter = Builders<Account>.Filter.Eq("username", username);
@@ -46,8 +48,8 @@ public class Account
         Account account = found.First();
         bool success = account.password.Equals(Utils.HashPassword(password, account.salt));
 
-        if (success) Console.WriteLine($"{username} signed in");
-        else Console.WriteLine($"Someone failed to sign in to {username}");
+        if (success) Utils.Log($"{username} signed in");
+        else Utils.Log($"Someone failed to sign in to {username}");
 
         found.Dispose();
 

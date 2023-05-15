@@ -179,6 +179,8 @@ namespace Menus
             if (id != null)
             {
                 session.ReplaceLog(Utils.Style("Account created!", "green"));
+                session.accountId = id;
+                session.SetMenu(new MainMenu(session));
             }
             else session.ReplaceLog(Utils.Style("Failed to create account", "red"));
             waiting = false;
@@ -191,6 +193,7 @@ namespace Menus
             {
                 session.ReplaceLog(Utils.Style("Logged in!", "green"));
                 session.accountId = result;
+                session.SetMenu(new MainMenu(session));
             }
             else
             {
@@ -199,11 +202,11 @@ namespace Menus
                 {
                     lockOut = new Timer(lockOutDuration);
                     lockOutDuration *= 2;
-                    Console.WriteLine($"User exceeded sign in limit. Cooldown: {lockOut.FormattedTimeRemaining()}");
+                    Utils.Log($"User exceeded sign in limit. Cooldown: {lockOut.FormattedTimeRemaining()}");
                 }
 
                 session.ReplaceLog(Utils.Style("Invalid username or password", "red"));
-                Console.WriteLine("User failed sign in. Try: " + tries + "/" + Config.MAX_SIGN_IN_TRIES);
+                Utils.Log("User failed sign in. Try: " + tries + "/" + Config.MAX_SIGN_IN_TRIES);
             }
             waiting = false;
         }

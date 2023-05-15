@@ -8,6 +8,7 @@
     ".NETCoreApp,Version=v7.0": {
       "server/1.0.0": {
         "dependencies": {
+          "Discord.Net": "3.10.0",
           "Konscious.Security.Cryptography.Argon2": "1.3.0",
           "MongoDB.Driver": "2.19.1",
           "Newtonsoft.Json": "13.0.3"
@@ -32,6 +33,92 @@
           "lib/netcoreapp3.1/AWSSDK.SecurityToken.dll": {
             "assemblyVersion": "3.3.0.0",
             "fileVersion": "3.7.100.14"
+          }
+        }
+      },
+      "Discord.Net/3.10.0": {
+        "dependencies": {
+          "Discord.Net.Commands": "3.10.0",
+          "Discord.Net.Core": "3.10.0",
+          "Discord.Net.Interactions": "3.10.0",
+          "Discord.Net.Rest": "3.10.0",
+          "Discord.Net.WebSocket": "3.10.0",
+          "Discord.Net.Webhook": "3.10.0"
+        }
+      },
+      "Discord.Net.Commands/3.10.0": {
+        "dependencies": {
+          "Discord.Net.Core": "3.10.0"
+        },
+        "runtime": {
+          "lib/net6.0/Discord.Net.Commands.dll": {
+            "assemblyVersion": "3.10.0.0",
+            "fileVersion": "3.10.0.0"
+          }
+        }
+      },
+      "Discord.Net.Core/3.10.0": {
+        "dependencies": {
+          "Newtonsoft.Json": "13.0.3",
+          "System.Collections.Immutable": "5.0.0",
+          "System.Interactive.Async": "5.0.0",
+          "System.ValueTuple": "4.5.0"
+        },
+        "runtime": {
+          "lib/net6.0/Discord.Net.Core.dll": {
+            "assemblyVersion": "3.10.0.0",
+            "fileVersion": "3.10.0.0"
+          }
+        }
+      },
+      "Discord.Net.Interactions/3.10.0": {
+        "dependencies": {
+          "Discord.Net.Core": "3.10.0",
+          "Discord.Net.Rest": "3.10.0",
+          "Discord.Net.WebSocket": "3.10.0",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "5.0.0",
+          "System.Collections.Immutable": "5.0.0",
+          "System.Reactive": "5.0.0"
+        },
+        "runtime": {
+          "lib/net6.0/Discord.Net.Interactions.dll": {
+            "assemblyVersion": "3.10.0.0",
+            "fileVersion": "3.10.0.0"
+          }
+        }
+      },
+      "Discord.Net.Rest/3.10.0": {
+        "dependencies": {
+          "Discord.Net.Core": "3.10.0"
+        },
+        "runtime": {
+          "lib/net6.0/Discord.Net.Rest.dll": {
+            "assemblyVersion": "3.10.0.0",
+            "fileVersion": "3.10.0.0"
+          }
+        }
+      },
+      "Discord.Net.Webhook/3.10.0": {
+        "dependencies": {
+          "Discord.Net.Core": "3.10.0",
+          "Discord.Net.Rest": "3.10.0"
+        },
+        "runtime": {
+          "lib/net6.0/Discord.Net.Webhook.dll": {
+            "assemblyVersion": "3.10.0.0",
+            "fileVersion": "3.10.0.0"
+          }
+        }
+      },
+      "Discord.Net.WebSocket/3.10.0": {
+        "dependencies": {
+          "Discord.Net.Core": "3.10.0",
+          "Discord.Net.Rest": "3.10.0"
+        },
+        "runtime": {
+          "lib/net6.0/Discord.Net.WebSocket.dll": {
+            "assemblyVersion": "3.10.0.0",
+            "fileVersion": "3.10.0.0"
           }
         }
       },
@@ -63,6 +150,14 @@
           "lib/net6.0/Konscious.Security.Cryptography.Blake2.dll": {
             "assemblyVersion": "1.1.0.0",
             "fileVersion": "1.1.0.0"
+          }
+        }
+      },
+      "Microsoft.Extensions.DependencyInjection.Abstractions/5.0.0": {
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
+            "assemblyVersion": "5.0.0.0",
+            "fileVersion": "5.0.20.51904"
           }
         }
       },
@@ -175,7 +270,35 @@
         }
       },
       "System.Buffers/4.5.1": {},
+      "System.Collections.Immutable/5.0.0": {},
+      "System.Interactive.Async/5.0.0": {
+        "dependencies": {
+          "System.Linq.Async": "5.0.0"
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/System.Interactive.Async.dll": {
+            "assemblyVersion": "5.0.0.0",
+            "fileVersion": "5.0.0.1"
+          }
+        }
+      },
+      "System.Linq.Async/5.0.0": {
+        "runtime": {
+          "lib/netcoreapp3.1/System.Linq.Async.dll": {
+            "assemblyVersion": "5.0.0.0",
+            "fileVersion": "5.0.0.1"
+          }
+        }
+      },
       "System.Memory/4.5.4": {},
+      "System.Reactive/5.0.0": {
+        "runtime": {
+          "lib/net5.0/System.Reactive.dll": {
+            "assemblyVersion": "5.0.0.0",
+            "fileVersion": "5.0.0.1"
+          }
+        }
+      },
       "System.Runtime.CompilerServices.Unsafe/5.0.0": {},
       "System.Security.AccessControl/5.0.0": {
         "dependencies": {
@@ -184,6 +307,7 @@
         }
       },
       "System.Security.Principal.Windows/5.0.0": {},
+      "System.ValueTuple/4.5.0": {},
       "ZstdSharp.Port/0.6.2": {
         "runtime": {
           "lib/net6.0/ZstdSharp.dll": {
@@ -214,6 +338,55 @@
       "path": "awssdk.securitytoken/3.7.100.14",
       "hashPath": "awssdk.securitytoken.3.7.100.14.nupkg.sha512"
     },
+    "Discord.Net/3.10.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-X5V2lM8YO3Vf1oqxmL1/zSAOKmIZ7AAlxbpgdelQlCKXWZSJeEadLqxQRLCa/z6VsK+btdfNHZFxeQjqYPQ9mQ==",
+      "path": "discord.net/3.10.0",
+      "hashPath": "discord.net.3.10.0.nupkg.sha512"
+    },
+    "Discord.Net.Commands/3.10.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-/DpV2H+PkOtypV6csIdp6NSqhxuDnyS25gcteaDpbwceMwCxmaveTiycUmPxbqgjKADzNx4qszoxShwQGoXalg==",
+      "path": "discord.net.commands/3.10.0",
+      "hashPath": "discord.net.commands.3.10.0.nupkg.sha512"
+    },
+    "Discord.Net.Core/3.10.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-GnsLmSYDShws23rqzdf6aOwIG70cqYUHY7i2cFdj3YVz/c8OelsbLndnFvkg6yELcy7aD60NSHyYZ5oMsgDavA==",
+      "path": "discord.net.core/3.10.0",
+      "hashPath": "discord.net.core.3.10.0.nupkg.sha512"
+    },
+    "Discord.Net.Interactions/3.10.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-9IrJQ1kV6wmUHijUtfv4yA6+YlTxD0UyJV8mRaGN4CjahC5a5LGIwSj6MnUiz2Zgh0CPQIGGOB55K1Ovu13jjg==",
+      "path": "discord.net.interactions/3.10.0",
+      "hashPath": "discord.net.interactions.3.10.0.nupkg.sha512"
+    },
+    "Discord.Net.Rest/3.10.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-N2nlOCoZCTyQbDlwqDKcqknOgwAbeJgy2r9DAUNsNxcO763ru67WK3GxkA7V7QgZ80RU9rLB3fr9jvjJ14pUBA==",
+      "path": "discord.net.rest/3.10.0",
+      "hashPath": "discord.net.rest.3.10.0.nupkg.sha512"
+    },
+    "Discord.Net.Webhook/3.10.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-1rZFNpsK7b34SQmtnwa/jm8E1aIkoaBA1GzPM1hDGC/NX1q9fxoF7CEyeiC1ExDz+WVBp8JBCwEfAr7Qx63/LA==",
+      "path": "discord.net.webhook/3.10.0",
+      "hashPath": "discord.net.webhook.3.10.0.nupkg.sha512"
+    },
+    "Discord.Net.WebSocket/3.10.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-pA581o5JoAAFlintQEeDncIr99WHZOWzwnZWLuPiSW4BmFjG/oYf8F6C60Ob/5w1C1QB0k72NLgh8mEwnTCI5Q==",
+      "path": "discord.net.websocket/3.10.0",
+      "hashPath": "discord.net.websocket.3.10.0.nupkg.sha512"
+    },
     "DnsClient/1.6.1": {
       "type": "package",
       "serviceable": true,
@@ -234,6 +407,13 @@
       "sha512": "sha512-enWOzNAlBjFcKoiBNVVLsa1ZzOciExznu+sUURE8dx322GI1LzrBxzEuZqjeOoK9oo9RubLtg96/7Y4JtUk9zA==",
       "path": "konscious.security.cryptography.blake2/1.1.0",
       "hashPath": "konscious.security.cryptography.blake2.1.1.0.nupkg.sha512"
+    },
+    "Microsoft.Extensions.DependencyInjection.Abstractions/5.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ORj7Zh81gC69TyvmcUm9tSzytcy8AVousi+IVRAI8nLieQjOFryRusSFh7+aLk16FN9pQNqJAiMd7BTKINK0kA==",
+      "path": "microsoft.extensions.dependencyinjection.abstractions/5.0.0",
+      "hashPath": "microsoft.extensions.dependencyinjection.abstractions.5.0.0.nupkg.sha512"
     },
     "Microsoft.Extensions.Logging.Abstractions/2.0.0": {
       "type": "package",
@@ -312,12 +492,40 @@
       "path": "system.buffers/4.5.1",
       "hashPath": "system.buffers.4.5.1.nupkg.sha512"
     },
+    "System.Collections.Immutable/5.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-FXkLXiK0sVVewcso0imKQoOxjoPAj42R8HtjjbSjVPAzwDfzoyoznWxgA3c38LDbN9SJux1xXoXYAhz98j7r2g==",
+      "path": "system.collections.immutable/5.0.0",
+      "hashPath": "system.collections.immutable.5.0.0.nupkg.sha512"
+    },
+    "System.Interactive.Async/5.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-QaqhQVDiULcu4vm6o89+iP329HcK44cETHOYgy/jfEjtzeFy0ZxmuM7nel9ocjnKxEM4yh1mli7hgh8Q9o+/Iw==",
+      "path": "system.interactive.async/5.0.0",
+      "hashPath": "system.interactive.async.5.0.0.nupkg.sha512"
+    },
+    "System.Linq.Async/5.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-cPtIuuH8TIjVHSi2ewwReWGW1PfChPE0LxPIDlfwVcLuTM9GANFTXiMB7k3aC4sk3f0cQU25LNKzx+jZMxijqw==",
+      "path": "system.linq.async/5.0.0",
+      "hashPath": "system.linq.async.5.0.0.nupkg.sha512"
+    },
     "System.Memory/4.5.4": {
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-1MbJTHS1lZ4bS4FmsJjnuGJOu88ZzTT2rLvrhW7Ygic+pC0NWA+3hgAen0HRdsocuQXCkUTdFn9yHJJhsijDXw==",
       "path": "system.memory/4.5.4",
       "hashPath": "system.memory.4.5.4.nupkg.sha512"
+    },
+    "System.Reactive/5.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-erBZjkQHWL9jpasCE/0qKAryzVBJFxGHVBAvgRN1bzM0q2s1S4oYREEEL0Vb+1kA/6BKb5FjUZMp5VXmy+gzkQ==",
+      "path": "system.reactive/5.0.0",
+      "hashPath": "system.reactive.5.0.0.nupkg.sha512"
     },
     "System.Runtime.CompilerServices.Unsafe/5.0.0": {
       "type": "package",
@@ -339,6 +547,13 @@
       "sha512": "sha512-t0MGLukB5WAVU9bO3MGzvlGnyJPgUlcwerXn1kzBRjwLKixT96XV0Uza41W49gVd8zEMFu9vQEFlv0IOrytICA==",
       "path": "system.security.principal.windows/5.0.0",
       "hashPath": "system.security.principal.windows.5.0.0.nupkg.sha512"
+    },
+    "System.ValueTuple/4.5.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-okurQJO6NRE/apDIP23ajJ0hpiNmJ+f0BwOlB/cSqTLQlw5upkf+5+96+iG2Jw40G1fCVCyPz/FhIABUjMR+RQ==",
+      "path": "system.valuetuple/4.5.0",
+      "hashPath": "system.valuetuple.4.5.0.nupkg.sha512"
     },
     "ZstdSharp.Port/0.6.2": {
       "type": "package",

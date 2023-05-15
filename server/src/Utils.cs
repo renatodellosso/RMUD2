@@ -9,6 +9,13 @@ using System.Threading.Tasks;
 public static class Utils
 {
 
+    public static string Log(string msg)
+    {
+        msg = $"[{DateTime.Now}]: {msg}";
+        Console.WriteLine(msg);
+        return msg;
+    }
+
     /// <summary>
     /// Creates a random salt that is cryptographically secure
     /// </summary>

@@ -16,14 +16,14 @@ public static class DB
 
     public static void Init()
     {
-        Console.WriteLine("Initializing DB...");
+        Utils.Log("Initializing DB...");
 
         client = new MongoClient(Env.instance.mongoUri);
         db = client.GetDatabase("db");
 
         accounts = db.GetCollection<Account>("accounts");
 
-        Console.WriteLine("DB initialized");
+        Utils.Log("DB initialized");
     }
 
 }
