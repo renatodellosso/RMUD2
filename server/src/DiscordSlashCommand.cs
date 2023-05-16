@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 public abstract class DiscordSlashCommand
 {
 
+    public abstract void Create(DiscordSocketClient client);
     public abstract void Execute(SocketSlashCommand cmd);
 
 }

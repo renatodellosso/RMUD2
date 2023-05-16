@@ -22,4 +22,6 @@ static class Config
     public const int MAX_SIGN_IN_TRIES = 5;
     public static readonly TimeSpan LOCK_OUT_DURATION = new(0, 5, 0); //Hours, minutes, then seconds. Not sure why I can't use const here, but I can't, so I use static readonly
 
+    public const int CODE_LENGTH = 6;
+
 }

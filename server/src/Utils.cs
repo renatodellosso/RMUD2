@@ -56,7 +56,7 @@ public static class Utils
     public static string Style(string text, string color = "", bool bold = false, bool underline = false)
     {
         if (!color.Equals(""))
-            text = "<p style=" + '"' + "color:" + color + ";" + '"' + ">" + text + "</p>";
+            text = "<span style=" + '"' + "color:" + color + ";" + '"' + ">" + text + "</span>";
         if (bold) text = "<b>" + text + "</b>";
         if (underline) text = "<u>" + text + "</u>";
 
@@ -71,6 +71,19 @@ public static class Utils
     public static bool IsInputSafe(string text)
     {
         return true;
+    }
+
+    /// <summary>
+    /// Generate a numeric code of length Config.CODE_LENGTH
+    /// </summary>
+    /// <returns>The code, as a string</returns>
+    public static string RandomCode()
+    {
+        string code = "";
+        Random rand = new();
+        for (int i = 0; i < Config.CODE_LENGTH; i++)
+            code += rand.Next(0, 10);
+        return code;
     }
 
 }

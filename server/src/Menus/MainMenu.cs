@@ -22,7 +22,7 @@ namespace Menus
             session.Log("Welcome to RMUD2!");
             session.Log($"Signed in as {account.username}");
 
-            if (account.discordId == null)
+            if (account.discordId == 0)
                 session.Log($"You have {Utils.Style("not", "maroon")} linked your Discord account. Please do so to ensure you can recover your account");
         }
 
@@ -39,7 +39,13 @@ namespace Menus
 
         public override void HandleInput(ClientAction action, ServerResponse response)
         {
+            if (action.action == "linkDiscord")
+                LinkDiscord();
+        }
 
+        void LinkDiscord()
+        {
+            SlashCommands.LinkCommand.codes.Add(Utils.RandomCode(), session.Account._id);
         }
     }
 }

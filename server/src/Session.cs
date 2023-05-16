@@ -12,7 +12,7 @@ public class Session
     public static Dictionary<ObjectId, Session> sessions = new Dictionary<ObjectId, Session>();
 
     public ObjectId? accountId, id = ObjectId.GenerateNewId();
-    public Account Account => DB.accounts.Find<Account>(Builders<Account>.Filter.Eq("_id", accountId)).First();
+    public Account Account => GetAccount();
 
     public bool SignedIn => accountId != null;
 
@@ -64,6 +64,12 @@ public class Session
     public void ClearLog()
     {
         log.Clear();
+    }
+
+    private Account? GetAccount()
+    {
+        if (accountId == null) return null;
+        else return DB.Accounts.Find(accountId);
     }
 
 }

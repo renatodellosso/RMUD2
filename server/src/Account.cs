@@ -16,7 +16,7 @@ public class Account
 
     public string? password, salt;
 
-    public string discordId;
+    public ulong discordId;
 
     public Account(string username, string password)
     {
@@ -37,21 +37,15 @@ public class Account
     {
         Utils.Log($"Attempting sign in... Username: {username}");
 
-        //We have to create a filter before performing the search
-        FilterDefinition<Account> filter = Builders<Account>.Filter.Eq("username", username);
-        IAsyncCursor<Account> found = DB.accounts.FindSync(filter);
+        bool success;
 
-        if (!found.Any()) return null;
-
-        found = DB.accounts.FindSync(filter); //Using .Any() consumes the cursor, so we need a new one
-
-        Account account = found.First();
-        bool success = account.password.Equals(Utils.HashPassword(password, account.salt));
+        Account account = DB.Accounts.FindByUsername(username);
+        if (account != null)
+            success = account.password.Equals(Utils.HashPassword(password, account.salt));
+        else success = false;
 
         if (success) Utils.Log($"{username} signed in");
         else Utils.Log($"Someone failed to sign in to {username}");
-
-        found.Dispose();
 
         return success ? account._id : null;
     }
@@ -78,7 +72,7 @@ public class Account
     /// Attempts to create an account with the given credentials
     /// </summary>
     /// <returns>The ObjectId of the account that was created</returns>
-    public static ObjectId? CreateAccount(string username, string password)
+    public static ObjectId CreateAccount(string username, string password)
     {
         Account account = new Account(username, password);
         DB.accounts.InsertOne(account);

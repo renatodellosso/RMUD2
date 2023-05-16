@@ -26,4 +26,30 @@ public static class DB
         Utils.Log("DB initialized");
     }
 
+    public static class Accounts
+    {
+
+        public static Account? Find(ObjectId? id)
+        {
+            try
+            {
+                return accounts.FindSync(Builders<Account>.Filter.Eq("_id", id)).First();
+            } catch
+            {
+                return null;
+            }
+        }
+
+        public static Account? FindByUsername(string username)
+        {
+            try
+            {
+                return accounts.FindSync(Builders<Account>.Filter.Eq("username", username)).First();
+            } catch
+            {
+                return null;
+            }
+        }
+    }
+
 }

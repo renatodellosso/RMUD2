@@ -15,6 +15,7 @@ public static class Bot
     static Dictionary<string, DiscordSlashCommand> commands = new()
     {
         { "list", new SlashCommands.ListCommand() },
+        { "link", new SlashCommands.LinkCommand() },
     };
 
     public static async void Init()
@@ -52,12 +53,8 @@ public static class Bot
         Utils.Log("Building bot slash commands...");
         try
         {
-            //List online users
-            SlashCommandBuilder cmd = new SlashCommandBuilder();
-            cmd.WithName("list");
-            cmd.WithDescription("List all online users");
-            cmd.WithDMPermission(true);
-            client.CreateGlobalApplicationCommandAsync(cmd.Build()); //Build the command
+            foreach (DiscordSlashCommand cmd in commands.Values)
+                cmd.Create(client);
         } catch (Exception e) 
         {
             Utils.Log("Caught error creating bot slash commands: " + e.Message);

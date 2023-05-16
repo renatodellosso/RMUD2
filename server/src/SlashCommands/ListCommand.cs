@@ -10,12 +10,31 @@ namespace SlashCommands
 {
     public class ListCommand : DiscordSlashCommand
     {
+        public override void Create(DiscordSocketClient client)
+        {
+            SlashCommandBuilder cmd = new SlashCommandBuilder();
+            cmd.WithName("list");
+            cmd.WithDescription("List all online users");
+            cmd.WithDMPermission(true);
+            client.CreateGlobalApplicationCommandAsync(cmd.Build()); //Build the command
+        }
+
         public override void Execute(SocketSlashCommand cmd)
         {
             cmd.DeferAsync();
 
             EmbedBuilder embed = new EmbedBuilder();
             embed.Title = $"Online Players ({Session.sessions.Count})";
+
+            foreach (Session session in Session.sessions.Values) {
+                if(session.SignedIn)
+                {
+                    Account account = session.Account;
+                    embed.Description += account.username;
+                    if (account.discordId != 0) embed.Description += $" (<@{account.discordId}>)";
+                    embed.Description += "\n";
+                }
+            }
 
             cmd.FollowupAsync(embed: embed.Build());
         }

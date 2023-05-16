@@ -167,7 +167,8 @@ public static class Network
         },
         { "heartbeat", (action, response) =>
             {
-                //Utils.Log("Received heartbeat from " + action.token);
+                if(!Session.sessions.ContainsKey(new(action.token)))
+                    defaultClientActions["init"](action, response);
             }
         }
     };
