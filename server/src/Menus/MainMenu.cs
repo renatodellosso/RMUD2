@@ -12,8 +12,11 @@ namespace Menus
         public MainMenu(Session session)
         {
             this.session = session;
-            Account account = session.Account;
+        }
 
+        public override void OnStart()
+        {
+            Account account = session.Account;
             session.ClearLog();
 
             session.Log("Welcome to RMUD2!");

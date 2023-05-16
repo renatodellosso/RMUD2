@@ -34,6 +34,7 @@ public class Session
         menuHistory.Add(this.menu);
         this.menu = menu;
         this.menu.session = this;
+        this.menu.OnStart();
     }
 
     public void Log(string msg)
