@@ -23,11 +23,12 @@ namespace SlashCommands
         {
             try
             {
-                //await cmd.DeferAsync(); //We need to await this
+                await cmd.DeferAsync(); //We need to await this
 
                 EmbedBuilder embed = new();
                 embed.Title = $"Online Players ({Session.sessions.Count})";
 
+                int unsignedIn = 0;
                 foreach (Session session in Session.sessions.Values)
                 {
                     if (session.SignedIn)
@@ -35,9 +36,11 @@ namespace SlashCommands
                         Account account = session.Account;
                         embed.Description += account.username;
                         if (account.discordId != 0) embed.Description += $" (<@{account.discordId}>)";
-                        embed.Description += "\n";
-                    }
+                        embed.Description += $" - {session.status}\n";
+                    } else unsignedIn++;
                 }
+
+                embed.Description += $"+{unsignedIn} users not signed in";
 
                 await cmd.FollowupAsync(embed: embed.Build());
             } catch (Exception e)

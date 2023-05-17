@@ -79,7 +79,7 @@ const button = (id, text) => {
 }
 
 const textInput = (id, placeholder) => {
-    let input = `<form id=${id}><input type="${secret ? "password" : "text"}" placeholder="${placeholder}"></form>`;
+    let input = `<form id=${id}><input id="${id}Text" type="${secret ? "password" : "text"}" placeholder="${placeholder}" tabindex="0"></form>`;
 
     return input;
 }

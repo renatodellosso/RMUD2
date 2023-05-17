@@ -13,6 +13,7 @@ public static class DB
     static IMongoDatabase db;
 
     public static IMongoCollection<Account> accounts;
+    public static IMongoCollection<Player> players;
 
     public static void Init()
     {
@@ -22,13 +23,13 @@ public static class DB
         db = client.GetDatabase("db");
 
         accounts = db.GetCollection<Account>("accounts");
+        players = db.GetCollection<Player>("players");
 
         Utils.Log("DB initialized");
     }
 
     public static class Accounts
     {
-
         public static Account? Find(ObjectId? id)
         {
             try
@@ -47,6 +48,20 @@ public static class DB
                 return accounts.FindSync(Builders<Account>.Filter.Eq("username", username)).First();
             } catch
             {
+                return null;
+            }
+        }
+    }
+
+    public static class Players
+    {
+        public static Player? Find(ObjectId? id)
+        {
+            try
+            {
+                return players.FindSync(Builders<Player>.Filter.Eq("_id", id)).First();
+            } catch 
+            { 
                 return null;
             }
         }

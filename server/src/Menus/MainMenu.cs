@@ -17,6 +17,8 @@ namespace Menus
         public override void OnStart()
         {
             Account account = session.Account;
+            session.status = "Main Menu";
+
             session.ClearLog();
 
             session.Log("Welcome to RMUD2!");
@@ -34,13 +36,17 @@ namespace Menus
             if (account.discordId == 0)
                 inputs.Add(new(InputMode.Option, "linkDiscord", "Link Discord Account"));
 
+            inputs.Add(new(InputMode.Option, "play", "Play"));
+
             return inputs.ToArray();
         }
 
         public override void HandleInput(ClientAction action, ServerResponse response)
         {
-            if (action.action == "linkDiscord")
+            if (action.action.Equals("linkDiscord"))
                 LinkDiscord();
+            else if(action.action.Equals("play"))
+                Play();
         }
 
         void LinkDiscord()
@@ -48,7 +54,15 @@ namespace Menus
             string code = Utils.RandomCode();
             SlashCommands.LinkCommand.codes.Add(code, session.Account._id);
             session.Log($"Your code is: {Utils.Style(code, "green")}");
+            session.Log($"Make sure you are in {Utils.Link("this Discord server", Env.instance.discordInvite)}");
             session.Log($"Please use the /link command in Discord and enter this code");
         }
+
+        void Play()
+        {
+            session.ClearLog();
+            session.SetMenu(new LocationMenu(session));
+        }
+
     }
 }

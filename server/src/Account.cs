@@ -17,6 +17,12 @@ public class Account
     public string? password, salt;
 
     public ulong discordId;
+    public string discordUsername = "";
+
+    public ObjectId? playerId;
+    public Player? Player => DB.Players.Find(playerId);
+
+    public Session? Session => Session.Find(this);
 
     public Account(string username, string password)
     {
@@ -77,6 +83,13 @@ public class Account
         Account account = new Account(username, password);
         DB.accounts.InsertOne(account);
         return account._id;
+    }
+
+    public void Update()
+    {
+        if (_id != null)
+            DB.accounts.ReplaceOneAsync(Builders<Account>.Filter.Eq("_id", _id), this);
+        else Utils.Log("_id is null");
     }
 
 }

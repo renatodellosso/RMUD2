@@ -13,4 +13,6 @@ public class Env
     public string botKey = "";
 
     public string pepper = "";
+
+    public string discordInvite = "";
 }

@@ -11,8 +11,10 @@ public class Session
 
     public static Dictionary<ObjectId, Session> sessions = new Dictionary<ObjectId, Session>();
 
-    public ObjectId? accountId, id = ObjectId.GenerateNewId();
-    public Account Account => GetAccount();
+    public ObjectId? accountId, playerId, id = ObjectId.GenerateNewId();
+    public Account? Account => GetAccount();
+
+    public Player? Player => GetPlayer();
 
     public bool SignedIn => accountId != null;
 
@@ -21,6 +23,8 @@ public class Session
 
     public List<string> log = new();
     public bool logChanged = false;
+
+    public string status = "Logging in";
 
     public static Session CreateSession()
     {
@@ -75,6 +79,37 @@ public class Session
     {
         if (accountId == null) return null;
         else return DB.Accounts.Find(accountId);
+    }
+
+    private Player? GetPlayer()
+    {
+        if (!SignedIn) return null;
+        else if (playerId == null) playerId = Account.playerId; //We don't want to get the account unless we have, so we save the player ID
+
+        return DB.Players.Find(playerId);
+    }
+
+    static Session? Find(ObjectId id)
+    {
+        try
+        {
+            Session[] sessionList = sessions.Values.Where(s => s.accountId.Equals(id)).ToArray();
+            if (sessionList.Length == 0) return null;
+            return sessionList[0];
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    /// <summary>
+    /// Finds the session linked to the account
+    /// </summary>
+    /// <returns>The session. Returns null if no session was found</returns>
+    public static Session? Find(Account account)
+    {
+        return Find(account._id);
     }
 
 }

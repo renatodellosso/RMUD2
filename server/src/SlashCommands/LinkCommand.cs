@@ -30,7 +30,7 @@ namespace SlashCommands
 
         public override async Task Execute(SocketSlashCommand cmd)
         {
-            //await cmd.DeferAsync(); //Remember to await!
+            await cmd.DeferAsync(ephemeral: true); //Remember to await!
 
             string msg, code = cmd.Data.Options.FirstOrDefault().Value.ToString();
             Utils.Log($"{code}: {codes.ContainsKey(code)}");
@@ -40,7 +40,14 @@ namespace SlashCommands
                 if (account != null)
                 {
                     account.discordId = cmd.User.Id;
+                    account.discordUsername = cmd.User.Username;
+                    account.Update();
+
+                    codes.Remove(code);
+
                     msg = $"Successfully linked to account: **{account.username}**!";
+                    Session.Find(account).Log($"Linked account to {Utils.Style(cmd.User.Username, "green")}");
+                    Utils.Log($"{account.username} linked their RMUD2 account with Discord account: {cmd.User.Username}");
                 }
                 else msg = "Invalid code";
             }

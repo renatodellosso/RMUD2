@@ -53,6 +53,7 @@ let serverActions = {
                     input.innerHTML += textInput(arg.id, arg.text);
                     
                     let inputElement = document.getElementById(arg.id);
+                    document.getElementById(arg.id + "Text").focus(); //Focus on the input element, so the user can automatically types
                     inputElement.addEventListener("submit", (event) => {
                         event.preventDefault();
                         inputSubmitted(arg.id);
@@ -74,7 +75,8 @@ let serverActions = {
         let log = document.getElementById("log");
         log.innerHTML = "";
 
-        for(let i = 0; i < args.length; i++) {
+        //Because of flex-direction: column-reverse, we need to add the log in reverse order
+        for(let i = args.length-1; i >= 0; i--) {
             let arg = args[i];
             log.innerHTML += `<p>${arg}</p><br/>`;
         };

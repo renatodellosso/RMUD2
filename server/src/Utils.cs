@@ -63,6 +63,11 @@ public static class Utils
         return text;
     }
 
+    public static string Link(string text, string url)
+    {
+        return $"<a href='{url}'>{text}</a>";
+    }
+
     /// <summary>
     /// Checks if the input contains malicious text. NOT IMPLEMENTED YET
     /// </summary>

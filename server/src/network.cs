@@ -194,6 +194,8 @@ public static class Network
                     response.Add(new ActionList.ClearLog());
                     session.Log("Welcome to RMUD2!");
                 }
+
+                session.logChanged = true;
             }
         },
         { "heartbeat", (action, response) =>

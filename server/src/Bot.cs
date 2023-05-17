@@ -72,7 +72,6 @@ public static class Bot
         Utils.Log($"Received slash command: {cmd.Data.Name}");
         try
         {
-            await cmd.DeferAsync();
             if (commands.ContainsKey(cmd.Data.Name))
                 await commands[cmd.Data.Name].Execute(cmd);
             else Utils.Log("Invalid slash command");
