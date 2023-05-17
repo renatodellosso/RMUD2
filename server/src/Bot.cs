@@ -22,7 +22,12 @@ public static class Bot
     {
         Utils.Log("Initializing Discord bot...");
 
-        client = new DiscordSocketClient();
+        DiscordSocketConfig config = new()
+        {
+            UseInteractionSnowflakeDate = false, //This avoids issues with not being able to interact after 3 seconds
+        };
+
+        client = new(config);
 
         //Add event hooks
         client.Log += Log;
@@ -65,9 +70,16 @@ public static class Bot
     static async Task OnSlashCommand(SocketSlashCommand cmd)
     {
         Utils.Log($"Received slash command: {cmd.Data.Name}");
-        if (commands.ContainsKey(cmd.Data.Name))
-            commands[cmd.Data.Name].Execute(cmd);
-        else Utils.Log("Invalid slash command");
+        try
+        {
+            await cmd.DeferAsync();
+            if (commands.ContainsKey(cmd.Data.Name))
+                await commands[cmd.Data.Name].Execute(cmd);
+            else Utils.Log("Invalid slash command");
+        } catch (Exception e)
+        {
+            Utils.Log($"Caught error executing command: {cmd.Data.Name}, Error: {e.Message}\n{e.StackTrace}");
+        }
     }
 
 }

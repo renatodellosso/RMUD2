@@ -23,27 +23,30 @@ namespace SlashCommands
             cmd.AddOption(new SlashCommandOptionBuilder()
                 .WithName("code")
                 .WithDescription("The code you were given in-game")
-                .WithRequired(true));
+                .WithRequired(true)
+                .WithType(ApplicationCommandOptionType.String));
             client.CreateGlobalApplicationCommandAsync(cmd.Build()); //Build the command
         }
 
-        public override void Execute(SocketSlashCommand cmd)
+        public override async Task Execute(SocketSlashCommand cmd)
         {
-            cmd.DeferAsync();
+            //await cmd.DeferAsync(); //Remember to await!
 
             string msg, code = cmd.Data.Options.FirstOrDefault().Value.ToString();
+            Utils.Log($"{code}: {codes.ContainsKey(code)}");
             if (codes.ContainsKey(code))
             {
                 Account account = DB.Accounts.Find(codes[code]);
                 if (account != null)
                 {
                     account.discordId = cmd.User.Id;
-                    msg = $"Successfully linked to account: *{account.username}*!";
+                    msg = $"Successfully linked to account: **{account.username}**!";
                 }
                 else msg = "Invalid code";
             }
             else msg = "Invalid code";
 
+            Utils.Log($"Msg: {msg}");
             cmd.FollowupAsync(ephemeral: true, text: msg);
         }
     }

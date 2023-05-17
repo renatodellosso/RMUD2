@@ -19,7 +19,7 @@ namespace ActionList
 
     public class SetLog : ServerAction<object>
     {
-        public SetLog(List<string> log): base("setLog", log) { }
+        public SetLog(List<string> log) : base("setLog", log) { }
     }
 
     public class ClearLog : ServerAction<object>

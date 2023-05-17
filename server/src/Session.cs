@@ -20,6 +20,7 @@ public class Session
     public List<Menu> menuHistory = new();
 
     public List<string> log = new();
+    public bool logChanged = false;
 
     public static Session CreateSession()
     {
@@ -40,6 +41,7 @@ public class Session
     public void Log(string msg)
     {
         log.Add(msg);
+        logChanged = true;
     }
 
     /// <summary>
@@ -48,6 +50,7 @@ public class Session
     public void PopLog()
     {
         log.RemoveAt(log.Count - 1);
+        logChanged = true;
     }
 
     /// <summary>
@@ -56,6 +59,7 @@ public class Session
     public void ReplaceLog(string msg)
     {
         log[log.Count - 1] = msg;
+        logChanged = true;
     }
 
     /// <summary>
@@ -64,6 +68,7 @@ public class Session
     public void ClearLog()
     {
         log.Clear();
+        logChanged = true;
     }
 
     private Account? GetAccount()

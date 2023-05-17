@@ -19,24 +19,31 @@ namespace SlashCommands
             client.CreateGlobalApplicationCommandAsync(cmd.Build()); //Build the command
         }
 
-        public override void Execute(SocketSlashCommand cmd)
+        public override async Task Execute(SocketSlashCommand cmd)
         {
-            cmd.DeferAsync();
+            try
+            {
+                //await cmd.DeferAsync(); //We need to await this
 
-            EmbedBuilder embed = new EmbedBuilder();
-            embed.Title = $"Online Players ({Session.sessions.Count})";
+                EmbedBuilder embed = new();
+                embed.Title = $"Online Players ({Session.sessions.Count})";
 
-            foreach (Session session in Session.sessions.Values) {
-                if(session.SignedIn)
+                foreach (Session session in Session.sessions.Values)
                 {
-                    Account account = session.Account;
-                    embed.Description += account.username;
-                    if (account.discordId != 0) embed.Description += $" (<@{account.discordId}>)";
-                    embed.Description += "\n";
+                    if (session.SignedIn)
+                    {
+                        Account account = session.Account;
+                        embed.Description += account.username;
+                        if (account.discordId != 0) embed.Description += $" (<@{account.discordId}>)";
+                        embed.Description += "\n";
+                    }
                 }
-            }
 
-            cmd.FollowupAsync(embed: embed.Build());
+                await cmd.FollowupAsync(embed: embed.Build());
+            } catch (Exception e)
+            {
+                Utils.Log($"Caught error executing slash command: {e.Message}\n{e.StackTrace}");
+            }
         }
     }
 }

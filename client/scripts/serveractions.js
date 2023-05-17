@@ -38,7 +38,9 @@ let serverActions = {
             
             input.innerHTML = "";
 
-            args.forEach(arg => {
+            for(let i = 0; i < args.length; i++) {
+                let arg = args[i];
+
                 if(arg.mode == inputMode.option) {
                     input.innerHTML += button(arg.id, arg.text);
 
@@ -57,7 +59,7 @@ let serverActions = {
                         return false;
                     });
                 }
-            });
+            };
         }
 
         prevInput = args;
@@ -72,9 +74,10 @@ let serverActions = {
         let log = document.getElementById("log");
         log.innerHTML = "";
 
-        args.forEach(arg => { 
+        for(let i = 0; i < args.length; i++) {
+            let arg = args[i];
             log.innerHTML += `<p>${arg}</p><br/>`;
-        });
+        };
     },
 
     clearLog: (args) => {

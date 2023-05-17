@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using ZstdSharp.Unsafe;
 using static System.Collections.Specialized.BitVector32;
 
 public static class Network
@@ -16,7 +17,7 @@ public static class Network
     static Task receiverTask;
     static Task[] handlerTasks = new Task[Config.HANDLER_THREADS];
 
-    static List<HttpListenerContext> requests = new();
+    static volatile List<HttpListenerContext> requests = new();
 
     public static void Init()
     {
@@ -65,19 +66,26 @@ public static class Network
             {
                 if (requests.Count > 0)
                 {
-                    HttpListenerContext ctx = requests[0];
+                    bool reqAvailable = true;
+                    HttpListenerContext ctx = null;
+
+                    try
+                    {
+                        ctx = requests[0];
+                    } catch { reqAvailable = false; }
                     //Utils.Log("Request received by handler " + id);
 
-                    if (requests.Count > 0)
+                    if (requests.Count > 0 && reqAvailable)
                     {
+                        try {
                         requests.RemoveAt(0);
-                        HandleRequest(ctx);
+                        } catch { reqAvailable = false; }
+                        if(reqAvailable && ctx != null) HandleRequest(ctx);
                     }
                 }
             } catch (Exception e)
             {
-                Utils.Log("Error in handler " + id + ": " + e.Message);
-                Console.Error.WriteLine(e.StackTrace);
+                Utils.Log($"Error in handler {id}: {e.Message}\n{e.StackTrace}");
             }
 
             Thread.Sleep(Config.HANDLER_SLEEP_INTERVAL);
@@ -98,48 +106,71 @@ public static class Network
         resp.StatusCode = (int)HttpStatusCode.OK;
         resp.StatusDescription = "Status OK";
 
-        //From https://stackoverflow.com/a/28223114, prevents CORS errors on client
-        if (req.HttpMethod.Equals("Options"))
+        try
         {
-            resp.AddHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With");
-            resp.AddHeader("Access-Control-Allow-Methods", "GET, POST");
-            resp.AddHeader("Access-Control-Max-Age", "1728000");
-        }
-        resp.AppendHeader("Access-Control-Allow-Origin", "*");
+            //From https://stackoverflow.com/a/28223114, prevents CORS errors on client
+            if (req.HttpMethod.Equals("Options"))
+            {
+                resp.AddHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With");
+                resp.AddHeader("Access-Control-Allow-Methods", "GET, POST");
+                resp.AddHeader("Access-Control-Max-Age", "1728000");
+            }
+            resp.AppendHeader("Access-Control-Allow-Origin", "*");
 
-        resp.Headers.Set("Content-Type", "text/plain");
+            resp.Headers.Set("Content-Type", "text/plain");
+        } catch { }
 
         //Parse body
         ClientAction action = JsonConvert.DeserializeObject<ClientAction>(body);
 
-        if(!action.action.Equals("heartbeat")) Utils.Log("Received HTTP request");
-
         ServerResponse response = new();
 
-        if(defaultClientActions.ContainsKey(action.action))
+        if (action != null)
         {
-            defaultClientActions[action.action](action, response);
-        }
+            if (!action.action.Equals("heartbeat")) Utils.Log("Received HTTP request");
 
-        if (action.Session != null)
-        {
-            Session session = Session.sessions[new ObjectId(action.token)];
-            if(!defaultClientActions.ContainsKey(action.action)) session.menu?.HandleInput(action, response); //? means if not null
-            
-            response.Add(new ActionList.SetInput(session.menu?.GetInputs(response)));
-            response.Add(new ActionList.SetLog(session.log));
+            if (defaultClientActions.ContainsKey(action.action))
+            {
+                defaultClientActions[action.action](action, response);
+            }
+
+            if (action.Session != null)
+            {
+                Session session = Session.sessions[new ObjectId(action.token)];
+                if (!defaultClientActions.ContainsKey(action.action)) session.menu?.HandleInput(action, response); //? means if not null
+
+                response.Add(new ActionList.SetInput(session.menu?.GetInputs(response)));
+                if(session.logChanged) response.Add(new ActionList.SetLog(session.log));
+
+                session.logChanged = false;
+            }
+            else Utils.Log("Session is null!");
         }
-        else Utils.Log("Session is null!");
 
         string respJson = JsonConvert.SerializeObject(response);
 
         //Write response
-        //Utils.Log("Writing response: " + respJson);
-        byte[] responseBytes = Encoding.UTF8.GetBytes(respJson);
-        resp.ContentLength64 = responseBytes.Length;
-        resp.OutputStream.Write(responseBytes, 0, responseBytes.Length);
+        try
+        {
+            byte[] responseBytes = Encoding.UTF8.GetBytes(respJson);
+            resp.ContentLength64 = responseBytes.Length;
+            resp.OutputStream.Write(responseBytes, 0, responseBytes.Length);
+        } catch { }
 
-        resp.Close();
+        Thread.Sleep(100); //Wait for response to finish writing. I have no clue why we have to do this, but it gives errors w/o it
+
+        //If, for some reason, we still haven't finished writing the response, try again 100ms later
+        try
+        {
+            resp.Close();
+        } catch
+        {
+            try
+            {
+                Thread.Sleep(100);
+                resp.Close();
+            } catch { }
+        }
     }
 
     static readonly Dictionary<string, Action<ClientAction, ServerResponse>> defaultClientActions = new()

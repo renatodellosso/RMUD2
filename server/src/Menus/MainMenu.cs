@@ -31,7 +31,7 @@ namespace Menus
             List<Input> inputs = new List<Input>();
             Account account = session.Account;
 
-            if (account.discordId == null)
+            if (account.discordId == 0)
                 inputs.Add(new(InputMode.Option, "linkDiscord", "Link Discord Account"));
 
             return inputs.ToArray();
@@ -45,7 +45,10 @@ namespace Menus
 
         void LinkDiscord()
         {
-            SlashCommands.LinkCommand.codes.Add(Utils.RandomCode(), session.Account._id);
+            string code = Utils.RandomCode();
+            SlashCommands.LinkCommand.codes.Add(code, session.Account._id);
+            session.Log($"Your code is: {Utils.Style(code, "green")}");
+            session.Log($"Please use the /link command in Discord and enter this code");
         }
     }
 }

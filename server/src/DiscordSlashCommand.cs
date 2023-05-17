@@ -9,6 +9,6 @@ public abstract class DiscordSlashCommand
 {
 
     public abstract void Create(DiscordSocketClient client);
-    public abstract void Execute(SocketSlashCommand cmd);
+    public virtual async Task Execute(SocketSlashCommand cmd) { } //Make sure to override!
 
 }
