@@ -33,7 +33,6 @@ namespace SlashCommands
             await cmd.DeferAsync(ephemeral: true); //Remember to await!
 
             string msg, code = cmd.Data.Options.FirstOrDefault().Value.ToString();
-            Utils.Log($"{code}: {codes.ContainsKey(code)}");
             if (codes.ContainsKey(code))
             {
                 Account account = DB.Accounts.Find(codes[code]);
@@ -53,7 +52,6 @@ namespace SlashCommands
             }
             else msg = "Invalid code";
 
-            Utils.Log($"Msg: {msg}");
             cmd.FollowupAsync(ephemeral: true, text: msg);
         }
     }

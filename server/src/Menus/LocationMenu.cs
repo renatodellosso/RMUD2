@@ -22,6 +22,9 @@ namespace Menus
         public override Input[] GetInputs(ServerResponse response)
         {
             List<Input> inputs = new List<Input>();
+            Player player = session.Player;
+
+            inputs.AddRange(player.Location.GetInputs(player));
 
             return inputs.ToArray();
         }

@@ -24,4 +24,6 @@ static class Config
 
     public const int CODE_LENGTH = 6;
 
+    public const string START_LOCATION = "";
+
 }
