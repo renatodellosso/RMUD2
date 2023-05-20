@@ -37,6 +37,8 @@ namespace Menus
         Timer lockOut;
         TimeSpan lockOutDuration = Config.LOCK_OUT_DURATION;
 
+        public override string Status => mode == Mode.CreateAccount ? "Creating an account" : "Logging in";
+
         public override Input[] GetInputs(ServerResponse response)
         {
             List<Input> inputs = new();

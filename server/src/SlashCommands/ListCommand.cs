@@ -36,7 +36,7 @@ namespace SlashCommands
                         Account account = session.Account;
                         embed.Description += account.username;
                         if (account.discordId != 0) embed.Description += $" (<@{account.discordId}>)";
-                        embed.Description += $" - {session.status}\n";
+                        embed.Description += $" - {session.menu.Status}\n";
                     } else unsignedIn++;
                 }
 

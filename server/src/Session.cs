@@ -24,8 +24,6 @@ public class Session
     public List<string> log = new();
     public bool logChanged = false;
 
-    public string status = "Logging in";
-
     public static Session CreateSession()
     {
         Session session = new();

@@ -30,13 +30,11 @@ public class Player : Creature
     [BsonIgnore]
     public Session session;
 
-    public ObjectId _id, accountId;
+    public ObjectId _id = ObjectId.GenerateNewId(), accountId;
     public Account Account => DB.Accounts.Find(accountId);
 
-    public string locationId;
+    public string locationId, resetLocation;
     public Location? Location => Location.Get(locationId);
-
-    public string logInLocation;
 
     public Player(ObjectId accountId)
     {

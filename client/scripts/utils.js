@@ -18,7 +18,7 @@ const getToken = () => {
 }
 
 //From https://stackoverflow.com/a/73543460
-const httpReq = (body) => {
+const httpReq = (body, onReturn) => {
     if(getToken() != null) body.token = getToken();
 
     console.log("Sending HTTP request... Body:");
@@ -40,6 +40,11 @@ const httpReq = (body) => {
         responseData.actions.forEach(action => {
             serverActions[action.action](action.args);
         });
+
+        if(onReturn != null) {
+            console.log("Executing onReturn...");
+            onReturn();
+        }
     }).catch((error) => {
         console.error(error);
     });

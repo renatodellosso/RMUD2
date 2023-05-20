@@ -9,6 +9,8 @@ public abstract class Menu
 
     public Session session;
 
+    public virtual string Status => "In some menu";
+
     public virtual void OnStart() { } //Should be overridden in child classes
 
     public abstract Input[] GetInputs(ServerResponse response);

@@ -1,6 +1,6 @@
 const config = {
     url: "http://localhost:1001",
-    heartbeatInterval: 2500
+    heartbeatInterval: 250
 };
 
 var secret = false;
