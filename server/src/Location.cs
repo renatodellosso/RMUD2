@@ -51,7 +51,7 @@ public abstract class Location
 
     }
 
-    public virtual Input[] GetInputs(Player player, string state)
+    public virtual Input[] GetInputs(Session session, string state)
     {
         List<Input> inputs = new List<Input>();
 
@@ -64,14 +64,44 @@ public abstract class Location
             if (dialogueCreatures.Any())
                 inputs.Add(new(InputMode.Option, "talk", "Talk"));
         }
+        else
+        {
+            inputs.Add(new(InputMode.Option, "back", "< Back"));
+
+            if(state.Equals("talk"))
+            {
+                foreach (Creature creature in creatures)
+                    if (creature.HasDialogue) inputs.Add(new(InputMode.Option, creature.baseId, creature.name));
+            }
+        }
 
         return inputs.ToArray();
     }
 
     //We pass a ref to state so we can modify it
-    public virtual void HandleInputs(Player player, ClientAction action, ref string state)
+    public virtual void HandleInputs(Session session, ClientAction action, ref string state)
     {
+        if(state.Equals(""))
+        {
+            if(action.action.Equals("talk"))
+            {
+                state = "talk";
+            }
+        }
+        else
+        {
+            if (action.action.Equals("back")) state = "";
 
+            if(state.Equals("talk"))
+            {
+                Creature target = creatures.Where(c => c.baseId.Equals(action.action)).First();
+
+                if(target != null)
+                {
+                    session.SetMenu(new Menus.DialogueMenu(target));
+                }
+            }
+        }
     }
 
 }

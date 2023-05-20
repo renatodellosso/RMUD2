@@ -11,7 +11,23 @@ public class IntroLocation : Location
     {
         name = "Outside the dungeon";
 
-        creatures.Add(new Creatures.SimpleNPC("Shadowy Figure"));
+        creatures.Add(new Creatures.SimpleNPC("shadowyFigure", "Shadowy Figure", (session, menu) =>
+        {
+            //Get inputs for dialogue
+            List<Input> inputs = new();
+
+            inputs.Add(new(InputMode.Option, "exit", "Farewell."));
+
+            return inputs.ToArray();
+        }, (session, action, menu) =>
+        {
+            //Handle inputs for dialogue
+            if (action.action.Equals("exit")) menu.state = "exit";
+        }, (session) =>
+        {
+            //On dialogue start
+            session.Log("Hello!");
+        }));
     }
 
     public override void OnEnter(Creature creature)

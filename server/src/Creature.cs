@@ -6,14 +6,15 @@ using System.Text;
 using System.Threading.Tasks;
 public class Creature
 {
-
-    public string name = "Unnamed Creature";
+    //We can't use id because of Player's _id, so we use baseId
+    public string baseId = "unnamedCreature", name = "Unnamed Creature";
 
     public bool attackable = true;
 
     //Null for either means creature has no dialogue. The string is the dialogue state
-    public Func<Player, string, Input[]>? talkInputs = null;
-    public Action<Player, ClientAction, string>? talkHandler = null;
-    public bool HasDialogue => talkInputs != null && talkHandler != null;
+    public Func<Session, DialogueMenu, Input[]>? talkInputs = null;
+    public Action<Session, ClientAction, DialogueMenu>? talkHandler = null;
+    public Action<Session>? talkStart = null;
+    public bool HasDialogue => talkInputs != null && talkHandler != null && talkStart != null;
 
 }

@@ -32,7 +32,7 @@ namespace Menus
             {
                 if (player.Location != null)
                 {
-                    inputs.AddRange(player.Location.GetInputs(player, state));
+                    inputs.AddRange(player.Location.GetInputs(session, state));
                 }
             }
 
@@ -45,7 +45,7 @@ namespace Menus
 
             if (player == null || player.Location == null) return;
 
-            player.Location.HandleInputs(player, action, ref state);
+            player.Location.HandleInputs(session, action, ref state);
         }
 
     }

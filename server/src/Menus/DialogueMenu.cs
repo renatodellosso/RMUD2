@@ -8,7 +8,7 @@ namespace Menus
 {
     public class DialogueMenu : Menu
     {
-
+        //Set state to "exit" to exit dialogue
         public string state = "";
 
         public Creature creature;
@@ -18,13 +18,21 @@ namespace Menus
             this.creature = creature;
         }
 
+        public override void OnStart()
+        {
+            if(creature.talkStart != null)
+            {
+                creature.talkStart(session);
+            }
+        }
+
         public override Input[] GetInputs(ServerResponse response)
         {
             List<Input> inputs = new();
 
             if(creature.talkInputs != null)
             {
-                inputs.AddRange(creature.talkInputs(session.Player, state));
+                inputs.AddRange(creature.talkInputs(session, this));
             }
 
             return inputs.ToArray();
@@ -32,8 +40,12 @@ namespace Menus
 
         public override void HandleInput(ClientAction action, ServerResponse response)
         {
+
             if (creature.talkHandler != null)
-                creature.talkHandler(session.Player, action, state);
+                creature.talkHandler(session, action, this);
+
+            if (state.Equals("exit")) //Exit dialogue
+                session.SetMenu(new LocationMenu(session));
         }
     }
 }

@@ -159,6 +159,7 @@ namespace Menus
                 session = session,
                 locationId = Config.START_LOCATION,
                 name = account.username,
+                baseId = account.username
             };
 
             account.playerId = player._id; //Make sure to set the ID!

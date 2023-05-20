@@ -75,6 +75,9 @@ public static class Utils
     /// <returns>Whether the text is safe or not</returns>
     public static bool IsInputSafe(string text)
     {
+        if (text.Contains(' ')) return false;
+        else if (text.Contains("<script")) return false;
+
         return true;
     }
 
