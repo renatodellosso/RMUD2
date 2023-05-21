@@ -53,6 +53,8 @@ public static class Utils
         return Convert.ToBase64String(argon.GetBytes(32));
     }
 
+    //Formatting methods
+
     public static string Style(string text, string color = "", bool bold = false, bool underline = false)
     {
         if (!color.Equals(""))
@@ -67,6 +69,13 @@ public static class Utils
     {
         return $"<a href='{url}'>{text}</a>";
     }
+
+    public static string Dialogue(string text)
+    {
+        return '"' + text + '"';
+    }
+
+    //End formatting methods
 
     /// <summary>
     /// Checks if the input contains malicious text. NOT IMPLEMENTED YET
@@ -93,5 +102,33 @@ public static class Utils
             code += rand.Next(0, 10);
         return code;
     }
+
+    public static string ReverseDirection(string direction)
+    {
+        //We use lowercase now to avoid reswapping the chars. We'll put it back to uppercase later
+        direction = direction.Replace('N', 's');
+        direction = direction.Replace('S', 'n');
+        direction = direction.Replace('E', 'w');
+        direction = direction.Replace('E', 'e');
+        direction = direction.Replace("UP", "down");
+        direction = direction.Replace("DOWN", "up");
+
+        direction = direction.ToUpper();
+
+        return direction;
+    }
+
+    //Random methods
+    static Random random = new();
+
+    /// <param name="min">Inclusive</param>
+    /// <param name="max">Exclusive</param>
+    /// <returns>Return a random int between min (inclusive) and max (exclusive)</returns>
+    public static int RandInt(int min, int max)
+    {
+        return random.Next(min, max);
+    }
+
+    //End random methods
 
 }

@@ -20,6 +20,8 @@ else
 
 DB.Init();
 
+Dungeon.Generate();
+
 Network.Init();
 Bot.Init();
 

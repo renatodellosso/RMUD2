@@ -17,7 +17,7 @@ public abstract class Location
         else return null;
     }
 
-    public string name = "Unnamed Location", status = "The void";
+    public string id = "unnamedLocation", name = "Unnamed Location", status = "The void";
 
     public List<Creature> creatures = new();
     public Player[] Players => creatures.Where(c => c is Player).Select(c => (Player)c).ToArray(); //.Select is used to transform each element

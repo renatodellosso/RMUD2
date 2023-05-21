@@ -26,4 +26,9 @@ static class Config
 
     public const string START_LOCATION = "intro";
 
+    public static class DungeonGeneration
+    {
+        public const int MIN_FLOORS = 1, MAX_FLOORS = 5;
+    }
+
 }
