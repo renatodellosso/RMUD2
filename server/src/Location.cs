@@ -17,10 +17,22 @@ public abstract class Location
         else return null;
     }
 
+    /// <summary>
+    /// Adds the given location to list of locations
+    /// </summary>
+    public static void Add(Location location)
+    {
+        locations.Add(location.id, location);
+    }
+
+    //Actual class data below
+
     public string id = "unnamedLocation", name = "Unnamed Location", status = "The void";
 
     public List<Creature> creatures = new();
     public Player[] Players => creatures.Where(c => c is Player).Select(c => (Player)c).ToArray(); //.Select is used to transform each element
+
+    public List<Exit> exits = new();
 
     public void Enter(Creature creature)
     {

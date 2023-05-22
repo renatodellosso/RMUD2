@@ -28,7 +28,11 @@ static class Config
 
     public static class DungeonGeneration
     {
-        public const int MIN_FLOORS = 1, MAX_FLOORS = 5;
+        public const int MIN_FLOORS = 3, MAX_FLOORS = 5;
+        public const int MIN_FLOOR_SIZE = 5, MAX_FLOOR_SIZE = 15;
+
+        //MIN_FILL is the minimum % of the floor that has rooms
+        public const float EXIT_CHANCE = .4f, MIN_FILL = .3f;
     }
 
 }

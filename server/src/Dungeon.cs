@@ -16,6 +16,13 @@ public static class Dungeon
         int floorCount = Utils.RandInt(Config.DungeonGeneration.MIN_FLOORS, Config.DungeonGeneration.MAX_FLOORS+1);
         Utils.Log($"Floor Count: {floorCount}");
 
+        for(int depth = 0; depth < floorCount; depth++)
+        {
+            Utils.Log($"Generating floor {depth + 1}/{floorCount}");
+
+            Floor floor = new Floor(new(depth, 0));
+        }
+
         Utils.Log("Dungeon generated");
     }
 

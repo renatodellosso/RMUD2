@@ -118,6 +118,22 @@ public static class Utils
         return direction;
     }
 
+    /// <summary>
+    /// Converts a Vector2 to the string representation of it's direction (NE, SW, etc)
+    /// </summary>
+    public static string Vector2ToDir(Vector2 dir)
+    {
+        string direction = "";
+
+        if (dir.y > 0) direction += "N";
+        else if (dir.y < 0) direction += "S";
+
+        if (dir.x > 0) direction += "E";
+        else if (dir.x < 0) direction += "W";
+
+        return direction;
+    }
+
     //Random methods
     static Random random = new();
 
@@ -127,6 +143,23 @@ public static class Utils
     public static int RandInt(int min, int max)
     {
         return random.Next(min, max);
+    }
+
+    /// <param name="min">Inclusive</param>
+    /// <param name="max">Exclusive</param>
+    /// <returns>Returns a random Vector2 with X and Y coords between min (inclusive) and max (exclusive)</returns>
+    public static Vector2 RandVector2(int min, int max)
+    {
+        return new(RandInt(min, max), RandInt(min, max));
+    }
+
+    /// <param name="min">Inclusive, defaults to 0</param>
+    /// <param name="max">Exclusive, defaults to 1</param>
+    /// <returns>Return a random float between min (inclusive) and max (exclusive)</returns>
+    public static float RandFloat(float min = 0, float max = 1)
+    {
+        //Gets what % of the way between min and max the number is, then adds the min
+        return (float) random.NextDouble() * (max-min) + min;
     }
 
     //End random methods

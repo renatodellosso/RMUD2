@@ -30,4 +30,15 @@ public class Exit
         return new Exit(location.id, Utils.ReverseDirection(direction), canExit);
     }
 
+    /// <summary>
+    /// Adds an exit the start location, and, if twoWay is true, the reverse exit to the end location
+    /// </summary>
+    public static void AddExit(Location start, Location end, string direction, bool twoWay = true)
+    {
+        Exit exit = new(end.id, direction);
+        start.exits.Add(exit);
+        
+        if(twoWay) end.exits.Add(exit.Reverse(start));
+    }
+
 }
