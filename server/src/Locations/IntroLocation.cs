@@ -43,6 +43,15 @@ public class IntroLocation : Location
             //On dialogue start
             session.Log("What is it you seek?");
         }));
+
+        //Add event listener, so we can add an exit to the dungeon
+        Dungeon.OnDungeonGenerated += OnDungeonGenerated;
+    }
+
+    void OnDungeonGenerated()
+    {
+        //Add the exit to and from the dungeon
+        Exit.AddExit(this, Get(Dungeon.startLocation), "N");
     }
 
     public override void OnEnter(Creature creature)

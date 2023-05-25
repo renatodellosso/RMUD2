@@ -33,6 +33,8 @@ static class Config
 
         //MIN_FILL is the minimum % of the floor that has rooms
         public const float EXIT_CHANCE = .4f, MIN_FILL = .3f;
+
+        public const int SLEEP_INTERVAL = 1000;
     }
 
 }

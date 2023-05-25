@@ -11,10 +11,16 @@ public abstract class Location
     {
         { "intro", new IntroLocation() }
     };
+
     public static Location? Get(string name)
     {
-        if (locations.ContainsKey(name)) return locations[name];
-        else return null;
+        if (name != null && !name.Equals(""))
+        {
+            locations.TryGetValue(name, out Location? location); //We use TryGetValue to avoid looking up the key twice
+            return location;
+        }
+
+        return null;
     }
 
     /// <summary>
@@ -38,9 +44,17 @@ public abstract class Location
     {
         creatures.Add(creature);
 
+        creature.location = id;
+
         if(creature is Player)
         {
             Player player = (Player)creature;
+
+            if (player.session == null)
+            {
+                Utils.Log($"Finding session for player {player._id}...");
+                player.session = Session.sessions.Where(s => s.Value.playerId.Equals(player._id)).First().Value;
+            }
 
             if(player.session != null)
                 player.session.Log($"You enter {name}");
@@ -52,13 +66,25 @@ public abstract class Location
                 if(c != creature) //Don't list the player
                     creatureList += $"<br>-{c.name}";
             }
-            player.session.Log(creatureList);
+            player?.session?.Log(creatureList);
         }
 
         OnEnter(creature);
     }
 
+    //Maybe convert OnEnter and OnLeave to events?
     public virtual void OnEnter(Creature creature)
+    {
+
+    }
+
+    //Leave, instead of Exit, to avoid confusion with the Exit class
+    public void Leave(Creature creature)
+    {
+        creatures.Remove(creature);
+    }
+
+    public virtual void OnLeave(Creature creature)
     {
 
     }
@@ -75,6 +101,8 @@ public abstract class Location
                 if (creature.HasDialogue) dialogueCreatures.Add(creature);
             if (dialogueCreatures.Any())
                 inputs.Add(new(InputMode.Option, "talk", "Talk"));
+
+            inputs.Add(new(InputMode.Option, "exit", "Exit"));
         }
         else
         {
@@ -84,6 +112,11 @@ public abstract class Location
             {
                 foreach (Creature creature in creatures)
                     if (creature.HasDialogue) inputs.Add(new(InputMode.Option, creature.baseId, creature.name));
+            }
+            else if(state.Equals("exit"))
+            {
+                foreach (Exit exit in exits)
+                    inputs.Add(new(InputMode.Option, exit.location, Get(exit.location).name));
             }
         }
 
@@ -95,10 +128,10 @@ public abstract class Location
     {
         if(state.Equals(""))
         {
-            if(action.action.Equals("talk"))
-            {
+            if (action.action.Equals("talk"))
                 state = "talk";
-            }
+            else if (action.action.Equals("exit"))
+                state = "exit";
         }
         else
         {
@@ -111,6 +144,13 @@ public abstract class Location
                 if(target != null)
                 {
                     session.SetMenu(new Menus.DialogueMenu(target));
+                }
+            }
+            else if(state.Equals("exit"))
+            {
+                if(exits.Where(e => e.location.Equals(action.action)).Any())
+                {
+                    session.Player.Move(action.action);
                 }
             }
         }

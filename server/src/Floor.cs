@@ -33,11 +33,6 @@ public class Floor
         Utils.Log($"Floor {(string)position} Pre-Generation Stats:" +
             $"\n\tSize: {(string)size} ({size.x * size.y} area, {size.x * size.y * Config.DungeonGeneration.MIN_FILL} min rooms)" +
             $"\n\tTemp: {temp}");
-
-        GenerateFloor();
-
-        Utils.Log($"Floor {(string)position} Post-Generation Stats:" +
-            $"\n\tRooms: {rooms.Count}");
     }
 
     public DungeonLocation GetLocation(Vector2 position)
@@ -55,20 +50,40 @@ public class Floor
         return true;
     }
 
+    /// <summary>
+    /// Converts a position on this floor to the ID of that location
+    /// </summary>
+    public string PosToId(Vector2 pos)
+    {
+        return $"dungeon.{position.x}.{position.y}.{pos.x}.{pos.y}";
+    }
+
+    /// <summary>
+    /// Converts a position on this floor to the name of that location
+    /// </summary>
+    public string PosToName(Vector2 pos)
+    {
+        return $"Floor {position.x + 1}-{position.y + 1}, Room {pos.x + 1}-{pos.y + 1}";
+    }
+
     //Dungeon generation
 
     //Overall handler for generating the locations, creatures, and contents of the floor
-    void GenerateFloor()
+    //This runs without knowledge of other floors
+    public void GenerateFloor()
     {
         //Generate the layout before we start populating it
         GenerateLocations();
+
+        Utils.Log($"Floor {(string)position} Post-Generation Stats:" +
+            $"\n\tRooms: {rooms.Count}");
     }
 
     void GenerateLocations()
     {
         List<DungeonLocation> toGen = new(); //All the locations we need to generate exits for
 
-        locations[startPos.x, startPos.y] = new(position, startPos); //Not sure if there's a better way to access the array
+        locations[startPos.x, startPos.y] = new(this, startPos); //Not sure if there's a better way to access the array
         toGen.Add(GetLocation(startPos));
         rooms.Add(GetLocation(startPos));
 
@@ -92,7 +107,7 @@ public class Floor
                     if (locations[pos.x, pos.y] == null)
                     {
                         //Adding a new room
-                        DungeonLocation newRoom = new(position, pos);
+                        DungeonLocation newRoom = new(this, pos);
                         locations[pos.x, pos.y] = newRoom;
                         toGen.Add(newRoom);
                         rooms.Add(newRoom);
@@ -104,8 +119,9 @@ public class Floor
 
                     if (otherRoom != null)
                     {
-                        //Add exits
-                        Exit.AddExit(room, otherRoom, Utils.Vector2ToDir(pos - room.position));
+                        //Add exits, but only if they don't already exist
+                        if(!room.exits.Where(e => e.location.Equals(otherRoom.id)).Any() && !otherRoom.exits.Where(e => e.location.Equals(room.id)).Any())
+                            Exit.AddExit(room, otherRoom, Utils.Vector2ToDir(pos - room.position));
                     }
                 }
             }

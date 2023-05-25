@@ -11,12 +11,12 @@ namespace Locations
 
         public Vector2 position;
 
-        public DungeonLocation(Vector2 floorCoords, Vector2 position)
+        public DungeonLocation(Floor floor, Vector2 position)
         {
             this.position = position;
 
-            id = $"dungeon.{floorCoords.x}.{floorCoords.y}.{position.x}.{position.y}";
-            name = $"Floor {floorCoords.x+1}-{floorCoords.y+1}, Room {position.x+1}-{position.y+1}";
+            id = floor.PosToId(position);
+            name = floor.PosToName(position);
 
             Location.Add(this);
         }

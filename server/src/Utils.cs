@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 public static class Utils
 {
 
+    public delegate void DefaultDelegate();
+
     public static string Log(string msg)
     {
         msg = $"[{DateTime.Now}]: {msg}";
