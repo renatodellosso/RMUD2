@@ -82,9 +82,11 @@ public class Session
     private Player? GetPlayer()
     {
         if (!SignedIn) return null;
-        else if (playerId == null) playerId = Account.playerId; //We don't want to get the account unless we have, so we save the player ID
+        else if (playerId == null) playerId = Account.playerId; //We don't want to get the account unless we have to, so we save the player ID
 
-        return DB.Players.Find(playerId);
+        if(playerId != null)
+            return Player.Get(playerId.Value); //We use .Value on vars with ? to get the value if it's not null
+        return null;
     }
 
     static Session? Find(ObjectId id)

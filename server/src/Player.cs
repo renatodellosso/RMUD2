@@ -23,7 +23,9 @@ public class Player : Creature
 
     public static void Add(Player player)
     {
-        players.Add(player._id, player);
+        //Use TryAdd instead of Add to avoid looking up the key twice
+        if(!players.TryAdd(player._id, player))
+            players[player._id] = player;
     }
     //End of static stuff
 
@@ -33,8 +35,8 @@ public class Player : Creature
     public ObjectId _id = ObjectId.GenerateNewId(), accountId;
     public Account Account => DB.Accounts.Find(accountId);
 
-    public string locationId, resetLocation;
-    public Location? Location => Location.Get(locationId);
+    public string resetLocation;
+    public Location? Location => Location.Get(location);
 
     public Player(ObjectId accountId)
     {

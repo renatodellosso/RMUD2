@@ -33,7 +33,15 @@ public class Creature
             Location? loc = GetLocation();
             loc?.Leave(this);
         }
+
         Location.Get(location)?.Enter(this);
+
+        if(this is Player)
+        {
+            Player player = (Player)this;
+
+            player.session.SetMenu(new LocationMenu(player.session));
+        }
     }
 
 }

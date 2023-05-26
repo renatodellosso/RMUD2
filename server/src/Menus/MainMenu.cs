@@ -89,9 +89,9 @@ namespace Menus
 
                             if (player != null)
                             {
-                                if (player.locationId != null)
+                                if (player.location != null)
                                 {
-                                    player.locationId = Config.START_LOCATION;
+                                    player.location = Config.START_LOCATION;
                                     player.Update();
                                 }
                                 else
@@ -157,7 +157,7 @@ namespace Menus
             {
                 accountId = account._id,
                 session = session,
-                locationId = Config.START_LOCATION,
+                location = Config.START_LOCATION,
                 name = account.username,
                 baseId = account.username
             };

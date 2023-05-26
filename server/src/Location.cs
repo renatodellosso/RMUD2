@@ -42,6 +42,8 @@ public abstract class Location
 
     public void Enter(Creature creature)
     {
+        Utils.Log($"{creature.name} enters {name} from {creature.location}");
+
         creatures.Add(creature);
 
         creature.location = id;
