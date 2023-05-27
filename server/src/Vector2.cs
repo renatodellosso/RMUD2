@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public struct Vector2
+public struct Vector2 : IFormattable, IEquatable<Vector2> //IFormattable allows for string interpolation
 {
 
     public static readonly Vector2[] DIRECTIONS = new Vector2[]
@@ -25,6 +25,17 @@ public struct Vector2
         return x == other.x && y == other.y;
     }
 
+    public new string ToString()
+    {
+        return $"({x}, {y})";
+    }
+
+    //Called with string interpolation (e.g. $"{vector2}")
+    public string ToString(string? format, IFormatProvider? formatProvider)
+    {
+        return ToString();
+    }
+
     //Custom addition
     public static Vector2 operator +(Vector2 a, Vector2 b)
     {
@@ -39,7 +50,7 @@ public struct Vector2
     //Casts
     public static implicit operator string(Vector2 vector2)
     {
-        return $"({vector2.x}, {vector2.y})";
+        return vector2.ToString();
     }
 
     public static implicit operator int[](Vector2 vector2)

@@ -30,14 +30,16 @@ public class Floor
         temp = Utils.RandFloat(-1, 1);
 
         //Apparently we have to cast Vector2s to string to get the formatting, even though I made an implicit converter. TODO: Look into this
-        Utils.Log($"Floor {(string)position} Pre-Generation Stats:" +
-            $"\n\tSize: {(string)size} ({size.x * size.y} area, {size.x * size.y * Config.DungeonGeneration.MIN_FILL} min rooms)" +
+        Utils.Log($"Floor {position} Pre-Generation Stats:" +
+            $"\n\tSize: {size} ({size.x * size.y} area, {size.x * size.y * Config.DungeonGeneration.MIN_FILL} min rooms)" +
             $"\n\tTemp: {temp}");
     }
 
-    public DungeonLocation GetLocation(Vector2 position)
+    public DungeonLocation? GetLocation(Vector2 position)
     {
-        return locations[position.x, position.y];
+        if(IsPosValid(position))
+            return locations[position.x, position.y];
+        return null;
     }
 
 
@@ -75,7 +77,7 @@ public class Floor
         //Generate the layout before we start populating it
         GenerateLocations();
 
-        Utils.Log($"Floor {(string)position} Post-Generation Stats:" +
+        Utils.Log($"Floor {position} Post-Generation Stats:" +
             $"\n\tRooms: {rooms.Count}");
     }
 
@@ -127,8 +129,27 @@ public class Floor
             }
 
             toGen.Remove(room);
-
         }
+    }
+
+    public void GenerateStairs()
+    {
+        //X is depth, Y is 0 if it's the main floor, or >0 if it's a side floor
+        if (Dungeon.floors.TryGetValue(position + new Vector2(1, 0), out Floor nextFloor) && nextFloor != null)
+        {
+            foreach (DungeonLocation room in rooms)
+            {
+                DungeonLocation? roomBelow = nextFloor.GetLocation(room.position);
+
+                if (roomBelow != null && Utils.RandFloat() < Config.DungeonGeneration.STAIR_CHANCE)
+                {
+                    //There is a room below the current one, and we have decided to add stairs
+                    Exit.AddExit(room, roomBelow, "DOWN");
+                    Utils.Log($"Adding stairs from {room.position} to {roomBelow.position}...");
+                }
+            }
+        }
+        else Utils.Log($"No floor below {position}");
     }
 
     //End dungeon generation

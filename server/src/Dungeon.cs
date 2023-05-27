@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 public static class Dungeon
 {
 
-    static Dictionary<Vector2, Floor> floors = new();
+    public static Dictionary<Vector2, Floor> floors = new();
 
     public static string startLocation = "";
 
@@ -32,10 +32,12 @@ public static class Dungeon
             tasks.Add(Task.Run(floor.GenerateFloor));
         }
 
-        while(tasks.Where(t => !t.IsCompleted).Any())
+        WaitForCompletion(tasks);
+
+        Utils.Log("Generating stairs...");
+        foreach(Floor floor in floors.Values)
         {
-            Thread.Sleep(Config.DungeonGeneration.SLEEP_INTERVAL);
-            Utils.Log($"Waiting for {tasks.Where(t => !t.IsCompleted).Count()} tasks to complete...");
+            tasks.Add(Task.Run(floor.GenerateStairs));
         }
 
         startLocation = floors.First().Value.PosToId(floors.First().Value.startPos);
@@ -44,6 +46,15 @@ public static class Dungeon
         OnDungeonGenerated?.Invoke();
 
         Utils.Log("Dungeon generated");
+    }
+
+    static void WaitForCompletion(List<Task> tasks)
+    {
+        while(tasks.Where(t => !t.IsCompleted).Any())
+        {
+            Thread.Sleep(Config.DungeonGeneration.SLEEP_INTERVAL);
+            Utils.Log($"Waiting for {tasks.Where(t => !t.IsCompleted).Count()} tasks to complete...");
+        }
     }
 
 }

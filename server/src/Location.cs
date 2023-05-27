@@ -118,7 +118,8 @@ public abstract class Location
             else if(state.Equals("exit"))
             {
                 foreach (Exit exit in exits)
-                    inputs.Add(new(InputMode.Option, exit.location, Get(exit.location).name));
+                    if(exit != null && Get(exit.location) != null)
+                        inputs.Add(new(InputMode.Option, exit.location, Get(exit.location).name));
             }
         }
 
