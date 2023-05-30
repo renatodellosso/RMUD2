@@ -26,6 +26,8 @@ static class Config
 
     public const string START_LOCATION = "intro";
 
+    public const int TICK_INTERVAL = 1000;
+
     public static class DungeonGeneration
     {
         public const int MIN_FLOORS = 3, MAX_FLOORS = 5;
@@ -35,6 +37,8 @@ static class Config
         public const float EXIT_CHANCE = .4f, MIN_FILL = .3f, STAIR_CHANCE = .2f;
 
         public const int SLEEP_INTERVAL = 1000;
+
+        public const float MONSTER_CHANCE = .75f;
     }
 
 }

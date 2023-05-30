@@ -30,15 +30,15 @@ public class Player : Creature
     //End of static stuff
 
     [BsonIgnore]
-    public Session session;
+    public Session? session;
 
     public ObjectId _id = ObjectId.GenerateNewId(), accountId;
-    public Account Account => DB.Accounts.Find(accountId);
+    public Account? Account => DB.Accounts.Find(accountId);
 
-    public string resetLocation;
+    public string? resetLocation;
     public Location? Location => Location.Get(location);
 
-    public Player(ObjectId accountId)
+    public Player(ObjectId accountId) : base(accountId.ToString())
     {
         this.accountId = accountId;
     }

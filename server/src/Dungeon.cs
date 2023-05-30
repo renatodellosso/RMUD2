@@ -11,7 +11,7 @@ public static class Dungeon
 
     public static string startLocation = "";
 
-    public static event Utils.DefaultDelegate? OnDungeonGenerated;
+    public static event Action? OnDungeonGenerated;
 
     public static void Generate()
     {

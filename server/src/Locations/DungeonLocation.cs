@@ -18,7 +18,10 @@ namespace Locations
             id = floor.PosToId(position);
             name = floor.PosToName(position);
 
-            Location.Add(this);
+            Add(this);
+
+            if (Utils.RandFloat() < Config.DungeonGeneration.MONSTER_CHANCE)
+                creatures.Add(Creatures.MonsterList.monsters.Get()()); //Monsters is a list of Funcs, so we call the func that gets returned
         }
 
     }

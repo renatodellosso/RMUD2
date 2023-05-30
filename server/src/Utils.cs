@@ -9,8 +9,6 @@ using System.Threading.Tasks;
 public static class Utils
 {
 
-    public delegate void DefaultDelegate();
-
     public static string Log(string msg)
     {
         msg = $"[{DateTime.Now}]: {msg}";
@@ -165,5 +163,18 @@ public static class Utils
     }
 
     //End random methods
+
+    //Events
+
+    //Tick
+    public static event Action? OnTick;
+    public static void Tick() //We can't invoke OnTick outside of this class, so we need a method to do it
+    {
+        Log("Ticking...");
+        OnTick?.Invoke();
+        Log("Tick complete");
+    }
+
+    //End events
 
 }
