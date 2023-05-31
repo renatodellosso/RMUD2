@@ -12,7 +12,7 @@ public class IntroLocation : Location
         id = "intro";
         name = "Outside the dungeon";
 
-        creatures.Add(new Creatures.SimpleNPC("shadowyFigure", "Shadowy Figure", (session, menu) =>
+        creatures.Add(new Creatures.SimpleNPC("shadowyFigure", "Shadowy Figure", talkInputs: (session, menu) =>
         {
             //Get inputs for dialogue
             List<Input> inputs = new();
@@ -27,7 +27,7 @@ public class IntroLocation : Location
             }
 
             return inputs.ToArray();
-        }, (session, action, menu) =>
+        }, talkHandler: (session, action, menu) =>
         {
             //Handle inputs for dialogue
             if (action.action.Equals("exit")) menu.state = "exit";
@@ -38,7 +38,7 @@ public class IntroLocation : Location
                 menu.state = "end";
             }
 
-        }, (session) =>
+        }, talkStart: (session) =>
         {
             //On dialogue start
             session.Log("What is it you seek?");
@@ -51,7 +51,7 @@ public class IntroLocation : Location
     void OnDungeonGenerated()
     {
         //Add the exit to and from the dungeon
-        Exit.AddExit(this, Get(Dungeon.startLocation), "N");
+        Exit.AddExit(this, Get(Dungeon.startLocation), "N", false);
     }
 
     public override void OnEnter(Creature creature)

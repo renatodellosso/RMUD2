@@ -55,12 +55,13 @@ public static class Utils
 
     //Formatting methods
 
-    public static string Style(string text, string color = "", bool bold = false, bool underline = false)
+    public static string Style(string text, string color = "", bool bold = false, bool underline = false, bool italic = false)
     {
         if (!color.Equals(""))
             text = "<span style=" + '"' + "color:" + color + ";" + '"' + ">" + text + "</span>";
         if (bold) text = "<b>" + text + "</b>";
         if (underline) text = "<u>" + text + "</u>";
+        if (italic) text = "<i>" + text + "</i>";
 
         return text;
     }
@@ -167,12 +168,15 @@ public static class Utils
     //Events
 
     //Tick
-    public static event Action? OnTick;
+    public static int tickCount = 0;
+    public static event Action<int>? OnTick;
     public static void Tick() //We can't invoke OnTick outside of this class, so we need a method to do it
     {
-        Log("Ticking...");
-        OnTick?.Invoke();
-        Log("Tick complete");
+        Log($"Ticking... (Tick #{tickCount})");
+        OnTick?.Invoke(tickCount);
+        Log($"Tick #{tickCount} complete");
+
+        tickCount++;
     }
 
     //End events

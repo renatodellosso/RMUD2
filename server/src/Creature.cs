@@ -21,6 +21,11 @@ public class Creature
     public Action<Session>? talkStart = null;
     public bool HasDialogue => talkInputs != null && talkHandler != null && talkStart != null;
 
+    //Name formatting
+    public string FormattedName => Utils.Style(name, nameColor, nameBold, nameUnderline, nameItalic);
+    public string nameColor = "";
+    public bool nameBold, nameUnderline, nameItalic;
+
     public Creature(string id)
     {
         Utils.OnTick += Tick;
@@ -63,7 +68,7 @@ public class Creature
         }
     }
 
-    protected virtual void Tick()
+    protected virtual void Tick(int tickCount)
     {
 
     }

@@ -10,12 +10,14 @@ namespace Creatures
     public class SimpleNPC : Creature
     {
 
-        public Action<SimpleNPC>? onTick;
+        public Action<SimpleNPC, int>? onTick;
 
-        public SimpleNPC(string id, string name, Func<Session, DialogueMenu, Input[]>? talkInputs = null, Action<Session, ClientAction, DialogueMenu>? talkHandler = null, 
-            Action<Session>? talkStart = null, int maxHealth = 0, Action<SimpleNPC>? onTick = null) : base(id)
+        public SimpleNPC(string id, string name, string nameColor = "", Func<Session, DialogueMenu, Input[]>? talkInputs = null, Action<Session, ClientAction, DialogueMenu>? talkHandler = null, 
+            Action<Session>? talkStart = null, int maxHealth = 0, Action<SimpleNPC, int>? onTick = null) : base(id)
         {
             this.name = name;
+            this.nameColor = nameColor;
+
             attackable = false;
 
             this.talkInputs = talkInputs;
@@ -30,10 +32,10 @@ namespace Creatures
             //Utils.Log($"Created {baseId}");
         }
 
-        protected override void Tick()
+        protected override void Tick(int tickCount)
         {
             //Run onTick, as long as it's not null
-            onTick?.Invoke(this);
+            onTick?.Invoke(this, tickCount);
         }
 
     }

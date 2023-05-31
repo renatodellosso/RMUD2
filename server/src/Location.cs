@@ -66,7 +66,7 @@ public abstract class Location
             foreach(Creature c in creatures)
             {
                 if(c != creature) //Don't list the player
-                    creatureList += $"<br>-{c.name}";
+                    creatureList += $"<br>-{c.FormattedName}";
             }
             player?.session?.Log(creatureList);
         }
@@ -113,7 +113,7 @@ public abstract class Location
             if(state.Equals("talk"))
             {
                 foreach (Creature creature in creatures)
-                    if (creature.HasDialogue) inputs.Add(new(InputMode.Option, creature.baseId, creature.name));
+                    if (creature.HasDialogue) inputs.Add(new(InputMode.Option, creature.baseId, creature.FormattedName));
             }
             else if(state.Equals("exit"))
             {

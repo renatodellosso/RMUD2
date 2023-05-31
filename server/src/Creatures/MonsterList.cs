@@ -12,14 +12,14 @@ namespace Creatures
         public static Table<Func<SimpleNPC>> monsters = new(
 
             //Zombie
-            new(1, () => new("zombie", "Zombie", maxHealth: 10, onTick: (self) =>
+            new(1, () => new("zombie", "Zombie", nameColor: "red", maxHealth: 10, onTick: (self, count) =>
             {
                 //onTick
                 //Utils.Log($"Ticked {self.baseId}");
             })),
 
             //Skeleton
-            new(1, () => new("skeleton", "Skeleton", maxHealth: 5, onTick: (self) =>
+            new(1, () => new("skeleton", "Skeleton", nameColor: "red", maxHealth: 5, onTick: (self, count) =>
             {
                 //onTick
                 //Utils.Log($"Ticked {self.baseId}");
