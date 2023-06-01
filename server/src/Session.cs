@@ -24,6 +24,10 @@ public class Session
     public List<string> log = new();
     public bool logChanged = false;
 
+    List<string> sidebar = new (), oldSidebar = new ();
+    public bool SidebarChanged => DidSidebarChange();
+    public bool resendSidebar = false;
+
     public static Session CreateSession()
     {
         Session session = new();
@@ -71,6 +75,44 @@ public class Session
     {
         log.Clear();
         logChanged = true;
+    }
+
+    bool DidSidebarChange()
+    {
+        if(resendSidebar)
+        {
+            resendSidebar = false;
+            return true;
+        }
+
+        if (sidebar.Count != oldSidebar.Count) return true;
+        for (int i = 0; i < sidebar.Count; i++)
+        {
+            if (!sidebar[i].Equals(oldSidebar[i])) return true;
+        }
+        return false;
+    }
+
+    public List<string> GetSidebar()
+    {
+        List<string> text = new();
+
+        Player? player = Player;
+        if(player != null)
+        {
+            text.Add($"User: {player.name}");
+
+            Location? location = player.Location;
+            if(location != null)
+            {
+                text.Add($"Location: {location?.name}");
+                text.Add(location?.LookAround(player));
+            }
+        }
+
+        oldSidebar = sidebar;
+        sidebar = text;
+        return text;
     }
 
     private Account? GetAccount()

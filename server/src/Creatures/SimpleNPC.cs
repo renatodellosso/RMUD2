@@ -13,9 +13,8 @@ namespace Creatures
         public Action<SimpleNPC, int>? onTick;
 
         public SimpleNPC(string id, string name, string nameColor = "", Func<Session, DialogueMenu, Input[]>? talkInputs = null, Action<Session, ClientAction, DialogueMenu>? talkHandler = null, 
-            Action<Session>? talkStart = null, int maxHealth = 0, Action<SimpleNPC, int>? onTick = null) : base(id)
+            Action<Session>? talkStart = null, int maxHealth = 0, Action<SimpleNPC, int>? onTick = null) : base(id, name)
         {
-            this.name = name;
             this.nameColor = nameColor;
 
             attackable = false;

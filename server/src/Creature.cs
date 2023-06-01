@@ -12,6 +12,8 @@ public class Creature
     //We can't use id because of Player's _id, so we use baseId
     public string baseId = "unnamedCreature", name = "Unnamed Creature", location = "";
 
+    public Location? Location => GetLocation();
+
     public bool attackable = true;
     public int health, maxHealth;
 
@@ -26,7 +28,7 @@ public class Creature
     public string nameColor = "";
     public bool nameBold, nameUnderline, nameItalic;
 
-    public Creature(string id)
+    public Creature(string id, string name)
     {
         Utils.OnTick += Tick;
 
@@ -35,13 +37,19 @@ public class Creature
         while ((counter > 0 && ids.Contains(id + counter)) || (counter == 0 && ids.Contains(id)))
             counter++;
 
-        if(counter > 0) id += counter;
+        if (counter > 0)
+        {
+            id += counter;
+            name += $" {counter}";
+        }
+
         ids.Add(id);
         baseId = id;
+        this.name = name;
         //Utils.Log($"ID: {baseId}, Counter: {counter}");
     }
 
-    public Location? GetLocation()
+    Location? GetLocation()
     {
         return Location.Get(location);
     }
@@ -52,13 +60,15 @@ public class Creature
     /// <param name="location">The ID of the new location</param>
     public void Move(string location)
     {
+        Location? to = Location.Get(location);
+
         if (!location.Equals(""))
         {
             Location? loc = GetLocation();
-            loc?.Leave(this);
+            loc?.Leave(this, to);
         }
 
-        Location.Get(location)?.Enter(this);
+        to?.Enter(this, Location);
 
         if(this is Player)
         {
@@ -71,6 +81,19 @@ public class Creature
     protected virtual void Tick(int tickCount)
     {
 
+    }
+
+    public void MoveThroughRandomExit()
+    {
+        Location? location = Location;
+        if (location != null)
+        {
+            if (location.exits.Count > 0)
+            {
+                Exit exit = location.exits[Utils.RandInt(location.exits.Count)]; //Min defaults to 0 (we made an overload)
+                Move(exit.location);
+            }
+        }
     }
 
 }

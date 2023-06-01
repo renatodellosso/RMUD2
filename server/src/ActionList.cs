@@ -27,4 +27,9 @@ namespace ActionList
         public ClearLog() : base("clearLog", null) { }
     }
 
+    public class SetSidebar : ServerAction<object>
+    {
+        public SetSidebar(List<string> sidebar) : base("setSidebar", sidebar) { }
+    }
+
 }

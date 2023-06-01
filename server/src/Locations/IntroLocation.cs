@@ -60,7 +60,7 @@ public class IntroLocation : Location
         {
             Player player = (Player)creature;
 
-            player.session.Log("You are standing in a small, ruined courtyard. To the north lies two statues, one a knight and the other an unknown figure in hooded robes. " +
+            player?.session?.Log("You are standing in a small, ruined courtyard. To the north lies two statues, one a knight and the other an unknown figure in hooded robes. " +
                 "Between them is a tunnel into the mountain.");
         }
     }

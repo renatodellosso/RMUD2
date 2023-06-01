@@ -87,6 +87,19 @@ let serverActions = {
 
         let log = document.getElementById("log");
         log.innerHTML = "";
+    },
+
+    setSidebar: (args) => {
+        console.log("Setting sidebar: ");
+        console.log(args);
+
+        let sidebar = document.getElementById("sidebar");
+        sidebar.innerHTML = "";
+
+        for(let i = 0; i < args.length; i++) {
+            let arg = args[i];
+            sidebar.innerHTML += `<p>${arg}</p><br/>`;
+        };
     }
 
 }

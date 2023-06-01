@@ -39,6 +39,7 @@ static class Config
         public const int SLEEP_INTERVAL = 1000;
 
         public const float MONSTER_CHANCE = .75f;
+        public const int MIN_MONSTERS = 1, MAX_MONSTERS = 3;
     }
 
 }

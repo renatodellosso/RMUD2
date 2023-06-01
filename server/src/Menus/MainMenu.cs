@@ -133,7 +133,7 @@ namespace Menus
                         session.ClearLog();
                         session.SetMenu(new LocationMenu(session));
 
-                        player.Location.Enter(player);
+                        player.Location.Enter(player, null);
                     }
                     else session.Log(Utils.Style("Encountered an error", "red"));
                 }

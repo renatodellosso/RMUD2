@@ -38,9 +38,10 @@ public class Player : Creature
     public string? resetLocation;
     public Location? Location => Location.Get(location);
 
-    public Player(ObjectId accountId) : base(accountId.ToString())
+    public Player(ObjectId accountId) : base(accountId.ToString(), "Unnamed Player")
     {
         this.accountId = accountId;
+        name = Account?.username ?? "Unnamed Player";
     }
 
     public void Update()

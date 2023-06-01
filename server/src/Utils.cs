@@ -57,6 +57,8 @@ public static class Utils
 
     public static string Style(string text, string color = "", bool bold = false, bool underline = false, bool italic = false)
     {
+        if(text == null) return "";
+
         if (!color.Equals(""))
             text = "<span style=" + '"' + "color:" + color + ";" + '"' + ">" + text + "</span>";
         if (bold) text = "<b>" + text + "</b>";
@@ -144,6 +146,11 @@ public static class Utils
     public static int RandInt(int min, int max)
     {
         return random.Next(min, max);
+    }
+
+    public static int RandInt(int max)
+    {
+        return RandInt(0, max);
     }
 
     /// <param name="min">Inclusive</param>

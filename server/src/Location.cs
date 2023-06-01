@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MongoDB.Driver.Core.Misc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -40,15 +41,15 @@ public abstract class Location
 
     public List<Exit> exits = new();
 
-    public void Enter(Creature creature)
+    public void Enter(Creature creature, Location? from)
     {
-        Utils.Log($"{creature.name} enters {name} from {creature.location}");
+        Utils.Log($"{creature.name} enters {id} from {creature.location}");
 
         creatures.Add(creature);
 
         creature.location = id;
 
-        if(creature is Player)
+        if (creature is Player)
         {
             Player player = (Player)creature;
 
@@ -62,13 +63,15 @@ public abstract class Location
                 player.session.Log($"You enter {name}");
             else Utils.Log($"Player {player._id} has no session!");
 
-            string creatureList = "Around you are:";
-            foreach(Creature c in creatures)
-            {
-                if(c != creature) //Don't list the player
-                    creatureList += $"<br>-{c.FormattedName}";
-            }
-            player?.session?.Log(creatureList);
+            player.session.Log(LookAround(player));
+        }
+
+        if (from != null)
+        {
+            Player[] players = Players;
+            foreach (Player player in players)
+                if (player != creature)
+                    player.session?.Log($"{creature.FormattedName} enters {name} from {from.name}");
         }
 
         OnEnter(creature);
@@ -81,9 +84,16 @@ public abstract class Location
     }
 
     //Leave, instead of Exit, to avoid confusion with the Exit class
-    public void Leave(Creature creature)
+    public void Leave(Creature creature, Location? to)
     {
         creatures.Remove(creature);
+
+        Player[] players = Players;
+        if (players.Any() && to != null)
+        {
+            foreach (Player player in players)
+                player.session?.Log($"{creature.FormattedName} leaves {name}, going towards {to.name}");
+        }
     }
 
     public virtual void OnLeave(Creature creature)
@@ -104,6 +114,7 @@ public abstract class Location
             if (dialogueCreatures.Any())
                 inputs.Add(new(InputMode.Option, "talk", "Talk"));
 
+            inputs.Add(new(InputMode.Option, "look", "Look around"));
             inputs.Add(new(InputMode.Option, "exit", "Exit"));
         }
         else
@@ -135,6 +146,8 @@ public abstract class Location
                 state = "talk";
             else if (action.action.Equals("exit"))
                 state = "exit";
+            else if (action.action.Equals("look"))
+                session.Log(LookAround(session?.Player));
         }
         else
         {
@@ -157,6 +170,17 @@ public abstract class Location
                 }
             }
         }
+    }
+
+    public string LookAround(Player player)
+    {
+        string creatureList = "Around you are:";
+        foreach (Creature c in creatures)
+        {
+            if (c != player) //Don't list the player
+                creatureList += $"<br>-{c.FormattedName}";
+        }
+        return creatureList;
     }
 
 }

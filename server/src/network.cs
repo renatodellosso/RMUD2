@@ -142,6 +142,12 @@ public static class Network
                 response.Add(new ActionList.SetInput(session.menu?.GetInputs(response)));
                 if(session.logChanged) response.Add(new ActionList.SetLog(session.log));
 
+                List<string> sidebar = session.GetSidebar();
+                if (session.SidebarChanged)
+                {
+                    response.Add(new ActionList.SetSidebar(sidebar));
+                }
+
                 session.logChanged = false;
             }
             else Utils.Log("Session is null!");
@@ -196,6 +202,7 @@ public static class Network
                 }
 
                 session.logChanged = true;
+                session.resendSidebar = true;
             }
         },
         { "heartbeat", (action, response) =>
