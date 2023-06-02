@@ -18,28 +18,14 @@ namespace Creatures
                     self.MoveThroughRandomExit();
 
                 //Flavor messages
-                if (count % 3 == 0 && Utils.RandFloat() < .1f)
+                Location? location = self.Location;
+                if (location != null)
                 {
-                    Player[]? players = self.Location?.Players;
-
-                    if (players != null)
-                        Array.ForEach(players, p => p?.session?.Log($"{self.name} groans.")); //Send to all players in location
-                }
-
-                if(count % 4 == 0 && Utils.RandFloat() < .1f)
-                {
-                    Player[]? players = self.Location?.Players;
-
-                    if (players != null)
-                        Array.ForEach(players, p => p?.session?.Log($"{self.name} shuffles aimlessly.")); //Send to all players in location
-                }
-
-                if(count % 5 == 0 && Utils.RandFloat() < .1f)
-                {
-                    Player[]? players = self.Location?.Players;
-
-                    if (players != null)
-                        Array.ForEach(players, p => p?.session?.Log($"{self.name} stares at you.")); //Send to all players in location
+                    Player[] players = location.Players;
+                    if (players.Any() && Utils.RandFloat() < Config.Gameplay.FLAVOR_MSG_CHANCE) //Don't send flavor messages if there are no players to receive them
+                    {
+                        AI.FlavorMessage(self);
+                    }
                 }
             })),
 
@@ -50,28 +36,14 @@ namespace Creatures
                     self.MoveThroughRandomExit();
 
                 //Flavor messages
-                if (count % 3 == 0 && Utils.RandFloat() < .1f)
+                Location? location = self.Location;
+                if (location != null)
                 {
-                    Player[]? players = self.Location?.Players;
-
-                    if (players != null)
-                        Array.ForEach(players, p => p?.session?.Log($"{self.name}'s bones rattle as it rotates itself.")); //Send to all players in location
-                }
-
-                if (count % 4 == 0 && Utils.RandFloat() < .1f)
-                {
-                    Player[]? players = self.Location?.Players;
-
-                    if (players != null)
-                        Array.ForEach(players, p => p?.session?.Log($"{self.name} shuffles aimlessly.")); //Send to all players in location
-                }
-
-                if (count % 5 == 0 && Utils.RandFloat() < .1f)
-                {
-                    Player[]? players = self.Location?.Players;
-
-                    if (players != null)
-                        Array.ForEach(players, p => p?.session?.Log($"{self.name} stares at you.")); //Send to all players in location
+                    Player[] players = location.Players;
+                    if (players.Any() && Utils.RandFloat() < Config.Gameplay.FLAVOR_MSG_CHANCE) //Don't send flavor messages if there are no players to receive them
+                    {
+                        AI.FlavorMessage(self);
+                    }
                 }
             }))
 

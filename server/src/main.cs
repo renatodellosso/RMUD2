@@ -19,6 +19,7 @@ else
 }
 
 DB.Init();
+AI.Init();
 
 Dungeon.Generate();
 

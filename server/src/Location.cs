@@ -43,6 +43,10 @@ public abstract class Location
 
     public void Enter(Creature creature, Location? from)
     {
+        //Prevent duplicates
+        if (creatures.Contains(creature))
+            return;
+        
         Utils.Log($"{creature.name} enters {id} from {creature.location}");
 
         creatures.Add(creature);
@@ -166,7 +170,19 @@ public abstract class Location
             {
                 if(exits.Where(e => e.location.Equals(action.action)).Any())
                 {
-                    session.Player.Move(action.action);
+                    Player? player = session.Player;
+                    if (player != null)
+                    {
+                        player.Move(action.action);
+
+                        Location? location = player.Location;
+                        if(location != null)
+                        {
+                            //Avoids a glitch where 2 copies of a player would enter a room
+                            location.RemoveDuplicateCreatures();
+                        }
+                    }
+
                 }
             }
         }
@@ -181,6 +197,11 @@ public abstract class Location
                 creatureList += $"<br>-{c.FormattedName}";
         }
         return creatureList;
+    }
+
+    void RemoveDuplicateCreatures()
+    {
+        creatures = creatures.Distinct().ToList();
     }
 
 }

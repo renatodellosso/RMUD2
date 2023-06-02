@@ -15,4 +15,7 @@ public class Env
     public string pepper = "";
 
     public string discordInvite = "";
+
+    public string openAIKey = "";
+
 }

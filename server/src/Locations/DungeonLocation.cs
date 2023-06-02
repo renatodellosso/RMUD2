@@ -20,6 +20,8 @@ namespace Locations
 
             Add(this);
 
+            status = $"Dungeoneering / Floor {floor.position.x + 1}";
+
             if (Utils.RandFloat() < Config.DungeonGeneration.MONSTER_CHANCE)
                 for (int i = 0; i < Utils.RandInt(Config.DungeonGeneration.MIN_MONSTERS, Config.DungeonGeneration.MAX_MONSTERS); i++)
                     //Spawn a monster

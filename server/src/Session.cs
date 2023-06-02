@@ -102,11 +102,14 @@ public class Session
         {
             text.Add($"User: {player.name}");
 
-            Location? location = player.Location;
-            if(location != null)
+            if (menu.ShowLocationSidebar)
             {
-                text.Add($"Location: {location?.name}");
-                text.Add(location?.LookAround(player));
+                Location? location = player.Location;
+                if (location != null)
+                {
+                    text.Add($"Location: {location?.name}");
+                    text.Add(location?.LookAround(player));
+                }
             }
         }
 

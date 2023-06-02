@@ -10,6 +10,7 @@ public abstract class Menu
     public Session session;
 
     public virtual string Status => "In some menu";
+    public virtual bool ShowLocationSidebar => false;
 
     public virtual void OnStart() { } //Should be overridden in child classes
 

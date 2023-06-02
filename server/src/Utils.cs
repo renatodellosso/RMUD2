@@ -55,11 +55,11 @@ public static class Utils
 
     //Formatting methods
 
-    public static string Style(string text, string color = "", bool bold = false, bool underline = false, bool italic = false)
+    public static string Style(string? text, string color = "", bool bold = false, bool underline = false, bool italic = false)
     {
         if(text == null) return "";
 
-        if (!color.Equals(""))
+        if (color != "")
             text = "<span style=" + '"' + "color:" + color + ";" + '"' + ">" + text + "</span>";
         if (bold) text = "<b>" + text + "</b>";
         if (underline) text = "<u>" + text + "</u>";

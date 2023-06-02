@@ -41,3 +41,12 @@ C:\Users\rddel\Coding Projects\RMUD2\server\bin\Debug\net7.0\Microsoft.Extension
 C:\Users\rddel\Coding Projects\RMUD2\server\bin\Debug\net7.0\System.Interactive.Async.dll
 C:\Users\rddel\Coding Projects\RMUD2\server\bin\Debug\net7.0\System.Linq.Async.dll
 C:\Users\rddel\Coding Projects\RMUD2\server\bin\Debug\net7.0\System.Reactive.dll
+C:\Users\rddel\Coding Projects\RMUD2\server\bin\Debug\net7.0\OpenAI.dll
+C:\Users\rddel\Coding Projects\RMUD2\server\bin\Debug\net7.0\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Users\rddel\Coding Projects\RMUD2\server\bin\Debug\net7.0\Microsoft.Extensions.Configuration.Binder.dll
+C:\Users\rddel\Coding Projects\RMUD2\server\bin\Debug\net7.0\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\rddel\Coding Projects\RMUD2\server\bin\Debug\net7.0\Microsoft.Extensions.Http.dll
+C:\Users\rddel\Coding Projects\RMUD2\server\bin\Debug\net7.0\Microsoft.Extensions.Logging.dll
+C:\Users\rddel\Coding Projects\RMUD2\server\bin\Debug\net7.0\Microsoft.Extensions.Options.dll
+C:\Users\rddel\Coding Projects\RMUD2\server\bin\Debug\net7.0\Microsoft.Extensions.Options.ConfigurationExtensions.dll
+C:\Users\rddel\Coding Projects\RMUD2\server\bin\Debug\net7.0\Microsoft.Extensions.Primitives.dll

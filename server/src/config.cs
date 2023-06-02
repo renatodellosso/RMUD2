@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenAI.ObjectModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -40,6 +41,20 @@ static class Config
 
         public const float MONSTER_CHANCE = .75f;
         public const int MIN_MONSTERS = 1, MAX_MONSTERS = 3;
+    }
+
+    public static class AI
+    {
+        //Not const, but don't change
+        public static string DEFAULT_MODEL = Models.ChatGpt3_5Turbo;
+
+        public static int MAX_RETURN_TOKENS = 20;
+        public static double COST_PER_TOKEN = .002 / 1000; //Cost per token in dollars
+    }
+
+    public static class Gameplay
+    {
+        public const float FLAVOR_MSG_CHANCE = .025f; //Per second
     }
 
 }
