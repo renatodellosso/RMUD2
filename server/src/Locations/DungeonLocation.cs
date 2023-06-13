@@ -25,7 +25,7 @@ namespace Locations
             if (Utils.RandFloat() < Config.DungeonGeneration.MONSTER_CHANCE)
                 for (int i = 0; i < Utils.RandInt(Config.DungeonGeneration.MIN_MONSTERS, Config.DungeonGeneration.MAX_MONSTERS); i++)
                     //Spawn a monster
-                    Enter(Creatures.MonsterList.monsters.Get()(), null); //Monsters is a list of Funcs, so we call the func that gets returned
+                    Enter(Creatures.MonsterList.MONSTERS.Get()(), null); //Monsters is a list of Funcs, so we call the func that gets returned
         }
 
     }

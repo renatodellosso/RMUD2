@@ -10,10 +10,10 @@ namespace Creatures
     public class SimpleNPC : Creature
     {
 
-        public Action<SimpleNPC, int>? onTick;
+        public Action<Events.OnCreatureTickEventData>? onTick;
 
         public SimpleNPC(string id, string name, string nameColor = "", Func<Session, DialogueMenu, Input[]>? talkInputs = null, Action<Session, ClientAction, DialogueMenu>? talkHandler = null, 
-            Action<Session>? talkStart = null, int maxHealth = 0, Action<SimpleNPC, int>? onTick = null) : base(id, name)
+            Action<Session>? talkStart = null, int maxHealth = 0, Action<Events.OnCreatureTickEventData>? onTick = null) : base(id, name)
         {
             this.nameColor = nameColor;
 
@@ -34,7 +34,20 @@ namespace Creatures
         protected override void Tick(int tickCount)
         {
             //Run onTick, as long as it's not null
-            onTick?.Invoke(this, tickCount);
+            onTick?.Invoke(new(this));
+        }
+
+        public void FlavorMessage()
+        {
+            Location? location = Location;
+            if (location != null)
+            {
+                Player[] players = location.Players;
+                if (players.Any() && Utils.RandFloat() < Config.Gameplay.FLAVOR_MSG_CHANCE) //Don't send flavor messages if there are no players to receive them
+                {
+                    AI.FlavorMessage(this);
+                }
+            }
         }
 
     }

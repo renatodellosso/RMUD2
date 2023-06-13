@@ -1,4 +1,5 @@
-﻿using Menus;
+﻿using ItemTypes;
+using Menus;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,30 @@ public class Creature
     public string FormattedName => Utils.Style(name, nameColor, nameBold, nameUnderline, nameItalic);
     public string nameColor = "";
     public bool nameBold, nameUnderline, nameItalic;
+
+    public ItemHolder<ItemTypes.Item>? mainHand, offHand;
+
+    public Dictionary<AbilityScore, int> abilityScores = new()
+    {
+        { AbilityScore.Strength, 0 },
+        { AbilityScore.Dexterity, 0 },
+        { AbilityScore.Constitution, 0 },
+        { AbilityScore.Agility, 0 },
+        { AbilityScore.Intelligence, 0 },
+        { AbilityScore.Wisdom, 0 },
+        { AbilityScore.Charisma, 0 }
+    };
+
+    //Ability score methods for convenience
+    public int Strength => abilityScores[AbilityScore.Strength];
+    public int Dexterity => abilityScores[AbilityScore.Dexterity];
+    public int Constitution => abilityScores[AbilityScore.Constitution];
+    public int Agility => abilityScores[AbilityScore.Agility];
+    public int Intelligence => abilityScores[AbilityScore.Intelligence];
+    public int Wisdom => abilityScores[AbilityScore.Wisdom];
+    public int Charisma => abilityScores[AbilityScore.Charisma];
+
+    public int DodgeThreshold => 10 + Agility;
 
     public Creature(string id, string name)
     {
@@ -74,7 +99,7 @@ public class Creature
         {
             Player player = (Player)this;
 
-            player.session.SetMenu(new LocationMenu(player.session));
+            player?.session?.SetMenu(new LocationMenu(player.session));
         }
     }
 
@@ -94,6 +119,32 @@ public class Creature
                 Move(exit.location);
             }
         }
+    }
+
+    public void Attack(Creature target, Weapon weapon)
+    {
+        //We add 1, since RandInt(20) returns a number from 0 to 19, and we want 1 to 20
+        int roll = Utils.RandInt(20) + 1 + weapon.AttackBonus(this);
+
+        if(roll > target.DodgeThreshold)
+        {
+            //Hit
+            int damage = weapon.RollDamage(this, target);
+            damage = target.TakeDamage(damage);
+        }
+        else
+        {
+            //Miss
+        }
+    }
+
+    public int TakeDamage(int damage)
+    {
+        damage = Math.Clamp(damage, 0, health);
+        health -= damage;
+        if (health < 0)
+            health = 0;
+        return damage;
     }
 
 }

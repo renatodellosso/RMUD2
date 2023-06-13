@@ -148,6 +148,7 @@ public static class Utils
         return random.Next(min, max);
     }
 
+    /// <param name="max">Exclusive</param>
     public static int RandInt(int max)
     {
         return RandInt(0, max);
