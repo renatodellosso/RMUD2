@@ -1,5 +1,6 @@
 ﻿using ItemTypes;
 using Menus;
+using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +30,8 @@ public class Creature
     public string nameColor = "";
     public bool nameBold, nameUnderline, nameItalic;
 
-    public ItemHolder<ItemTypes.Item>? mainHand, offHand;
+    public ItemHolder<Item>? mainHand, offHand;
+    public Weapon? Weapon => mainHand?.Item as Weapon;
 
     public Dictionary<AbilityScore, int> abilityScores = new()
     {
@@ -123,19 +125,7 @@ public class Creature
 
     public void Attack(Creature target, Weapon weapon)
     {
-        //We add 1, since RandInt(20) returns a number from 0 to 19, and we want 1 to 20
-        int roll = Utils.RandInt(20) + 1 + weapon.AttackBonus(this);
-
-        if(roll > target.DodgeThreshold)
-        {
-            //Hit
-            int damage = weapon.RollDamage(this, target);
-            damage = target.TakeDamage(damage);
-        }
-        else
-        {
-            //Miss
-        }
+        
     }
 
     public int TakeDamage(int damage)

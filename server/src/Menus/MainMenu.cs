@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using ItemTypes;
+using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -159,7 +160,8 @@ namespace Menus
                 session = session,
                 location = Config.START_LOCATION,
                 name = account.username,
-                baseId = account.username
+                baseId = account.username,
+                mainHand = new ItemHolder("spear")
             };
 
             account.playerId = player._id; //Make sure to set the ID!

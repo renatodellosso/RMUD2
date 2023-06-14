@@ -11,7 +11,7 @@ namespace Creatures
 
         public SimpleMonster(string id, string name, int maxHealth) : base(id, name, nameColor: "red", maxHealth: maxHealth, onTick: (data) => ((SimpleMonster)data.self).OnTick())
         {
-
+            attackable = true;
         }
 
         void OnTick()

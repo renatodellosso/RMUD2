@@ -8,7 +8,10 @@ namespace Items
 {
     public static class ItemList
     {
-        static readonly Dictionary<string, ItemTypes.Item> ITEMS = new();
+        static readonly Dictionary<string, ItemTypes.Item> ITEMS = new()
+        {
+            { "spear", new ItemTypes.Weapon("spear", "Spear", AbilityScore.Strength, new(8)) }
+        };
 
         public static T? Get<T>(string id) where T : ItemTypes.Item
         {

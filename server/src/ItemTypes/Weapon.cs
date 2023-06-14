@@ -9,28 +9,11 @@ namespace ItemTypes
     public class Weapon : Item
     {
 
-        public Die damage;
-
-        public AbilityScore abilityScore;
+        public Dictionary<string, Attack> attacks = new();
 
         public Weapon(string id, string name, AbilityScore abilityScore, Die damage) : base(id, name)
         {
-            this.damage = damage;
-            this.abilityScore = abilityScore;
-        }
-
-        public int RollDamage(Creature attacker, Creature target)
-        {
-            Die die = damage.Clone();
-
-            die.modifier = () => attacker.abilityScores[abilityScore];
-
-            return die.Roll();
-        }
-
-        public int AttackBonus(Creature attacker)
-        {
-            return attacker.abilityScores[abilityScore];
+            attacks.Add(id, new Attack(id, FormattedName, damage, abilityScore, this)); //Make sure that key and id are the same!
         }
 
     }

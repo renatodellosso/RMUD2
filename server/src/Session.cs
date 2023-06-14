@@ -108,8 +108,11 @@ public class Session
                 if (location != null)
                 {
                     text.Add($"Location: {location?.name}");
-                    text.Add(location?.LookAround(player));
+                    text.Add(location?.GetOverviewMsg(player));
                 }
+
+                text.Add($"Main Hand: {player.mainHand?.Item?.FormattedName ?? "Empty" }<br>\n" +
+                         $"Off Hand: {player.offHand?.Item?.FormattedName ?? "Empty"}");
             }
         }
 

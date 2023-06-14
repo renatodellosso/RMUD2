@@ -10,7 +10,7 @@ let serverActions = {
         console.log("Setting input: ");
         console.log(args);
 
-        let shouldUpdate = typeof prevInput === "undefined" || args.length == 0;
+        let shouldUpdate = typeof prevInput === "undefined" || args.length == 0 || args.length != prevInput.length;
         console.log(`Prev Input (Updating: ${shouldUpdate}): `);
         console.log(prevInput);
 

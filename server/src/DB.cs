@@ -1,4 +1,6 @@
 ﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -18,6 +20,9 @@ public static class DB
     public static void Init()
     {
         Utils.Log("Initializing DB...");
+
+        //Allows us to store enums as strings
+        BsonSerializer.RegisterSerializer(new EnumSerializer<AbilityScore>(BsonType.String));
 
         client = new MongoClient(Env.instance.mongoUri);
         db = client.GetDatabase("db");

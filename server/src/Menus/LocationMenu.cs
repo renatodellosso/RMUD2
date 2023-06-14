@@ -27,7 +27,7 @@ namespace Menus
         public override Input[] GetInputs(ServerResponse response)
         {
             List<Input> inputs = new List<Input>();
-            Player player = session.Player;
+            Player? player = session.Player;
 
             if (player != null)
             {
@@ -42,7 +42,7 @@ namespace Menus
 
         public override void HandleInput(ClientAction action, ServerResponse response)
         {
-            Player player = session.Player;
+            Player? player = session.Player;
 
             if (player == null || player.Location == null) return;
 

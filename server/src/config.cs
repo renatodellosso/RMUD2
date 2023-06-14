@@ -49,7 +49,7 @@ static class Config
         public static string DEFAULT_MODEL = Models.ChatGpt3_5Turbo;
 
         public static int MAX_RETURN_TOKENS = 20;
-        public static double COST_PER_TOKEN = .002 / 1000; //Cost per token in dollars
+        public static double COST_PER_TOKEN = .0015 / 1000; //Cost per token in dollars
     }
 
     public static class Gameplay

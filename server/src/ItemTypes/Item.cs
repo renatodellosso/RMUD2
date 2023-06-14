@@ -11,6 +11,8 @@ namespace ItemTypes
 
         public string id, name;
 
+        public virtual string FormattedName => name;
+
         public Item(string id, string name)
         {
             this.id = id;

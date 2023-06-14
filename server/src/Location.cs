@@ -1,4 +1,6 @@
-﻿using MongoDB.Driver.Core.Misc;
+﻿using Items;
+using ItemTypes;
+using MongoDB.Driver.Core.Misc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -67,7 +69,7 @@ public abstract class Location
                 player.session.Log($"You enter {name}");
             else Utils.Log($"Player {player._id} has no session!");
 
-            player.session.Log(LookAround(player));
+            player?.session?.Log(GetOverviewMsg(player));
         }
 
         if (from != null)
@@ -107,9 +109,10 @@ public abstract class Location
 
     public virtual Input[] GetInputs(Session session, string state)
     {
+        string[] args = state.Split('.');
         List<Input> inputs = new List<Input>();
 
-        if(state.Equals(""))
+        if(state.Equals("") || args.Length == 0)
         {
             //Dialogue
             List<Creature> dialogueCreatures = new();
@@ -119,6 +122,7 @@ public abstract class Location
                 inputs.Add(new(InputMode.Option, "talk", "Talk"));
 
             inputs.Add(new(InputMode.Option, "look", "Look around"));
+            inputs.Add(new(InputMode.Option, "combat", "Combat"));
             inputs.Add(new(InputMode.Option, "exit", "Exit"));
         }
         else
@@ -136,6 +140,31 @@ public abstract class Location
                     if(exit != null && Get(exit.location) != null)
                         inputs.Add(new(InputMode.Option, exit.location, Get(exit.location).name));
             }
+            else if(state.Equals("combat"))
+            {
+                Attack[] attacks = session.Player?.Weapon?.attacks.Values.ToArray() ?? Array.Empty<Attack>(); //Use Array.Empty instead of new Attack[0] to avoid allocating memory
+                foreach(Attack attack in attacks)
+                    inputs.Add(new(InputMode.Option, attack.id, attack.name));
+            }
+            else if (args[0].Equals("atktarget"))
+            {
+                //args[1] is the weapon, args[2] is the attack
+
+                List<ItemHolder<ItemTypes.Item>> weapons = new() //The list of ItemHolders we'll check for the weapon
+                {
+                    session.Player?.mainHand
+                };
+
+                Weapon? weapon = weapons.Where(w => w.id.Equals(args[1])).First().Item as Weapon;
+                if (weapon != null)
+                {
+                    Attack? attack = weapon.attacks[args[2]];
+                    List<Creature> targets = attack?.getTargets(session.Player) ?? new();
+
+                    foreach(Creature target in targets)
+                        inputs.Add(new(InputMode.Option, $"atk.{weapon.id}.{attack?.id}.{target.baseId}", target.FormattedName));
+                }
+            }
         }
 
         return inputs.ToArray();
@@ -144,51 +173,97 @@ public abstract class Location
     //We pass a ref to state so we can modify it
     public virtual void HandleInputs(Session session, ClientAction action, ref string state)
     {
-        if(state.Equals(""))
+        try
         {
-            if (action.action.Equals("talk"))
-                state = "talk";
-            else if (action.action.Equals("exit"))
-                state = "exit";
-            else if (action.action.Equals("look"))
-                session.Log(LookAround(session?.Player));
-        }
-        else
-        {
-            if (action.action.Equals("back")) state = "";
+            string[] args = action.action.Split('.');
 
-            if(state.Equals("talk"))
+            if (state.Equals("") || args.Length == 0)
             {
-                Creature target = creatures.Where(c => c.baseId.Equals(action.action)).First();
-
-                if(target != null)
-                {
-                    session.SetMenu(new Menus.DialogueMenu(target));
-                }
+                if (action.action.Equals("talk"))
+                    state = "talk";
+                else if (action.action.Equals("exit"))
+                    state = "exit";
+                else if (action.action.Equals("look"))
+                    session.Log(GetOverviewMsg(session.Player));
+                else if (action.action.Equals("combat"))
+                    state = "combat";
+                else
+                    Utils.Log("Invalid action: " + action.action);
             }
-            else if(state.Equals("exit"))
+            else
             {
-                if(exits.Where(e => e.location.Equals(action.action)).Any())
-                {
-                    Player? player = session.Player;
-                    if (player != null)
-                    {
-                        player.Move(action.action);
+                if (action.action.Equals("back")) state = "";
 
-                        Location? location = player.Location;
-                        if(location != null)
+                if (state.Equals("talk"))
+                {
+                    Creature target = creatures.Where(c => c.baseId.Equals(action.action)).First();
+
+                    if (target != null)
+                    {
+                        session.SetMenu(new Menus.DialogueMenu(target));
+                    }
+                }
+                else if (state.Equals("exit"))
+                {
+                    if (exits.Where(e => e.location.Equals(action.action)).Any())
+                    {
+                        Player? player = session.Player;
+                        if (player != null)
                         {
-                            //Avoids a glitch where 2 copies of a player would enter a room
-                            location.RemoveDuplicateCreatures();
+                            player.Move(action.action);
+
+                            Location? location = player.Location;
+                            if (location != null)
+                            {
+                                //Avoids a glitch where 2 copies of a player would enter a room
+                                location.RemoveDuplicateCreatures();
+                            }
+                        }
+
+                    }
+                }
+                else if (state.Equals("combat"))
+                {
+                    List<Attack> attacks = new(); //The list of attacks we'll check for
+                    attacks.AddRange(session.Player?.Weapon?.attacks.Values.ToArray() ?? Array.Empty<Attack>()); //Add all the attacks from the player's weapon
+
+                    foreach (Attack attack in attacks)
+                    {
+                        if (attack.id.Equals(action.action))
+                        {
+                            state = $"atktarget.{attack.weapon.id}.{attack.id}"; //State will use periods to separate data
+                            break;
                         }
                     }
+                }
+                else if (args[0].Equals("atk"))
+                {
+                    //args[1] is the weapon, args[2] is the attack, args[3] is the target
+                    List<ItemHolder<ItemTypes.Item>> weapons = new() //The list of ItemHolders we'll check for the weapon
+                    {
+                        session.Player?.mainHand
+                    };
 
+                    Weapon? weapon = weapons.Where(w => w.id.Equals(args[1])).First().Item as Weapon;
+                    if (weapon != null)
+                    {
+                        Attack? attack = weapon.attacks[args[2]];
+                        List<Creature> targets = attack?.getTargets(session.Player) ?? new();
+
+                        attack?.execute(session.Player, targets.Where(t => t.baseId.Equals(args[3])).First());
+
+                        state = "";
+                    }
+                    else Utils.Log("No weapon found");
                 }
             }
+        }  catch (Exception e)
+        {
+            Utils.Log($"Error handling input: {e.Message}\n{e.StackTrace}");
         }
     }
 
-    public string LookAround(Player player)
+    public string GetOverviewMsg(Player player)
     {
         string creatureList = "Around you are:";
         foreach (Creature c in creatures)
@@ -202,6 +277,15 @@ public abstract class Location
     void RemoveDuplicateCreatures()
     {
         creatures = creatures.Distinct().ToList();
+    }
+
+    /// <summary>
+    /// For each player in the location, log the provided message
+    /// </summary>
+    public void Log(string msg)
+    {
+        foreach (Player player in Players)
+            player.session?.Log(msg);
     }
 
 }
