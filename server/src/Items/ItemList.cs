@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ItemTypes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,6 +18,11 @@ namespace Items
         {
             ITEMS.TryGetValue(id, out ItemTypes.Item? item);
             return item as T;
+        }
+
+        public static Item? Get(string id)
+        {
+            return Get<Item>(id);
         }
     }
 }

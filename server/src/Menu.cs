@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 public abstract class Menu
 {
 
-    public Session session;
+    public Session? session;
 
     public virtual string Status => "In some menu";
-    public virtual bool ShowLocationSidebar => false;
+    public virtual bool ShowSidebar => false;
 
     public virtual void OnStart() { } //Should be overridden in child classes
 

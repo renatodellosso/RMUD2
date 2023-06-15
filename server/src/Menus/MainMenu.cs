@@ -164,6 +164,8 @@ namespace Menus
                 mainHand = new ItemHolder("spear")
             };
 
+            player.health = player.MaxHealth;
+
             account.playerId = player._id; //Make sure to set the ID!
             account.Update();
 

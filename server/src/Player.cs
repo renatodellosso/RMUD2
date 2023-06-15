@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 public class Player : Creature
 {
 
+    public override int MaxHealth => 10 + Constitution;
+
     //Static stuff
     static Dictionary<ObjectId, Player> players = new Dictionary<ObjectId, Player>();
     
@@ -49,6 +51,11 @@ public class Player : Creature
         if (_id != null)
             DB.players.ReplaceOneAsync(Builders<Player>.Filter.Eq("_id", _id), this);
         else Utils.Log("_id is null");
+    }
+
+    protected override void OnDie()
+    {
+        Move("afterlife");
     }
 
 }

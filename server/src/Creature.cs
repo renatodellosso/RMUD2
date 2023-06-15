@@ -17,7 +17,8 @@ public class Creature
     public Location? Location => GetLocation();
 
     public bool attackable = true;
-    public int health, maxHealth;
+    public int health;
+    public virtual int MaxHealth => 5 + Constitution;
 
     //Null for either means creature has no dialogue. The string is the dialogue state
     public Func<Session, DialogueMenu, Input[]>? talkInputs = null;
@@ -31,7 +32,7 @@ public class Creature
     public bool nameBold, nameUnderline, nameItalic;
 
     public ItemHolder<Item>? mainHand, offHand;
-    public Weapon? Weapon => mainHand?.Item as Weapon;
+    public virtual Weapon? Weapon => mainHand?.Item as Weapon;
 
     public Dictionary<AbilityScore, int> abilityScores = new()
     {
@@ -123,18 +124,41 @@ public class Creature
         }
     }
 
+    /// <summary>
+    /// Attacks using the default attack with the specified weapon
+    /// </summary>
     public void Attack(Creature target, Weapon weapon)
     {
-        
+        weapon?.Attack?.execute(this, target);
     }
 
     public int TakeDamage(int damage)
     {
         damage = Math.Clamp(damage, 0, health);
         health -= damage;
-        if (health < 0)
-            health = 0;
+        if (health <= 0)
+            Die();
         return damage;
+    }
+
+    void Die()
+    {
+        Utils.Log($"{name} died");
+
+        Player[] players = Location.Players;
+        foreach (Player player in players)
+        {
+            player.session?.Log($"{FormattedName} died");
+        }
+
+        OnDie();
+    }
+
+    protected virtual void OnDie()
+    {
+        Location?.creatures.Remove(this);
+        location = "";
+        Utils.OnTick -= Tick;
     }
 
 }

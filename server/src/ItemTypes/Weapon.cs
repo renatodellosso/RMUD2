@@ -10,6 +10,7 @@ namespace ItemTypes
     {
 
         public Dictionary<string, Attack> attacks = new();
+        public virtual Attack? Attack => attacks.Values.First();
 
         public Weapon(string id, string name, AbilityScore abilityScore, Die damage) : base(id, name)
         {

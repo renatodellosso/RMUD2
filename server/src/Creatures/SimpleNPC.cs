@@ -12,6 +12,9 @@ namespace Creatures
 
         public Action<Events.OnCreatureTickEventData>? onTick;
 
+        int maxHealth;
+        public override int MaxHealth => maxHealth;
+
         public SimpleNPC(string id, string name, string nameColor = "", Func<Session, DialogueMenu, Input[]>? talkInputs = null, Action<Session, ClientAction, DialogueMenu>? talkHandler = null, 
             Action<Session>? talkStart = null, int maxHealth = 0, Action<Events.OnCreatureTickEventData>? onTick = null) : base(id, name)
         {

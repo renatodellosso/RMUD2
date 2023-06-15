@@ -102,8 +102,14 @@ public class Session
         {
             text.Add($"User: {player.name}");
 
-            if (menu.ShowLocationSidebar)
+            if (menu.ShowSidebar)
             {
+                string color = "green";
+                if (player.health < player.MaxHealth * .25) color = "red";
+                else if(player.health < player.MaxHealth * .5) color = "orange";
+                else if (player.health < player.MaxHealth * .75) color = "yellow";
+                text.Add($"HP: {Utils.Style($"{player.health}/{player.MaxHealth}",color)}");
+
                 Location? location = player.Location;
                 if (location != null)
                 {

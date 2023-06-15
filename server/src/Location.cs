@@ -12,7 +12,8 @@ public abstract class Location
 
     private static Dictionary<string, Location> locations = new()
     {
-        { "intro", new IntroLocation() }
+        { "intro", new Locations.Intro() },
+        { "afterlife", new Locations.Afterlife() }
     };
 
     public static Location? Get(string name)
