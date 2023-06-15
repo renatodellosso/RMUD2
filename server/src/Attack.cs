@@ -45,11 +45,16 @@ public class Attack
     {
         Utils.Log($"Executing attack {id} on {target.baseId} from {attacker.baseId}!");
 
+        int atkBonus = AttackBonus(attacker);
         //We add 1, since RandInt(20) returns a number from 0 to 19, and we want 1 to 20
-        int roll = Utils.RandInt(20) + 1 + AttackBonus(attacker);
+        int roll = Utils.RandInt(20) + 1 + atkBonus;
 
-        if (roll > target.DodgeThreshold)
+        if (attacker is Player)
+            ((Player)attacker).session?.Log($"{(roll - atkBonus)} + {atkBonus} = {roll} {(roll >= target.DodgeThreshold ? "Hit!" : "Miss!")}");
+
+        if (roll >= target.DodgeThreshold)
         {
+
             //Hit
             int damage = RollDamage(attacker, target);
             damage = target.TakeDamage(damage);

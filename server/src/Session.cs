@@ -108,7 +108,8 @@ public class Session
                 if (player.health < player.MaxHealth * .25) color = "red";
                 else if(player.health < player.MaxHealth * .5) color = "orange";
                 else if (player.health < player.MaxHealth * .75) color = "yellow";
-                text.Add($"HP: {Utils.Style($"{player.health}/{player.MaxHealth}",color)}");
+                text.Add($"HP: {Utils.Style($"{player.health}/{player.MaxHealth}",color)}<br>" +
+                    $"DT: {player.DodgeThreshold}");
 
                 Location? location = player.Location;
                 if (location != null)
@@ -117,7 +118,7 @@ public class Session
                     text.Add(location?.GetOverviewMsg(player));
                 }
 
-                text.Add($"Main Hand: {player.mainHand?.Item?.FormattedName ?? "Empty" }<br>\n" +
+                text.Add($"Main Hand: {player.mainHand?.Item?.FormattedName ?? "Empty" }<br>" +
                          $"Off Hand: {player.offHand?.Item?.FormattedName ?? "Empty"}");
             }
         }
