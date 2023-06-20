@@ -44,6 +44,8 @@ public abstract class Location
 
     public List<Exit> exits = new();
 
+    public List<WorldObject> objects = new();
+
     public void Enter(Creature creature, Location? from)
     {
         //Prevent duplicates
@@ -115,6 +117,11 @@ public abstract class Location
 
         if(state.Equals("") || args.Length == 0)
         {
+            //The order we add these determines the order they appear in
+            //We want to add the most common options first, but keep exit last
+            inputs.Add(new(InputMode.Option, "look", "Look around"));
+            inputs.Add(new(InputMode.Option, "combat", "Combat"));
+
             //Dialogue
             List<Creature> dialogueCreatures = new();
             foreach (Creature creature in creatures)
@@ -122,8 +129,7 @@ public abstract class Location
             if (dialogueCreatures.Any())
                 inputs.Add(new(InputMode.Option, "talk", "Talk"));
 
-            inputs.Add(new(InputMode.Option, "look", "Look around"));
-            inputs.Add(new(InputMode.Option, "combat", "Combat"));
+            if (objects.Any()) inputs.Add(new(InputMode.Option, "interact", "Interact with objects"));
             inputs.Add(new(InputMode.Option, "exit", "Exit"));
         }
         else
@@ -166,6 +172,18 @@ public abstract class Location
                         inputs.Add(new(InputMode.Option, $"atk.{weapon.id}.{attack?.id}.{target.baseId}", target.FormattedName));
                 }
             }
+            else if (args[0].Equals("interact"))
+            {
+                if(args.Length == 1)
+                    foreach (WorldObject obj in objects)
+                        inputs.Add(new(InputMode.Option, obj.id, obj.FormattedName));
+                else if (args.Length == 2)
+                {
+                    WorldObject? obj = objects.Where(o => o.id.Equals(args[1])).First();
+                    if (obj != null)
+                        inputs.AddRange(obj.GetInputs(session.Player, state));
+                }
+            }
         }
 
         return inputs.ToArray();
@@ -188,6 +206,8 @@ public abstract class Location
                     session.Log(GetOverviewMsg(session.Player));
                 else if (action.action.Equals("combat"))
                     state = "combat";
+                else if (action.action.Equals("interact"))
+                    state = "interact";
                 else
                     Utils.Log("Invalid action: " + action.action);
             }
@@ -256,6 +276,23 @@ public abstract class Location
                         state = "";
                     }
                     else Utils.Log("No weapon found");
+                }
+                else if (args[0].Equals("interact"))
+                {
+                    if (args.Length == 1)
+                        foreach(WorldObject obj in objects)
+                        {
+                            if(obj.id.Equals(action.action))
+                            {
+                                state = "interact." + obj.id;
+                                break;
+                            }
+                        }
+                    else if (args.Length == 2)
+                    {
+                        WorldObject obj = objects.Where(o => o.id.Equals(args[1])).First();
+                        obj?.HandleInput(session, action, ref state); //Only if we actually found the object
+                    }
                 }
             }
         }  catch (Exception e)

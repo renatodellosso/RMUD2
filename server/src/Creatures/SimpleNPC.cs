@@ -53,5 +53,10 @@ namespace Creatures
             }
         }
 
+        protected override void OnDie()
+        {
+            base.OnDie();
+        }
+
     }
 }
