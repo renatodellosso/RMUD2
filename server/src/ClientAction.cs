@@ -16,7 +16,12 @@ public class ClientAction
     private Session? GetSession()
     {
         if (token.Equals("")) return null;
-        else return Session.sessions[SessionId];
+        else
+        {
+            Session.sessions.TryGetValue(SessionId, out Session? session);
+            if (session == null) return null;
+            return session;
+        }
     }
 
 }

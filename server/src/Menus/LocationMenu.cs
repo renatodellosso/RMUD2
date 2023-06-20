@@ -12,8 +12,6 @@ namespace Menus
         public override string Status => session.Player.Location.status;
         public override bool ShowSidebar => true;
 
-        public string state = "";
-
         public LocationMenu(Session session)
         {
             this.session = session;

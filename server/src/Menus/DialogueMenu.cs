@@ -9,7 +9,6 @@ namespace Menus
     public class DialogueMenu : Menu
     {
         //Set state to "exit" to exit dialogue
-        public string state = "";
 
         public Creature creature;
 

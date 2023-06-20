@@ -127,7 +127,9 @@ public static class Network
 
         if (action != null)
         {
-            if (!action.action.Equals("heartbeat")) Utils.Log($"Received HTTP request. Action: {action.action}");
+            if (!action.action.Equals("heartbeat"))
+                Utils.Log($"Received HTTP request. Action: {action.action}, State: " +
+                    $"{(action.Session != null ? action.Session.menu.state : "N/A")}");
 
             if (defaultClientActions.ContainsKey(action.action))
             {

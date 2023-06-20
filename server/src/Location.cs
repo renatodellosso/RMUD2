@@ -162,7 +162,8 @@ public abstract class Location
                     session.Player?.mainHand
                 };
 
-                Weapon? weapon = weapons.Where(w => w.id.Equals(args[1])).First().Item as Weapon;
+                IEnumerable<ItemHolder<Item>> found = weapons.Where(w => w.id.Equals(args[1]));
+                Weapon? weapon = found.First().Item as Weapon;
                 if (weapon != null)
                 {
                     Attack? attack = weapon.attacks[args[2]];
@@ -213,7 +214,9 @@ public abstract class Location
             }
             else
             {
-                if (action.action.Equals("back")) state = "";
+
+                if (action.action.Equals("back"))
+                    state = "";
 
                 if (state.Equals("talk"))
                 {
@@ -260,7 +263,7 @@ public abstract class Location
                 else if (args[0].Equals("atk"))
                 {
                     //args[1] is the weapon, args[2] is the attack, args[3] is the target
-                    List<ItemHolder<ItemTypes.Item>> weapons = new() //The list of ItemHolders we'll check for the weapon
+                    List<ItemHolder<Item>> weapons = new() //The list of ItemHolders we'll check for the weapon
                     {
                         session.Player?.mainHand
                     };
@@ -288,7 +291,7 @@ public abstract class Location
                                 break;
                             }
                         }
-                    else if (args.Length == 2)
+                    else if (args.Length >= 2)
                     {
                         WorldObject obj = objects.Where(o => o.id.Equals(args[1])).First();
                         obj?.HandleInput(session, action, ref state); //Only if we actually found the object
