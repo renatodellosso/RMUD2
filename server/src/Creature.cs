@@ -132,13 +132,18 @@ public class Creature
         weapon?.Attack?.execute(this, target);
     }
 
-    public int TakeDamage(int damage)
+    public int CalculateDamage(int damage)
     {
         damage = Math.Clamp(damage, 0, health);
+        return damage;
+    }
+
+    public void TakeDamage(int damage, bool calculateDamage = false)
+    {
+        if(calculateDamage) damage = CalculateDamage(damage);
         health -= damage;
         if (health <= 0)
             Die();
-        return damage;
     }
 
     void Die()

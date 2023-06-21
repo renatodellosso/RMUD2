@@ -1,11 +1,4 @@
-﻿using Items;
-using ItemTypes;
-using MongoDB.Driver.Core.Misc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ItemTypes;
 
 public abstract class Location
 {
@@ -38,6 +31,7 @@ public abstract class Location
     //Actual class data below
 
     public string id = "unnamedLocation", name = "Unnamed Location", status = "The void";
+    protected virtual string Description => "";
 
     public List<Creature> creatures = new();
     public Player[] Players => creatures.Where(c => c is Player).Select(c => (Player)c).ToArray(); //.Select is used to transform each element
@@ -51,8 +45,6 @@ public abstract class Location
         //Prevent duplicates
         if (creatures.Contains(creature))
             return;
-        
-        Utils.Log($"{creature.name} enters {id} from {creature.location}");
 
         creatures.Add(creature);
 
@@ -60,6 +52,7 @@ public abstract class Location
 
         if (creature is Player)
         {
+            Utils.Log($"Player {creature.name} enters {id} from {creature.location}");
             Player player = (Player)creature;
 
             if (player.session == null)
@@ -68,7 +61,7 @@ public abstract class Location
                 player.session = Session.sessions.Where(s => s.Value.playerId.Equals(player._id)).First().Value;
             }
 
-            if(player.session != null)
+            if (player.session != null)
                 player.session.Log($"You enter {name}");
             else Utils.Log($"Player {player._id} has no session!");
 
@@ -115,7 +108,7 @@ public abstract class Location
         string[] args = state.Split('.');
         List<Input> inputs = new List<Input>();
 
-        if(state.Equals("") || args.Length == 0)
+        if (state.Equals("") || args.Length == 0)
         {
             //The order we add these determines the order they appear in
             //We want to add the most common options first, but keep exit last
@@ -136,28 +129,28 @@ public abstract class Location
         {
             inputs.Add(new(InputMode.Option, "back", "< Back"));
 
-            if(state.Equals("talk"))
+            if (state.Equals("talk"))
             {
                 foreach (Creature creature in creatures)
                     if (creature.HasDialogue) inputs.Add(new(InputMode.Option, creature.baseId, creature.FormattedName));
             }
-            else if(state.Equals("exit"))
+            else if (state.Equals("exit"))
             {
                 foreach (Exit exit in exits)
-                    if(exit != null && Get(exit.location) != null)
+                    if (exit != null && Get(exit.location) != null)
                         inputs.Add(new(InputMode.Option, exit.location, Get(exit.location).name));
             }
-            else if(state.Equals("combat"))
+            else if (state.Equals("combat"))
             {
                 Attack[] attacks = session.Player?.Weapon?.attacks.Values.ToArray() ?? Array.Empty<Attack>(); //Use Array.Empty instead of new Attack[0] to avoid allocating memory
-                foreach(Attack attack in attacks)
+                foreach (Attack attack in attacks)
                     inputs.Add(new(InputMode.Option, attack.id, attack.name));
             }
             else if (args[0].Equals("atktarget"))
             {
                 //args[1] is the weapon, args[2] is the attack
 
-                List<ItemHolder<ItemTypes.Item>> weapons = new() //The list of ItemHolders we'll check for the weapon
+                List<ItemHolder<Item>> weapons = new() //The list of ItemHolders we'll check for the weapon
                 {
                     session.Player?.mainHand
                 };
@@ -169,20 +162,21 @@ public abstract class Location
                     Attack? attack = weapon.attacks[args[2]];
                     List<Creature> targets = attack?.getTargets(session.Player) ?? new();
 
-                    foreach(Creature target in targets)
+                    foreach (Creature target in targets)
                         inputs.Add(new(InputMode.Option, $"atk.{weapon.id}.{attack?.id}.{target.baseId}", target.FormattedName));
                 }
             }
             else if (args[0].Equals("interact"))
             {
-                if(args.Length == 1)
+                if (args.Length == 1)
                     foreach (WorldObject obj in objects)
                         inputs.Add(new(InputMode.Option, obj.id, obj.FormattedName));
-                else if (args.Length == 2)
+                else if (args.Length >= 2)
                 {
                     WorldObject? obj = objects.Where(o => o.id.Equals(args[1])).First();
                     if (obj != null)
                         inputs.AddRange(obj.GetInputs(session.Player, state));
+                    else Utils.Log($"Object {args[1]} not found!");
                 }
             }
         }
@@ -191,11 +185,11 @@ public abstract class Location
     }
 
     //We pass a ref to state so we can modify it
-    public virtual void HandleInputs(Session session, ClientAction action, ref string state)
+    public virtual void HandleInputs(Session session, ClientAction action, ref string state, List<string> prevStates, ref bool addStateToPrev)
     {
         try
         {
-            string[] args = action.action.Split('.');
+            string[] args = action.action.Split('.'), stateArgs = state.Split('.');
 
             if (state.Equals("") || args.Length == 0)
             {
@@ -214,10 +208,6 @@ public abstract class Location
             }
             else
             {
-
-                if (action.action.Equals("back"))
-                    state = "";
-
                 if (state.Equals("talk"))
                 {
                     Creature target = creatures.Where(c => c.baseId.Equals(action.action)).First();
@@ -280,39 +270,70 @@ public abstract class Location
                     }
                     else Utils.Log("No weapon found");
                 }
-                else if (args[0].Equals("interact"))
+                else if (stateArgs[0].Equals("interact"))
                 {
-                    if (args.Length == 1)
-                        foreach(WorldObject obj in objects)
+                    if (stateArgs.Length == 1)
+                        foreach (WorldObject obj in objects)
                         {
-                            if(obj.id.Equals(action.action))
+                            if (obj.id.Equals(action.action))
                             {
                                 state = "interact." + obj.id;
                                 break;
                             }
                         }
-                    else if (args.Length >= 2)
+                    else if (stateArgs.Length >= 2)
                     {
-                        WorldObject obj = objects.Where(o => o.id.Equals(args[1])).First();
-                        obj?.HandleInput(session, action, ref state); //Only if we actually found the object
+                        IEnumerable<WorldObject?> objs = objects.Where(o => o.id.Equals(stateArgs[1]));
+                        WorldObject? obj = objs.FirstOrDefault();
+                        if (obj != null)
+                            obj?.HandleInput(session, action, ref state); //Only if we actually found the object
+                        else Utils.Log($"Object {args[0]}");
                     }
                 }
+
+                //Set action.action to back to go back a state
+                if (action.action.Equals("back"))
+                {
+                    if (prevStates.Any())
+                    {
+                        state = prevStates.Last();
+                        prevStates.Remove(prevStates.Last());
+                        addStateToPrev = false;
+                    }
+                    else
+                        state = "";
+                }
             }
-        }  catch (Exception e)
+        }
+        catch (Exception e)
         {
             Utils.Log($"Error handling input: {e.Message}\n{e.StackTrace}");
         }
     }
 
-    public string GetOverviewMsg(Player player)
+    protected string GetOverviewMsg(Player player)
     {
-        string creatureList = "Around you are:";
-        foreach (Creature c in creatures)
+        string overview = Description;
+
+        overview += "\n" + GetCreatureListMessage(player);
+
+        return overview;
+    }
+
+    public string GetCreatureListMessage(Player player)
+    {
+        if (creatures.Where(c => c != player).Any()) //If there are creatures other than the player
         {
-            if (c != player) //Don't list the player
-                creatureList += $"<br>-{c.FormattedName}";
+            string creatureList = "Around you are:";
+            foreach (Creature c in creatures)
+            {
+                if (c != player) //Don't list the player
+                    creatureList += $"<br>-{c.FormattedName}";
+            }
+
+            return creatureList;
         }
-        return creatureList;
+        else return "You are alone.";
     }
 
     void RemoveDuplicateCreatures()

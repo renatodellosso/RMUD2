@@ -17,6 +17,11 @@ namespace WorldObjects
             inventory.Add(items);
         }
 
+        public Container(string id, string name) : this(id, name, Array.Empty<ItemHolder>())
+        {
+
+        }
+
         public override List<Input> GetInputs(Player player, string state)
         {
             string[] args = state.Split('.');
@@ -35,7 +40,21 @@ namespace WorldObjects
 
         public override void HandleInput(Session session, ClientAction action, ref string state)
         {
+            string[] args = state.Split('.');
 
+            if(CanAccess(session.Player))
+            {
+                if (args.Length == 2)
+                {
+                    //Item not specified
+
+                }
+            }
+            else
+            {
+                session.Log($"You cannot access {FormattedName}");
+                action.action = "back"; //Automatically go back a state
+            }
         }
 
         protected virtual bool CanAccess(Creature creature)

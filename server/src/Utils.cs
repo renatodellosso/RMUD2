@@ -180,7 +180,7 @@ public static class Utils
     public static event Action<int>? OnTick;
     public static void Tick() //We can't invoke OnTick outside of this class, so we need a method to do it
     {
-        Log($"Ticking... (Tick #{tickCount})");
+        //Log($"Ticking... (Tick #{tickCount})");
         OnTick?.Invoke(tickCount);
         Log($"Tick #{tickCount} complete");
 

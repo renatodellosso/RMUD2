@@ -10,6 +10,7 @@ public abstract class Menu
     public Session? session;
 
     public string state = "";
+    public List<string> prevStates = new();
 
     public virtual string Status => "In some menu";
     public virtual bool ShowSidebar => false;

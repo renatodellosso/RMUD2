@@ -40,11 +40,18 @@ namespace Menus
 
         public override void HandleInput(ClientAction action, ServerResponse response)
         {
+            string origState = state;
+
             Player? player = session.Player;
 
             if (player == null || player.Location == null) return;
 
-            player.Location.HandleInputs(session, action, ref state);
+            bool addStateToPrev = true;
+            player.Location.HandleInputs(session, action, ref state, prevStates, ref addStateToPrev);
+
+            //If state changed, add the old state to the stack
+            if(origState != state && addStateToPrev)
+                prevStates.Add(origState);
         }
 
     }

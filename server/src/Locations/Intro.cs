@@ -9,12 +9,15 @@ namespace Locations
     public class Intro : Location
     {
 
+        protected override string Description => "You are standing in a small, ruined courtyard. To the north lies two statues, one a knight and the other an unknown figure in hooded robes. " +
+                    "Between them is a tunnel into the mountain.";
+
         public Intro()
         {
             id = "intro";
             name = "Outside the dungeon";
 
-            creatures.Add(new Creatures.SimpleNPC("shadowyFigure", "Shadowy Figure", talkInputs: (session, menu) =>
+            creatures.Add(new Creatures.SimpleNPC("shadowyFigure", "Shadowy Figure", nameColor: "blue", talkInputs: (session, menu) =>
             {
                 //Get inputs for dialogue
                 List<Input> inputs = new();
@@ -54,17 +57,6 @@ namespace Locations
         {
             //Add the exit to and from the dungeon
             Exit.AddExit(this, Get(Dungeon.startLocation), "N", false);
-        }
-
-        public override void OnEnter(Creature creature)
-        {
-            if (creature is Player)
-            {
-                Player player = (Player)creature;
-
-                player?.session?.Log("You are standing in a small, ruined courtyard. To the north lies two statues, one a knight and the other an unknown figure in hooded robes. " +
-                    "Between them is a tunnel into the mountain.");
-            }
         }
 
     }

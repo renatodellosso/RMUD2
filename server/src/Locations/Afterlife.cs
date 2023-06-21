@@ -9,20 +9,12 @@ namespace Locations
     public class Afterlife : Location
     {
 
+        protected override string Description => "The universe floats around you as the lingering pain from your death fades.";
+
         public Afterlife()
         {
             id = "afterlife";
             name = "The Afterlife";
-        }
-
-        public override void OnEnter(Creature creature)
-        {
-            if (creature is Player)
-            {
-                Player player = (Player)creature;
-
-                player?.session?.Log("The universe floats around you as the lingering pain from your death fades.");
-            }
         }
 
     }

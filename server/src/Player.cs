@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 public class Player : Creature
 {
 
-    public override int MaxHealth => 10 + Constitution;
+    public override int MaxHealth => 20 + Constitution * 2;
 
     //Static stuff
     static Dictionary<ObjectId, Player> players = new Dictionary<ObjectId, Player>();
@@ -55,7 +55,7 @@ public class Player : Creature
 
     protected override void OnDie()
     {
-        Move("afterlife");
+        if(!location.Equals("afterlife")) Move("afterlife");
     }
 
 }

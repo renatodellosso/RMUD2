@@ -55,6 +55,8 @@ namespace Creatures
 
         protected override void OnDie()
         {
+            //Create a corpse
+            Location.objects.Add(new WorldObjects.Corpse(this));
             base.OnDie();
         }
 
