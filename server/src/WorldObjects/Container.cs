@@ -12,12 +12,12 @@ namespace WorldObjects
 
         Inventory inventory = new();
 
-        public Container(string id, string name, ItemHolder[] items) : base(id, name)
+        public Container(string id, string name, ItemHolder<Item>[] items) : base(id, name)
         {
             inventory.Add(items);
         }
 
-        public Container(string id, string name) : this(id, name, Array.Empty<ItemHolder>())
+        public Container(string id, string name) : this(id, name, Array.Empty<ItemHolder<Item>>())
         {
 
         }
@@ -31,8 +31,10 @@ namespace WorldObjects
             {
                 //If no item specifier is present
                 if(args.Length == 2)
-                    foreach(ItemHolder item in inventory)
-                        inputs.Add(new(InputMode.Option, item.uid, item.FormattedName));
+                    for(int i = 0; i < inventory.Count; i++)
+                        inputs.Add(new(InputMode.Option, i.ToString(), inventory[i].FormattedName));
+                else if(args.Length == 3)
+                    inputs.Add(new(InputMode.Option, "take", "Take"));
             }
 
             return inputs;
@@ -46,8 +48,38 @@ namespace WorldObjects
             {
                 if (args.Length == 2)
                 {
-                    //Item not specified
+                    //Item not yet specified
+                    int index = -1;
+                    try
+                    {
+                        index = int.Parse(action.action);
+                    } catch
+                    {
+                        session.Log("Invalid index");
+                        return;
+                    }
 
+                    if(index < 0 || index >= inventory.Count)
+                    {
+                        session.Log("Invalid index");
+                        return;
+                    }
+
+                    ItemHolder<Item> item = inventory[index];
+                    session.Log(item.Item.Overview);
+                    state += "." + index;
+                }
+                else if(args.Length == 3)
+                {
+                    //Item specified
+                    if(action.action.Equals("take"))
+                    {
+                        ItemHolder<Item>? leftOver = session.Player.inventory.Add(inventory[int.Parse(args[2])]); //Try to add the item to the player's inventory
+                        if(leftOver != null)
+                        {
+                            session.Log($"You cannot carry any more {leftOver.Item.name}");
+                        }
+                    }
                 }
             }
             else

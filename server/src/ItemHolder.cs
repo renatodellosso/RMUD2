@@ -11,7 +11,6 @@ public class ItemHolder<T> where T : ItemTypes.Item
 {
 
     public string id;
-    public string uid = ObjectId.GenerateNewId().ToString();
 
     public int amt { //Amount
         get => (int)data.GetValueOrDefault("amt", 1);
@@ -34,32 +33,27 @@ public class ItemHolder<T> where T : ItemTypes.Item
 
     public ItemHolder<T> Clone()
     {
-        Utils.Log("Cloning item...");
         ItemHolder<T> clone = new(id, amt);
-        Utils.Log("Copying data...");
 
         //Copy data
         foreach(KeyValuePair<string, object> pair in data)
         {
-            Utils.Log($"Copying {pair.Key}...");
-            clone.data.TryAdd(pair.Key, pair.Value);
-            clone.data[pair.Key] = pair.Value;
+            try
+            {
+                clone.data.Add(pair.Key, pair.Value); //Throws an exception if the key already exists
+            }
+            catch
+            {
+                clone.data[pair.Key] = pair.Value;
+            }
         }
-        
+
         return clone;
     }
 
-    public static implicit operator ItemHolder(ItemHolder<T> holder)
+    public static implicit operator ItemHolder<ItemTypes.Item>(ItemHolder<T> holder)
     {
-        return (ItemHolder)holder;
-    } 
-
-}
-
-//We can't specify a default type, so we use this
-public class ItemHolder : ItemHolder<ItemTypes.Item>
-{
-    public ItemHolder(string id) : base(id)
-    {
+        return holder;
     }
+
 }

@@ -79,9 +79,9 @@ public static class AI
     {
         List<ChatMessage> messages = new()
         {
-            new("user", $"Create a one sentence flavor message for Zombie 2 in a medieval game"),
+            new("user", $"Create a one sentence status message for Zombie 2 in a medieval game"),
             new("assistant", $"Zombie 2 groans"),
-            new("user", $"Create a one sentence flavor message for {creature.name}")// in a medieval game")
+            new("user", $"Create a one sentence status message for {creature.name}")// in a medieval game")
         };
 
         //ContinueWith runs the code in the lambda after the task is finished

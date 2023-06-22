@@ -56,6 +56,21 @@ public class Creature
 
     public int DodgeThreshold => 10 + Agility;
 
+    //Allows us to specify a calculation for MaxWeight
+    public class CreatureInventory : Inventory
+    {
+        Creature creature;
+
+        public override float MaxWeight => 40 + creature.Strength * 5;
+
+        public CreatureInventory(Creature creature)
+        {
+            this.creature = creature;
+        }
+    }
+
+    public CreatureInventory inventory;
+
     public Creature(string id, string name)
     {
         Utils.OnTick += Tick;
@@ -75,6 +90,8 @@ public class Creature
         baseId = id;
         this.name = name;
         //Utils.Log($"ID: {baseId}, Counter: {counter}");
+
+        inventory = new CreatureInventory(this);
     }
 
     Location? GetLocation()

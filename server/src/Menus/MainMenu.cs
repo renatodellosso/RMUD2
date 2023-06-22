@@ -161,7 +161,7 @@ namespace Menus
                 location = Config.START_LOCATION,
                 name = account.username,
                 baseId = account.username,
-                mainHand = new ItemHolder("spear")
+                mainHand = new ItemHolder<Item>("spear")
             };
 
             player.health = player.MaxHealth;
