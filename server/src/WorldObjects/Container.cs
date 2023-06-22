@@ -44,48 +44,52 @@ namespace WorldObjects
         {
             string[] args = state.Split('.');
 
-            if(CanAccess(session.Player))
+            if (!action.action.Equals("back"))
             {
-                if (args.Length == 2)
+                if (CanAccess(session.Player))
                 {
-                    //Item not yet specified
-                    int index = -1;
-                    try
+                    if (args.Length == 2)
                     {
-                        index = int.Parse(action.action);
-                    } catch
-                    {
-                        session.Log("Invalid index");
-                        return;
-                    }
-
-                    if(index < 0 || index >= inventory.Count)
-                    {
-                        session.Log("Invalid index");
-                        return;
-                    }
-
-                    ItemHolder<Item> item = inventory[index];
-                    session.Log(item.Item.Overview);
-                    state += "." + index;
-                }
-                else if(args.Length == 3)
-                {
-                    //Item specified
-                    if(action.action.Equals("take"))
-                    {
-                        ItemHolder<Item>? leftOver = session.Player.inventory.Add(inventory[int.Parse(args[2])]); //Try to add the item to the player's inventory
-                        if(leftOver != null)
+                        //Item not yet specified
+                        int index = -1;
+                        try
                         {
-                            session.Log($"You cannot carry any more {leftOver.Item.name}");
+                            index = int.Parse(action.action);
+                        }
+                        catch
+                        {
+                            session.Log("Invalid index");
+                            return;
+                        }
+
+                        if (index < 0 || index >= inventory.Count)
+                        {
+                            session.Log("Invalid index");
+                            return;
+                        }
+
+                        ItemHolder<Item> item = inventory[index];
+                        session.Log(item.Item.Overview);
+                        state += "." + index;
+                    }
+                    else if (args.Length == 3)
+                    {
+                        //Item specified
+                        if (action.action.Equals("take"))
+                        {
+                            ItemHolder<Item>? leftOver = session.Player.inventory.Add(inventory[int.Parse(args[2])]); //Try to add the item to the player's inventory
+                            if (leftOver != null)
+                            {
+                                session.Log($"You cannot carry any more {leftOver.Item.name}");
+                            }
                         }
                     }
                 }
-            }
-            else
-            {
-                session.Log($"You cannot access {FormattedName}");
-                action.action = "back"; //Automatically go back a state
+                else
+                {
+                    session.Log($"You cannot access {FormattedName}");
+                    action.action = "back"; //Automatically go back a state
+                }
             }
         }
 

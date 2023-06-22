@@ -131,48 +131,61 @@ namespace Menus
 
                         Player.Add(player); //Register the player as active
 
+                        player.CalculateStats();
+
                         session.ClearLog();
                         session.SetMenu(new LocationMenu(session));
 
                         player.Location.Enter(player, null);
                     }
-                    else session.Log(Utils.Style("Encountered an error", "red"));
+                    else session.Log(Utils.Style("Encountered an error: Player is null", "red"));
                 }
-                else session.Log(Utils.Style("Encountered an error", "red"));
+                else session.Log(Utils.Style("Encountered an error: Account is null", "red"));
             } catch (Exception ex) 
             {
-                Utils.Log($"Error: {ex.Message} {ex.StackTrace}");
-                session.Log(Utils.Style("Encountered an error", "red"));
+                Utils.Log($"Error in MainMenu.Play(): {ex.Message} {ex.StackTrace}");
+                session.Log(Utils.Style("Encountered an uncaught error", "red"));
             }
         }
 
         public void InitPlayer()
         {
-            Account account = session.Account;
-
-            //Account doesn't have a player, we need to make a new one
-            Utils.Log($"Creating new player for {account.username}...");
-            session.Log("Setting up new game...");
-
-            Player player = new(account._id)
+            try
             {
-                accountId = account._id,
-                session = session,
-                location = Config.START_LOCATION,
-                name = account.username,
-                baseId = account.username,
-                mainHand = new ItemHolder<Item>("spear")
-            };
+                Account account = session.Account;
 
-            player.health = player.MaxHealth;
+                //Account doesn't have a player, we need to make a new one
+                Utils.Log($"Creating new player for {account.username}...");
+                session.Log("Setting up new game...");
 
-            account.playerId = player._id; //Make sure to set the ID!
-            account.Update();
+                Player player = new(account._id)
+                {
+                    accountId = account._id,
+                    session = session,
+                    location = Config.START_LOCATION,
+                    name = account.username,
+                    baseId = account.username,
+                    mainHand = new ItemHolder<Item>("spear")
+                };
 
-            session.playerId = player._id;
+                player.health = player.MaxHealth;
 
-            DB.players.InsertOne(player);
-            Utils.Log($"Finished creating new player for {account.username}");
+                player.CalculateStats();
+
+                account.playerId = player._id; //Make sure to set the ID!
+                account.Update();
+
+                session.playerId = player._id;
+
+                DB.players.InsertOne(player);
+                Utils.Log($"Finished creating new player for {account.username}");
+                session.Log("Finished setting up new game");
+            } 
+            catch(Exception e)
+            {
+                Utils.Log($"Error in MainMenu.InitPlayer(): {e.Message} {e.StackTrace}");
+                session.Log(Utils.Style("Encountered an error: Error with initializing player", "red"));
+            }
         }
 
     }

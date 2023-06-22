@@ -65,8 +65,9 @@ public static class DB
             try
             {
                 return players.FindSync(Builders<Player>.Filter.Eq("_id", id)).First();
-            } catch 
+            } catch (Exception e)
             { 
+                Utils.Log(e.Message);
                 return null;
             }
         }

@@ -54,22 +54,10 @@ public class Creature
     public int Wisdom => abilityScores[AbilityScore.Wisdom];
     public int Charisma => abilityScores[AbilityScore.Charisma];
 
-    public int DodgeThreshold => 10 + Agility;
+    public virtual int DodgeThreshold => 10 + Agility;
+    public virtual int MaxCarryWeight => 40 + Strength * 5;
 
-    //Allows us to specify a calculation for MaxWeight
-    public class CreatureInventory : Inventory
-    {
-        Creature creature;
-
-        public override float MaxWeight => 40 + creature.Strength * 5;
-
-        public CreatureInventory(Creature creature)
-        {
-            this.creature = creature;
-        }
-    }
-
-    public CreatureInventory inventory;
+    public Inventory inventory = new();
 
     public Creature(string id, string name)
     {
@@ -91,7 +79,13 @@ public class Creature
         this.name = name;
         //Utils.Log($"ID: {baseId}, Counter: {counter}");
 
-        inventory = new CreatureInventory(this);
+        CalculateStats();
+    }
+
+    //Runs during deserialization
+    public Creature()
+    {
+        CalculateStats();
     }
 
     Location? GetLocation()
@@ -181,6 +175,12 @@ public class Creature
         Location?.creatures.Remove(this);
         location = "";
         Utils.OnTick -= Tick;
+    }
+
+    //There's some stuff, like max inventory weight, where there's just not a good way auto-calculate the values, so we have to do it manually here
+    public virtual void CalculateStats()
+    {
+        inventory.maxWeight = MaxCarryWeight;
     }
 
 }

@@ -48,6 +48,7 @@ public class Player : Creature
 
     public void Update()
     {
+        CalculateStats();
         if (_id != null)
             DB.players.ReplaceOneAsync(Builders<Player>.Filter.Eq("_id", _id), this);
         else Utils.Log("_id is null");
