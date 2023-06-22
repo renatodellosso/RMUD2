@@ -34,8 +34,18 @@ public class ItemHolder<T> where T : ItemTypes.Item
 
     public ItemHolder<T> Clone()
     {
-        ItemHolder<T> clone = new ItemHolder<T>(id, amt);
-        clone.data = data.ToDictionary(entry => entry.Key, entry => entry.Value); //Copies the data
+        Utils.Log("Cloning item...");
+        ItemHolder<T> clone = new(id, amt);
+        Utils.Log("Copying data...");
+
+        //Copy data
+        foreach(KeyValuePair<string, object> pair in data)
+        {
+            Utils.Log($"Copying {pair.Key}...");
+            clone.data.TryAdd(pair.Key, pair.Value);
+            clone.data[pair.Key] = pair.Value;
+        }
+        
         return clone;
     }
 

@@ -55,6 +55,7 @@ public class Player : Creature
 
     protected override void OnDie()
     {
+        health = MaxHealth;
         if(!location.Equals("afterlife")) Move("afterlife");
     }
 

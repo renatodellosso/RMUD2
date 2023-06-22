@@ -24,23 +24,29 @@ namespace Creatures
 
         void OnTick()
         {
-            if(Weapon != null && Utils.tickCount % attackInterval == 0)
+            try
             {
-                //Attack a random player
-                List<Player> players = Location.Players.ToList();
-                if (players.Count > 0)
+                if (Weapon != null && Utils.tickCount % attackInterval == 0)
                 {
-                    Utils.Log($"{name} attacks!");
-                    Player player = players[Utils.RandInt(players.Count)];
-                    Attack(player, Weapon);
+                    //Attack a random player
+                    List<Player> players = Location.Players.ToList();
+                    if (players.Count > 0)
+                    {
+                        Utils.Log($"{name} attacks!");
+                        Player player = players[Utils.RandInt(players.Count)];
+                        Attack(player, Weapon);
+                    }
                 }
+
+                if (Utils.tickCount % 3 == 0 && Utils.RandFloat() < .05f)
+                    MoveThroughRandomExit();
+
+                //Flavor messages
+                FlavorMessage();
+            } catch(Exception e)
+            {
+                Utils.Log(e.Message + "\n" + e.StackTrace);
             }
-
-            if (Utils.tickCount % 3 == 0 && Utils.RandFloat() < .05f)
-                MoveThroughRandomExit();
-
-            //Flavor messages
-            FlavorMessage();
         }
 
     }

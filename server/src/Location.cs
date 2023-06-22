@@ -1,13 +1,16 @@
 ﻿using ItemTypes;
+using System.Collections.Concurrent;
 
 public abstract class Location
 {
 
-    private static Dictionary<string, Location> locations = new()
+    //We use ConcurrentDictionary instead of Dictionary because it is thread-safe
+    //https://learn.microsoft.com/en-us/dotnet/api/system.collections.concurrent.concurrentdictionary-2?view=net-7.0
+    private static ConcurrentDictionary<string, Location> locations = new(new Dictionary<string, Location>()
     {
         { "intro", new Locations.Intro() },
         { "afterlife", new Locations.Afterlife() }
-    };
+    });
 
     public static Location? Get(string name)
     {
@@ -25,7 +28,7 @@ public abstract class Location
     /// </summary>
     public static void Add(Location location)
     {
-        locations.Add(location.id, location);
+        locations.TryAdd(location.id, location);
     }
 
     //Actual class data below

@@ -48,16 +48,20 @@ public class Inventory : IEnumerable<ItemHolder> //IEnumerable allows us to use 
     /// <returns>A list of the items that could not be added</returns>
     public List<ItemHolder> Add(List<ItemHolder> items)
     {
+        Utils.Log($"Adding {items.Count} item to inventory...");
         List<ItemHolder> rejected = new();
 
         foreach (ItemHolder item in items)
         {
+            Utils.Log($"Adding item {item.Item.name} to inventory...");
             ItemHolder toAdd = item.Clone();
+            Utils.Log("Cloned item");
             toAdd.amt = 0;
 
             //Add items to toAdd until we can't anymore
             while(item.amt > 0)
             {
+                Utils.Log($"Adding item {item.Item.name} to inventory... {item.amt} left");
                 if(MaxWeight == -1 || Weight + toAdd.Item.Weight <= MaxWeight)
                 {
                     toAdd.amt++;
@@ -65,12 +69,15 @@ public class Inventory : IEnumerable<ItemHolder> //IEnumerable allows us to use 
                 }
                 else
                 {
-                    rejected.Add(item);
+                    if(rejected.Contains(item)) rejected[rejected.IndexOf(item)].amt += item.amt;
+                    else rejected.Add(item);
                     break;
                 }
             }
 
-            if(toAdd.amt > 0) items.Add(toAdd);
+            Utils.Log("Added item");
+
+            if(toAdd.amt > 0) this.items.Add(toAdd);
             rejected.Add(item);
         }
 

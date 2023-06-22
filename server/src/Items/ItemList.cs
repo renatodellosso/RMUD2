@@ -1,5 +1,6 @@
 ﻿using ItemTypes;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,10 +10,12 @@ namespace Items
 {
     public static class ItemList
     {
-        static readonly Dictionary<string, ItemTypes.Item> ITEMS = new()
+        //We use ConcurrentDictionary instead of Dictionary because it is thread-safe
+        //https://learn.microsoft.com/en-us/dotnet/api/system.collections.concurrent.concurrentdictionary-2?view=net-7.0
+        static readonly ConcurrentDictionary<string, Item> ITEMS = new(new Dictionary<string, Item>()
         {
-            { "spear", new ItemTypes.Weapon("spear", "Spear", AbilityScore.Strength, new(8)) }
-        };
+            { "spear", new Weapon("spear", "Spear", AbilityScore.Strength, new(8)) }
+        });
 
         public static T? Get<T>(string id) where T : ItemTypes.Item
         {
