@@ -87,12 +87,15 @@ public static class AI
         //ContinueWith runs the code in the lambda after the task is finished
         await Prompt(messages).ContinueWith((task) =>
         {
-            Player[] players = creature.Location.Players;
+            try
+            {
+                Player[] players = creature.Location.Players;
 
-            string msg = task.Result.Replace(creature.name, creature.FormattedName); //Replace the name of the creature with the actual name
+                string msg = task.Result.Replace(creature.name, creature.FormattedName); //Replace the name of the creature with the actual name
 
-            foreach (Player p in players)
-                p.session?.Log(msg); //Send to all players in location
+                foreach (Player p in players)
+                    p.session?.Log(msg); //Send to all players in location
+            } catch { }
         });
     }
 

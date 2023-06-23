@@ -77,10 +77,18 @@ namespace WorldObjects
                         //Item specified
                         if (action.action.Equals("take"))
                         {
-                            ItemHolder<Item>? leftOver = session.Player.inventory.Add(inventory[int.Parse(args[2])]); //Try to add the item to the player's inventory
-                            if (leftOver != null)
+                            ItemHolder<Item>? item = inventory[int.Parse(args[2])];
+                            ItemHolder<Item>? transferred = inventory.Transfer(session.Player.inventory, item);
+                            
+                            if (transferred == null || transferred.amt == 0)
                             {
-                                session.Log($"You cannot carry any more {leftOver.Item.name}");
+                                session.Log($"You cannot carry any more {item.Item?.name}");
+                            }
+                            else
+                            {
+                                session.Log($"Took {transferred.amt}x {transferred.FormattedName}");
+                                state = "back";
+                                session.Player.Update();
                             }
                         }
                     }

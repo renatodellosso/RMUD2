@@ -48,12 +48,11 @@ public class Inventory : IEnumerable<ItemHolder<Item>> //IEnumerable allows us t
         set => items[index] = value;
     }
 
-
-    /// <returns>A list of the items that could not be added</returns>
+    /// <returns>A list of the items that were be added</returns>
     public List<ItemHolder<Item>> Add(List<ItemHolder<Item>> items)
     {
         //Utils.Log($"Adding {items.Count} item to inventory...");
-        List<ItemHolder<Item>> rejected = new();
+        List<ItemHolder<Item>> added = new();
 
         foreach (ItemHolder<Item> item in items)
         {
@@ -73,32 +72,105 @@ public class Inventory : IEnumerable<ItemHolder<Item>> //IEnumerable allows us t
                 }
                 else
                 {
-                    if(rejected.Contains(item)) rejected[rejected.IndexOf(item)].amt += item.amt;
-                    else rejected.Add(item);
+                    //Utils.Log("Inventory full");
                     break;
                 }
             }
 
-            //Utils.Log("Added item");
+            //Utils.Log("Added item x" + toAdd.amt);
 
-            if(toAdd.amt > 0) this.items.Add(toAdd);
-            rejected.Add(item);
+            if (toAdd.amt > 0)
+            {
+                //Utils.Log("Actually adding toAdd...");
+                added.Add(toAdd);
+
+                //Don't add a new element in the list if we can just add to an existing one
+                if(this.items.Any(i => i.id == toAdd.id))
+                {
+                    this.items.First(i => i.id == toAdd.id).amt += toAdd.amt;
+                }
+                else this.items.Add(toAdd);
+            }
         }
 
-        return rejected;
+        //Utils.Log("Done adding items. Added: " + added.Count + ", Items: " + added.First().amt);
+
+        return added;
     }
 
-    /// <returns>A list of the items that could not be added</returns>
+    /// <returns>A list of the items that were be added</returns>
     public List<ItemHolder<Item>> Add(ItemHolder<Item>[] items)
     {
         return Add(items.ToList());
     }
 
 
-    /// <returns>Returns null if the entire stack was added, otherwise it returns what couldn't be added</returns>
+    /// <returns>The items that were be added</returns>
     public ItemHolder<Item>? Add(ItemHolder<Item> item)
     {
         return Add(new ItemHolder<Item>[] { item }).FirstOrDefault();
+    }
+
+
+    /// <returns>The items that were removed</returns>
+    public List<ItemHolder<Item>>? Remove(List<ItemHolder<Item>> items)
+    {
+        List<ItemHolder<Item>> removed = new();
+
+        foreach(ItemHolder<Item> item in items)
+        {
+            ItemHolder<Item>? held = this.items.FirstOrDefault(i => i.id == item.id);
+            
+            if(held == null)
+            {
+                continue;
+            }
+
+            int origAmt = held.amt;
+            held.amt -= item.amt; //Remove the items
+            held.amt = Math.Max(held.amt, 0); //Make sure we don't go below 0
+            int removedAmt = origAmt - held.amt; //Figure out how many items we actually removed
+            item.amt = removedAmt; //Reduce the amount of items we need to remove
+
+            if (item.amt > 0) removed.Add(item);
+            if (held.amt == 0) this.items.Remove(held);
+        }
+
+        return removed;
+    }
+
+    public List<ItemHolder<Item>>? Remove(ItemHolder<Item>[] items)
+    {
+        return Remove(items.ToList());
+    }
+
+    public ItemHolder<Item>? Remove(ItemHolder<Item> item)
+    {
+        return Remove(new ItemHolder<Item>[] { item }).FirstOrDefault();
+    }
+
+    /// <summary>
+    /// Adds items to another inventory and removes those items from this inventory
+    /// </summary>
+    /// <param name="other">The inventory to add the items to</param>
+    /// <param name="items">The items to transfer</param>
+    /// <returns>The items that were transferred</returns>
+    public List<ItemHolder<Item>> Transfer(Inventory other, List<ItemHolder<Item>> items)
+    {
+        List<ItemHolder<Item>> added = other.Add(items);
+
+        List<ItemHolder<Item>> toRemove = new();
+        foreach(ItemHolder<Item> item in added)
+            toRemove.Add(item.Clone());
+        Remove(toRemove);
+
+        //Utils.Log($"Added " + added.Count + " items to inventory. # of Items: " + added.First().amt);
+        return added;
+    }
+
+    public ItemHolder<Item>? Transfer(Inventory other, ItemHolder<Item> item)
+    {
+        return Transfer(other, new List<ItemHolder<Item>>() { item }).FirstOrDefault();
     }
 
     public new bool Contains(string id)
