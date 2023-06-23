@@ -69,7 +69,7 @@ namespace WorldObjects
                         }
 
                         ItemHolder<Item> item = inventory[index];
-                        session.Log(item.Item.Overview);
+                        session.Log(item.Overview());
                         state += "." + index;
                     }
                     else if (args.Length == 3)

@@ -17,7 +17,7 @@ public class ItemHolder<T> where T : ItemTypes.Item
         set => data["amt"] = value;
     }
 
-    public string FormattedName => Item.FormattedName + (amt > 1 ? $" x{amt}" : "");
+    public string FormattedName => Item.FormattedName;
 
     public float Weight => amt * Item.Weight;
 
@@ -54,6 +54,11 @@ public class ItemHolder<T> where T : ItemTypes.Item
     public static implicit operator ItemHolder<ItemTypes.Item>(ItemHolder<T> holder)
     {
         return holder;
+    }
+
+    public string Overview()
+    {
+        return Item.Overview(data);
     }
 
 }

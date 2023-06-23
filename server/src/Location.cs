@@ -126,6 +126,8 @@ public abstract class Location
                 inputs.Add(new(InputMode.Option, "talk", "Talk"));
 
             if (objects.Any()) inputs.Add(new(InputMode.Option, "interact", "Interact with objects"));
+
+            inputs.Add(new(InputMode.Option, "inventory", "Inventory"));
             inputs.Add(new(InputMode.Option, "exit", "Exit"));
         }
         else
@@ -182,6 +184,17 @@ public abstract class Location
                     else Utils.Log($"Object {args[1]} not found!");
                 }
             }
+            else if (args[0].Equals("inventory"))
+            {
+                if (args.Length == 1)
+                {
+                    for (int i = 0; i < session.Player?.inventory.Count; i++)
+                    {
+                        ItemHolder<Item> item = session.Player?.inventory[i];
+                        inputs.Add(new(InputMode.Option, $"inventory.{i}", item.FormattedName));
+                    }
+                }
+            }
         }
 
         return inputs.ToArray();
@@ -206,6 +219,18 @@ public abstract class Location
                     state = "combat";
                 else if (action.action.Equals("interact"))
                     state = "interact";
+                else if (action.action.Equals("inventory"))
+                {
+                    state = "inventory";
+
+                    string msg = $"Currently Carrying ({session.Player?.inventory.Weight}/{session.Player.inventory.MaxWeight}): ";
+                    foreach (ItemHolder<Item> item in session.Player?.inventory)
+                    {
+                        msg += $"<br>-{item.FormattedName} x{item.amt} ({item.Weight} lbs. total)";
+                    }
+
+                    session.Log(msg);
+                }
                 else
                     Utils.Log("Invalid action: " + action.action);
             }
@@ -291,6 +316,15 @@ public abstract class Location
                         if (obj != null)
                             obj?.HandleInput(session, action, ref state); //Only if we actually found the object
                         else Utils.Log($"Object {args[0]}");
+                    }
+                }
+                else if (args[0].Equals("inventory"))
+                {
+                    if(args.Length == 2)
+                    {
+                        state = "inventory." + args[1];
+                        ItemHolder<Item> item = session.Player?.inventory[int.Parse(args[1])];
+                        session.Log(item.Overview());
                     }
                 }
 
