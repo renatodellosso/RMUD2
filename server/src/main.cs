@@ -28,7 +28,6 @@ Bot.Init();
 
 while (true)
 {
-    Thread.Sleep(Config.TICK_INTERVAL);
-    Utils.Tick();
+    Thread.Sleep(Utils.Tick());
 }
 

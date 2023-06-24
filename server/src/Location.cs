@@ -314,7 +314,7 @@ public abstract class Location
                         IEnumerable<WorldObject?> objs = objects.Where(o => o.id.Equals(stateArgs[1]));
                         WorldObject? obj = objs.FirstOrDefault();
                         if (obj != null)
-                            obj?.HandleInput(session, action, ref state); //Only if we actually found the object
+                            obj?.HandleInput(session, action, ref state, ref addStateToPrev); //Only if we actually found the object
                         else Utils.Log($"Object {args[0]}");
                     }
                 }

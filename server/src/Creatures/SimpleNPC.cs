@@ -1,9 +1,12 @@
-﻿using Menus;
+﻿using Events;
+using ItemTypes;
+using Menus;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WorldObjects;
 
 namespace Creatures
 {
@@ -15,8 +18,13 @@ namespace Creatures
         int maxHealth;
         public override int MaxHealth => maxHealth;
 
+        Table<Func<ItemHolder<Item>>>? drops;
+        int minDrops = 1, maxDrops = 1;
+
         public SimpleNPC(string id, string name, string nameColor = "", Func<Session, DialogueMenu, Input[]>? talkInputs = null, Action<Session, ClientAction, DialogueMenu>? talkHandler = null, 
-            Action<Session>? talkStart = null, int maxHealth = 0, Action<Events.OnCreatureTickEventData>? onTick = null) : base(id, name)
+            Action<Session>? talkStart = null, int maxHealth = 0, Action<Events.OnCreatureTickEventData>? onTick = null, Table<Func<ItemHolder<Item>>>? drops = null, 
+            int minDrops = 1, int maxDrops = 1, int xp = 0)
+            : base(id, name)
         {
             this.nameColor = nameColor;
 
@@ -30,6 +38,12 @@ namespace Creatures
             health = maxHealth;
 
             this.onTick = onTick;
+
+            this.drops = drops;
+            this.minDrops = minDrops;
+            this.maxDrops = maxDrops;
+
+            this.xpValue = xp;
 
             //Utils.Log($"Created {baseId}");
         }
@@ -53,11 +67,21 @@ namespace Creatures
             }
         }
 
-        protected override void OnDie()
+        protected override void OnDie(CreatureDeathEventData data)
         {
             //Create a corpse
-            Location.objects.Add(new WorldObjects.Corpse(this));
-            base.OnDie();
+            Corpse corpse = new Corpse(this);
+            Location.objects.Add(corpse);
+            
+            //Add drops to the corpse
+            if (drops != null && minDrops > 0 && maxDrops > 0)
+            {
+                int dropCount = Utils.RandInt(minDrops, maxDrops+1);
+                for (int i = 0; i < dropCount; i++)
+                    corpse.inventory.Add(drops.Get()());
+            }
+
+            base.OnDie(data);
         }
 
     }

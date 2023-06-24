@@ -9,7 +9,7 @@ namespace WorldObjects
 {
     public class Corpse : Container
     {
-        public Corpse(Creature creature) : base(creature.baseId + "corpse", $"Corpse of {creature.FormattedName}", new ItemHolder<Item>[] { new("spear") })
+        public Corpse(Creature creature) : base(creature.baseId + "corpse", $"Corpse of {creature.FormattedName}", Array.Empty<ItemHolder<Item>>())
         {
 
         }

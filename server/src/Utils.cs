@@ -178,13 +178,18 @@ public static class Utils
     //Tick
     public static int tickCount = 0;
     public static event Action<int>? OnTick;
-    public static void Tick() //We can't invoke OnTick outside of this class, so we need a method to do it
+    /// <returns>How long to wait before the next tick</returns>
+    public static int Tick() //We can't invoke OnTick outside of this class, so we need a method to do it
     {
         //Log($"Ticking... (Tick #{tickCount})");
+        long ticks = DateTime.Now.Ticks;
         OnTick?.Invoke(tickCount);
-        Log($"Tick #{tickCount} complete");
+        long elapsed = DateTime.Now.Ticks - ticks;
+        double elapsedMs = (double)elapsed / TimeSpan.TicksPerMillisecond;
+        Log($"Tick #{tickCount} complete. Took {elapsedMs}ms");
 
         tickCount++;
+        return (int)(Config.TICK_INTERVAL - elapsedMs);
     }
 
     //End events

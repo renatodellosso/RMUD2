@@ -19,6 +19,6 @@ public abstract class WorldObject
 
     public abstract List<Input> GetInputs(Player player, string state);
 
-    public abstract void HandleInput(Session session, ClientAction action, ref string state);
+    public abstract void HandleInput(Session session, ClientAction action, ref string state, ref bool addStateToPrev);
 
 }

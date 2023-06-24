@@ -10,7 +10,7 @@ namespace WorldObjects
     public class Container : WorldObject
     {
 
-        Inventory inventory = new();
+        public Inventory inventory = new();
 
         public Container(string id, string name, ItemHolder<Item>[] items) : base(id, name)
         {
@@ -35,12 +35,18 @@ namespace WorldObjects
                         inputs.Add(new(InputMode.Option, i.ToString(), inventory[i].FormattedName));
                 else if(args.Length == 3)
                     inputs.Add(new(InputMode.Option, "take", "Take"));
+                else if(args.Length == 4)
+                {
+                    ItemHolder<Item>? item = inventory[int.Parse(args[2])];
+                    inputs.Add(new(InputMode.Option, item.amt.ToString(), $"Max - {item.amt}"));
+                    inputs.Add(new(InputMode.Text, "amt", "Enter an amount to take"));
+                }
             }
 
             return inputs;
         }
 
-        public override void HandleInput(Session session, ClientAction action, ref string state)
+        public override void HandleInput(Session session, ClientAction action, ref string state, ref bool addStateToPrev)
         {
             string[] args = state.Split('.');
 
@@ -70,6 +76,7 @@ namespace WorldObjects
 
                         ItemHolder<Item> item = inventory[index];
                         session.Log(item.Overview());
+                        addStateToPrev = false;
                         state += "." + index;
                     }
                     else if (args.Length == 3)
@@ -77,9 +84,28 @@ namespace WorldObjects
                         //Item specified
                         if (action.action.Equals("take"))
                         {
+                            addStateToPrev = false;
+                            state += ".take";
+                        }
+                    }
+                    else if (args.Length == 4)
+                    {
+                        try
+                        {
                             ItemHolder<Item>? item = inventory[int.Parse(args[2])];
+
+                            int amt = int.Parse(action.action);
+                            if(amt <= 0 || amt > item.amt)
+                            {
+                                session.Log($"Invalid amount. Must be between 1 and {item.amt}");
+                                return;
+                            }
+
+                            item = item.Clone();
+                            item.amt = amt;
+
                             ItemHolder<Item>? transferred = inventory.Transfer(session.Player.inventory, item);
-                            
+
                             if (transferred == null || transferred.amt == 0)
                             {
                                 session.Log($"You cannot carry any more {item.Item?.name}");
@@ -87,9 +113,14 @@ namespace WorldObjects
                             else
                             {
                                 session.Log($"Took {transferred.amt}x {transferred.FormattedName}");
+                                addStateToPrev = false;
                                 state = "back";
                                 session.Player.Update();
                             }
+                        }
+                        catch
+                        {
+                            session.Log("Invalid amount");
                         }
                     }
                 }

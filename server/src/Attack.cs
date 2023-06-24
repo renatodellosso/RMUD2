@@ -59,7 +59,7 @@ public class Attack
             int damage = RollDamage(attacker, target);
             damage = target.CalculateDamage(damage);
             attacker.Location?.Log($"{attacker.FormattedName} hit {target.FormattedName} for {damage} damage with {weapon.FormattedName}!");
-            target.TakeDamage(damage);
+            target.TakeDamage(damage, attacker);
         }
         else
         {

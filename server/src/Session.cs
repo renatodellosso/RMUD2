@@ -104,7 +104,10 @@ public class Session
 
             if (menu.ShowSidebar)
             {
-                string color = "green";
+                string color = player.xp >= player.XpToNextLevel ? "yellow" : "white";
+                text.Add(Utils.Style($"Level: {player.level} - {player.xp}/{player.XpToNextLevel} XP", color));
+
+                color = "green";
                 if (player.health < player.MaxHealth * .25) color = "red";
                 else if(player.health < player.MaxHealth * .5) color = "orange";
                 else if (player.health < player.MaxHealth * .75) color = "yellow";

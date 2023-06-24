@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using Events;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver;
 using System;
@@ -11,7 +12,10 @@ using System.Threading.Tasks;
 public class Player : Creature
 {
 
-    public override int MaxHealth => 20 + Constitution * 2;
+    public override int MaxHealth => 35 + Constitution * 3;
+
+    public int xp = 0, level = 0;
+    public int XpToNextLevel => (int)Math.Round(30 + level * Math.Pow(1.1, level) * 50);
 
     //Static stuff
     static Dictionary<ObjectId, Player> players = new Dictionary<ObjectId, Player>();
@@ -54,10 +58,23 @@ public class Player : Creature
         else Utils.Log("_id is null");
     }
 
-    protected override void OnDie()
+    protected override void OnDie(CreatureDeathEventData data)
     {
         health = MaxHealth;
         if(!location.Equals("afterlife")) Move("afterlife");
+    }
+
+    public void AddXp(int amount, string cause)
+    {
+        xp += amount;
+        session?.Log($"You gained {amount} xp from {cause}.");
+        
+        if(xp > XpToNextLevel)
+        {
+            session?.Log(Utils.Style("Level up available! Rest to level up", "yellow"));
+        }
+
+        Update();
     }
 
 }

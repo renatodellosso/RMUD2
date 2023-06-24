@@ -15,7 +15,10 @@ namespace Creatures
         Weapon weapon;
         public override Weapon? Weapon => weapon;
 
-        public SimpleMonster(string id, string name, int maxHealth, Weapon weapon, int attackInterval = 3) : base(id, name, nameColor: "red", maxHealth: maxHealth, onTick: (data) => ((SimpleMonster)data.self).OnTick())
+        public SimpleMonster(string id, string name, int maxHealth, Weapon weapon, int attackInterval = 3, Table<Func<ItemHolder<Item>>>? drops = null, int minDrops = 1,
+            int maxDrops = 1, int xp = 0)
+            : base(id, name, nameColor: "red", maxHealth: maxHealth, onTick: (data) => ((SimpleMonster)data.self).OnTick(), drops: drops, minDrops: minDrops, maxDrops: maxDrops,
+                  xp: xp)
         {
             attackable = true;
             this.weapon = weapon;

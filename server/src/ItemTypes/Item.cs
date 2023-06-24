@@ -13,10 +13,10 @@ namespace ItemTypes
 
         public virtual string FormattedName => name;
 
-        int weight = 0;
+        float weight = 0;
         public virtual float Weight => weight; //Using virtual methods for stats is probably the way to go, since it allows for more adaptability
 
-        public Item(string id, string name, int weight, string description = "No description provided")
+        public Item(string id, string name, float weight, string description = "No description provided")
         {
             this.id = id;
             this.name = name;

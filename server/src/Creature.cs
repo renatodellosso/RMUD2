@@ -1,4 +1,5 @@
-﻿using ItemTypes;
+﻿using Events;
+using ItemTypes;
 using Menus;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
@@ -58,6 +59,8 @@ public class Creature
     public virtual int MaxCarryWeight => 40 + Strength * 5;
 
     public Inventory inventory = new();
+
+    public int xpValue = 0;
 
     public Creature(string id, string name)
     {
@@ -149,15 +152,15 @@ public class Creature
         return damage;
     }
 
-    public void TakeDamage(int damage, bool calculateDamage = false)
+    public void TakeDamage(int damage, object source, bool calculateDamage = false)
     {
         if(calculateDamage) damage = CalculateDamage(damage);
         health -= damage;
         if (health <= 0)
-            Die();
+            Die(new(source));
     }
 
-    void Die()
+    void Die(CreatureDeathEventData data)
     {
         Utils.Log($"{name} died");
 
@@ -167,14 +170,21 @@ public class Creature
             player.session?.Log($"{FormattedName} died");
         }
 
-        OnDie();
+        OnDie(data);
     }
 
-    protected virtual void OnDie()
+    protected virtual void OnDie(CreatureDeathEventData data)
     {
         Location?.creatures.Remove(this);
         location = "";
         Utils.OnTick -= Tick;
+
+        if (data.killer is Player player)
+        {
+            string cause = "killing " + FormattedName;
+
+            player.AddXp(xpValue, cause);
+        }
     }
 
     //There's some stuff, like max inventory weight, where there's just not a good way auto-calculate the values, so we have to do it manually here
