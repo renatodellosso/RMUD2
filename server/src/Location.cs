@@ -9,7 +9,8 @@ public abstract class Location
     private static ConcurrentDictionary<string, Location> locations = new(new Dictionary<string, Location>()
     {
         { "intro", new Locations.Intro() },
-        { "afterlife", new Locations.Afterlife() }
+        { "afterlife", new Locations.Afterlife() },
+        { "dungeonentrance", new Locations.DungeonEntrance() }  
     });
 
     public static Location? Get(string name)

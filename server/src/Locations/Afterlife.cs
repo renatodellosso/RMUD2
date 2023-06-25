@@ -15,6 +15,7 @@ namespace Locations
         {
             id = "afterlife";
             name = "The Afterlife";
+            status = "Dead";
 
             //Add event listener, so we can add an exit to the dungeon
             Dungeon.OnDungeonGenerated += OnDungeonGenerated;

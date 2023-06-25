@@ -16,6 +16,7 @@ namespace Locations
         {
             id = "intro";
             name = "Outside the dungeon";
+            status = "Preparing for an expedition";
 
             creatures.Add(new Creatures.SimpleNPC("shadowyFigure", "Shadowy Figure", nameColor: "blue", talkInputs: (session, menu) =>
             {
@@ -56,7 +57,7 @@ namespace Locations
         void OnDungeonGenerated()
         {
             //Add the exit to and from the dungeon
-            Exit.AddExit(this, Get(Dungeon.startLocation), "N", false);
+            Exit.AddExit(this, Get(Dungeon.startLocation), "E", false);
         }
 
     }

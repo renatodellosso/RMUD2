@@ -35,8 +35,17 @@ namespace SlashCommands
                     {
                         Account account = session.Account;
                         embed.Description += account.username;
-                        if (account.discordId != 0) embed.Description += $" (<@{account.discordId}>)";
-                        embed.Description += $" - {session.menu.Status}\n";
+                        if (account.discordId != 0) embed.Description += $" (<@{account.discordId}>";
+
+                        if(session.Player != null)
+                        {
+                            embed.Description += $", level {session.Player.level}";
+                        }
+
+                        embed.Description += ")";
+
+                        embed.Description += $" - {session.menu.Status}";
+                        embed.Description += "\n";
                     } else unsignedIn++;
                 }
 
