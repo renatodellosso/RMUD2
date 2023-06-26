@@ -18,7 +18,7 @@ namespace Locations
             name = "Outside the dungeon";
             status = "Preparing for an expedition";
 
-            creatures.Add(new Creatures.SimpleNPC("shadowyFigure", "Shadowy Figure", nameColor: "blue", talkInputs: (session, menu) =>
+            Creatures.SimpleNPC shadowyFigure = new Creatures.SimpleNPC("shadowyFigure", "Shadowy Figure", nameColor: "blue", talkInputs: (session, menu) =>
             {
                 //Get inputs for dialogue
                 List<Input> inputs = new();
@@ -39,7 +39,7 @@ namespace Locations
                 if (action.action.Equals("exit")) menu.state = "exit";
                 else
                 {
-                    session.Log($"{Utils.Dialogue("A wise choice. What you seek you will find below,")} the figure says, though you can't make out a mouth. They raise an arm and" +
+                    session.Log($"{Utils.Dialogue(creatures.First(), "A wise choice. What you seek you will find below,")}. Strangel,y you can't make out a mouth. They raise an arm and" +
                         $" point towards the tunnel.");
                     menu.state = "end";
                 }
@@ -47,14 +47,13 @@ namespace Locations
             }, talkStart: (session) =>
             {
                 //On dialogue start
-                session.Log("What is it you seek?");
-            }));
+                session.Log(Utils.Dialogue(creatures.First(), "What is it you seek?"));
+            });
 
-            //Add event listener, so we can add an exit to the dungeon
-            Dungeon.OnDungeonGenerated += OnDungeonGenerated;
+            creatures.Add(shadowyFigure);
         }
 
-        void OnDungeonGenerated()
+        public override void AddExits()
         {
             //Add the exit to and from the dungeon
             Exit.AddExit(this, Get(Dungeon.startLocation), "E", false);

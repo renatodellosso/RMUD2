@@ -10,7 +10,9 @@ public abstract class Location
     {
         { "intro", new Locations.Intro() },
         { "afterlife", new Locations.Afterlife() },
-        { "dungeonentrance", new Locations.DungeonEntrance() }  
+        { "dungeonentrance", new Locations.DungeonEntrance() },
+        { "townsquare", new Locations.TownSquare() },
+        { "generalstore", new Locations.GeneralStore() },
     });
 
     public static Location? Get(string name)
@@ -22,6 +24,16 @@ public abstract class Location
         }
 
         return null;
+    }
+
+    public static void GenerateExits()
+    {
+        Utils.Log("Adding exits...");
+        foreach (Location location in locations.Values)
+        {
+            location.AddExits();
+        }
+        Utils.Log("Exits added");
     }
 
     /// <summary>
@@ -103,6 +115,11 @@ public abstract class Location
     }
 
     public virtual void OnLeave(Creature creature)
+    {
+
+    }
+
+    public virtual void AddExits() //Add exits after the locations are initialized
     {
 
     }
@@ -237,95 +254,98 @@ public abstract class Location
             }
             else
             {
-                if (state.Equals("talk"))
+                if (!action.action.Equals("back"))
                 {
-                    Creature target = creatures.Where(c => c.baseId.Equals(action.action)).First();
+                    if (state.Equals("talk"))
+                    {
+                        Creature target = creatures.Where(c => c.baseId.Equals(action.action)).First();
 
-                    if (target != null)
-                    {
-                        session.SetMenu(new Menus.DialogueMenu(target));
-                    }
-                }
-                else if (state.Equals("exit"))
-                {
-                    if (exits.Where(e => e.location.Equals(action.action)).Any())
-                    {
-                        Player? player = session.Player;
-                        if (player != null)
+                        if (target != null)
                         {
-                            player.Move(action.action);
-
-                            Location? location = player.Location;
-                            if (location != null)
+                            session.SetMenu(new Menus.DialogueMenu(target));
+                        }
+                    }
+                    else if (state.Equals("exit"))
+                    {
+                        if (exits.Where(e => e.location.Equals(action.action)).Any())
+                        {
+                            Player? player = session.Player;
+                            if (player != null)
                             {
-                                //Avoids a glitch where 2 copies of a player would enter a room
-                                location.RemoveDuplicateCreatures();
+                                player.Move(action.action);
+
+                                Location? location = player.Location;
+                                if (location != null)
+                                {
+                                    //Avoids a glitch where 2 copies of a player would enter a room
+                                    location.RemoveDuplicateCreatures();
+                                }
                             }
-                        }
 
-                    }
-                }
-                else if (state.Equals("combat"))
-                {
-                    List<Attack> attacks = new(); //The list of attacks we'll check for
-                    attacks.AddRange(session.Player?.Weapon?.attacks.Values.ToArray() ?? Array.Empty<Attack>()); //Add all the attacks from the player's weapon
-
-                    foreach (Attack attack in attacks)
-                    {
-                        if (attack.id.Equals(action.action))
-                        {
-                            state = $"atktarget.{attack.weapon.id}.{attack.id}"; //State will use periods to separate data
-                            break;
                         }
                     }
-                }
-                else if (args[0].Equals("atk"))
-                {
-                    //args[1] is the weapon, args[2] is the attack, args[3] is the target
-                    List<ItemHolder<Item>> weapons = new() //The list of ItemHolders we'll check for the weapon
+                    else if (state.Equals("combat"))
                     {
-                        session.Player?.mainHand
-                    };
+                        List<Attack> attacks = new(); //The list of attacks we'll check for
+                        attacks.AddRange(session.Player?.Weapon?.attacks.Values.ToArray() ?? Array.Empty<Attack>()); //Add all the attacks from the player's weapon
 
-                    Weapon? weapon = weapons.Where(w => w.id.Equals(args[1])).First().Item as Weapon;
-                    if (weapon != null)
-                    {
-                        Attack? attack = weapon.attacks[args[2]];
-                        List<Creature> targets = attack?.getTargets(session.Player) ?? new();
-
-                        attack?.execute(session.Player, targets.Where(t => t.baseId.Equals(args[3])).First());
-
-                        state = "";
-                    }
-                    else Utils.Log("No weapon found");
-                }
-                else if (stateArgs[0].Equals("interact"))
-                {
-                    if (stateArgs.Length == 1)
-                        foreach (WorldObject obj in objects)
+                        foreach (Attack attack in attacks)
                         {
-                            if (obj.id.Equals(action.action))
+                            if (attack.id.Equals(action.action))
                             {
-                                state = "interact." + obj.id;
+                                state = $"atktarget.{attack.weapon.id}.{attack.id}"; //State will use periods to separate data
                                 break;
                             }
                         }
-                    else if (stateArgs.Length >= 2)
-                    {
-                        IEnumerable<WorldObject?> objs = objects.Where(o => o.id.Equals(stateArgs[1]));
-                        WorldObject? obj = objs.FirstOrDefault();
-                        if (obj != null)
-                            obj?.HandleInput(session, action, ref state, ref addStateToPrev); //Only if we actually found the object
-                        else Utils.Log($"Object {args[0]}");
                     }
-                }
-                else if (args[0].Equals("inventory"))
-                {
-                    if(args.Length == 2)
+                    else if (args[0].Equals("atk"))
                     {
-                        state = "inventory." + args[1];
-                        ItemHolder<Item> item = session.Player?.inventory[int.Parse(args[1])];
-                        session.Log(item.Overview());
+                        //args[1] is the weapon, args[2] is the attack, args[3] is the target
+                        List<ItemHolder<Item>> weapons = new() //The list of ItemHolders we'll check for the weapon
+                        {
+                            session.Player?.mainHand
+                        };
+
+                        Weapon? weapon = weapons.Where(w => w.id.Equals(args[1])).First().Item as Weapon;
+                        if (weapon != null)
+                        {
+                            Attack? attack = weapon.attacks[args[2]];
+                            List<Creature> targets = attack?.getTargets(session.Player) ?? new();
+
+                            attack?.execute(session.Player, targets.Where(t => t.baseId.Equals(args[3])).First());
+
+                            state = "";
+                        }
+                        else Utils.Log("No weapon found");
+                    }
+                    else if (stateArgs[0].Equals("interact"))
+                    {
+                        if (stateArgs.Length == 1)
+                            foreach (WorldObject obj in objects)
+                            {
+                                if (obj.id.Equals(action.action))
+                                {
+                                    state = "interact." + obj.id;
+                                    break;
+                                }
+                            }
+                        else if (stateArgs.Length >= 2)
+                        {
+                            IEnumerable<WorldObject?> objs = objects.Where(o => o.id.Equals(stateArgs[1]));
+                            WorldObject? obj = objs.FirstOrDefault();
+                            if (obj != null)
+                                obj?.HandleInput(session, action, ref state, ref addStateToPrev); //Only if we actually found the object
+                            else Utils.Log($"Object {args[0]}");
+                        }
+                    }
+                    else if (args[0].Equals("inventory"))
+                    {
+                        if (args.Length == 2)
+                        {
+                            state = "inventory." + args[1];
+                            ItemHolder<Item> item = session.Player?.inventory[int.Parse(args[1])];
+                            session.Log(item.Overview());
+                        }
                     }
                 }
 

@@ -16,6 +16,8 @@ namespace ItemTypes
         float weight = 0;
         public virtual float Weight => weight; //Using virtual methods for stats is probably the way to go, since it allows for more adaptability
 
+        public virtual int SellValue => 0;
+
         public Item(string id, string name, float weight, string description = "No description provided")
         {
             this.id = id;

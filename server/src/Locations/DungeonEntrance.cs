@@ -17,12 +17,9 @@ namespace Locations
             id = "dungeonentrance";
             name = "Outside the dungeon";
             status = "Preparing for an expedition";
-
-            //Add event listener, so we can add an exit to the dungeon
-            Dungeon.OnDungeonGenerated += OnDungeonGenerated;
         }
 
-        void OnDungeonGenerated()
+        public override void AddExits()
         {
             //Add the exit to and from the dungeon
             Exit.AddExit(this, Get(Dungeon.startLocation), "E", true);

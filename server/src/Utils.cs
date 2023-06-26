@@ -1,4 +1,5 @@
-﻿using Konscious.Security.Cryptography;
+﻿using ItemTypes;
+using Konscious.Security.Cryptography;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -73,9 +74,14 @@ public static class Utils
         return $"<a href='{url}'>{text}</a>";
     }
 
-    public static string Dialogue(string text)
+    public static string Dialogue(Creature creature, string text)
     {
-        return '"' + text + '"';
+        return creature.FormattedName + ": " + '"' + text + '"';
+    }
+
+    public static string Gold(int amt)
+    {
+        return Style($"{amt}G", "yellow");
     }
 
     //End formatting methods
@@ -135,6 +141,12 @@ public static class Utils
         else if (dir.x < 0) direction += "W";
 
         return direction;
+    }
+
+    public static void AddItemOptionsFromInventory(List<Input> inputs, Inventory inventory)
+    {
+        for (int i = 0; i < inventory.Count; i++)
+            inputs.Add(new(InputMode.Option, i.ToString(), inventory[i].FormattedName));
     }
 
     //Random methods

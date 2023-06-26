@@ -21,6 +21,8 @@ public class ItemHolder<T> where T : ItemTypes.Item
 
     public float Weight => amt * Item.Weight;
 
+    public int SellValue => amt * Item.SellValue;
+
     public T? Item => Items.ItemList.Get<T>(id);
 
     public Dictionary<string, object> data = new();

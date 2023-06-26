@@ -22,6 +22,7 @@ DB.Init();
 AI.Init();
 
 Dungeon.Generate();
+Location.GenerateExits();
 
 Network.Init();
 Bot.Init();

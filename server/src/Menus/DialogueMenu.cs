@@ -12,6 +12,8 @@ namespace Menus
 
         public Creature creature;
 
+        public override bool ShowSidebar => true;
+
         public DialogueMenu(Creature creature)
         {
             this.creature = creature;

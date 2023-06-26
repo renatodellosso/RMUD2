@@ -30,12 +30,11 @@ namespace WorldObjects
             if (CanAccess(player))
             {
                 //If no item specifier is present
-                if(args.Length == 2)
-                    for(int i = 0; i < inventory.Count; i++)
-                        inputs.Add(new(InputMode.Option, i.ToString(), inventory[i].FormattedName));
-                else if(args.Length == 3)
+                if (args.Length == 2)
+                    Utils.AddItemOptionsFromInventory(inputs, inventory);
+                else if (args.Length == 3)
                     inputs.Add(new(InputMode.Option, "take", "Take"));
-                else if(args.Length == 4)
+                else if (args.Length == 4)
                 {
                     ItemHolder<Item>? item = inventory[int.Parse(args[2])];
                     inputs.Add(new(InputMode.Option, item.amt.ToString(), $"Max - {item.amt}"));
