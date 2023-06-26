@@ -19,6 +19,7 @@ namespace Items
             { "bone", new SimpleItem("bone", "Bone", 1, "A durable, white (actually more grey) bone.") },
             { "slime", new SimpleItem("slime", "Slime", 0.25f, "A glob of greenish-grey goo. Icky.") },
             { "meat", new SimpleItem("meat", "Meat", 1, "Mostly edible carcass. Where it's from, no one knows (it's best not to care).") },
+            { "gold", new SimpleItem("gold", "Gold Coins", 0.2f, "A shiny gold coin.") },
         });
 
         public static T? Get<T>(string id) where T : ItemTypes.Item

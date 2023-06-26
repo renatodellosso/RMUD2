@@ -1,4 +1,5 @@
-﻿using ItemTypes;
+﻿using Discord;
+using ItemTypes;
 using Konscious.Security.Cryptography;
 using System;
 using System.Collections.Generic;
@@ -79,9 +80,10 @@ public static class Utils
         return creature.FormattedName + ": " + '"' + text + '"';
     }
 
-    public static string Gold(int amt)
+    public static string Gold(int amt, bool color = true)
     {
-        return Style($"{amt}G", "yellow");
+        string text = $"{amt}G";
+        return color ? Style(text, "yellow") : text;
     }
 
     //End formatting methods

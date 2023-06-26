@@ -29,10 +29,11 @@ namespace Locations
                     List<Input> inputs = new();
                     string[] args = menu.state.Split('.');
 
-                    if (args.Length == 0)
+                    if (menu.state == "")
                     {
-                        inputs.Add(new(InputMode.Option, "sell", "Sell Goods"));
+                        //The option to leave/go back always goes first
                         inputs.Add(new(InputMode.Option, "leave", "Goodbye"));
+                        inputs.Add(new(InputMode.Option, "sell", "Sell Goods"));
                     }
                     else
                     {
@@ -46,7 +47,7 @@ namespace Locations
                         else if (args.Length == 2)
                         {
                             ItemHolder<Item>? item = session.Player!.inventory[int.Parse(args[1])];
-                            inputs.Add(new(InputMode.Option, "sell", $"Sell for {Utils.Gold(item.Item.SellValue)} each ({Utils.Gold(item.SellValue)} total)"));
+                            inputs.Add(new(InputMode.Text, "sell", $"How many to sell? Sell for {Utils.Gold(item.Item.SellValue, false)} each ({Utils.Gold(item.SellValue, false)} total)"));
                         }
                     }
 
@@ -56,7 +57,7 @@ namespace Locations
                 {
                     string[] args = menu.state.Split('.');
 
-                    if (args.Length == 0)
+                    if (menu.state == "")
                     {
                         if (action.action.Equals("sell"))
                         {
@@ -74,7 +75,66 @@ namespace Locations
                             menu.state = "";
                         else
                         {
+                            int index = int.Parse(action.action);
 
+                            if (index < 0 || index >= session.Player!.inventory.Count)
+                            {
+                                session.Log("Invalid index.");
+                                return;
+                            }
+
+                            ItemHolder<Item>? item = session.Player!.inventory[index];
+                            session.Log(item.Overview());
+                            menu.state += "." + index;
+                        }
+                    } else if(args.Length == 2)
+                    {
+                        if (action.action.Equals("back"))
+                            menu.state = "sell";
+                        else
+                        {
+                            ItemHolder<Item>? item = session.Player!.inventory[int.Parse(args[1])].Clone();
+
+                            int amt = int.Parse(action.action);
+                            if (amt <= 0 || amt > item.amt)
+                            {
+                                session.Log($"Invalid amount. Must be between 1 and {item.amt}");
+                                return;
+                            }
+
+                            item.amt = amt;
+
+                            ItemHolder<Item>? sold = session.Player!.inventory.Remove(item);
+
+                            if (sold == null || sold.amt == 0)
+                            {
+                                session.Log($"You cannot carry any more {item.Item?.name}");
+                            }
+                            else
+                            {
+                                ItemHolder<Item> gold = new("gold", sold.SellValue);
+                                ItemHolder<Item> leftOver = session.Player!.inventory.Add(gold)?.Clone() ?? gold.Clone();
+                                //If leftOver is null, then we add the full amount of gold to the player's inventory.
+                                //Otherwise, we add the amount of gold that was not added to the player's inventory.
+                                leftOver.amt = gold.amt - leftOver?.amt ?? 0;
+
+                                if (leftOver!.amt > 0)
+                                {
+                                    ItemHolder<Item> refunded = sold.Clone();
+                                    refunded.amt = (int)Math.Ceiling((double)leftOver.amt / refunded.Item!.SellValue);
+
+                                    leftOver.amt = refunded.amt * refunded.Item.SellValue; //How much gold to take away
+                                    session.Player.inventory.Add(refunded);
+                                    session.Player.inventory.Remove(leftOver);
+
+                                    session.Log($"You cannot carry any more gold. Refunded {refunded.amt}x {refunded.FormattedName}");
+                                }
+
+                                session.Log($"Sold {sold.amt}x {sold.FormattedName} for {Utils.Gold(sold.SellValue)}");
+                                session.Player.Update();
+                            }
+
+                            menu.state = "sell";
                         }
                     }
                 }

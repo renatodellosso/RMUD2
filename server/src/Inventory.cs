@@ -51,6 +51,12 @@ public class Inventory : IEnumerable<ItemHolder<Item>> //IEnumerable allows us t
     /// <returns>A list of the items that were be added</returns>
     public List<ItemHolder<Item>> Add(List<ItemHolder<Item>> items)
     {
+        //This will clear references to the items
+        for (int i = 0; i < items.Count; i++)
+        {
+            items[i] = items[i].Clone();
+        }
+
         //Utils.Log($"Adding {items.Count} item to inventory...");
         List<ItemHolder<Item>> added = new();
 
@@ -115,6 +121,12 @@ public class Inventory : IEnumerable<ItemHolder<Item>> //IEnumerable allows us t
     /// <returns>The items that were removed</returns>
     public List<ItemHolder<Item>>? Remove(List<ItemHolder<Item>> items)
     {
+        //This will clear references to the items
+        for (int i = 0; i < items.Count; i++)
+        {
+            items[i] = items[i].Clone();
+        }
+
         List<ItemHolder<Item>> removed = new();
 
         foreach(ItemHolder<Item> item in items)
@@ -126,11 +138,17 @@ public class Inventory : IEnumerable<ItemHolder<Item>> //IEnumerable allows us t
                 continue;
             }
 
+            Utils.Log("Held == Item: " + (held == item));
+            Utils.Log("Before: " + held.amt);
             int origAmt = held.amt;
             held.amt -= item.amt; //Remove the items
+            Utils.Log("After Subtraction: " + held.amt);
             held.amt = Math.Max(held.amt, 0); //Make sure we don't go below 0
+            Utils.Log("After Maxing: " + held.amt);
             int removedAmt = origAmt - held.amt; //Figure out how many items we actually removed
-            item.amt = removedAmt; //Reduce the amount of items we need to remove
+            Utils.Log("Before Setting item.amt: " + held.amt);
+            item.amt = removedAmt; //Track how many items we actually removed
+            Utils.Log("After: " + held.amt);
 
             if (item.amt > 0) removed.Add(item);
             if (held.amt == 0) this.items.Remove(held);
@@ -146,7 +164,7 @@ public class Inventory : IEnumerable<ItemHolder<Item>> //IEnumerable allows us t
 
     public ItemHolder<Item>? Remove(ItemHolder<Item> item)
     {
-        return Remove(new ItemHolder<Item>[] { item }).FirstOrDefault();
+        return Remove(new ItemHolder<Item>[] { item })?.FirstOrDefault();
     }
 
     /// <summary>
