@@ -3,12 +3,6 @@ using ItemTypes;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 public class Player : Creature
 {
@@ -37,7 +31,7 @@ public class Player : Creature
     public ObjectId _id = ObjectId.GenerateNewId(), accountId;
     public Account? Account => DB.Accounts.Find(accountId);
 
-    public override int MaxHealth => 35 + Constitution * 3;
+    public override int MaxHealth => Config.Gameplay.BASE_PLAYER_HP + Constitution * Config.Gameplay.HP_PER_CON;
 
     public int xp = 0, level = 0;
     public int XpToNextLevel => (int)Math.Round(30 + level * Math.Pow(1.1, level) * 50);

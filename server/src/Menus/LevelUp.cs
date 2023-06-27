@@ -26,15 +26,16 @@ namespace Menus
             session?.Log($"{Utils.Style("Level up!", "yellow")} level {session.Player?.level - 1} -> level {Utils.Style(session.Player?.level.ToString(), "yellow")} ");
 
             state = "abilityscores";
-            session?.Log("Choose an ability score to increase:");
+            session?.Log("Choose an ability score to increase:<br>" +
+                $"STR: +{Config.Gameplay.CARRY_WEIGHT_PER_STR} lbs. max carry weight<br>" +
+                $"CON: +{Config.Gameplay.HP_PER_CON} HP<br>" +
+                $"AGI: +1 dodge threshold");
         }
 
         public override Input[] GetInputs(ServerResponse response)
         {
             List<Input> inputs = new List<Input>();
             Player? player = session?.Player;
-
-            if(state == "") state = "abilityscores";
 
             if (player != null)
             {

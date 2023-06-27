@@ -56,7 +56,7 @@ public class Creature
     public int Charisma => abilityScores[AbilityScore.Charisma];
 
     public virtual int DodgeThreshold => 10 + Agility;
-    public virtual int MaxCarryWeight => 40 + Strength * 5;
+    public virtual int MaxCarryWeight => Config.Gameplay.BASE_CARRY_WEIGHT + Strength * Config.Gameplay.CARRY_WEIGHT_PER_STR;
 
     public Inventory inventory = new();
 

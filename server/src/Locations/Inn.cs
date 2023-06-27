@@ -1,4 +1,5 @@
 ﻿using ItemTypes;
+using Menus;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,12 @@ namespace Locations
 
         protected override string Description => "A warm hearth sheds light on the humble inn and tavern around you.";
 
-        const int REST_COST = 5;
+        const int REST_COST = Config.Gameplay.REST_COST;
+
+        Recipe[] shop = new Recipe[]
+        {
+            new("Bought", new ItemHolder<Item>("coin", 3), new ItemHolder<Item>("ale", 1)),
+        };
 
         public Inn()
         {
@@ -36,6 +42,7 @@ namespace Locations
                         //The option to leave/go back always goes first
                         inputs.Add(new(InputMode.Option, "leave", "Goodbye"));
                         inputs.Add(new(InputMode.Option, "rest", $"Rent a room & rest - {Utils.Coins(REST_COST)}"));
+                        inputs.Add(new(InputMode.Option, "buy", $"Buy food"));
                     }
                     else
                     {
@@ -67,6 +74,10 @@ namespace Locations
                             session.Player.coins -= REST_COST;
                             session.Log(Utils.Dialogue(creatures.First(), "Here's your key. Your room is upstairs."));
                             session.Player?.Rest();
+                        }
+                        else if (action.action == "buy")
+                        {
+                            session?.SetMenu(new CraftingMenu("Buy Food & Drink", shop));
                         }
                     }
                 }

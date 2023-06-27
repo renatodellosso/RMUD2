@@ -20,6 +20,7 @@ namespace Items
             { "slime", new SimpleItem("slime", "Slime", 0.25f, "A glob of greenish-grey goo. Icky.", sellValue: 1) },
             { "meat", new SimpleItem("meat", "Meat", 1, "Mostly edible carcass. Where it's from, no one knows (it's best not to care).", sellValue : 3) },
             { "coin", new SimpleItem("coin", "Gold Coin", 0.2f, "A shiny gold coin.", sellValue : 1, color: "yellow") },
+            { "ale", new SimpleItem("ale", "Mug of Ale", 0.5f, "A frothy mug of bitter ale.", sellValue : 2) },
         });
 
         public static T? Get<T>(string id) where T : ItemTypes.Item

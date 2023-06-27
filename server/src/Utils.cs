@@ -150,7 +150,7 @@ public static class Utils
     {
         for (int i = 0; i < inventory.Count; i++)
             if(excludedIds == null || !excludedIds.Contains(inventory[i].id))
-                inputs.Add(new(InputMode.Option, i.ToString(), inventory[i].FormattedName));
+                inputs.Add(new(InputMode.Option, i.ToString(), inventory[i].FormattedName + " x" + inventory[i].amt));
     }
 
     //Random methods

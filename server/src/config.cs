@@ -55,6 +55,14 @@ static class Config
     public static class Gameplay
     {
         public const float FLAVOR_MSG_CHANCE = .025f; //Per second
+
+        public const int REST_COST = 5;
+
+        public const int BASE_CARRY_WEIGHT = 40;
+        public const int CARRY_WEIGHT_PER_STR = 5;
+
+        public const int BASE_PLAYER_HP = 35;
+        public const int HP_PER_CON = 5;
     }
 
 }
