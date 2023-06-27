@@ -12,9 +12,14 @@ namespace Items
         int sellValue = 0;
         public override int SellValue => sellValue;
 
-        public SimpleItem(string id, string name, float weight, string description = "No description provided", int sellValue = 0) : base(id, name, weight, description)
+        string color = "";
+        public override string FormattedName => color == "" ? name : Utils.Style(name, color);
+
+        public SimpleItem(string id, string name, float weight, string description = "No description provided", int sellValue = 0, string color = "")
+            : base(id, name, weight, description)
         {
             this.sellValue = sellValue;
+            this.color = color;
         }
     }
 }

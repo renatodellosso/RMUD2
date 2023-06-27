@@ -28,8 +28,11 @@ namespace ItemTypes
 
         public virtual string Overview(Dictionary<string, object> data)
         {
+            int amt = (int)data.GetValueOrDefault("amt", 0);
+
             return $"{FormattedName} x{data["amt"]}:<br/>" +
-                $"{(int)data["amt"] * Weight} lbs. total, {Weight} lbs. each<br>" +
+                $"Worth {Utils.Coins(amt * SellValue)} total, {Utils.Coins(SellValue)} each ({Utils.Coins(SellValue / Weight)}/lb.)<br>" +
+                $"{amt * Weight} lbs. total, {Weight} lbs. each<br>" +
                 $"{description}";
         }
 

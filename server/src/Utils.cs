@@ -57,6 +57,7 @@ public static class Utils
 
     //Formatting methods
 
+    //Colors: https://www.w3schools.com/colors/colors_names.asp
     public static string Style(string? text, string color = "", bool bold = false, bool underline = false, bool italic = false)
     {
         if(text == null) return "";
@@ -80,9 +81,9 @@ public static class Utils
         return creature.FormattedName + ": " + '"' + text + '"';
     }
 
-    public static string Gold(int amt, bool color = true)
+    public static string Coins(float amt, bool color = true)
     {
-        string text = $"{amt}G";
+        string text = $"{amt}C";
         return color ? Style(text, "yellow") : text;
     }
 
@@ -145,10 +146,11 @@ public static class Utils
         return direction;
     }
 
-    public static void AddItemOptionsFromInventory(List<Input> inputs, Inventory inventory)
+    public static void AddItemOptionsFromInventory(List<Input> inputs, Inventory inventory, string[]? excludedIds = null)
     {
         for (int i = 0; i < inventory.Count; i++)
-            inputs.Add(new(InputMode.Option, i.ToString(), inventory[i].FormattedName));
+            if(excludedIds == null || !excludedIds.Contains(inventory[i].id))
+                inputs.Add(new(InputMode.Option, i.ToString(), inventory[i].FormattedName));
     }
 
     //Random methods

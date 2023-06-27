@@ -138,17 +138,17 @@ public class Inventory : IEnumerable<ItemHolder<Item>> //IEnumerable allows us t
                 continue;
             }
 
-            Utils.Log("Held == Item: " + (held == item));
-            Utils.Log("Before: " + held.amt);
+            //Utils.Log("Held == Item: " + (held == item));
+            //Utils.Log("Before: " + held.amt);
             int origAmt = held.amt;
             held.amt -= item.amt; //Remove the items
-            Utils.Log("After Subtraction: " + held.amt);
+            //Utils.Log("After Subtraction: " + held.amt);
             held.amt = Math.Max(held.amt, 0); //Make sure we don't go below 0
-            Utils.Log("After Maxing: " + held.amt);
+            //Utils.Log("After Maxing: " + held.amt);
             int removedAmt = origAmt - held.amt; //Figure out how many items we actually removed
-            Utils.Log("Before Setting item.amt: " + held.amt);
+            //Utils.Log("Before Setting item.amt: " + held.amt);
             item.amt = removedAmt; //Track how many items we actually removed
-            Utils.Log("After: " + held.amt);
+            //Utils.Log("After: " + held.amt);
 
             if (item.amt > 0) removed.Add(item);
             if (held.amt == 0) this.items.Remove(held);

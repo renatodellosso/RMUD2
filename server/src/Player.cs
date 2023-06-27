@@ -1,4 +1,5 @@
 ﻿using Events;
+using ItemTypes;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver;
@@ -11,11 +12,6 @@ using System.Threading.Tasks;
 
 public class Player : Creature
 {
-
-    public override int MaxHealth => 35 + Constitution * 3;
-
-    public int xp = 0, level = 0;
-    public int XpToNextLevel => (int)Math.Round(30 + level * Math.Pow(1.1, level) * 50);
 
     //Static stuff
     static Dictionary<ObjectId, Player> players = new Dictionary<ObjectId, Player>();
@@ -41,8 +37,35 @@ public class Player : Creature
     public ObjectId _id = ObjectId.GenerateNewId(), accountId;
     public Account? Account => DB.Accounts.Find(accountId);
 
+    public override int MaxHealth => 35 + Constitution * 3;
+
+    public int xp = 0, level = 0;
+    public int XpToNextLevel => (int)Math.Round(30 + level * Math.Pow(1.1, level) * 50);
+    public bool hasSentLevelUpNotification = false;
+
     public string? resetLocation;
-    public Location? Location => Location.Get(location);
+
+    public int coins
+    {
+        get
+        {
+            return inventory.Where(i => i.Item?.id == "coin").Sum(i => i.amt);
+        }
+        set
+        {
+            IEnumerable<ItemHolder<Item>> items = inventory.Where(i => i.Item?.id == "coin");
+            if (items.Any())
+            {
+                items.First().amt = value;
+            }
+            else
+            {
+                inventory.Add(new ItemHolder<Item>("coin", value));
+            }
+
+            Update();
+        }
+    }
 
     public Player(ObjectId accountId) : base(accountId.ToString(), "Unnamed Player")
     {
@@ -69,11 +92,49 @@ public class Player : Creature
         xp += amount;
         session?.Log($"You gained {amount} xp from {cause}.");
         
-        if(xp > XpToNextLevel)
+        if(xp > XpToNextLevel && !hasSentLevelUpNotification)
         {
             session?.Log(Utils.Style("Level up available! Rest to level up", "yellow"));
+            hasSentLevelUpNotification = true;
         }
 
+        Update();
+    }
+
+    public void Rest()
+    {
+        session?.Log(Utils.Style("You drift off into the comfort of sleep...", "honeydew"));
+
+        if(xp > XpToNextLevel)
+            LevelUp(() => CompleteRest());
+        else
+            CompleteRest(); //We complete the rest after the user levels up, but we have to pause to get their input
+    }
+
+    void CompleteRest(Action? afterLevelUp = null)
+    {
+        if (xp > XpToNextLevel)
+            LevelUp(afterLevelUp ?? (() => CompleteRest()));
+        else
+        {
+            health = MaxHealth;
+
+            session?.Log(Utils.Style("You wake up feeling refreshed.", "yellow") + "<br>" +
+                Utils.Style("HP restored!", "green"));
+
+            hasSentLevelUpNotification = false;
+            Update();
+            session?.Log(Location.GetOverviewMsg(this));
+        }
+    }
+
+    void LevelUp(Action afterwards)
+    {
+        level++;
+
+        session?.SetMenu(new Menus.LevelUp(session, afterwards));
+
+        hasSentLevelUpNotification = false;
         Update();
     }
 

@@ -13,6 +13,7 @@ public abstract class Location
         { "dungeonentrance", new Locations.DungeonEntrance() },
         { "townsquare", new Locations.TownSquare() },
         { "generalstore", new Locations.GeneralStore() },
+        { "inn", new Locations.Inn() },
     });
 
     public static Location? Get(string name)
@@ -161,7 +162,7 @@ public abstract class Location
             {
                 foreach (Exit exit in exits)
                     if (exit != null && Get(exit.location) != null)
-                        inputs.Add(new(InputMode.Option, exit.location, Get(exit.location).name));
+                        inputs.Add(new(InputMode.Option, exit.location, $"({exit.direction}) {Get(exit.location).name}"));
             }
             else if (state.Equals("combat"))
             {
@@ -369,7 +370,7 @@ public abstract class Location
         }
     }
 
-    protected string GetOverviewMsg(Player player)
+    public string GetOverviewMsg(Player player)
     {
         string overview = Description;
 

@@ -22,6 +22,7 @@ namespace Locations
         {
             Exit.AddExit(this, Get("dungeonentrance"), "E", true);
             Exit.AddExit(this, Get("generalstore"), "N", true);
+            Exit.AddExit(this, Get("inn"), "S", true);
         }
 
     }

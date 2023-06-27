@@ -14,12 +14,12 @@ namespace Items
         //https://learn.microsoft.com/en-us/dotnet/api/system.collections.concurrent.concurrentdictionary-2?view=net-7.0
         static readonly ConcurrentDictionary<string, Item> ITEMS = new(new Dictionary<string, Item>()
         {
-            { "spear", new Weapon("spear", "Spear", AbilityScore.Strength, new(8), "A stick with a pointy end.", 5) },
-            { "rottenflesh", new SimpleItem("rottenflesh", "Rotten Flesh", 0.5f, "Rotten, decaying flesh, crawling with maggots. You probably shouldn't touch it.") },
-            { "bone", new SimpleItem("bone", "Bone", 1, "A durable, white (actually more grey) bone.") },
-            { "slime", new SimpleItem("slime", "Slime", 0.25f, "A glob of greenish-grey goo. Icky.") },
-            { "meat", new SimpleItem("meat", "Meat", 1, "Mostly edible carcass. Where it's from, no one knows (it's best not to care).") },
-            { "gold", new SimpleItem("gold", "Gold Coins", 0.2f, "A shiny gold coin.") },
+            { "spear", new Weapon("spear", "Spear", AbilityScore.Strength, new(8), "A stick with a pointy end.", 5, sellValue: 20) },
+            { "rottenflesh", new SimpleItem("rottenflesh", "Rotten Flesh", 0.5f, "Rotten, decaying flesh, crawling with maggots. You probably shouldn't touch it.", sellValue: 1) },
+            { "bone", new SimpleItem("bone", "Bone", 1, "A durable, white (actually more grey) bone.", sellValue: 2) },
+            { "slime", new SimpleItem("slime", "Slime", 0.25f, "A glob of greenish-grey goo. Icky.", sellValue: 1) },
+            { "meat", new SimpleItem("meat", "Meat", 1, "Mostly edible carcass. Where it's from, no one knows (it's best not to care).", sellValue : 3) },
+            { "coin", new SimpleItem("coin", "Gold Coin", 0.2f, "A shiny gold coin.", sellValue : 1, color: "yellow") },
         });
 
         public static T? Get<T>(string id) where T : ItemTypes.Item

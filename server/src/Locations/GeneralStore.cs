@@ -42,12 +42,14 @@ namespace Locations
                         if (menu.state == "sell")
                         {
                             //Item not yet specified
-                            Utils.AddItemOptionsFromInventory(inputs, session.Player!.inventory); //We use session.Player!.inventory because we know the player is not null (at least it shouldn't be)
+                            Utils.AddItemOptionsFromInventory(inputs, session.Player!.inventory, new string[] { "coin" }); //We use session.Player!.inventory because we know the player is not null (at least it shouldn't be)
                         }
                         else if (args.Length == 2)
                         {
                             ItemHolder<Item>? item = session.Player!.inventory[int.Parse(args[1])];
-                            inputs.Add(new(InputMode.Text, "sell", $"How many to sell? Sell for {Utils.Gold(item.Item.SellValue, false)} each ({Utils.Gold(item.SellValue, false)} total)"));
+                            inputs.Add(new(InputMode.Option, item.amt.ToString(), $"Max - {item.amt}"));
+                            inputs.Add(new(InputMode.Text, "sell", 
+                                $"How many to sell? Sell for {Utils.Coins(item.Item.SellValue, false)} each ({Utils.Coins(item.SellValue, false)} total)"));
                         }
                     }
 
@@ -112,7 +114,7 @@ namespace Locations
                             }
                             else
                             {
-                                ItemHolder<Item> gold = new("gold", sold.SellValue);
+                                ItemHolder<Item> gold = new("coin", sold.SellValue);
                                 ItemHolder<Item> leftOver = session.Player!.inventory.Add(gold)?.Clone() ?? gold.Clone();
                                 //If leftOver is null, then we add the full amount of gold to the player's inventory.
                                 //Otherwise, we add the amount of gold that was not added to the player's inventory.
@@ -127,10 +129,10 @@ namespace Locations
                                     session.Player.inventory.Add(refunded);
                                     session.Player.inventory.Remove(leftOver);
 
-                                    session.Log($"You cannot carry any more gold. Refunded {refunded.amt}x {refunded.FormattedName}");
+                                    session.Log($"You cannot carry any more coins. Refunded {refunded.amt}x {refunded.FormattedName}");
                                 }
 
-                                session.Log($"Sold {sold.amt}x {sold.FormattedName} for {Utils.Gold(sold.SellValue)}");
+                                session.Log($"Sold {sold.amt}x {sold.FormattedName} for {Utils.Coins(sold.SellValue)}");
                                 session.Player.Update();
                             }
 
