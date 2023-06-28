@@ -83,6 +83,7 @@ public static class Utils
 
     public static string Coins(float amt, bool color = true)
     {
+        amt = Round(amt);
         string text = $"{amt}C";
         return color ? Style(text, "yellow") : text;
     }
@@ -153,19 +154,19 @@ public static class Utils
                 inputs.Add(new(InputMode.Option, i.ToString(), inventory[i].FormattedName + " x" + inventory[i].amt));
     }
 
-    public static float RoundF(decimal num, int places = 0)
+    public static float Round(decimal num, int places)
     {
         return (float)Math.Round(num, places);
     }
 
-    public static float RoundF(float num, int places = 0)
+    public static float Round(float num, int places)
     {
-        return RoundF((decimal)num, places);
+        return Round((decimal)num, places);
     }
 
-    public static float RoundF(double num, int places = 0)
+    public static float Round(double num, int places)
     {
-        return RoundF((decimal)num, places);
+        return Round((decimal)num, places);
     }
 
     public static int Round(decimal num)

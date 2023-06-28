@@ -22,5 +22,37 @@ namespace ItemTypes
             this.sellValue = sellValue;
         }
 
+        public override List<Input> GetInputs(Session session, ItemHolder<Item> item)
+        {
+            Player player = session.Player ?? throw new Exception("Player is null!");
+            List<Input> inputs = new();
+
+            if(player.mainHand != item)
+                inputs.Add(new(InputMode.Option, "equip", "Equip in main hand"));
+
+            return inputs;
+        }
+
+        public override void HandleInput(Session session, ClientAction action, ItemHolder<Item> item, ref string state, ref bool addStateToPrev)
+        {
+            Player player = session.Player ?? throw new Exception("Player is null!");
+            
+            if(action.action == "equip" && (player.mainHand == null || player.mainHand != item))
+            {
+                ItemHolder<Item> clone = item.Clone();
+                
+                player.inventory.Remove(item);
+                if (player.mainHand != null)
+                    player.inventory.Add(player.mainHand);
+                
+                player.mainHand = clone;
+
+                player.Update();
+
+                state = "inventory";
+                addStateToPrev = false;
+            }
+        }
+
     }
 }

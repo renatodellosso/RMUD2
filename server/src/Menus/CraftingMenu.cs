@@ -76,7 +76,7 @@ namespace Menus
                     }
 
                     Recipe recipe = recipes[index];
-                    session?.Log(recipe.ToString()!);
+                    session?.Log(recipe.ToString()! + "<br>" + recipe.output.First().Overview());
 
                     state = index.ToString();
                 }

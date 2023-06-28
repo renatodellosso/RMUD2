@@ -32,8 +32,19 @@ namespace ItemTypes
 
             return $"{FormattedName} x{data["amt"]}:<br/>" +
                 $"Worth {Utils.Coins(amt * SellValue)} total, {Utils.Coins(SellValue)} each ({Utils.Coins(SellValue / Weight)}/lb.)<br>" +
-                $"{amt * Weight} lbs. total, {Weight} lbs. each<br>" +
+                $"{Utils.Round(amt * Weight, 1)} lbs. total, {Weight} lbs. each<br>" +
                 $"{description}";
+        }
+
+        public virtual List<Input> GetInputs(Session session, ItemHolder<Item> item)
+        {
+            //IMPORTANT: All actions 
+            return new List<Input>();
+        }
+
+        public virtual void HandleInput(Session session, ClientAction action, ItemHolder<Item> item, ref string state, ref bool addStateToPrev)
+        {
+
         }
 
     }

@@ -48,7 +48,7 @@ public class Inventory : IEnumerable<ItemHolder<Item>> //IEnumerable allows us t
         set => items[index] = value;
     }
 
-    /// <returns>A list of the items that were be added</returns>
+    /// <returns>A list of the items that were added</returns>
     public List<ItemHolder<Item>> Add(List<ItemHolder<Item>> items)
     {
         //This will clear references to the items
@@ -104,14 +104,14 @@ public class Inventory : IEnumerable<ItemHolder<Item>> //IEnumerable allows us t
         return added;
     }
 
-    /// <returns>A list of the items that were be added</returns>
+    /// <returns>A list of the items that were added</returns>
     public List<ItemHolder<Item>> Add(ItemHolder<Item>[] items)
     {
         return Add(items.ToList());
     }
 
 
-    /// <returns>The items that were be added</returns>
+    /// <returns>The items that were added</returns>
     public ItemHolder<Item>? Add(ItemHolder<Item> item)
     {
         return Add(new ItemHolder<Item>[] { item }).FirstOrDefault();

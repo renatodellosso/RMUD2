@@ -211,8 +211,15 @@ public abstract class Location
                     for (int i = 0; i < session.Player?.inventory.Count; i++)
                     {
                         ItemHolder<Item> item = session.Player?.inventory[i];
-                        inputs.Add(new(InputMode.Option, $"inventory.{i}", item.FormattedName));
+                        inputs.Add(new(InputMode.Option, i.ToString(), item.FormattedName));
                     }
+                }
+                else if (args.Length == 2)
+                {
+                    ItemHolder<Item>? item = session.Player?.inventory[int.Parse(args[1])];
+                    if (item != null)
+                        inputs.AddRange(item.Item.GetInputs(session, item));
+                    else Utils.Log($"Item {args[1]} not found!");
                 }
             }
         }
@@ -246,7 +253,7 @@ public abstract class Location
                     string msg = $"Currently Carrying ({session.Player?.inventory.Weight}/{session.Player.inventory.MaxWeight}): ";
                     foreach (ItemHolder<Item> item in session.Player?.inventory)
                     {
-                        msg += $"<br>-{item.FormattedName} x{item.amt} ({Utils.RoundF(item.Weight, 2)} lbs. total)";
+                        msg += $"<br>-{item.FormattedName} x{item.amt} ({Utils.Round(item.Weight, 2)} lbs. total)";
                     }
 
                     session.Log(msg);
@@ -340,13 +347,27 @@ public abstract class Location
                             else Utils.Log($"Object {args[0]}");
                         }
                     }
-                    else if (args[0].Equals("inventory"))
+                    else if (stateArgs[0].Equals("inventory"))
                     {
-                        if (args.Length == 2)
+                        if (stateArgs.Length == 1)
                         {
-                            state = "inventory." + args[1];
-                            ItemHolder<Item> item = session.Player?.inventory[int.Parse(args[1])];
-                            session.Log(item.Overview());
+                            try
+                            {
+                                state = "inventory." + args[0];
+                                ItemHolder<Item> item = session.Player?.inventory[int.Parse(args[1])];
+                                session.Log(item.Overview());
+                            }
+                            catch
+                            {
+
+                            }
+                        }
+                        else
+                        {
+                            ItemHolder<Item> item = session.Player?.inventory[int.Parse(stateArgs[1])];
+                            if (item != null)
+                                item.Item.HandleInput(session, action, item, ref state, ref addStateToPrev);
+                            else Utils.Log($"Item {args[1]} not found!");
                         }
                     }
                 }
