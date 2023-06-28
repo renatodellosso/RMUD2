@@ -63,6 +63,9 @@ static class Config
 
         public const int BASE_PLAYER_HP = 35;
         public const int HP_PER_CON = 5;
+
+        public const float BASE_SELL_CUT = .7f;
+        public const float SELL_CUT_PER_CHA = .05f;
     }
 
 }

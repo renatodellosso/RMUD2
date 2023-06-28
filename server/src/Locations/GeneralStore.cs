@@ -49,7 +49,8 @@ namespace Locations
                             ItemHolder<Item>? item = session.Player!.inventory[int.Parse(args[1])];
                             inputs.Add(new(InputMode.Option, item.amt.ToString(), $"Max - {item.amt}"));
                             inputs.Add(new(InputMode.Text, "sell", 
-                                $"How many to sell? Sell for {Utils.Coins(item.Item.SellValue, false)} each ({Utils.Coins(item.SellValue, false)} total)"));
+                                $"How many to sell? Sell for {Utils.Coins(Utils.Round(item.Item.SellValue * session.Player.SellCut), false)} each" +
+                                $"({Utils.Coins(Utils.Round(item.SellValue * session.Player.SellCut), false)} total)"));
                         }
                     }
 
@@ -114,7 +115,7 @@ namespace Locations
                             }
                             else
                             {
-                                ItemHolder<Item> gold = new("coin", sold.SellValue);
+                                ItemHolder<Item> gold = new("coin", Utils.Round(sold.SellValue * session.Player.SellCut));
                                 ItemHolder<Item> leftOver = session.Player!.inventory.Add(gold)?.Clone() ?? gold.Clone();
                                 //If leftOver is null, then we add the full amount of gold to the player's inventory.
                                 //Otherwise, we add the amount of gold that was not added to the player's inventory.

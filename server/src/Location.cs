@@ -14,6 +14,7 @@ public abstract class Location
         { "townsquare", new Locations.TownSquare() },
         { "generalstore", new Locations.GeneralStore() },
         { "inn", new Locations.Inn() },
+        { "blacksmith", new Locations.Blacksmith() },
     });
 
     public static Location? Get(string name)
@@ -245,7 +246,7 @@ public abstract class Location
                     string msg = $"Currently Carrying ({session.Player?.inventory.Weight}/{session.Player.inventory.MaxWeight}): ";
                     foreach (ItemHolder<Item> item in session.Player?.inventory)
                     {
-                        msg += $"<br>-{item.FormattedName} x{item.amt} ({item.Weight} lbs. total)";
+                        msg += $"<br>-{item.FormattedName} x{item.amt} ({Utils.RoundF(item.Weight, 2)} lbs. total)";
                     }
 
                     session.Log(msg);

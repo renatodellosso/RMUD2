@@ -124,7 +124,7 @@ public class Session
                 text.Add($"Main Hand: {player.mainHand?.Item?.FormattedName ?? "Empty" }<br>" +
                          $"Off Hand: {player.offHand?.Item?.FormattedName ?? "Empty"}");
 
-                text.Add($"Carrying: {player.inventory.Weight}/{player.inventory.MaxWeight} lbs.");
+                text.Add($"Carrying: {Utils.RoundF(player.inventory.Weight, 1)}/{Utils.RoundF(player.inventory.MaxWeight, 1)} lbs.");
             }
         }
 

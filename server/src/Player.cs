@@ -39,6 +39,8 @@ public class Player : Creature
 
     public string? resetLocation;
 
+    public float SellCut => MathF.Min(Config.Gameplay.BASE_SELL_CUT + Config.Gameplay.SELL_CUT_PER_CHA * Charisma, 1f);
+
     public int coins
     {
         get

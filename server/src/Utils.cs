@@ -153,6 +153,36 @@ public static class Utils
                 inputs.Add(new(InputMode.Option, i.ToString(), inventory[i].FormattedName + " x" + inventory[i].amt));
     }
 
+    public static float RoundF(decimal num, int places = 0)
+    {
+        return (float)Math.Round(num, places);
+    }
+
+    public static float RoundF(float num, int places = 0)
+    {
+        return RoundF((decimal)num, places);
+    }
+
+    public static float RoundF(double num, int places = 0)
+    {
+        return RoundF((decimal)num, places);
+    }
+
+    public static int Round(decimal num)
+    {
+        return (int)Math.Round(num);
+    }
+
+    public static int Round(float num)
+    {
+        return Round((decimal)num);
+    }
+
+    public static int Round(double num)
+    {
+        return Round((decimal)num);
+    }
+
     //Random methods
     static Random random = new();
 
