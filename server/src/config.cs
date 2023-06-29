@@ -25,8 +25,6 @@ static class Config
 
     public const int CODE_LENGTH = 6;
 
-    public const string START_LOCATION = "intro";
-
     public const int TICK_INTERVAL = 1000;
 
     public static class DungeonGeneration
@@ -66,6 +64,9 @@ static class Config
 
         public const float BASE_SELL_CUT = .7f;
         public const float SELL_CUT_PER_CHA = .05f;
+
+        public const string START_LOCATION = "intro";
+        public const string RESPAWN_LOCATION = "townsquare";
     }
 
 }

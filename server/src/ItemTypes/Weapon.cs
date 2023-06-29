@@ -54,5 +54,10 @@ namespace ItemTypes
             }
         }
 
+        public override string Overview(Dictionary<string, object> data)
+        {
+            return base.Overview(data) + $"<br>Deals {Attack.damage} damage";
+        }
+
     }
 }

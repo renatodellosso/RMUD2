@@ -354,7 +354,7 @@ public abstract class Location
                             try
                             {
                                 state = "inventory." + args[0];
-                                ItemHolder<Item> item = session.Player?.inventory[int.Parse(args[1])];
+                                ItemHolder<Item> item = session.Player?.inventory[int.Parse(args[0])];
                                 session.Log(item.Overview());
                             }
                             catch

@@ -92,7 +92,8 @@ namespace Menus
                             {
                                 if (player.location != null)
                                 {
-                                    player.location = Config.START_LOCATION;
+                                    player.location = player.resetLocation ?? Config.Gameplay.START_LOCATION;
+                                    player.resetLocation = player.resetLocation ?? Config.Gameplay.RESPAWN_LOCATION;
                                     player.Update();
                                 }
                                 else

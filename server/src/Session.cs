@@ -114,6 +114,8 @@ public class Session
                 text.Add($"HP: {Utils.Style($"{player.health}/{player.MaxHealth}",color)}<br>" +
                     $"DT: {player.DodgeThreshold}");
 
+                text.Add($"Money: {Utils.Coins(player.coins)}");
+
                 Location? location = player.Location;
                 if (location != null)
                 {

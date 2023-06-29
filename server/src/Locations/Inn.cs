@@ -73,6 +73,7 @@ namespace Locations
 
                             session.Player.coins -= REST_COST;
                             session.Log(Utils.Dialogue(creatures.First(), "Here's your key. Your room is upstairs."));
+                            session.Player.resetLocation = id;
                             session.Player?.Rest();
                         }
                         else if (action.action == "buy")
