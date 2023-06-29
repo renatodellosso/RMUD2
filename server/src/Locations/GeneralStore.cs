@@ -1,4 +1,6 @@
 ﻿using ItemTypes;
+using Items;
+using Menus;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +13,11 @@ namespace Locations
     {
 
         protected override string Description => "A small fire faintly illuminates the cramped stone walls around you, its dancing flames reveal all manner of goods on shelves.";
+
+        Recipe[] shop = new Recipe[]
+        {
+            new("pickaxe"),
+        };
 
         public GeneralStore()
         {
@@ -33,6 +40,7 @@ namespace Locations
                     {
                         //The option to leave/go back always goes first
                         inputs.Add(new(InputMode.Option, "leave", "Goodbye"));
+                        inputs.Add(new(InputMode.Option, "buy", "Buy Goods"));
                         inputs.Add(new(InputMode.Option, "sell", "Sell Goods"));
                     }
                     else
@@ -67,7 +75,9 @@ namespace Locations
                             menu.state = "sell";
                             session.Log(Utils.Dialogue(creatures.First(), "What would you like to sell?"));
                         }
-                        else if(action.action.Equals("leave"))
+                        else if (action.action == "buy")
+                            session.SetMenu(new CraftingMenu("General Store", shop));
+                        else if (action.action.Equals("leave"))
                         {
                             menu.state = "exit"; //Set the state to exit so we can exit the menu.
                         }

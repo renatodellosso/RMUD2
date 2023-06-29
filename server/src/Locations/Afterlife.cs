@@ -21,7 +21,7 @@ namespace Locations
         public override void AddExits()
         {
             //Add the exit to and from the dungeon
-            Exit.AddExit(this, Get(Dungeon.startLocation), "N", false);
+            Exit.AddExit(this, Get("townsquare"), "N", false);
         }
 
     }

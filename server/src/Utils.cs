@@ -88,6 +88,17 @@ public static class Utils
         return color ? Style(text, "yellow") : text;
     }
 
+
+    public static bool HasItem(Inventory inventory, string id)
+    {
+        return inventory.Where(i => i.id == id).Any();
+    }
+
+    public static bool HasItem(Player player, string id)
+    {
+        return HasItem(player.inventory, id);
+    }
+
     //End formatting methods
 
     /// <summary>

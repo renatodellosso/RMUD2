@@ -1,4 +1,5 @@
-﻿using ItemTypes;
+﻿using Items;
+using ItemTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,11 @@ public class Recipe : IFormattable
     public Recipe(string verb, ItemHolder<Item> ingredient, ItemHolder<Item> output)
         : this($"{output.FormattedName}", verb, new ItemHolder<Item>[] { ingredient }, new ItemHolder<Item>[] { output })
     { }
+
+    public Recipe(string id) : this("Bought", new ItemHolder<Item>("coin", ItemList.Get(id).SellValue), new ItemHolder<Item>(id, 1))
+    {
+
+    }
 
     public new string ToString() => ToString(null, null);
 

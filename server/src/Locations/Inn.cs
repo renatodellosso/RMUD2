@@ -78,7 +78,7 @@ namespace Locations
                         }
                         else if (action.action == "buy")
                         {
-                            session?.SetMenu(new CraftingMenu("Buy Food & Drink", shop));
+                            session?.SetMenu(new CraftingMenu("Tavern", shop));
                         }
                     }
                 }

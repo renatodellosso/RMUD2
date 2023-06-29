@@ -14,13 +14,19 @@ namespace WorldObjects
         string ActionId => verb.ToLower().Replace(" ", "");
         int minItems, maxItems;
 
-        public Harvestable(string id, string name, string location, string desc, string verb, string itemId, int minItems, int maxItems) : base(id, name, location)
+        Func<Player, int[]> getAmtRange; //0 is min, 1 is max
+
+        public Harvestable(string id, string name, string location, string desc, string verb, string itemId, int minItems = 1, int maxItems = 1, 
+            Func<Player, int[]>? getAmtRange = null)
+            : base(id, name, location)
         {
             this.desc = desc;
             this.verb = verb;
             this.itemId = itemId;
             this.minItems = minItems;
             this.maxItems = maxItems;
+
+            this.getAmtRange = getAmtRange ?? ((player) => new int[] { minItems, maxItems });
         }
 
         public override string GetOverview(Player player)
@@ -40,7 +46,8 @@ namespace WorldObjects
         {
             if (action.action == ActionId)
             {
-                int amtPicked = Utils.RandInt(minItems, maxItems + 1);
+                int[] amtRange = getAmtRange(session.Player!);
+                int amtPicked = Utils.RandInt(amtRange[0], amtRange[1] + 1);
                 ItemHolder<Item>? items = session.Player?.inventory.Add(new ItemHolder<Item>(itemId, amtPicked));
 
                 if (items != null)
