@@ -22,6 +22,7 @@ namespace Items
 
             //Consumables
             { "ale", new SimpleItem("ale", "Mug of Ale", 0.5f, "A frothy mug of bitter ale.", sellValue : 2) },
+            { "mushroom", new SimpleItem("mushroom", "Mushroom", 0.1f, "A small grey mushroom. Possibly edible.", sellValue : 1) },
 
             //Misc Items
             { "rottenflesh", new SimpleItem("rottenflesh", "Rotten Flesh", 0.5f, "Rotten, decaying flesh, crawling with maggots. You probably shouldn't touch it.", sellValue: 1) },

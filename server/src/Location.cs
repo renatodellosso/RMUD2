@@ -1,4 +1,5 @@
 ﻿using ItemTypes;
+using WorldObjects;
 using System.Collections.Concurrent;
 
 public abstract class Location
@@ -335,6 +336,7 @@ public abstract class Location
                                 if (obj.id.Equals(action.action))
                                 {
                                     state = "interact." + obj.id;
+                                    session.Log(obj.GetOverview(session.Player));
                                     break;
                                 }
                             }
@@ -396,7 +398,8 @@ public abstract class Location
     {
         string overview = Description;
 
-        overview += "\n" + GetCreatureListMessage(player);
+        overview += "<br>" + GetCreatureListMessage(player);
+        overview += "<br>" + GetObjectListMessage();
 
         return overview;
     }
@@ -415,6 +418,21 @@ public abstract class Location
             return creatureList;
         }
         else return "You are alone.";
+    }
+
+    public string GetObjectListMessage()
+    {
+        if (objects.Any())
+        {
+            string msg = "In this location are:";
+            foreach (WorldObject obj in objects)
+            {
+                msg += $"<br>-{obj.FormattedName}";
+            }
+
+            return msg;
+        }
+        else return "This room is empty.";
     }
 
     void RemoveDuplicateCreatures()

@@ -12,12 +12,12 @@ namespace WorldObjects
 
         public Inventory inventory = new();
 
-        public Container(string id, string name, ItemHolder<Item>[] items) : base(id, name)
+        public Container(string id, string name, string location, ItemHolder<Item>[] items) : base(id, name, location)
         {
             inventory.Add(items);
         }
 
-        public Container(string id, string name) : this(id, name, Array.Empty<ItemHolder<Item>>())
+        public Container(string id, string name, string location) : this(id, name, location, Array.Empty<ItemHolder<Item>>())
         {
 
         }

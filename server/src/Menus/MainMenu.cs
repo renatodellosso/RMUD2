@@ -163,7 +163,7 @@ namespace Menus
                 {
                     accountId = account._id,
                     session = session,
-                    location = Config.START_LOCATION,
+                    location = Config.Gameplay.START_LOCATION,
                     name = account.username,
                     baseId = account.username,
                     mainHand = new ItemHolder<Item>("spear")

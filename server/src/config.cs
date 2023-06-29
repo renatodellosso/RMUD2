@@ -39,6 +39,9 @@ static class Config
 
         public const float MONSTER_CHANCE = .75f;
         public const int MIN_MONSTERS = 1, MAX_MONSTERS = 3;
+
+        public const float OBJECT_CHANCE = .5f;
+        public const int MIN_OBJECTS = 1, MAX_OBJECTS = 1;
     }
 
     public static class AI

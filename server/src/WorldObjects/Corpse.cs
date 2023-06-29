@@ -9,9 +9,17 @@ namespace WorldObjects
 {
     public class Corpse : Container
     {
-        public Corpse(Creature creature) : base(creature.baseId + "corpse", $"Corpse of {creature.FormattedName}", Array.Empty<ItemHolder<Item>>())
-        {
 
+        Creature creature;
+
+        public Corpse(Creature creature) : base(creature.baseId + "corpse", $"Corpse of {creature.FormattedName}", creature.location, Array.Empty<ItemHolder<Item>>())
+        {
+            this.creature = creature;
+        }
+
+        public override string GetOverview(Player player)
+        {
+            return $"The body of a dead {creature.FormattedName}";
         }
     }
 }
