@@ -145,7 +145,7 @@ public class Floor
                 {
                     //There is a room below the current one, and we have decided to add stairs
                     Exit.AddExit(room, roomBelow, "DOWN");
-                    Utils.Log($"Adding stairs from {room.position} to {roomBelow.position}...");
+                    Utils.Log($"Adding stairs from {position}-{room.position} to {roomBelow.floor.position}-{roomBelow.position}...");
                 }
             }
         }

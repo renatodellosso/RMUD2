@@ -1,4 +1,5 @@
-﻿using ItemTypes;
+﻿using Events;
+using ItemTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,20 +16,25 @@ namespace Creatures
         Weapon weapon;
         public override Weapon? Weapon => weapon;
 
+        new Action<OnCreatureTickEventData>? onTick;
+
         public SimpleMonster(string id, string name, int maxHealth, Weapon weapon, int attackInterval = 3, Table<Func<ItemHolder<Item>>>? drops = null, int minDrops = 1,
-            int maxDrops = 1, int xp = 0)
+            int maxDrops = 1, int xp = 0, Action<OnCreatureTickEventData>? onTick = null)
             : base(id, name, nameColor: "red", maxHealth: maxHealth, onTick: (data) => ((SimpleMonster)data.self).OnTick(), drops: drops, minDrops: minDrops, maxDrops: maxDrops,
                   xp: xp)
         {
             attackable = true;
             this.weapon = weapon;
             this.attackInterval = attackInterval;
+            this.onTick = onTick;
         }
 
         void OnTick()
         {
             try
             {
+                onTick?.Invoke(new(this));
+
                 if (Weapon != null && Utils.tickCount % attackInterval == 0)
                 {
                     //Attack a random player

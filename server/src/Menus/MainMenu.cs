@@ -137,7 +137,16 @@ namespace Menus
                         session.ClearLog();
                         session.SetMenu(new LocationMenu(session));
 
-                        player.Location.Enter(player, null);
+                        try
+                        {
+                            if (player.Location == null)
+                                player.location = "dungeonentrance";
+
+                            player.Location.Enter(player, null);
+                        } catch (Exception e)
+                        {
+                            Utils.Log($"Player failed to enter location. Error: {e.Message} {e.StackTrace}");
+                        }
                     }
                     else session.Log(Utils.Style("Encountered an error: Player is null", "red"));
                 }

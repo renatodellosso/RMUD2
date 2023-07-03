@@ -38,6 +38,18 @@ namespace Creatures
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("slime"))
                 ), minDrops: 1, maxDrops: 2,
                 xp: 25
+            )),
+
+            //Troll
+            new(1, () => new SimpleMonster("troll", "Troll", 15, new("punch", "Punch", AbilityScore.Strength, new(8)),
+                drops: new(
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("taintedflesh"))
+                ), minDrops: 1, maxDrops: 2,
+                xp: 60, onTick: (data) =>
+                {
+                    if(Utils.tickCount % 2 == 0) 
+                        data.self.Heal(1);
+                }
             ))
 
         );

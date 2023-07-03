@@ -11,12 +11,18 @@ namespace Locations
 
         public Vector2 position;
 
+        public Floor floor;
+
+        protected override string Description => "";
+
         public DungeonLocation(Floor floor, Vector2 position)
         {
             this.position = position;
 
             id = floor.PosToId(position);
             name = floor.PosToName(position);
+
+            this.floor = floor;
 
             Add(this);
 

@@ -33,7 +33,7 @@ static class Config
         public const int MIN_FLOOR_SIZE = 5, MAX_FLOOR_SIZE = 15;
 
         //MIN_FILL is the minimum % of the floor that has rooms
-        public const float EXIT_CHANCE = .4f, MIN_FILL = .3f, STAIR_CHANCE = .2f;
+        public const float EXIT_CHANCE = .4f, MIN_FILL = .3f, STAIR_CHANCE = .4f;
 
         public const int SLEEP_INTERVAL = 1000;
 

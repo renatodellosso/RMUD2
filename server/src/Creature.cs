@@ -173,6 +173,13 @@ public class Creature
         OnDie(data);
     }
 
+    public int Heal(int amt)
+    {
+        amt = Math.Min(amt, MaxHealth - health);
+        health += amt;
+        return amt;
+    }
+
     protected virtual void OnDie(CreatureDeathEventData data)
     {
         Location?.creatures.Remove(this);
