@@ -79,7 +79,7 @@ public class Recipe : IFormattable
         string msg = verb + " ";
         foreach (ItemHolder<Item> item in output)
         {
-            ItemHolder<Item>? added = player.inventory.Add(new ItemHolder<Item>(item.id, item.amt * amt));
+            ItemHolder<Item>? added = player.inventory.Add(new ItemHolder<Item>(item.id, item.amt * amt), true);
             if (added != null)
                 msg += $"{added.FormattedName} x{added.amt}, ";
         }

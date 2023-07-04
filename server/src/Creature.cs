@@ -33,6 +33,8 @@ public class Creature
     public bool nameBold, nameUnderline, nameItalic;
 
     public ItemHolder<Item>? mainHand, offHand;
+    public ItemHolder<Armor>? armor;
+
     public virtual Weapon? Weapon => mainHand?.Item as Weapon;
 
     public Dictionary<AbilityScore, int> abilityScores = new()
@@ -148,6 +150,7 @@ public class Creature
 
     public int CalculateDamage(int damage)
     {
+        damage -= armor?.Item?.defense ?? 0;
         damage = Math.Clamp(damage, 0, health);
         return damage;
     }
@@ -197,6 +200,7 @@ public class Creature
     //There's some stuff, like max inventory weight, where there's just not a good way auto-calculate the values, so we have to do it manually here
     public virtual void CalculateStats()
     {
+        inventory.addedWeight = (armor?.Weight ?? 0) + (mainHand?.Weight ?? 0) + (offHand?.Weight ?? 0);
         inventory.maxWeight = MaxCarryWeight;
     }
 

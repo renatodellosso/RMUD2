@@ -15,7 +15,11 @@ namespace Locations
 
         Recipe[] shop = new Recipe[]
         {
-            new("Bought", new ItemHolder<Item>("coin", Items.ItemList.Get("axe").SellValue), new ItemHolder<Item>("axe", 1)),
+            new("axe"),
+            new("spear"),
+            new("pickaxe"),
+            new("breastplate"),
+            new("chainmail")
         };
 
         public Blacksmith()

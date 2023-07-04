@@ -89,14 +89,9 @@ public static class Utils
     }
 
 
-    public static bool HasItem(Inventory inventory, string id)
+    public static bool HasItem(Creature creature, string id)
     {
-        return inventory.Where(i => i.id == id).Any();
-    }
-
-    public static bool HasItem(Player player, string id)
-    {
-        return HasItem(player.inventory, id);
+        return creature.mainHand?.id == id || creature.offHand?.id == id || creature.armor?.id == id || creature.inventory.Where(i => i.id == id).Any();
     }
 
     //End formatting methods

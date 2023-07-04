@@ -56,9 +56,9 @@ public class Attack
 
             //Hit
             //We calculate the damage so can log how much was dealt, then actually deal the damage. This ensures players who die from the attack still get the log message
-            int damage = RollDamage(attacker, target);
-            damage = target.CalculateDamage(damage);
-            attacker.Location?.Log($"{attacker.FormattedName} hit {target.FormattedName} for {damage} damage with {weapon.FormattedName}!");
+            int rolledDmg = RollDamage(attacker, target);
+            int damage = target.CalculateDamage(rolledDmg);
+            attacker.Location?.Log($"{attacker.FormattedName} hit {target.FormattedName} for {damage} ({rolledDmg} - {rolledDmg-damage}) damage with {weapon.FormattedName}!");
             target.TakeDamage(damage, attacker);
         }
         else

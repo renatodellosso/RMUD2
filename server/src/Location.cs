@@ -268,7 +268,7 @@ public abstract class Location
                 {
                     if (state.Equals("talk"))
                     {
-                        Creature target = creatures.Where(c => c.baseId.Equals(action.action)).First();
+                        Creature? target = creatures.Where(c => c.baseId.Equals(action.action)).FirstOrDefault();
 
                         if (target != null)
                         {
@@ -359,16 +359,13 @@ public abstract class Location
                                 ItemHolder<Item> item = session.Player?.inventory[int.Parse(args[0])];
                                 session.Log(item.Overview());
                             }
-                            catch
-                            {
-
-                            }
+                            catch { }
                         }
                         else
                         {
                             ItemHolder<Item> item = session.Player?.inventory[int.Parse(stateArgs[1])];
                             if (item != null)
-                                item.Item.HandleInput(session, action, item, ref state, ref addStateToPrev);
+                                item.Item?.HandleInput(session, action, item, ref state, ref addStateToPrev);
                             else Utils.Log($"Item {args[1]} not found!");
                         }
                     }

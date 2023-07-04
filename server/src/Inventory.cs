@@ -9,13 +9,15 @@ using System.Threading.Tasks;
 public class Inventory : IEnumerable<ItemHolder<Item>> //IEnumerable allows us to use foreach loops
 {
 
-    public float maxWeight = -1; //If we need to manually set, use this
+    public float maxWeight = -1; //If we need to manually set MaxWeight, use this
+    public float addedWeight = 0; //Arbitarily added weight, like from a backpack
+
     public virtual float MaxWeight => maxWeight; //Set to -1 to disable
 
     List<ItemHolder<Item>> items = new();
 
     public int Count => items.Count;
-    public float Weight => items.Sum(item => item.Weight);
+    public float Weight => items.Sum(item => item.Weight) + addedWeight;
 
     public object Current => throw new NotImplementedException();
 
@@ -49,7 +51,7 @@ public class Inventory : IEnumerable<ItemHolder<Item>> //IEnumerable allows us t
     }
 
     /// <returns>A list of the items that were added</returns>
-    public List<ItemHolder<Item>> Add(List<ItemHolder<Item>> items)
+    public List<ItemHolder<Item>> Add(List<ItemHolder<Item>> items, bool ignoreMaxWeight = false)
     {
         //This will clear references to the items
         for (int i = 0; i < items.Count; i++)
@@ -71,7 +73,7 @@ public class Inventory : IEnumerable<ItemHolder<Item>> //IEnumerable allows us t
             while(item.amt > 0)
             {
                 //Utils.Log($"Adding item {item.Item.name} to inventory... {item.amt} left");
-                if(MaxWeight == -1 || Weight + toAdd.Item.Weight <= MaxWeight)
+                if(MaxWeight == -1 || ignoreMaxWeight || Weight + toAdd.Item.Weight <= MaxWeight)
                 {
                     toAdd.amt++;
                     item.amt--;
@@ -105,16 +107,21 @@ public class Inventory : IEnumerable<ItemHolder<Item>> //IEnumerable allows us t
     }
 
     /// <returns>A list of the items that were added</returns>
-    public List<ItemHolder<Item>> Add(ItemHolder<Item>[] items)
+    public List<ItemHolder<Item>> Add(ItemHolder<Item>[] items, bool ignoreMaxWeight = false)
     {
-        return Add(items.ToList());
+        return Add(items.ToList(), ignoreMaxWeight);
     }
 
 
     /// <returns>The items that were added</returns>
+    public ItemHolder<Item>? Add(ItemHolder<Item> item, bool ignoreMaxWeight = false)
+    {
+        return Add(new ItemHolder<Item>[] { item }, ignoreMaxWeight).FirstOrDefault();
+    }
+
     public ItemHolder<Item>? Add(ItemHolder<Item> item)
     {
-        return Add(new ItemHolder<Item>[] { item }).FirstOrDefault();
+        return Add(item, false);
     }
 
 
@@ -164,7 +171,8 @@ public class Inventory : IEnumerable<ItemHolder<Item>> //IEnumerable allows us t
 
     public ItemHolder<Item>? Remove(ItemHolder<Item> item)
     {
-        return Remove(new ItemHolder<Item>[] { item })?.FirstOrDefault();
+        ItemHolder<Item>[] toRemove = new ItemHolder<Item>[] { item };
+        return Remove(toRemove)?.FirstOrDefault();
     }
 
     /// <summary>

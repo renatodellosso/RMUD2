@@ -175,7 +175,8 @@ namespace Menus
                     location = Config.Gameplay.START_LOCATION,
                     name = account.username,
                     baseId = account.username,
-                    mainHand = new ItemHolder<Item>("spear")
+                    mainHand = new ItemHolder<Item>("spear"),
+                    armor = new ItemHolder<Armor>("peasantclothes"),
                 };
 
                 player.health = player.MaxHealth;

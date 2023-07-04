@@ -21,6 +21,11 @@ namespace Items
             { "axe", new Weapon("axe", "Axe", AbilityScore.Strength, new(10), "Good for chopping, both logs and necks.", 8, sellValue: 25) },
             { "pickaxe", new Weapon("pickaxe", "Pickaxe", AbilityScore.Strength, new(4), "A useful mining tool that could serve as a weapon in a pinch.", 8, sellValue: 20) },
 
+            //Armors
+            { "peasantclothes", new Armor("peasantclothes", "Peasant Clothes", 5, 10, 0, "A ragged set of clothes.") },
+            { "breastplate", new Armor("breastplate", "Breastplate", 15, 100, 5, "A protective metal breastplate.") },
+            { "chainmail", new Armor("chainmail", "Chainmail", 20, 125, 6, "A chain shirt.") },
+
             //Consumables
             { "ale", new SimpleItem("ale", "Mug of Ale", 0.5f, "A frothy mug of bitter ale.", sellValue : 2) },
             { "mushroom", new SimpleItem("mushroom", "Mushroom", 0.1f, "A small grey mushroom. Possibly edible.", sellValue : 1) },

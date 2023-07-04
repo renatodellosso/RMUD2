@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Discord;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ItemTypes
 {
-    public class Weapon : Item
+    public class Weapon : Equipable<Weapon>
     {
 
         public Dictionary<string, Attack> attacks = new();
@@ -15,6 +16,8 @@ namespace ItemTypes
         int sellValue = 0;
         public override int SellValue => sellValue;
 
+        protected override string SlotName => "main hand";
+
         public Weapon(string id, string name, AbilityScore abilityScore, Die damage, string description = "No description provided", int weight = 0, int sellValue = 0)
             : base(id, name, weight, description)
         {
@@ -22,42 +25,27 @@ namespace ItemTypes
             this.sellValue = sellValue;
         }
 
-        public override List<Input> GetInputs(Session session, ItemHolder<Item> item)
-        {
-            Player player = session.Player ?? throw new Exception("Player is null!");
-            List<Input> inputs = new();
-
-            if(player.mainHand != item)
-                inputs.Add(new(InputMode.Option, "equip", "Equip in main hand"));
-
-            return inputs;
-        }
-
-        public override void HandleInput(Session session, ClientAction action, ItemHolder<Item> item, ref string state, ref bool addStateToPrev)
-        {
-            Player player = session.Player ?? throw new Exception("Player is null!");
-            
-            if(action.action == "equip" && (player.mainHand == null || player.mainHand != item))
-            {
-                ItemHolder<Item> clone = item.Clone();
-                
-                player.inventory.Remove(item);
-                if (player.mainHand != null)
-                    player.inventory.Add(player.mainHand);
-                
-                player.mainHand = clone;
-
-                player.Update();
-
-                state = "inventory";
-                addStateToPrev = false;
-            }
-        }
+        
 
         public override string Overview(Dictionary<string, object> data)
         {
             return base.Overview(data) + $"<br>Deals {Attack.damage} damage";
         }
 
+        protected override bool CanEquip(Player player, ItemHolder<Weapon> item)
+        {
+            return player.mainHand == null || player.mainHand != (object)item;//Weirdly, we can't compare ItemHolder<Armor> to ItemHolder<Item> directly,
+                                                                              //so we have to cast one of them to object first
+        }
+
+        protected override void Equip(Player player, ItemHolder<Weapon> item)
+        {
+            player.inventory.Remove(item);
+
+            if (player.mainHand != null)
+                player.inventory.Add(player.mainHand);
+
+            player.mainHand = item;
+        }
     }
 }

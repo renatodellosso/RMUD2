@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using ItemTypes;
+using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,9 +34,9 @@ public class ItemHolder<T> where T : ItemTypes.Item
         this.amt = amt;
     }
 
-    public ItemHolder<T> Clone()
+    public ItemHolder<J> Clone<J>() where J : Item
     {
-        ItemHolder<T> clone = new(id, amt);
+        ItemHolder<J> clone = new(id, amt);
 
         //Copy data
         foreach(KeyValuePair<string, object> pair in data)
@@ -53,14 +54,20 @@ public class ItemHolder<T> where T : ItemTypes.Item
         return clone;
     }
 
-    public static implicit operator ItemHolder<ItemTypes.Item>(ItemHolder<T> holder)
+    public ItemHolder<T> Clone()
     {
-        return holder;
+        return Clone<T>();
+    }
+
+    //Important! This is remove the reference to the item
+    public static implicit operator ItemHolder<Item>(ItemHolder<T> holder)
+    {
+        return holder.Clone<Item>();
     }
 
     public string Overview()
     {
-        return Item.Overview(data);
+        return Item?.Overview(data) ?? "";
     }
 
 }
