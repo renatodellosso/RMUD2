@@ -111,7 +111,7 @@ public class Session
                 if (player.health < player.MaxHealth * .25) color = "red";
                 else if(player.health < player.MaxHealth * .5) color = "orange";
                 else if (player.health < player.MaxHealth * .75) color = "yellow";
-                text.Add($"HP: {Utils.Style($"{player.health}/{player.MaxHealth}",color)}<br>" +
+                text.Add($"HP: {Utils.FormatHealth(player.health, player.MaxHealth)}<br>" +
                     $"DT: {player.DodgeThreshold}");
 
                 text.Add($"Money: {Utils.Coins(player.coins)}");

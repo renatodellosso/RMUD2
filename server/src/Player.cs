@@ -9,7 +9,7 @@ public class Player : Creature
 
     //Static stuff
     static Dictionary<ObjectId, Player> players = new Dictionary<ObjectId, Player>();
-    
+
     public static Player Get(ObjectId id)
     {
         if (players.ContainsKey(id))
@@ -20,7 +20,7 @@ public class Player : Creature
     public static void Add(Player player)
     {
         //Use TryAdd instead of Add to avoid looking up the key twice
-        if(!players.TryAdd(player._id, player))
+        if (!players.TryAdd(player._id, player))
             players[player._id] = player;
     }
     //End of static stuff
@@ -80,15 +80,15 @@ public class Player : Creature
     protected override void OnDie(CreatureDeathEventData data)
     {
         health = MaxHealth;
-        if(!location.Equals("afterlife")) Move("afterlife");
+        if (!location.Equals("afterlife")) Move("afterlife");
     }
 
     public void AddXp(int amount, string cause)
     {
         xp += amount;
         session?.Log($"You gained {amount} xp from {cause}.");
-        
-        if(xp > XpToNextLevel && !hasSentLevelUpNotification)
+
+        if (xp > XpToNextLevel && !hasSentLevelUpNotification)
         {
             session?.Log(Utils.Style("Level up available! Rest to level up", "yellow"));
             hasSentLevelUpNotification = true;
@@ -101,7 +101,7 @@ public class Player : Creature
     {
         session?.Log(Utils.Style("You drift off into the comfort of sleep...", "honeydew"));
 
-        if(xp > XpToNextLevel)
+        if (xp > XpToNextLevel)
             LevelUp(() => CompleteRest());
         else
             CompleteRest(); //We complete the rest after the user levels up, but we have to pause to get their input
@@ -132,6 +132,17 @@ public class Player : Creature
 
         hasSentLevelUpNotification = false;
         Update();
+    }
+
+    //Basically just the character sheet
+    public string GetCharacterText()
+    {
+        string text = Utils.Style(FormattedName, bold: true);
+        text += Utils.Style($"<br>Level {level} - {xp}/{XpToNextLevel} XP", xp >= XpToNextLevel ? "yellow" : "white");
+        text += $"<br>{Utils.FormatHealth(health, MaxHealth, addedText: "HP")}";
+
+
+        return text;
     }
 
 }

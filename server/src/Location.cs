@@ -149,6 +149,7 @@ public abstract class Location
             if (objects.Any()) inputs.Add(new(InputMode.Option, "interact", "Interact with objects"));
 
             inputs.Add(new(InputMode.Option, "inventory", "Inventory"));
+            inputs.Add(new(InputMode.Option, "character", "Character"));
             inputs.Add(new(InputMode.Option, "exit", "Exit"));
         }
         else
@@ -259,6 +260,8 @@ public abstract class Location
 
                     session.Log(msg);
                 }
+                else if (args[0] == "character")
+                    session.SetMenu(new Menus.CharacterMenu());
                 else
                     Utils.Log("Invalid action: " + action.action);
             }

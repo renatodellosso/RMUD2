@@ -20,6 +20,8 @@ public class Creature
     public bool attackable = true;
     public int health;
     public virtual int MaxHealth => 5 + Constitution;
+    public virtual int DodgeThreshold => 10 + Agility;
+    public virtual int Defense => armor?.Item?.defense ?? 0;
 
     //Null for either means creature has no dialogue. The string is the dialogue state
     public Func<Session, DialogueMenu, Input[]>? talkInputs = null;
@@ -28,7 +30,7 @@ public class Creature
     public bool HasDialogue => talkInputs != null && talkHandler != null && talkStart != null;
 
     //Name formatting
-    public string FormattedName => Utils.Style(name, nameColor, nameBold, nameUnderline, nameItalic);
+    public string FormattedName => Utils.Style($"{name}{(health != MaxHealth ? " " + Utils.FormatHealth(health, MaxHealth, true) : "")}", nameColor, nameBold, nameUnderline, nameItalic);
     public string nameColor = "";
     public bool nameBold, nameUnderline, nameItalic;
 
@@ -57,7 +59,6 @@ public class Creature
     public int Wisdom => abilityScores[AbilityScore.Wisdom];
     public int Charisma => abilityScores[AbilityScore.Charisma];
 
-    public virtual int DodgeThreshold => 10 + Agility;
     public virtual int MaxCarryWeight => Config.Gameplay.BASE_CARRY_WEIGHT + Strength * Config.Gameplay.CARRY_WEIGHT_PER_STR;
 
     public Inventory inventory = new();
@@ -150,7 +151,7 @@ public class Creature
 
     public int CalculateDamage(int damage)
     {
-        damage -= armor?.Item?.defense ?? 0;
+        damage -= Defense;
         damage = Math.Clamp(damage, 0, health);
         return damage;
     }

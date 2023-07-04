@@ -3,6 +3,7 @@ using ItemTypes;
 using Konscious.Security.Cryptography;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -188,6 +189,23 @@ public static class Utils
     public static int Round(double num)
     {
         return Round((decimal)num);
+    }
+
+    public static string FormatHealth(float health, float maxHealth, bool parantheses = false, string addedText = "")
+    {
+        string msg = $"{health}/{maxHealth} {addedText}";
+
+        if (parantheses) msg = "(" + msg + ")";
+
+        string color = "green";
+        float percentile = health / maxHealth;
+        if (percentile < .25) color = "red";
+        else if (percentile < .5) color = "orange";
+        else if (percentile < .75) color = "yellow";
+
+        msg = Style(msg, color);
+
+        return msg;
     }
 
     //Random methods
