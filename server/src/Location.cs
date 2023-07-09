@@ -132,98 +132,104 @@ public abstract class Location
         string[] args = state.Split('.');
         List<Input> inputs = new List<Input>();
 
-        if (state.Equals("") || args.Length == 0)
+        try
         {
-            //The order we add these determines the order they appear in
-            //We want to add the most common options first, but keep exit last
-            inputs.Add(new(InputMode.Option, "look", "Look around"));
-            inputs.Add(new(InputMode.Option, "combat", "Combat"));
-
-            //Dialogue
-            List<Creature> dialogueCreatures = new();
-            foreach (Creature creature in creatures)
-                if (creature.HasDialogue) dialogueCreatures.Add(creature);
-            if (dialogueCreatures.Any())
-                inputs.Add(new(InputMode.Option, "talk", "Talk"));
-
-            if (objects.Any()) inputs.Add(new(InputMode.Option, "interact", "Interact with objects"));
-
-            inputs.Add(new(InputMode.Option, "inventory", "Inventory"));
-            inputs.Add(new(InputMode.Option, "character", "Character"));
-            inputs.Add(new(InputMode.Option, "exit", "Exit"));
-        }
-        else
-        {
-            inputs.Add(new(InputMode.Option, "back", "< Back"));
-
-            if (state.Equals("talk"))
+            if (state.Equals("") || args.Length == 0)
             {
+                //The order we add these determines the order they appear in
+                //We want to add the most common options first, but keep exit last
+                inputs.Add(new(InputMode.Option, "look", "Look around"));
+                inputs.Add(new(InputMode.Option, "combat", "Combat"));
+
+                //Dialogue
+                List<Creature> dialogueCreatures = new();
                 foreach (Creature creature in creatures)
-                    if (creature.HasDialogue) inputs.Add(new(InputMode.Option, creature.baseId, creature.FormattedName));
-            }
-            else if (state.Equals("exit"))
-            {
-                foreach (Exit exit in exits)
-                    if (exit != null && Get(exit.location) != null)
-                        inputs.Add(new(InputMode.Option, exit.location, $"({exit.direction}) {Get(exit.location).name}"));
-            }
-            else if (state.Equals("combat"))
-            {
-                Attack[] attacks = session.Player?.Weapon?.attacks.Values.ToArray() ?? Array.Empty<Attack>(); //Use Array.Empty instead of new Attack[0] to avoid allocating memory
-                foreach (Attack attack in attacks)
-                    inputs.Add(new(InputMode.Option, attack.id, attack.name));
-            }
-            else if (args[0].Equals("atktarget"))
-            {
-                //args[1] is the weapon, args[2] is the attack
+                    if (creature.HasDialogue) dialogueCreatures.Add(creature);
+                if (dialogueCreatures.Any())
+                    inputs.Add(new(InputMode.Option, "talk", "Talk"));
 
-                List<ItemHolder<Item>> weapons = new() //The list of ItemHolders we'll check for the weapon
+                if (objects.Any()) inputs.Add(new(InputMode.Option, "interact", "Interact with objects"));
+
+                inputs.Add(new(InputMode.Option, "inventory", "Inventory"));
+                inputs.Add(new(InputMode.Option, "character", "Character"));
+                inputs.Add(new(InputMode.Option, "exit", "Exit"));
+            }
+            else
+            {
+                inputs.Add(new(InputMode.Option, "back", "< Back"));
+
+                if (state.Equals("talk"))
+                {
+                    foreach (Creature creature in creatures)
+                        if (creature.HasDialogue) inputs.Add(new(InputMode.Option, creature.baseId, creature.FormattedName));
+                }
+                else if (state.Equals("exit"))
+                {
+                    foreach (Exit exit in exits)
+                        if (exit != null && Get(exit.location) != null)
+                            inputs.Add(new(InputMode.Option, exit.location, $"({exit.direction}) {Get(exit.location).name}"));
+                }
+                else if (state.Equals("combat"))
+                {
+                    Attack[] attacks = session.Player?.Weapon?.attacks.Values.ToArray() ?? Array.Empty<Attack>(); //Use Array.Empty instead of new Attack[0] to avoid allocating memory
+                    foreach (Attack attack in attacks)
+                        inputs.Add(new(InputMode.Option, attack.id, attack.name));
+                }
+                else if (args[0].Equals("atktarget"))
+                {
+                    //args[1] is the weapon, args[2] is the attack
+
+                    List<ItemHolder<Item>> weapons = new() //The list of ItemHolders we'll check for the weapon
                 {
                     session.Player?.mainHand
                 };
 
-                IEnumerable<ItemHolder<Item>> found = weapons.Where(w => w.id.Equals(args[1]));
-                Weapon? weapon = found.First().Item as Weapon;
-                if (weapon != null)
-                {
-                    Attack? attack = weapon.attacks[args[2]];
-                    List<Creature> targets = attack?.getTargets(session.Player) ?? new();
-
-                    foreach (Creature target in targets)
-                        inputs.Add(new(InputMode.Option, $"atk.{weapon.id}.{attack?.id}.{target.baseId}", target.FormattedName));
-                }
-            }
-            else if (args[0].Equals("interact"))
-            {
-                if (args.Length == 1)
-                    foreach (WorldObject obj in objects)
-                        inputs.Add(new(InputMode.Option, obj.id, obj.FormattedName));
-                else if (args.Length >= 2)
-                {
-                    WorldObject? obj = objects.Where(o => o.id.Equals(args[1])).First();
-                    if (obj != null)
-                        inputs.AddRange(obj.GetInputs(session.Player, state));
-                    else Utils.Log($"Object {args[1]} not found!");
-                }
-            }
-            else if (args[0].Equals("inventory"))
-            {
-                if (args.Length == 1)
-                {
-                    for (int i = 0; i < session.Player?.inventory.Count; i++)
+                    IEnumerable<ItemHolder<Item>> found = weapons.Where(w => w.id.Equals(args[1]));
+                    Weapon? weapon = found.First().Item as Weapon;
+                    if (weapon != null)
                     {
-                        ItemHolder<Item> item = session.Player?.inventory[i];
-                        inputs.Add(new(InputMode.Option, i.ToString(), item.FormattedName));
+                        Attack? attack = weapon.attacks[args[2]];
+                        List<Creature> targets = attack?.getTargets(session.Player) ?? new();
+
+                        foreach (Creature target in targets)
+                            inputs.Add(new(InputMode.Option, $"atk.{weapon.id}.{attack?.id}.{target.baseId}", target.FormattedName));
                     }
                 }
-                else if (args.Length == 2)
+                else if (args[0].Equals("interact"))
                 {
-                    ItemHolder<Item>? item = session.Player?.inventory[int.Parse(args[1])];
-                    if (item != null)
-                        inputs.AddRange(item.Item.GetInputs(session, item));
-                    else Utils.Log($"Item {args[1]} not found!");
+                    if (args.Length == 1)
+                        foreach (WorldObject obj in objects)
+                            inputs.Add(new(InputMode.Option, obj.id, obj.FormattedName));
+                    else if (args.Length >= 2)
+                    {
+                        WorldObject? obj = objects.Where(o => o.id.Equals(args[1])).First();
+                        if (obj != null)
+                            inputs.AddRange(obj.GetInputs(session.Player, state));
+                        else Utils.Log($"Object {args[1]} not found!");
+                    }
+                }
+                else if (args[0].Equals("inventory"))
+                {
+                    if (args.Length == 1)
+                    {
+                        for (int i = 0; i < session.Player?.inventory.Count; i++)
+                        {
+                            ItemHolder<Item> item = session.Player?.inventory[i];
+                            inputs.Add(new(InputMode.Option, i.ToString(), item.FormattedName));
+                        }
+                    }
+                    else if (args.Length == 2)
+                    {
+                        ItemHolder<Item>? item = session.Player?.inventory[int.Parse(args[1])];
+                        if (item != null)
+                            inputs.AddRange(item.Item.GetInputs(session, item));
+                        else Utils.Log($"Item {args[1]} not found!");
+                    }
                 }
             }
+        } catch (Exception e)
+        {
+            Utils.Log(e);
         }
 
         return inputs.ToArray();
@@ -390,7 +396,7 @@ public abstract class Location
         }
         catch (Exception e)
         {
-            Utils.Log($"Error handling input: {e.Message}\n{e.StackTrace}");
+            Utils.Log(e);
         }
     }
 

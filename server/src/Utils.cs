@@ -19,6 +19,12 @@ public static class Utils
         return msg;
     }
 
+    public static string Log(Exception e)
+    {
+        string msg = Log($"Error in {e.TargetSite}: {e.Message}\n{e.TargetSite}");
+        return msg;
+    }
+
     /// <summary>
     /// Creates a random salt that is cryptographically secure
     /// </summary>
@@ -193,7 +199,7 @@ public static class Utils
 
     public static string FormatHealth(float health, float maxHealth, bool parantheses = false, string addedText = "")
     {
-        string msg = $"{health}/{maxHealth} {addedText}";
+        string msg = $"{health}/{maxHealth}{(addedText != "" ? " " + addedText : "")}";
 
         if (parantheses) msg = "(" + msg + ")";
 
