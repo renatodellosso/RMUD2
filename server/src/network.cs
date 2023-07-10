@@ -185,7 +185,7 @@ public static class Network
     {
         { "init", (action, response) =>
             {
-                Utils.Log($"Initting session... Token: {action.token}");
+                Utils.Log($"Initting session... Token: {action.token}, Null: {action.token == null}");
                 Session session;
 
                 if(action.token == null || !Session.sessions.ContainsKey(new ObjectId(action.token))) {
