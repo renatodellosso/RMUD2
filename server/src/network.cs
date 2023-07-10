@@ -188,7 +188,7 @@ public static class Network
                 Utils.Log($"Initting session... Token: {action.token}, Null: {action.token == null}");
                 Session session;
 
-                if(action.token == null || !Session.sessions.ContainsKey(new ObjectId(action.token))) {
+                if(action.token == null | action.token == "" || !Session.sessions.ContainsKey(new ObjectId(action.token))) {
                     session = Session.CreateSession();
                     action.token = session.id.ToString();
                     response.Add(new ActionList.SetToken(session.id.ToString()));
