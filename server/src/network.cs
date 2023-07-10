@@ -99,7 +99,7 @@ public static class Network
 
         //Read body
         string body = new StreamReader(ctx.Request.InputStream).ReadToEnd();
-        //Utils.Log(body);
+        Utils.Log(body);
 
         //Utils.Log("Received HTTP request. Method: " + req.HttpMethod + ", Body: " + body);
 
