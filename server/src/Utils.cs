@@ -267,7 +267,7 @@ public static class Utils
         long ramUsed = GC.GetTotalMemory(false);
         double ramUsedGB = (double)ramUsed / 1000000000;
 
-        Log($"Tick #{tickCount} complete. Took {elapsedMs}ms. RAM Usage: {Round(ramUsedGB, 2)} GB");
+        Log($"Tick #{tickCount} complete. Took {elapsedMs}ms. RAM Usage: {Round(ramUsedGB, 3)} GB");
 
         tickCount++;
         return (int)(Config.TICK_INTERVAL - elapsedMs);
