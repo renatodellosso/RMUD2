@@ -265,6 +265,19 @@ public static class Utils
         double elapsedMs = (double)elapsed / TimeSpan.TicksPerMillisecond;
 
         long ramUsed = GC.GetTotalMemory(false);
+
+        //Check if we need to force garbage collection
+        if(ramUsed > Config.MAX_RAM)
+        {
+            Log("FORCING GARBAGE COLLECTION...");
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            Log("GARBAGE COLLECTION COMPLETE");
+
+            //Get RAM usage again
+            ramUsed = GC.GetTotalMemory(false);
+        }
+
         double ramUsedGB = (double)ramUsed / 1000000000;
 
         Log($"Tick #{tickCount} complete. Took {elapsedMs}ms. RAM Usage: {Round(ramUsedGB, 3)} GB");
