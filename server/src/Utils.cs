@@ -21,7 +21,7 @@ public static class Utils
 
     public static string Log(Exception e)
     {
-        string msg = Log($"Error in {e.TargetSite}: {e.Message}\n{e.TargetSite}");
+        string msg = Log($"Error in {e.TargetSite}: {e.Message}\n{e.StackTrace}");
         return msg;
     }
 
