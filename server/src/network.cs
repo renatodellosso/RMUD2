@@ -111,8 +111,15 @@ public static class Network
 
         //Utils.Log("Received HTTP request. Method: " + req.HttpMethod + ", Body: " + body);
 
-        resp.StatusCode = (int)HttpStatusCode.OK;
-        resp.StatusDescription = "Status OK";
+        try
+        {
+            resp.StatusCode = (int)HttpStatusCode.OK;
+            resp.StatusDescription = "Status OK";
+        }
+        catch (Exception e)
+        {
+            Utils.Log(e);
+        }
 
         try
         {

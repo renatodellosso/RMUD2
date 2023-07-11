@@ -5,10 +5,16 @@ const inputMode = {
 }
 
 const hash = async (string) => {
-    const utf8 = new TextEncoder().encode(string);
-    const hashBuffer = await crypto.subtle.digest("SHA-256", utf8);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    const hashHex = hashArray.map((bytes) => bytes.toString(16).padStart(2, "0")).join("");
+    //Old, only works on localhost and HTTPS
+    // const utf8 = new TextEncoder().encode(string);
+    // const hashBuffer = await crypto.subtle.digest("SHA-256", utf8);
+    // const hashArray = Array.from(new Uint8Array(hashBuffer));
+    // const hashHex = hashArray.map((bytes) => bytes.toString(16).padStart(2, "0")).join("");
+
+    let md = forge.md.sha256.create();
+    md.update(string);
+    let hashHex = md.digest().toHex();
+
     return hashHex;
     
 }
