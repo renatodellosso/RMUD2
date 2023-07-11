@@ -32,10 +32,10 @@ namespace SlashCommands
         {
             await cmd.DeferAsync(ephemeral: true); //Remember to await!
 
-            string msg, code = cmd.Data.Options.FirstOrDefault().Value.ToString();
+            string msg, code = cmd.Data.Options.FirstOrDefault()?.Value.ToString() ?? "";
             if (codes.ContainsKey(code))
             {
-                Account account = DB.Accounts.Find(codes[code]);
+                Account? account = DB.Accounts.Find(codes[code]);
                 if (account != null)
                 {
                     account.discordId = cmd.User.Id;
@@ -45,7 +45,7 @@ namespace SlashCommands
                     codes.Remove(code);
 
                     msg = $"Successfully linked to account: **{account.username}**!";
-                    Session.Find(account).Log($"Linked account to {Utils.Style(cmd.User.Username, "green")}");
+                    Session.Find(account)?.Log($"Linked account to {Utils.Style(cmd.User.Username, "green")}");
                     Utils.Log($"{account.username} linked their RMUD2 account with Discord account: {cmd.User.Username}");
                 }
                 else msg = "Invalid code";

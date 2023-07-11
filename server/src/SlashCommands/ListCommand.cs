@@ -29,13 +29,13 @@ namespace SlashCommands
                 embed.Title = $"Online Players ({Session.sessions.Count})";
 
                 int unsignedIn = 0;
-                foreach (Session session in Session.sessions.Values)
+                foreach (Session? session in Session.sessions.Values)
                 {
-                    if (session.SignedIn)
+                    if (session != null && session.SignedIn)
                     {
-                        Account account = session.Account;
-                        embed.Description += account.username;
-                        if (account.discordId != 0) embed.Description += $" (<@{account.discordId}>";
+                        Account? account = session.Account;
+                        embed.Description += account?.username ?? "Unknown";
+                        if (account != null && account.discordId != 0) embed.Description += $" (<@{account.discordId}>";
 
                         if(session.Player != null)
                         {
