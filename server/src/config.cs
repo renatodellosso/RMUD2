@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 static class Config
 {
     
-    public const uint PORT = 80;
+    public const uint PORT = 2001;
     public static readonly string[] PREFIXES = new string[] { 
         "http://*:" + PORT + "/",
         //"http://localhost:" + PORT + "/", //I think we can only have 1 wildcard prefix, so this is redundant

@@ -6,3 +6,6 @@
 /server/x64/
 
 /server/.env
+
+.key
+.pem

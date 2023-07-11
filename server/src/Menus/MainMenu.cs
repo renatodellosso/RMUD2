@@ -57,7 +57,7 @@ namespace Menus
             else if (action.action.Equals("play") && !loadingIntoGame)
             {
                 loadingIntoGame = true;
-                session.Log("Loading...");
+                session?.Log("Loading...");
                 Task.Run(Play);
             }
         }
