@@ -1,0 +1,1 @@
+dotnet server/bin/Debug/net7.0/server.dll
