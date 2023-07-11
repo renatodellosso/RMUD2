@@ -27,8 +27,14 @@ public static class Network
 
         foreach (string prefix in Config.PREFIXES)
         {
-            Utils.Log("Adding prefix: " + prefix);
-            httpListener.Prefixes.Add(prefix);
+            try
+            {
+                Utils.Log("Adding prefix: " + prefix);
+                httpListener.Prefixes.Add(prefix);
+            } catch (Exception e)
+            {
+                Utils.Log(e);
+            }
         }
 
         httpListener.Start();
