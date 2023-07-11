@@ -25,9 +25,11 @@ public static class Network
 
         httpListener = new HttpListener();
 
-        string prefix = "http://*:" + Config.PORT + "/";
-        Utils.Log("Adding prefix: " + prefix);
-        httpListener.Prefixes.Add(prefix);
+        foreach (string prefix in Config.PREFIXES)
+        {
+            Utils.Log("Adding prefix: " + prefix);
+            httpListener.Prefixes.Add(prefix);
+        }
 
         httpListener.Start();
 

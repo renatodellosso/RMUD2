@@ -9,6 +9,11 @@ static class Config
 {
     
     public const uint PORT = 80;
+    public static readonly string[] PREFIXES = new string[] { 
+        "http://*:" + PORT + "/",
+        "http://localhost:" + PORT + "/",
+        "http://0.0.0.0:" + PORT + "/",
+    };
 
     public const uint HANDLER_THREADS = 3;
     /// <summary>
