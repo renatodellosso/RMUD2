@@ -1,5 +1,5 @@
 const config = {
-    url: "http://localhost:2001",
+    url: "http://18.222.78.75",
     heartbeatInterval: 250
 };
 
