@@ -32,6 +32,8 @@ static class Config
 
     public const int TICK_INTERVAL = 1000;
 
+    public const nint MAX_RAM = 1024 * 1024 * 1024; //1 GB
+
     public static class DungeonGeneration
     {
         public const int MIN_FLOORS = 3, MAX_FLOORS = 5;
