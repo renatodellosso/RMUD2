@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 static class Config
 {
     
-    public const uint PORT = 2001;
+    public const uint PORT = 80;
 
     public const uint HANDLER_THREADS = 3;
     /// <summary>
