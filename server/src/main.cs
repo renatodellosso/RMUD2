@@ -4,8 +4,6 @@ using System.Diagnostics;
 
 Utils.Log("Starting server...");
 
-Process.GetCurrentProcess().MaxWorkingSet = Config.MAX_RAM;
-
 JsonSerializer serializer = new JsonSerializer();
 
 if (File.Exists(Config.ENV_PATH))

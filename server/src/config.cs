@@ -23,16 +23,12 @@ static class Config
 
     public const string ENV_PATH = "../../../.env";
 
-    public const int PBKDF2_ITERATIONS = 600000;
-
     public const int MAX_SIGN_IN_TRIES = 5;
     public static readonly TimeSpan LOCK_OUT_DURATION = new(0, 5, 0); //Hours, minutes, then seconds. Not sure why I can't use const here, but I can't, so I use static readonly
 
     public const int CODE_LENGTH = 6;
 
     public const int TICK_INTERVAL = 1000;
-
-    public const nint MAX_RAM = 1024 * 1024 * 1024; //1 GB
 
     public static class DungeonGeneration
     {

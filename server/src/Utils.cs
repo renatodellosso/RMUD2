@@ -55,9 +55,9 @@ public static class Utils
         Argon2id argon = new Argon2id(Encoding.UTF8.GetBytes(text));
 
         argon.Salt = Encoding.UTF8.GetBytes(salt);
-        argon.DegreeOfParallelism = 8; //4 Cores
-        argon.Iterations = 5;
-        argon.MemorySize = 1024 * 1024; //1GB of RAM
+        argon.DegreeOfParallelism = 2; //1 Core
+        argon.Iterations = 3;
+        argon.MemorySize = 1024 * 4; //4MB of RAM
 
         return Convert.ToBase64String(argon.GetBytes(32));
     }
