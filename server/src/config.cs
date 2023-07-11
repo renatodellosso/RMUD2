@@ -11,7 +11,7 @@ static class Config
     public const uint PORT = 80;
     public static readonly string[] PREFIXES = new string[] { 
         "http://*:" + PORT + "/",
-        "http://localhost:" + PORT + "/",
+        //"http://localhost:" + PORT + "/", //I think we can only have 1 wildcard prefix, so this is redundant
         //"http://0.0.0.0:" + PORT + "/", //Doesn't work for some reason
     };
 
