@@ -135,6 +135,7 @@ public static class Network
             resp.Headers.Set("Content-Type", "text/plain");
         } catch { }
 
+        try {
         //Parse body
         ClientAction action = JsonConvert.DeserializeObject<ClientAction>(body);
 
@@ -173,12 +174,14 @@ public static class Network
         string respJson = JsonConvert.SerializeObject(response);
 
         //Write response
-        try
+        byte[] responseBytes = Encoding.UTF8.GetBytes(respJson);
+        resp.ContentLength64 = responseBytes.Length;
+        resp.OutputStream.Write(responseBytes, 0, responseBytes.Length);
+        }
+        catch (Exception e)
         {
-            byte[] responseBytes = Encoding.UTF8.GetBytes(respJson);
-            resp.ContentLength64 = responseBytes.Length;
-            resp.OutputStream.Write(responseBytes, 0, responseBytes.Length);
-        } catch { }
+            Utils.Log(e);
+        }
 
         Thread.Sleep(100); //Wait for response to finish writing. I have no clue why we have to do this, but it gives errors w/o it
 
@@ -186,8 +189,9 @@ public static class Network
         try
         {
             resp.Close();
-        } catch
+        } catch (Exception e)
         {
+            Utils.Log(e);
             try
             {
                 Thread.Sleep(100);
