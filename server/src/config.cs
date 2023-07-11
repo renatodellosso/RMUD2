@@ -12,7 +12,7 @@ static class Config
     public static readonly string[] PREFIXES = new string[] { 
         "http://*:" + PORT + "/",
         "http://localhost:" + PORT + "/",
-        "http://0.0.0.0:" + PORT + "/",
+        //"http://0.0.0.0:" + PORT + "/", //Doesn't work for some reason
     };
 
     public const uint HANDLER_THREADS = 3;
