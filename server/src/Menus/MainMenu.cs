@@ -11,7 +11,7 @@ namespace Menus
     public class MainMenu : Menu
     {
 
-        bool waiting = false;
+        bool waiting = false, loadingIntoGame = false;
 
         public override string Status => "In the main menu";
 
@@ -54,8 +54,9 @@ namespace Menus
         {
             if (action.action.Equals("linkDiscord"))
                 LinkDiscord();
-            else if (action.action.Equals("play"))
+            else if (action.action.Equals("play") && !loadingIntoGame)
             {
+                loadingIntoGame = true;
                 session.Log("Loading...");
                 Task.Run(Play);
             }
