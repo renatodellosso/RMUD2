@@ -39,7 +39,7 @@ namespace Locations
                 if (action.action.Equals("exit")) menu.state = "exit";
                 else
                 {
-                    session.Log($"{Utils.Dialogue(creatures.First(), "A wise choice. What you seek you will find below,")}. Strangel,y you can't make out a mouth. They raise an arm and" +
+                    session.Log($"{Utils.Dialogue(creatures.First(), "A wise choice. What you seek you will find below,")}. Strangely, you can't make out a mouth. They raise an arm and" +
                         $" point towards the tunnel.");
                     menu.state = "end";
                 }

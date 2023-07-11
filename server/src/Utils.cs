@@ -263,7 +263,11 @@ public static class Utils
         OnTick?.Invoke(tickCount);
         long elapsed = DateTime.Now.Ticks - ticks;
         double elapsedMs = (double)elapsed / TimeSpan.TicksPerMillisecond;
-        Log($"Tick #{tickCount} complete. Took {elapsedMs}ms");
+
+        long ramUsed = GC.GetTotalMemory(false);
+        double ramUsedGB = (double)ramUsed / 1000000000;
+
+        Log($"Tick #{tickCount} complete. Took {elapsedMs}ms. RAM Usage: {Round(ramUsedGB, 2)} GB");
 
         tickCount++;
         return (int)(Config.TICK_INTERVAL - elapsedMs);

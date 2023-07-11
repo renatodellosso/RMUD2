@@ -136,47 +136,47 @@ public static class Network
         } catch { }
 
         try {
-        //Parse body
-        ClientAction action = JsonConvert.DeserializeObject<ClientAction>(body);
+            //Parse body
+            ClientAction action = JsonConvert.DeserializeObject<ClientAction>(body);
 
-        ServerResponse response = new();
+            ServerResponse response = new();
 
-        if (action != null)
-        {
-            if (!action.action.Equals("heartbeat"))
-                Utils.Log($"Received HTTP request. Action: {action.action}, State: " +
-                    $"{(action.Session != null ? action.Session.menu.state : "N/A")}");
-
-            if (defaultClientActions.ContainsKey(action.action))
+            if (action != null)
             {
-                defaultClientActions[action.action](action, response);
-            }
+                if (!action.action.Equals("heartbeat"))
+                    Utils.Log($"Received HTTP request. Action: {action.action}, State: " +
+                        $"{(action.Session != null ? action.Session.menu.state : "N/A")}");
 
-            if (action.Session != null)
-            {
-                Session session = Session.sessions[new ObjectId(action.token)];
-                if (!defaultClientActions.ContainsKey(action.action)) session.menu?.HandleInput(action, response); //? means if not null
-
-                response.Add(new ActionList.SetInput(session.menu?.GetInputs(response)));
-                if(session.logChanged) response.Add(new ActionList.SetLog(session.log));
-
-                List<string> sidebar = session.GetSidebar();
-                if (session.SidebarChanged)
+                if (defaultClientActions.ContainsKey(action.action))
                 {
-                    response.Add(new ActionList.SetSidebar(sidebar));
+                    defaultClientActions[action.action](action, response);
                 }
 
-                session.logChanged = false;
+                if (action.Session != null)
+                {
+                    Session session = Session.sessions[new ObjectId(action.token)];
+                    if (!defaultClientActions.ContainsKey(action.action)) session.menu?.HandleInput(action, response); //? means if not null
+
+                    response.Add(new ActionList.SetInput(session.menu?.GetInputs(response)));
+                    if(session.logChanged) response.Add(new ActionList.SetLog(session.log));
+
+                    List<string> sidebar = session.GetSidebar();
+                    if (session.SidebarChanged)
+                    {
+                        response.Add(new ActionList.SetSidebar(sidebar));
+                    }
+
+                    session.logChanged = false;
+                }
+                else Utils.Log("Session is null!");
             }
-            else Utils.Log("Session is null!");
-        }
 
-        string respJson = JsonConvert.SerializeObject(response);
+            string respJson = JsonConvert.SerializeObject(response);
 
-        //Write response
-        byte[] responseBytes = Encoding.UTF8.GetBytes(respJson);
-        resp.ContentLength64 = responseBytes.Length;
-        resp.OutputStream.Write(responseBytes, 0, responseBytes.Length);
+            //Write response
+            byte[] responseBytes = Encoding.UTF8.GetBytes(respJson);
+            resp.ContentLength64 = responseBytes.Length;
+            resp.OutputStream.Write(responseBytes, 0, responseBytes.Length);
         }
         catch (Exception e)
         {
