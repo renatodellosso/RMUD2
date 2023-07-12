@@ -16,6 +16,8 @@ namespace Locations
             id = "townsquare";
             name = "Town Square";
             status = "In Town";
+
+            safe = true;
         }
 
         public override void AddExits()

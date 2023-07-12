@@ -72,10 +72,20 @@ public class Attack
     {
         List<Creature> targets = new();
 
+        bool pvp = attacker.Location?.safe ?? false;
+
         List<Creature> creatures = attacker.Location?.creatures ?? new();
-        foreach (Creature creature in creatures)
-            if (creature != attacker && creature.attackable)
-                targets.Add(creature);
+        IEnumerable<Creature>? attackable = creatures?.Where(c => c.attackable) ?? null;
+
+        if (attackable != null)
+        {
+            if(!pvp)
+                attackable = attackable.Where(c => c is not Player);
+
+            foreach (Creature creature in attackable)
+                if (creature != attacker && creature.attackable)
+                    targets.Add(creature);
+        }
 
         return targets;
     }

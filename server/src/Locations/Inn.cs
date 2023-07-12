@@ -26,6 +26,8 @@ namespace Locations
             name = "Inn & Tavern";
             status = "At the Tavern";
 
+            safe = true;
+
             creatures.Add(new Creatures.SimpleNPC("hesin", "Hesin, Innkeeper", 
                 talkStart: (session) =>
                 {

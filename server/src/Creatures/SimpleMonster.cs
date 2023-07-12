@@ -27,6 +27,8 @@ namespace Creatures
             this.weapon = weapon;
             this.attackInterval = attackInterval;
             this.onTick = onTick;
+
+            tags.Add("hostile");
         }
 
         void OnTick()

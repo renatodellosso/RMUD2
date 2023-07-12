@@ -15,6 +15,8 @@ public class Creature
     //We can't use id because of Player's _id, so we use baseId
     public string baseId = "unnamedCreature", name = "Unnamed Creature", location = "";
 
+    public List<string> tags = new();
+
     public Location? Location => GetLocation();
 
     public bool attackable = true;
@@ -107,19 +109,29 @@ public class Creature
     {
         Location? to = Location.Get(location);
 
-        if (!location.Equals(""))
+        Exit? exit = Location?.exits.Where(e => e.location == location).FirstOrDefault();
+
+        if (exit != null && exit.canExit(this))
         {
-            Location? loc = GetLocation();
-            loc?.Leave(this, to);
+            if (!location.Equals(""))
+            {
+                Location? loc = GetLocation();
+                loc?.Leave(this, to);
+            }
+
+            to?.Enter(this, Location);
+
+            if (this is Player player)
+            {
+                player?.session?.SetMenu(new LocationMenu(player.session));
+            }
         }
-
-        to?.Enter(this, Location);
-
-        if(this is Player)
+        else
         {
-            Player player = (Player)this;
-
-            player?.session?.SetMenu(new LocationMenu(player.session));
+            if (this is Player player)
+            {
+                player?.session?.Log("You cannot use that exit.");
+            }
         }
     }
 

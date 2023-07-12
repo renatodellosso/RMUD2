@@ -16,6 +16,8 @@ namespace Locations
             id = "afterlife";
             name = "The Afterlife";
             status = "Dead";
+
+            safe = true;
         }
 
         public override void AddExits()

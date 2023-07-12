@@ -59,6 +59,8 @@ public abstract class Location
 
     public List<WorldObject> objects = new();
 
+    public bool safe = false; //Shouldn't be changed outside of constructor
+
     public void Enter(Creature creature, Location? from)
     {
         //Prevent duplicates
@@ -152,7 +154,7 @@ public abstract class Location
 
                 inputs.Add(new(InputMode.Option, "inventory", "Inventory"));
                 inputs.Add(new(InputMode.Option, "character", "Character"));
-                inputs.Add(new(InputMode.Option, "exit", "Exit"));
+                inputs.Add(new(InputMode.Option, "move", "Move"));
             }
             else
             {
@@ -163,7 +165,7 @@ public abstract class Location
                     foreach (Creature creature in creatures)
                         if (creature.HasDialogue) inputs.Add(new(InputMode.Option, creature.baseId, creature.FormattedName));
                 }
-                else if (state.Equals("exit"))
+                else if (state.Equals("move"))
                 {
                     foreach (Exit exit in exits)
                         if (exit != null && Get(exit.location) != null)
@@ -180,9 +182,9 @@ public abstract class Location
                     //args[1] is the weapon, args[2] is the attack
 
                     List<ItemHolder<Item>> weapons = new() //The list of ItemHolders we'll check for the weapon
-                {
-                    session.Player?.mainHand
-                };
+                    {
+                        session.Player?.mainHand
+                    };
 
                     IEnumerable<ItemHolder<Item>> found = weapons.Where(w => w.id.Equals(args[1]));
                     Weapon? weapon = found.First().Item as Weapon;
@@ -246,8 +248,8 @@ public abstract class Location
             {
                 if (action.action.Equals("talk"))
                     state = "talk";
-                else if (action.action.Equals("exit"))
-                    state = "exit";
+                else if (action.action.Equals("move"))
+                    state = "move";
                 else if (action.action.Equals("look"))
                     session.Log(GetOverviewMsg(session.Player));
                 else if (action.action.Equals("combat"))
@@ -284,14 +286,14 @@ public abstract class Location
                             session.SetMenu(new Menus.DialogueMenu(target));
                         }
                     }
-                    else if (state.Equals("exit"))
+                    else if (state.Equals("move"))
                     {
                         if (exits.Where(e => e.location.Equals(action.action)).Any())
                         {
                             Player? player = session.Player;
                             if (player != null)
                             {
-                                player.Move(action.action);
+                                player.Move (action.action);
 
                                 Location? location = player.Location;
                                 if (location != null)
@@ -365,14 +367,14 @@ public abstract class Location
                             try
                             {
                                 state = "inventory." + args[0];
-                                ItemHolder<Item> item = session.Player?.inventory[int.Parse(args[0])];
-                                session.Log(item.Overview());
+                                ItemHolder<Item>? item = session.Player?.inventory[int.Parse(args[0])];
+                                session.Log(item?.Overview() ?? "Item not found. Please report this bug.");
                             }
                             catch { }
                         }
                         else
                         {
-                            ItemHolder<Item> item = session.Player?.inventory[int.Parse(stateArgs[1])];
+                            ItemHolder<Item>? item = session.Player?.inventory[int.Parse(stateArgs[1])];
                             if (item != null)
                                 item.Item?.HandleInput(session, action, item, ref state, ref addStateToPrev);
                             else Utils.Log($"Item {args[1]} not found!");

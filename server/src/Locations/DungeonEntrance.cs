@@ -17,6 +17,8 @@ namespace Locations
             id = "dungeonentrance";
             name = "Outside the dungeon";
             status = "Preparing for an expedition";
+
+            safe = true;
         }
 
         public override void AddExits()

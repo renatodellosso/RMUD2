@@ -28,6 +28,8 @@ namespace Locations
             name = "Blacksmith";
             status = "In Town";
 
+            safe = true;
+
             creatures.Add(new Creatures.SimpleNPC("daes", "Daes, Smith", 
                 talkStart: (session) =>
                 {

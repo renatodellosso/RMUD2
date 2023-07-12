@@ -86,8 +86,9 @@ public static class Network
                     if (requests.Count > 0 && reqAvailable)
                     {
                         try {
-                        requests.RemoveAt(0);
+                            requests.RemoveAt(0);
                         } catch { reqAvailable = false; }
+
                         if(reqAvailable && ctx != null) HandleRequest(ctx);
                     }
                 }

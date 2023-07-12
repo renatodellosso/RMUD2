@@ -18,6 +18,8 @@ namespace Locations
             name = "Outside the dungeon";
             status = "Preparing for an expedition";
 
+            safe = true;
+
             Creatures.SimpleNPC shadowyFigure = new Creatures.SimpleNPC("shadowyFigure", "Shadowy Figure", nameColor: "blue", talkInputs: (session, menu) =>
             {
                 //Get inputs for dialogue

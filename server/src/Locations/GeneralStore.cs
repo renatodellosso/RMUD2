@@ -25,6 +25,8 @@ namespace Locations
             name = "General Store";
             status = "In Town";
 
+            safe = true;
+
             creatures.Add(new Creatures.SimpleNPC("tarel", "Tarel, Shopkeeper", 
                 talkStart: (session) =>
                 {
