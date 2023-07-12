@@ -10,9 +10,9 @@ public class Exit
     //Where the exit leads
     public string location, direction, state = "";
 
-    public Func<Creature, bool> canExit = (creature) =>
+    public Func<Creature, Exit, bool> canExit = (creature, exit) =>
     {
-        return !(creature.Location?.safe ?? false) || (!creature.tags?.Contains("hostile") ?? true);
+        return !(Location.Get(exit.location)?.safe ?? false) || (!creature.tags?.Contains("hostile") ?? true);
     };
 
     public Exit(string location, string direction)
@@ -21,7 +21,7 @@ public class Exit
         this.direction = direction;
     }
 
-    public Exit(string location, string direction, Func<Creature, bool> canExit)
+    public Exit(string location, string direction, Func<Creature, Exit, bool> canExit)
     {
         this.location = location;
         this.direction = direction;

@@ -28,6 +28,8 @@ public class Session
     public bool SidebarChanged => DidSidebarChange();
     public bool resendSidebar = false;
 
+    public bool processingAction = false;
+
     public static Session CreateSession()
     {
         Session session = new();

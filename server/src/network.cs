@@ -144,30 +144,36 @@ public static class Network
 
             if (action != null)
             {
+                Session? session = action.Session;
+
                 if (!action.action.Equals("heartbeat"))
                     Utils.Log($"Received HTTP request. Action: {action.action}, State: " +
-                        $"{(action.Session != null ? action.Session.menu.state : "N/A")}");
+                        $"{(session != null ? session.menu.state : "N/A")}");
 
                 if (defaultClientActions.ContainsKey(action.action))
                 {
                     defaultClientActions[action.action](action, response);
                 }
 
-                if (action.Session != null)
+                if (session != null)
                 {
-                    Session session = Session.sessions[new ObjectId(action.token)];
-                    if (!defaultClientActions.ContainsKey(action.action)) session.menu?.HandleInput(action, response); //? means if not null
-
-                    response.Add(new ActionList.SetInput(session.menu?.GetInputs(response)));
-                    if(session.logChanged) response.Add(new ActionList.SetLog(session.log));
-
-                    List<string> sidebar = session.GetSidebar();
-                    if (session.SidebarChanged)
+                    if (session.processingAction) Utils.Log("Session is processing an action, ignoring request");
+                    else
                     {
-                        response.Add(new ActionList.SetSidebar(sidebar));
-                    }
+                        session.processingAction = true;
 
-                    session.logChanged = false;
+                        if (!defaultClientActions.ContainsKey(action.action)) session.menu?.HandleInput(action, response); //? means if not null
+
+                        response.Add(new ActionList.SetInput(session.menu?.GetInputs(response)));
+                        if (session.logChanged) response.Add(new ActionList.SetLog(session.log));
+
+                        List<string> sidebar = session.GetSidebar();
+                        if (session.SidebarChanged)
+                            response.Add(new ActionList.SetSidebar(sidebar));
+
+                        session.logChanged = false;
+                        session.processingAction = false;
+                    }
                 }
                 else Utils.Log("Session is null!");
             }

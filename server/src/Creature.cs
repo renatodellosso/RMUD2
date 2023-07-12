@@ -111,7 +111,7 @@ public class Creature
 
         Exit? exit = Location?.exits.Where(e => e.location == location).FirstOrDefault();
 
-        if (exit != null && exit.canExit(this))
+        if (exit != null && exit.canExit(this, exit))
         {
             if (!location.Equals(""))
             {

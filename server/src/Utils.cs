@@ -132,12 +132,12 @@ public static class Utils
     public static string ReverseDirection(string direction)
     {
         //We use lowercase now to avoid reswapping the chars. We'll put it back to uppercase later
+        direction = direction.Replace("UP", "down");
+        direction = direction.Replace("DOWN", "up");
         direction = direction.Replace('N', 's');
         direction = direction.Replace('S', 'n');
         direction = direction.Replace('E', 'w');
         direction = direction.Replace('E', 'e');
-        direction = direction.Replace("UP", "down");
-        direction = direction.Replace("DOWN", "up");
 
         direction = direction.ToUpper();
 

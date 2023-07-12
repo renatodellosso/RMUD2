@@ -135,7 +135,7 @@ public class Floor
     public void GenerateStairs()
     {
         //X is depth, Y is 0 if it's the main floor, or >0 if it's a side floor
-        if (Dungeon.floors.TryGetValue(position + new Vector2(1, 0), out Floor nextFloor) && nextFloor != null)
+        if (Dungeon.floors.TryGetValue(position + new Vector2(1, 0), out Floor? nextFloor) && nextFloor != null)
         {
             foreach (DungeonLocation room in rooms)
             {
