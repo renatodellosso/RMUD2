@@ -106,37 +106,41 @@ public static class Network
         HttpListenerRequest req = ctx.Request;
         HttpListenerResponse resp = ctx.Response;
 
-        //Read body
-        string body = new StreamReader(ctx.Request.InputStream).ReadToEnd();
-        //Utils.Log(body);
-
-        //Utils.Log("Received HTTP request. Method: " + req.HttpMethod + ", Body: " + body);
-
         try
         {
-            resp.StatusCode = (int)HttpStatusCode.OK;
-            resp.StatusDescription = "Status OK";
-        }
-        catch (Exception e)
-        {
-            Utils.Log(e);
-        }
+            //Read body
+            string body = new StreamReader(ctx.Request.InputStream).ReadToEnd();
+            //Utils.Log(body);
 
-        try
-        {
-            //From https://stackoverflow.com/a/28223114, prevents CORS errors on client
-            if (req.HttpMethod.Equals("Options"))
+            //Utils.Log("Received HTTP request. Method: " + req.HttpMethod + ", Body: " + body);
+
+            try
             {
-                resp.AddHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With");
-                resp.AddHeader("Access-Control-Allow-Methods", "GET, POST");
-                resp.AddHeader("Access-Control-Max-Age", "1728000");
+                resp.StatusCode = (int)HttpStatusCode.OK;
+                resp.StatusDescription = "Status OK";
             }
-            resp.AppendHeader("Access-Control-Allow-Origin", "*");
+            catch (Exception e)
+            {
+                //Utils.Log(e);
+            }
 
-            resp.Headers.Set("Content-Type", "text/plain");
-        } catch { }
+            try
+            {
+                //From https://stackoverflow.com/a/28223114, prevents CORS errors on client
+                if (req.HttpMethod.Equals("Options"))
+                {
+                    resp.AddHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With");
+                    resp.AddHeader("Access-Control-Allow-Methods", "GET, POST");
+                    resp.AddHeader("Access-Control-Max-Age", "1728000");
+                }
+                resp.AppendHeader("Access-Control-Allow-Origin", "*");
 
-        try {
+                resp.Headers.Set("Content-Type", "text/plain");
+            } catch (Exception e)
+            {
+                //Utils.Log(e);
+            }
+
             //Parse body
             ClientAction action = JsonConvert.DeserializeObject<ClientAction>(body);
 
