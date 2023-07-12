@@ -95,6 +95,14 @@ public static class Utils
         return color ? Style(text, "yellow") : text;
     }
 
+    public static string Modifier(int mod)
+    {
+        string text = mod.ToString();
+        if (mod >= 0) text = "+" + text;
+        else text = "-" + text;
+        return text;
+    }
+
 
     public static bool HasItem(Creature creature, string id)
     {

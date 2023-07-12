@@ -137,10 +137,18 @@ public class Player : Creature
     //Basically just the character sheet
     public string GetCharacterText()
     {
-        string text = Utils.Style(FormattedName, bold: true);
+        string text = Utils.Style(FormattedName, bold: true, underline: true);
         text += Utils.Style($"<br>Level {level} - {xp}/{XpToNextLevel} XP", xp >= XpToNextLevel ? "yellow" : "white");
         text += $"<br>{Utils.FormatHealth(health, MaxHealth, addedText: "HP")}";
 
+        text += $"<br>Dodge Threshold: {DodgeThreshold}";
+        text += $"<br>Defense: {Defense}";
+
+        text += Utils.Style("<br><br>Ability Scores:", bold: true);
+        foreach(AbilityScore score in abilityScores.Keys)
+        {
+            text += $"<br>{score.ToString()}: {Utils.Modifier(abilityScores[score])}";
+        }
 
         return text;
     }
