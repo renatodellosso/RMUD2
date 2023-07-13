@@ -23,8 +23,8 @@ namespace Creatures
 
         public SimpleNPC(string id, string name, string nameColor = "", Func<Session, DialogueMenu, Input[]>? talkInputs = null, Action<Session, ClientAction, DialogueMenu>? talkHandler = null, 
             Action<Session>? talkStart = null, int maxHealth = 0, Action<Events.OnCreatureTickEventData>? onTick = null, Table<Func<ItemHolder<Item>>>? drops = null, 
-            int minDrops = 1, int maxDrops = 1, int xp = 0)
-            : base(id, name)
+            int minDrops = 1, int maxDrops = 1, int xp = 0, bool actual = true)
+            : base(id, name, actual)
         {
             this.nameColor = nameColor;
 
@@ -43,7 +43,7 @@ namespace Creatures
             this.minDrops = minDrops;
             this.maxDrops = maxDrops;
 
-            this.xpValue = xp;
+            xpValue = xp;
 
             //Utils.Log($"Created {baseId}");
         }

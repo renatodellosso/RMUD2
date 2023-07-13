@@ -67,25 +67,28 @@ public class Creature
 
     public int xpValue = 0;
 
-    public Creature(string id, string name)
+    public Creature(string id, string name, bool actual = true) //Actual specifies whether this is a real creature or just being creatured to get data
     {
-        Utils.OnTick += Tick;
-
-        //If multiple creatures have the same ID, add a number to the end of the ID
-        int counter = 0;
-        while ((counter > 0 && ids.Contains(id + counter)) || (counter == 0 && ids.Contains(id)))
-            counter++;
-
-        if (counter > 0)
+        if (actual)
         {
-            id += counter;
-            name += $" {counter}";
-        }
+            Utils.OnTick += Tick;
 
-        ids.Add(id);
-        baseId = id;
-        this.name = name;
-        //Utils.Log($"ID: {baseId}, Counter: {counter}");
+            //If multiple creatures have the same ID, add a number to the end of the ID
+            int counter = 0;
+            while ((counter > 0 && ids.Contains(id + counter)) || (counter == 0 && ids.Contains(id)))
+                counter++;
+
+            if (counter > 0)
+            {
+                id += counter;
+                name += $" {counter}";
+            }
+
+            ids.Add(id);
+            baseId = id;
+            this.name = name;
+            //Utils.Log($"ID: {baseId}, Counter: {counter}");
+        }
 
         CalculateStats();
     }
@@ -105,13 +108,14 @@ public class Creature
     /// Move the creature to a new location
     /// </summary>
     /// <param name="location">The ID of the new location</param>
-    public void Move(string location)
+    /// <param name="force">Whether to force the move, even if the exit can't be used, or if there is no exit</param>
+    public void Move(string location, bool force = false)
     {
         Location? to = Location.Get(location);
 
-        Exit? exit = Location?.exits.Where(e => e.location == location).FirstOrDefault();
+        Exit? exit = force ? null : Location?.exits.Where(e => e.location == location).FirstOrDefault();
 
-        if (exit != null && exit.canExit(this, exit))
+        if (force || (exit != null && exit.canExit(this, exit)))
         {
             if (!location.Equals(""))
             {
@@ -215,6 +219,11 @@ public class Creature
     {
         inventory.addedWeight = (armor?.Weight ?? 0) + (mainHand?.Weight ?? 0) + (offHand?.Weight ?? 0);
         inventory.maxWeight = MaxCarryWeight;
+    }
+
+    public virtual float ScaleTableWeight(Floor floor)
+    {
+        return 1;
     }
 
 }

@@ -18,15 +18,19 @@ namespace Creatures
 
         new Action<OnCreatureTickEventData>? onTick;
 
+        Func<Floor, float>? scaleTableWeight;
+
         public SimpleMonster(string id, string name, int maxHealth, Weapon weapon, int attackInterval = 3, Table<Func<ItemHolder<Item>>>? drops = null, int minDrops = 1,
-            int maxDrops = 1, int xp = 0, Action<OnCreatureTickEventData>? onTick = null)
+            int maxDrops = 1, int xp = 0, Action<OnCreatureTickEventData>? onTick = null, Func<Floor, float>? scaleTableWeight = null, bool actual = true)
             : base(id, name, nameColor: "red", maxHealth: maxHealth, onTick: (data) => ((SimpleMonster)data.self).OnTick(), drops: drops, minDrops: minDrops, maxDrops: maxDrops,
-                  xp: xp)
+                  xp: xp, actual: actual)
         {
             attackable = true;
             this.weapon = weapon;
             this.attackInterval = attackInterval;
+
             this.onTick = onTick;
+            this.scaleTableWeight = scaleTableWeight;
 
             tags.Add("hostile");
         }
@@ -58,6 +62,11 @@ namespace Creatures
             {
                 Utils.Log(e.Message + "\n" + e.StackTrace);
             }
+        }
+
+        public override float ScaleTableWeight(Floor floor)
+        {
+            return (scaleTableWeight ?? base.ScaleTableWeight)(floor); //If scaleTableWeight is null, call base.ScaleTableWeight. I know it looks kinda weird
         }
 
     }

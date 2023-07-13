@@ -80,7 +80,7 @@ public class Player : Creature
     protected override void OnDie(CreatureDeathEventData data)
     {
         health = MaxHealth;
-        if (!location.Equals("afterlife")) Move("afterlife");
+        if (!location.Equals("afterlife")) Move("afterlife", true);
     }
 
     public void AddXp(int amount, string cause)

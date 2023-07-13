@@ -12,7 +12,10 @@ public class Exit
 
     public Func<Creature, Exit, bool> canExit = (creature, exit) =>
     {
-        return !(Location.Get(exit.location)?.safe ?? false) || (!creature.tags?.Contains("hostile") ?? true);
+        if (!(Location.Get(exit.location)?.safe ?? false)) //If the location isn't safe, always allow exiting
+            return true;
+
+        return (!creature.tags?.Contains("hostile")) ?? true; //If the creature isn't hostile, allow exiting
     };
 
     public Exit(string location, string direction)

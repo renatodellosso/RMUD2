@@ -70,11 +70,49 @@ public class Table<T>
         return contents.First().Value;
     }
 
-    //Applies an action to each item in the table
+    /// <summary>
+    /// Applies an action to each item in the table
+    /// </summary>
     public void Apply(Action<float, T> action)
     {
         foreach(KeyValuePair<float, T> pair in contents)
             action(pair.Key, pair.Value);
+    }
+
+    /// <summary>
+    /// Applies a function to each item in the table, and multiplies the old weight by the new one
+    /// </summary>
+    public void Scale(Func<float, T, float> func)
+    {
+        List<KeyValuePair<float, T>> newContents = new();
+        float newTotal = 0;
+
+        for (int i = 0; i < contents.Length; i++)
+        {
+            KeyValuePair<float, T> pair = contents[i];
+            float mult = func(pair.Key, pair.Value), newWeight = pair.Key * mult;
+
+            Utils.Log($"Weight: {pair.Key} -> {newWeight}");
+
+            //If mult is 0 or less, remove the entry from the table
+            if (mult > 0)
+            {
+                newTotal += newWeight;
+                newContents.Add(new(pair.Key * mult, pair.Value));
+            }
+        }
+
+        total = newTotal;
+        contents = newContents.ToArray();
+    }
+
+    public Table<T> Clone()
+    {
+        Table<T> table = new();
+
+        table.contents = (KeyValuePair<float, T>[])contents.Clone();
+
+        return table;
     }
 
 }
