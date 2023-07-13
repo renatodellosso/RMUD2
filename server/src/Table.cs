@@ -92,7 +92,7 @@ public class Table<T>
             KeyValuePair<float, T> pair = contents[i];
             float mult = func(pair.Key, pair.Value), newWeight = pair.Key * mult;
 
-            Utils.Log($"Weight: {pair.Key} -> {newWeight}");
+            //Utils.Log($"Weight: {pair.Key} -> {newWeight}");
 
             //If mult is 0 or less, remove the entry from the table
             if (mult > 0)

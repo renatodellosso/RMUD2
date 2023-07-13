@@ -75,6 +75,8 @@ static class Config
 
         public const string START_LOCATION = "intro";
         public const string RESPAWN_LOCATION = "townsquare";
+
+        public const int MAX_ENEMIES_IN_ROOM = 3; //Only applies when a monster is moving through a room
     }
 
 }
