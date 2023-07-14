@@ -27,7 +27,7 @@ namespace Menus
             string msg = $"{Utils.Style(title, bold: true)}";
 
             foreach(Recipe recipe in recipes)
-                msg += $"<br>-{recipe}";
+                msg += $"<br>-{recipe}{(recipe.MaxCraftable(session?.Player) == 0 ? " (Cannot afford)" : "")}";
 
             session?.Log(msg);
         }
@@ -43,7 +43,8 @@ namespace Menus
                 for (int i = 0; i < recipes.Length; i++)
                 {
                     Recipe recipe = recipes[i];
-                    inputs.Add(new(InputMode.Option, i.ToString(), recipe.summary));
+                    if(recipe.MaxCraftable(session?.Player) > 0)
+                        inputs.Add(new(InputMode.Option, i.ToString(), recipe.summary));
                 }
             }
             else
@@ -53,6 +54,7 @@ namespace Menus
                 Recipe recipe = recipes[int.Parse(state)];
                 int max = recipe.MaxCraftable(session?.Player);
                 inputs.Add(new(InputMode.Option, max.ToString(), $"Max - {max}"));
+                inputs.Add(new(InputMode.Option, "1", $"1"));
                 inputs.Add(new(InputMode.Text, "amt", $"Enter an amt, between 1 and {max}"));
             }
 
