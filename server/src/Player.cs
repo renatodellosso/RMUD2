@@ -153,4 +153,10 @@ public class Player : Creature
         return text;
     }
 
+    public void SignOut()
+    {
+        Location?.Leave(this, null);
+        players.Remove(_id);
+    }
+
 }

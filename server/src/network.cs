@@ -161,6 +161,8 @@ public static class Network
 
                 if (session != null)
                 {
+                    session.lastActionTime = DateTime.Now;
+
                     if (session.processingAction) Utils.Log("Session is processing an action, ignoring request");
                     else
                     {

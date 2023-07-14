@@ -28,6 +28,8 @@ Location.GenerateExits();
 Network.Init();
 Bot.Init();
 
+Task.Run(Utils.RemoveInactiveSessions);
+
 while (true)
 {
     Thread.Sleep(Utils.Tick());

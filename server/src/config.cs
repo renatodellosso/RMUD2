@@ -79,4 +79,10 @@ static class Config
         public const int MAX_ENEMIES_IN_ROOM = 3; //Only applies when a monster is moving through a room
     }
 
+    public static class SessionRemoval
+    {
+        public const int CHECK_INTERVAL = 60000; //1 minute
+        public const int MAX_AGE = 600000; //10 minutes
+    }
+
 }

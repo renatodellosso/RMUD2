@@ -30,6 +30,8 @@ public class Session
 
     public bool processingAction = false;
 
+    public DateTime lastActionTime = DateTime.Now;
+
     public static Session CreateSession()
     {
         Session session = new();
@@ -152,6 +154,12 @@ public class Session
         if(playerId != null)
             return Player.Get(playerId.Value); //We use .Value on vars with ? to get the value if it's not null
         return null;
+    }
+
+    public void ShutDown()
+    {
+        Log("Signing out...");
+        Player?.SignOut();
     }
 
     static Session? Find(ObjectId id)

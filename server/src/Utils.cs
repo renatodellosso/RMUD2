@@ -1,6 +1,7 @@
 ﻿using Discord;
 using ItemTypes;
 using Konscious.Security.Cryptography;
+using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -295,5 +296,49 @@ public static class Utils
     }
 
     //End events
+
+    public static void RemoveInactiveSessions()
+    {
+        while (true)
+        {
+            Thread.Sleep(Config.SessionRemoval.CHECK_INTERVAL);
+
+            Utils.Log("Checking for inactive sessions...");
+
+            List<ObjectId> toRemove = new(), nullSessions = new();
+            foreach (ObjectId id in Session.sessions.Keys)
+            {
+                Session? session = Session.sessions[id];
+                if (session == null) nullSessions.Add(id);
+                else if (session.lastActionTime < DateTime.Now.AddMilliseconds(-Config.SessionRemoval.MAX_AGE))
+                {
+                    Log($"Removing inactive session {id}");
+                    toRemove.Add(id);
+                }
+            }
+
+            foreach (ObjectId id in nullSessions)
+            {
+                Log($"Removing null session {id}");
+                Session.sessions.Remove(id);
+            }
+
+            foreach (ObjectId id in toRemove)
+            {
+                Session session = Session.sessions[id];
+                Log($"Removing session: {session.Player?.name ?? "Unknown Player"}");
+
+                try
+                {
+                    session.ShutDown();
+                    Session.sessions.Remove(id);
+                }
+                catch (Exception e)
+                {
+                    Log(e);
+                }
+            }
+        }
+    }
 
 }
