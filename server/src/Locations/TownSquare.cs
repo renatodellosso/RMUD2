@@ -18,6 +18,8 @@ namespace Locations
             status = "In Town";
 
             safe = true;
+
+            objects.Add(new WorldObjects.CraftingStation("campfire", "Campfire", id, RecipeLists.CAMPFIRE));
         }
 
         public override void AddExits()

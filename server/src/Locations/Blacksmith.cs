@@ -30,6 +30,8 @@ namespace Locations
 
             safe = true;
 
+            objects.Add(new WorldObjects.CraftingStation("forge", "Forge", id, RecipeLists.FORGE));
+
             creatures.Add(new Creatures.SimpleNPC("daes", "Daes, Smith", 
                 talkStart: (session) =>
                 {

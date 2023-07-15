@@ -17,6 +17,7 @@ namespace Locations
         Recipe[] shop = new Recipe[]
         {
             new("pickaxe"),
+            new("log")
         };
 
         public GeneralStore()

@@ -83,6 +83,11 @@ public class Player : Creature
         if (!location.Equals("afterlife")) Move("afterlife", true);
     }
 
+    /// <summary>
+    /// Adds XP and evels up the player, formatted as: You gained {amount} xp from {cause}.
+    /// </summary>
+    /// <param name="amount">How much XP to give</param>
+    /// <param name="cause">The cause of the XP gain</param>
     public void AddXp(int amount, string cause)
     {
         xp += amount;

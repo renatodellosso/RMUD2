@@ -17,7 +17,9 @@ namespace Locations
 
         Recipe[] shop = new Recipe[]
         {
-            new("Bought", new ItemHolder<Item>("coin", 3), new ItemHolder<Item>("ale", 1)),
+            new("ale"),
+            new("cookedmeat"),
+            new("grilledmushroom")
         };
 
         public Inn()

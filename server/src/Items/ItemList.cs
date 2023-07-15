@@ -19,12 +19,13 @@ namespace Items
             //Weapons
             { "spear", new Weapon("spear", "Spear", AbilityScore.Strength, new(8), "A stick with a pointy end.", 5, sellValue: 20) },
             { "axe", new Weapon("axe", "Axe", AbilityScore.Strength, new(10), "Good for chopping, both logs and necks.", 8, sellValue: 25) },
-            { "pickaxe", new Weapon("pickaxe", "Pickaxe", AbilityScore.Strength, new(4), "A useful mining tool that could serve as a weapon in a pinch.", 8, sellValue: 20) },
+            { "pickaxe", new Weapon("pickaxe", "Pickaxe", AbilityScore.Strength, new(4), "A useful mining tool that could serve as a weapon in a pinch.",
+                8, sellValue: 20) },
 
             //Armors
             { "peasantclothes", new Armor("peasantclothes", "Peasant Clothes", 5, 10, 0, "A ragged set of clothes.") },
-            { "breastplate", new Armor("breastplate", "Breastplate", 15, 100, 5, "A protective metal breastplate.") },
-            { "chainmail", new Armor("chainmail", "Chainmail", 20, 125, 6, "A chain shirt.") },
+            { "breastplate", new Armor("breastplate", "Breastplate", 15, 100, 3, "A protective metal breastplate.") },
+            { "chainmail", new Armor("chainmail", "Chainmail", 20, 125, 5, "A chain shirt.") },
 
             //Consumables
             { "ale", new SimpleConsumable("ale", "Mug of Ale", 0.5f, (session) =>
@@ -37,6 +38,16 @@ namespace Items
                     session?.Player?.Heal(1);
                 }, "Eat", "A small grey mushroom. Possibly edible.", sellValue : 1)
             },
+            { "cookedmeat", new SimpleConsumable("cookedmeat", "Cooked Meat", 0.6f, (session) =>
+                {
+                    session?.Player?.Heal(3);
+                }, "Eat", "A grilled hunk of meat.", sellValue : 8)
+            },
+            { "grilledmushroom", new SimpleConsumable("grilledmushroom", "Grilled Mushroom", 0.1f, (session) =>
+                {
+                    session?.Player?.Heal(2);
+                }, "Eat", "An aromatic grilled mushroom. Probably not dangerous.", sellValue : 6)
+            },
 
             //Misc Items
             { "rottenflesh", new SimpleItem("rottenflesh", "Rotten Flesh", 0.5f, "Rotten, decaying flesh, crawling with maggots. You probably shouldn't touch it.", sellValue: 1) },
@@ -46,11 +57,13 @@ namespace Items
             { "ironore", new SimpleItem("ironore", "Iron Ore", 1, "A chunk of raw iron.", sellValue : 3) },
             { "coal", new SimpleItem("coal", "Coal", 1, "A chunk of coal, good for smelting.", sellValue : 4) },
             { "taintedflesh", new SimpleItem("taintedflesh", "Tainted Flesh", 1, "A hunk of corrupted meat.", sellValue : 7) },
+            { "ironbar", new SimpleItem("ironbar", "Iron Bar", 1, "A rectangular bar of iron, ready for use.", sellValue : 10) },
+            { "log", new SimpleItem("log", "Log", 2, "A cylindrical piece of wood.", sellValue : 4) },
         });
 
-        public static T? Get<T>(string id) where T : ItemTypes.Item
+        public static T? Get<T>(string id) where T : Item
         {
-            ITEMS.TryGetValue(id, out ItemTypes.Item? item);
+            ITEMS.TryGetValue(id, out Item? item);
             return item as T;
         }
 

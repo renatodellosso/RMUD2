@@ -8,25 +8,41 @@ using System.Threading.Tasks;
 
 public class Recipe : IFormattable
 {
-    public string summary, verb = "Crafted";
+    public string summary, verb = "Crafted"; //Verb should be past-tense
     public ItemHolder<Item>[] ingredients, output;
+    public int xpValue = 0;
 
-    public Recipe(string summary, string verb, ItemHolder<Item>[] ingredients, ItemHolder<Item>[] output)
+    public Recipe(string summary, string verb, ItemHolder<Item>[] ingredients, ItemHolder<Item>[] output, int xpValue = 0)
     {
         this.summary = summary;
         this.verb = verb;
         this.ingredients = ingredients;
         this.output = output;
+        this.xpValue = xpValue;
     }
-
-    public Recipe(string verb, ItemHolder<Item> ingredient, ItemHolder<Item> output)
-        : this($"{output.FormattedName}", verb, new ItemHolder<Item>[] { ingredient }, new ItemHolder<Item>[] { output })
+    public Recipe(string verb, ItemHolder<Item>[] ingredient, ItemHolder<Item>[] output, int xpValue = 0)
+            : this($"{output.First().FormattedName}", verb, ingredient, output, xpValue)
+        { }
+    public Recipe(string verb, ItemHolder<Item>[] ingredient, ItemHolder<Item> output, int xpValue = 0)
+        : this(verb, ingredient, new ItemHolder<Item>[] { output }, xpValue)
     { }
 
-    public Recipe(string id) : this("Bought", new ItemHolder<Item>("coin", ItemList.Get(id).SellValue), new ItemHolder<Item>(id, 1))
-    {
+    public Recipe(string verb, ItemHolder<Item> ingredient, ItemHolder<Item> output, int xpValue = 0)
+        : this(verb, new ItemHolder<Item>[] { ingredient }, new ItemHolder<Item>[] { output }, xpValue)
+    { }
 
-    }
+    public Recipe(string id)
+        : this("Bought", new ItemHolder<Item>("coin", ItemList.Get(id).SellValue), new ItemHolder<Item>(id, 1))
+    { }
+
+    public Recipe(string input, int inAmt, string output, int outAmt, int xpValue = 0)
+        : this("Crafted", new ItemHolder<Item>(input, inAmt), new ItemHolder<Item>(output, outAmt), xpValue)
+    { }
+    public Recipe(ItemHolder<Item>[] input, string output, int outAmt, int xpValue = 0)
+        : this("Crafted", input, new ItemHolder<Item>(output, outAmt), xpValue)
+    { }
+
+
 
     public new string ToString() => ToString(null, null);
 
@@ -86,6 +102,8 @@ public class Recipe : IFormattable
 
         if (msg.EndsWith(", "))
             msg = msg.Remove(msg.Length - 2);
+
+        player?.AddXp(amt * xpValue, $"crafting {amt}x {output.First().FormattedName}");
 
         player?.session?.Log(msg);
         player?.Update();
