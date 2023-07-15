@@ -13,6 +13,11 @@ namespace Locations
 
         public Floor floor;
 
+        public override string FormattedName(Player player)
+        {
+            return (player?.visitedRooms?.Contains(this) ?? false) ? Utils.Style(base.FormattedName(player), "grey") : base.FormattedName(player);
+        }
+
         protected override string Description => "";
 
         public DungeonLocation(Floor floor, Vector2 position)
@@ -43,6 +48,16 @@ namespace Locations
                 for (int i = 0; i < objCount; i++)
                     //Add an object
                     objects.Add(WorldObjects.ObjectList.Get()(id));
+            }
+        }
+
+        public override void OnEnter(Creature creature)
+        {
+            if(creature is Player player)
+            {
+                player.visitedRooms ??= new(); //Initialize if null
+
+                player.visitedRooms.Add(this);
             }
         }
 

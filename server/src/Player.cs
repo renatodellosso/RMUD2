@@ -1,5 +1,6 @@
 ﻿using Events;
 using ItemTypes;
+using Locations;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver;
@@ -42,6 +43,9 @@ public class Player : Creature
     public float SellCut => MathF.Min(Config.Gameplay.BASE_SELL_CUT + Config.Gameplay.SELL_CUT_PER_CHA * Charisma, 1f);
 
     public override string FormattedName => $"[{level}] " + base.FormattedName;
+
+    [BsonIgnore] //We don't want to save this to the database
+    public HashSet<DungeonLocation>? visitedRooms = new(); //We use a HashSet because we don't want duplicates
 
     public int coins
     {
@@ -152,10 +156,12 @@ public class Player : Creature
         text += $"<br>Dodge Threshold: {DodgeThreshold}";
         text += $"<br>Defense: {Defense}";
 
+        text += $"<br>Sell Cut: {Utils.Percent(SellCut)}";
+
         text += Utils.Style("<br><br>Ability Scores:", bold: true);
         foreach(AbilityScore score in abilityScores.Keys)
         {
-            text += $"<br>{score.ToString()}: {Utils.Modifier(abilityScores[score])}";
+            text += $"<br>{score}: {Utils.Modifier(abilityScores[score])}";
         }
 
         return text;

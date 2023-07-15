@@ -50,6 +50,9 @@ public abstract class Location
     //Actual class data below
 
     public string id = "unnamedLocation", name = "Unnamed Location", status = "The void";
+
+    public virtual string FormattedName(Player player) => name;
+
     protected virtual string Description => "";
 
     public List<Creature> creatures = new();
@@ -83,7 +86,7 @@ public abstract class Location
             }
 
             if (player.session != null)
-                player.session.Log(Utils.Style($"You enter {name}", bold: true));
+                player.session.Log(Utils.Style($"You enter {FormattedName(player)}", bold: true));
             else Utils.Log($"Player {player._id} has no session!");
 
             player?.session?.Log(GetOverviewMsg(player));
@@ -94,7 +97,7 @@ public abstract class Location
             Player[] players = Players;
             foreach (Player player in players)
                 if (player != creature)
-                    player.session?.Log($"{creature.FormattedName} enters {name} from {from.name}");
+                    player.session?.Log($"{creature.FormattedName} enters {FormattedName(player)} from {from.name}");
         }
 
         OnEnter(creature);
@@ -170,7 +173,7 @@ public abstract class Location
                 {
                     foreach (Exit exit in exits)
                         if (exit != null && Get(exit.location) != null)
-                            inputs.Add(new(InputMode.Option, exit.location, $"({exit.direction}) {Get(exit.location).name}"));
+                            inputs.Add(new(InputMode.Option, exit.location, $"({exit.direction}) {Get(exit.location).FormattedName(session.Player)}"));
                 }
                 else if (state.Equals("combat"))
                 {
@@ -266,11 +269,17 @@ public abstract class Location
                 else if (action.action.Equals("inventory"))
                 {
                     state = "inventory";
+                    Player? player = session.Player;
 
-                    string msg = $"Currently Carrying ({session.Player?.inventory.Weight}/{session.Player.inventory.MaxWeight}): ";
-                    foreach (ItemHolder<Item> item in session.Player?.inventory)
+                    string msg = $"Currently Carrying ({player?.inventory.Weight}/{player?.inventory.MaxWeight}): ";
+
+                    msg += $"<br>Armor: {player?.armor?.FormattedName} - {Utils.Weight(player?.armor?.Weight)}";
+                    msg += $"<br>Main Hand: {player?.mainHand?.FormattedName} - {Utils.Weight(player?.mainHand?.Weight)}";
+                    if(player?.offHand != null) msg += $"<br>Off Hand: {player?.offHand?.FormattedName} - {Utils.Weight(player?.offHand?.Weight)}";
+
+                    foreach (ItemHolder<Item> item in player?.inventory)
                     {
-                        msg += $"<br>-{item.FormattedName} x{item.amt} ({Utils.Round(item.Weight, 2)} lbs. total)";
+                        msg += $"<br>-{item.FormattedName} x{item.amt} ({Utils.Weight(item.Weight)} total)";
                     }
 
                     session.Log(msg);

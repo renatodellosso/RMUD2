@@ -94,7 +94,9 @@ namespace Menus
                                 if (player.location != null)
                                 {
                                     player.location = player.resetLocation ?? Config.Gameplay.START_LOCATION;
-                                    player.resetLocation = player.resetLocation ?? Config.Gameplay.RESPAWN_LOCATION;
+                                    //If the player doesn't have a reset location, set it to the respawn location
+                                    player.resetLocation ??= Config.Gameplay.RESPAWN_LOCATION;
+                                    player.visitedRooms = new();
                                     player.Update();
                                 }
                                 else

@@ -104,6 +104,20 @@ public static class Utils
         return text;
     }
 
+    public static string Percent(float percent)
+    {
+        return $"{Round(percent * 100)}%";
+    }
+
+    public static string Percent(double percent)
+    {
+        return Percent((float)percent);
+    }
+
+    public static string Weight(float? weight)
+    {
+        return $"{Round(weight ?? 0, 2)} lbs.";
+    }
 
     public static bool HasItem(Creature creature, string id)
     {

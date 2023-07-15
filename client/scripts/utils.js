@@ -27,7 +27,7 @@ const getToken = () => {
 const httpReq = (body, onReturn) => {
     if(getToken() != null) body.token = getToken();
 
-    time = Date.now();
+    let time = Date.now();
     body.time = time;
 
     console.log("Sending HTTP request... Body:");
@@ -39,7 +39,7 @@ const httpReq = (body, onReturn) => {
         method: "POST",
         body: body
     }).then(async (response) => {
-        elapsed = Date.now() - time;
+        let elapsed = Date.now() - time;
         pingLog = document.getElementById("ping");
         pingLog.innerHTML = "Ping: " + elapsed + "ms";
 
