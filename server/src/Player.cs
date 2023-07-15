@@ -69,6 +69,7 @@ public class Player : Creature
     {
         this.accountId = accountId;
         name = Account?.username ?? "Unnamed Player";
+        nameColor = "orange";
     }
 
     public void Update()

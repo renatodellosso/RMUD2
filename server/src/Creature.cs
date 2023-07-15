@@ -236,6 +236,7 @@ public class Creature
     {
         inventory.addedWeight = (armor?.Weight ?? 0) + (mainHand?.Weight ?? 0) + (offHand?.Weight ?? 0);
         inventory.maxWeight = MaxCarryWeight;
+        nameColor = "orange";
     }
 
     public virtual float ScaleTableWeight(Floor floor)

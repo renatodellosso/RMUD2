@@ -83,7 +83,7 @@ public abstract class Location
             }
 
             if (player.session != null)
-                player.session.Log($"You enter {name}");
+                player.session.Log(Utils.Style($"You enter {name}", bold: true));
             else Utils.Log($"Player {player._id} has no session!");
 
             player?.session?.Log(GetOverviewMsg(player));
