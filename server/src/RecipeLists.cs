@@ -18,6 +18,8 @@ public static class RecipeLists
         public static readonly Recipe SPEAR = new(new ItemHolder<Item>[] { new("log", 1), new("ironbar", 1) }, "spear", 1, 10);
         public static readonly Recipe AXE = new(new ItemHolder<Item>[] { new("log", 1), new("ironbar", 3) }, "axe", 1, 20);
         public static readonly Recipe PICKAXE = new(new ItemHolder<Item>[] { new("log", 1), new("ironbar", 3) }, "pickaxe", 1, 20);
+        public static readonly Recipe LESSER_HEALING_POTION = 
+            new(new ItemHolder<Item>[] { new("bottle", 1), new("taintedflesh", 1), new("vampiricdust", 1) }, "lesserhealingpotion", 1, 40);
     }
 
     public static readonly Recipe[] FORGE = new Recipe[]
@@ -35,6 +37,7 @@ public static class RecipeLists
     {
         All.COOKED_MEAT,
         All.GRILLED_MUSHROOM,
-        All.COAL
+        All.COAL,
+        All.LESSER_HEALING_POTION
     };
 }

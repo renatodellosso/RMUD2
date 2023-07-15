@@ -20,12 +20,13 @@ namespace Items
         int uses = 1; //Set to -1 for infinite uses
 
         public SimpleConsumable(string id, string name, float weight, Action<Session>? onUse, string verb = "Use", string description = "No description provided",
-            int sellValue = 1)
+            int sellValue = 1, int uses = 1)
             : base(id, name, weight, description)
         {
             this.verb = verb;
             this.onUse = onUse;
             this.sellValue = sellValue;
+            this.uses = uses;
         }
 
         public override List<Input> GetInputs(Session session, ItemHolder<Item> item)

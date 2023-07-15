@@ -21,7 +21,8 @@ namespace Creatures
         Func<Floor, float>? scaleTableWeight;
 
         public SimpleMonster(string id, string name, int maxHealth, Weapon weapon, int attackInterval = 3, Table<Func<ItemHolder<Item>>>? drops = null, int minDrops = 1,
-            int maxDrops = 1, int xp = 0, Action<OnCreatureTickEventData>? onTick = null, Func<Floor, float>? scaleTableWeight = null, bool actual = true)
+            int maxDrops = 1, int xp = 0, Action<OnCreatureTickEventData>? onTick = null, Func<Floor, float>? scaleTableWeight = null, bool actual = true,
+            int strength = 0, int dexterity = 0, int constitution = 0, int agility = 0, int intelligence = 0, int wisdom = 0, int charisma = 0)
             : base(id, name, nameColor: "red", maxHealth: maxHealth, onTick: (data) => ((SimpleMonster)data.self).OnTick(), drops: drops, minDrops: minDrops, maxDrops: maxDrops,
                   xp: xp, actual: actual)
         {
@@ -33,6 +34,17 @@ namespace Creatures
             this.scaleTableWeight = scaleTableWeight;
 
             tags.Add("hostile");
+
+            abilityScores = new()
+            {
+                { AbilityScore.Strength, strength },
+                { AbilityScore.Dexterity, dexterity },
+                { AbilityScore.Constitution, constitution },
+                { AbilityScore.Agility, agility },
+                { AbilityScore.Intelligence, intelligence },
+                { AbilityScore.Wisdom, wisdom },
+                { AbilityScore.Charisma, charisma }
+            };
         }
 
         void OnTick()

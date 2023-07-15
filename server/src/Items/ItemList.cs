@@ -48,6 +48,11 @@ namespace Items
                     session?.Player?.Heal(2);
                 }, "Eat", "An aromatic grilled mushroom. Probably not dangerous.", sellValue : 6)
             },
+            { "lesserhealingpotion", new SimpleConsumable("lesserhealingpotion", "Lesser Healing Potion", 0.5f, (session) =>
+                {
+                    session?.Player?.Heal(10);
+                }, "Drink", "A blood-red potion. A faint sparkling can be seen inside.", sellValue : 25)
+            },
 
             //Misc Items
             { "rottenflesh", new SimpleItem("rottenflesh", "Rotten Flesh", 0.5f, "Rotten, decaying flesh, crawling with maggots. You probably shouldn't touch it.", sellValue: 1) },
@@ -59,6 +64,8 @@ namespace Items
             { "taintedflesh", new SimpleItem("taintedflesh", "Tainted Flesh", 1, "A hunk of corrupted meat.", sellValue : 7) },
             { "ironbar", new SimpleItem("ironbar", "Iron Bar", 1, "A rectangular bar of iron, ready for use.", sellValue : 10) },
             { "log", new SimpleItem("log", "Log", 2, "A cylindrical piece of wood.", sellValue : 4) },
+            { "vampiricdust", new SimpleItem("vampiricdust", "Vampiric Dust", 0.15f, "A sprinkling of shimmery red dust.", sellValue: 8) },
+            { "bottle", new SimpleItem("bottle", "Empty Bottle", 0.2f, "An empty glass bottle.", sellValue: 4) },
         });
 
         public static T? Get<T>(string id) where T : Item

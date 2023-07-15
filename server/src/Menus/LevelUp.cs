@@ -29,7 +29,7 @@ namespace Menus
             session?.Log("Choose an ability score to increase:<br>" +
                 $"STR: +{Config.Gameplay.CARRY_WEIGHT_PER_STR} lbs. max carry weight<br>" +
                 $"CON: +{Config.Gameplay.HP_PER_CON} HP<br>" +
-                $"AGI: +1 dodge threshold" +
+                $"AGI: +1 dodge threshold<br>" +
                 $"CHA: +{Config.Gameplay.SELL_CUT_PER_CHA * 100}% sell cut");
         }
 
@@ -45,7 +45,7 @@ namespace Menus
                     foreach(AbilityScore score in player.abilityScores.Keys)
                     {
                         int value = player.abilityScores[score];
-                        inputs.Add(new(InputMode.Option, score.ToString(), score + ": " + value));
+                        inputs.Add(new(InputMode.Option, score.ToString(), score + ": " + Utils.Modifier(value)));
                     }
                 }
             }

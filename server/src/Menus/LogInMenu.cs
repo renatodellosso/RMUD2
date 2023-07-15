@@ -117,7 +117,7 @@ namespace Menus
                     }
                     else
                     {
-                        if (state == State.Username)
+                        if (state == State.Username && action.action != "signIn")
                         {
                             if (mode == Mode.SignIn || !Account.UsernameTaken(action.action))
                             {

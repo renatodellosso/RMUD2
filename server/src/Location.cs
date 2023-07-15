@@ -315,6 +315,7 @@ public abstract class Location
                             if (attack.id.Equals(action.action))
                             {
                                 state = $"atktarget.{attack.weapon.id}.{attack.id}"; //State will use periods to separate data
+                                addStateToPrev = false;
                                 break;
                             }
                         }
@@ -335,7 +336,8 @@ public abstract class Location
 
                             attack?.execute(session.Player, targets.Where(t => t.baseId.Equals(args[3])).First());
 
-                            state = "";
+                            state = "combat";
+                            addStateToPrev = false;
                         }
                         else Utils.Log("No weapon found");
                     }

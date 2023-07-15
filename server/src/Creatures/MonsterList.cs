@@ -67,7 +67,7 @@ namespace Creatures
                 drops: new(
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("taintedflesh"))
                 ), minDrops: 1, maxDrops: 2,
-                xp: 60, onTick: (data) =>
+                xp: 75, onTick: (data) =>
                 {
                     if(Utils.tickCount % 2 == 0) 
                         data.self.Heal(1);
@@ -76,6 +76,48 @@ namespace Creatures
                 {
                     return 0.8f + (floor.Depth - 2) * 0.4f;
                 },
+                actual: actual //Breaks if we don't have this. It's used in dungeon generation
+            )),
+
+            //Blood Slime
+            new(1, (actual) => new SimpleMonster("bloodslime", "Blood Slime", 10, new("ooze", "Vampiric Ooze", AbilityScore.Constitution, new(6)),
+                drops: new(
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("slime")),
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("vampiricdust"))
+                ), minDrops: 1, maxDrops: 2,
+                xp: 50,
+                scaleTableWeight: (floor) =>
+                {
+                    return 1.2f - Math.Abs(floor.Depth - 2) * 0.4f + floor.arcane;
+                },
+                constitution: 1,
+                actual: actual //Breaks if we don't have this. It's used in dungeon generation
+            )),
+
+            //Twig Blight
+            new(1, (actual) => new SimpleMonster("twigblight", "Twig Blight", 4, new("stab", "Stab", AbilityScore.Strength, new(6)),
+                drops: new(
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("log"))
+                ), minDrops: 1, maxDrops: 2,
+                xp: 20,
+                scaleTableWeight: (floor) =>
+                {
+                    return 1.2f - floor.Depth * 0.4f + floor.arcane;
+                },
+                actual: actual //Breaks if we don't have this. It's used in dungeon generation
+            )),
+
+            //Oak Blight
+            new(1, (actual) => new SimpleMonster("oakblight", "Oak Blight", 8, new("stab", "Stab", AbilityScore.Strength, new(6)),
+                drops: new(
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("log"))
+                ), minDrops: 2, maxDrops: 3,
+                xp: 40,
+                scaleTableWeight: (floor) =>
+                {
+                    return 0.8f - floor.Depth * 0.4f + floor.arcane;
+                },
+                strength: 1,
                 actual: actual //Breaks if we don't have this. It's used in dungeon generation
             ))
 
