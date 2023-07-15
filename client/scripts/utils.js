@@ -1,3 +1,5 @@
+var pingRecord = []
+
 const inputMode = {
     option: 0,
     text: 1,

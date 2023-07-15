@@ -106,8 +106,19 @@ let serverActions = {
 
     sentAtTime: (time) => {
         let elapsed = Date.now() - time;
+
+        pingRecord.splice(0, 0, elapsed);
+        if(pingRecord.length > config.pingRecordLength) pingRecord.pop()
+        
+        let avg = 0
+        for(let i = 0; i < pingRecord.length; i++) {
+            avg += pingRecord[i];
+        }
+        avg /= pingRecord.length;
+        avg = Math.round(avg);
+
         pingLog = document.getElementById("ping");
-        pingLog.innerHTML = "Ping: " + elapsed + "ms";
+        pingLog.innerHTML = "Ping: " + elapsed + "ms (avg: " + avg + "ms)";
     }
 
 }
