@@ -11,6 +11,8 @@ public class ClientAction
     public string? token = "";
     public string action = "";
 
+    public long time;
+
     public ObjectId SessionId => new(token);
     public Session Session => GetSession();
 

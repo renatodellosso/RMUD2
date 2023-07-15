@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -103,6 +104,8 @@ public static class Network
 
     static void HandleRequest(HttpListenerContext ctx)
     {
+        Stopwatch? stopwatch = Stopwatch.StartNew();
+
         HttpListenerRequest req = ctx.Request;
         HttpListenerResponse resp = ctx.Response;
 
@@ -152,7 +155,8 @@ public static class Network
 
                 if (!action.action.Equals("heartbeat"))
                     Utils.Log($"Received HTTP request. Action: {action.action}, State: " +
-                        $"{(session != null ? session.menu.state : "N/A")}");
+                        $"{(session != null ? session.menu.state : "N/A")}, Sent {DateTimeOffset.Now.ToUnixTimeMilliseconds() - action.time}ms ago");
+                else stopwatch = null;
 
                 if (defaultClientActions.ContainsKey(action.action))
                 {
@@ -211,6 +215,12 @@ public static class Network
                 Thread.Sleep(100);
                 resp.Close();
             } catch { }
+        }
+
+        if(stopwatch != null)
+        {
+            stopwatch.Stop();
+            Utils.Log($"Finished handling request in {stopwatch.ElapsedMilliseconds}ms");
         }
     }
 

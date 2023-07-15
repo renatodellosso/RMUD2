@@ -32,7 +32,8 @@ public class Creature
     public bool HasDialogue => talkInputs != null && talkHandler != null && talkStart != null;
 
     //Name formatting
-    public string FormattedName => Utils.Style($"{name}{(health != MaxHealth ? " " + Utils.FormatHealth(health, MaxHealth, true) : "")}", nameColor, nameBold, nameUnderline, nameItalic);
+    public virtual string FormattedName => 
+        Utils.Style($"{name}{(health != MaxHealth ? " " + Utils.FormatHealth(health, MaxHealth, true) : "")}", nameColor, nameBold, nameUnderline, nameItalic);
     public string nameColor = "";
     public bool nameBold, nameUnderline, nameItalic;
 

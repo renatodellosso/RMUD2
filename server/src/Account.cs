@@ -24,6 +24,8 @@ public class Account
 
     public Session? Session => Session.Find(this);
 
+    public int bugReports = 0, suggestions = 0;
+
     public Account(string username, string password)
     {
         _id = ObjectId.GenerateNewId();

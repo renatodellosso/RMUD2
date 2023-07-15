@@ -41,6 +41,8 @@ public class Player : Creature
 
     public float SellCut => MathF.Min(Config.Gameplay.BASE_SELL_CUT + Config.Gameplay.SELL_CUT_PER_CHA * Charisma, 1f);
 
+    public override string FormattedName => $"[{level}] " + base.FormattedName;
+
     public int coins
     {
         get

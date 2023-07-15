@@ -27,6 +27,8 @@ const getToken = () => {
 const httpReq = (body, onReturn) => {
     if(getToken() != null) body.token = getToken();
 
+    body.time = Date.now();
+
     console.log("Sending HTTP request... Body:");
     console.log(body);
 
