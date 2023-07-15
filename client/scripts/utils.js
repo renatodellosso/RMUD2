@@ -27,7 +27,8 @@ const getToken = () => {
 const httpReq = (body, onReturn) => {
     if(getToken() != null) body.token = getToken();
 
-    body.time = Date.now();
+    time = Date.now();
+    body.time = time;
 
     console.log("Sending HTTP request... Body:");
     console.log(body);
@@ -38,7 +39,8 @@ const httpReq = (body, onReturn) => {
         method: "POST",
         body: body
     }).then(async (response) => {
-        console.log("Response received");
+        elapsed = Date.now() - time;
+        console.log("Response received. Took " + elapsed + "ms");
         console.log(response);
         console.log("Response body:");
 
