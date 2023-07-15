@@ -100,6 +100,8 @@ let serverActions = {
             let arg = args[i];
             sidebar.innerHTML += `<p>${arg}</p><br/>`;
         };
+
+        sidebar.innerHTML += `<span id="ping"></span>`;
     }
 
 }

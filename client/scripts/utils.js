@@ -44,6 +44,9 @@ const httpReq = (body, onReturn) => {
         console.log(response);
         console.log("Response body:");
 
+        pingLog = document.getElementById("ping");
+        pingLog.innerHTML = "Ping: " + elapsed + "ms";
+
         let responseData = await response.json();
         console.log(responseData);
 
