@@ -40,12 +40,12 @@ const httpReq = (body, onReturn) => {
         body: body
     }).then(async (response) => {
         elapsed = Date.now() - time;
+        pingLog = document.getElementById("ping");
+        pingLog.innerHTML = "Ping: " + elapsed + "ms";
+
         console.log("Response received. Took " + elapsed + "ms");
         console.log(response);
         console.log("Response body:");
-
-        pingLog = document.getElementById("ping");
-        pingLog.innerHTML = "Ping: " + elapsed + "ms";
 
         let responseData = await response.json();
         console.log(responseData);
