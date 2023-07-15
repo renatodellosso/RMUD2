@@ -84,9 +84,9 @@ public static class Utils
         return $"<a href='{url}'>{text}</a>";
     }
 
-    public static string Dialogue(Creature creature, string text)
+    public static string Dialogue(Creature? creature, string text)
     {
-        return creature.FormattedName + ": " + '"' + text + '"';
+        return (creature?.FormattedName ?? "Unknown") + ": " + '"' + text + '"';
     }
 
     public static string Coins(float amt, bool color = true)

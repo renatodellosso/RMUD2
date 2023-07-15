@@ -154,6 +154,7 @@ public abstract class Location
 
                 inputs.Add(new(InputMode.Option, "inventory", "Inventory"));
                 inputs.Add(new(InputMode.Option, "character", "Character"));
+                inputs.Add(new(InputMode.Option, "chat", "Chat"));
                 inputs.Add(new(InputMode.Option, "move", "Move"));
             }
             else
@@ -228,6 +229,10 @@ public abstract class Location
                         else Utils.Log($"Item {args[1]} not found!");
                     }
                 }
+                else if (args[0] == "chat")
+                {
+                    inputs.Add(new(InputMode.Text, "msg", "Message"));
+                }
             }
         } catch (Exception e)
         {
@@ -256,6 +261,8 @@ public abstract class Location
                     state = "combat";
                 else if (action.action.Equals("interact"))
                     state = "interact";
+                else if (action.action == "chat")
+                    state = "chat";
                 else if (action.action.Equals("inventory"))
                 {
                     state = "inventory";
@@ -381,6 +388,13 @@ public abstract class Location
                                 item.Item?.HandleInput(session, action, item, ref state, ref addStateToPrev);
                             else Utils.Log($"Item {args[1]} not found!");
                         }
+                    }
+                    else if (stateArgs[0] == "chat")
+                    {
+                        Player[] players = session.Player?.Location?.Players ?? Array.Empty<Player>();
+                        foreach(Player player in players)
+                            player.session?.Log(Utils.Dialogue(session.Player, action.action));
+                        state = "";
                     }
                 }
 

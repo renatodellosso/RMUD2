@@ -161,11 +161,12 @@ public static class Network
 
                 if (session != null)
                 {
-                    session.lastActionTime = DateTime.Now;
 
-                    if (session.processingAction) Utils.Log("Session is processing an action, ignoring request");
+                    if (session.processingAction && session.lastActionTime > DateTime.Now.AddMilliseconds(-2 * 1000)) //Always 
+                        Utils.Log("Session is processing an action, ignoring request");
                     else
                     {
+                        session.lastActionTime = DateTime.Now;
                         session.processingAction = true;
 
                         if (!defaultClientActions.ContainsKey(action.action)) session.menu?.HandleInput(action, response); //? means if not null
