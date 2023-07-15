@@ -153,11 +153,13 @@ public static class Network
             {
                 Session? session = action.Session;
 
+                response.Add(new ActionList.SentAtTime(action.time));
+
                 if (!action.action.Equals("heartbeat"))
                 {
                     double millisNow = DateTime.Now.ToUniversalTime().Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
                     Utils.Log($"Received HTTP request. Action: {action.action}, State: " +
-                        $"{(session != null ? session.menu.state : "N/A")}, Sent {Utils.Round(millisNow - action.time, 1)}ms ago (Sent: {action.time}, Now: {millisNow}");
+                        $"{(session != null ? session.menu.state : "N/A")}, Sent {Utils.Round(millisNow - action.time, 1)}ms ago");
                 }
                 else stopwatch = null;
 
@@ -168,7 +170,7 @@ public static class Network
 
                 if (session != null)
                 {
-                    if (session.processingAction     && session.lastActionTime > DateTime.Now.AddMilliseconds(-2 * 1000)) //Always 
+                    if (session.processingAction && session.lastActionTime > DateTime.Now.AddMilliseconds(-2 * 1000)) //Always 
                         Utils.Log("Session is processing an action, ignoring request");
                     else
                     {

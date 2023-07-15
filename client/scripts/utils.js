@@ -39,11 +39,7 @@ const httpReq = (body, onReturn) => {
         method: "POST",
         body: body
     }).then(async (response) => {
-        let elapsed = Date.now() - time;
-        pingLog = document.getElementById("ping");
-        pingLog.innerHTML = "Ping: " + elapsed + "ms";
-
-        console.log("Response received. Took " + elapsed + "ms");
+        console.log("Response received.");
         console.log(response);
         console.log("Response body:");
 

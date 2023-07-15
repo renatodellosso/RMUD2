@@ -32,4 +32,9 @@ namespace ActionList
         public SetSidebar(List<string> sidebar) : base("setSidebar", sidebar) { }
     }
 
+    public class SentAtTime : ServerAction<object>
+    {
+        public SentAtTime(long time) : base("sentAtTime", time) { }
+    }
+
 }

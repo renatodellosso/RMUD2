@@ -102,6 +102,12 @@ let serverActions = {
         };
 
         sidebar.innerHTML += `<span id="ping"></span>`;
+    },
+
+    sentAtTime: (time) => {
+        let elapsed = Date.now() - time;
+        pingLog = document.getElementById("ping");
+        pingLog.innerHTML = "Ping: " + elapsed + "ms";
     }
 
 }
