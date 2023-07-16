@@ -93,15 +93,13 @@ let serverActions = {
         console.log("Setting sidebar: ");
         console.log(args);
 
-        let sidebar = document.getElementById("sidebar");
+        let sidebar = document.getElementById("sidebarText");
         sidebar.innerHTML = "";
 
         for(let i = 0; i < args.length; i++) {
             let arg = args[i];
             sidebar.innerHTML += `<p>${arg}</p><br/>`;
         };
-
-        sidebar.innerHTML += `<span id="ping"></span>`;
     },
 
     sentAtTime: (time) => {
@@ -119,6 +117,67 @@ let serverActions = {
 
         pingLog = document.getElementById("ping");
         pingLog.innerHTML = "Ping: " + elapsed + "ms (avg: " + avg + "ms)";
+    },
+
+    setAttacks: (attacks) => {
+        // console.log("Setting attacks: ");
+        // console.log(attacks);
+
+        let shouldUpdate = attacks.length != prevAttackIds.length;
+
+        for(let i = 0; i < attacks.length; i++) {
+            if(!prevAttackIds.includes(attacks[i].id) || (attacks[i].selected && attacks[i].id != selectedAttack)) {
+                shouldUpdate = true;
+                if(attacks[i].selected) selectedAttack = attacks[i].id;
+                break;
+
+            }
+        };
+
+        if(shouldUpdate) {
+            let attacksElement = document.getElementById("attacks");
+            attacksElement.innerHTML = attacks.length > 0 ? "<br>Attacks:<br>" : "";
+
+            for(let i = 0; i < attacks.length; i++) {
+                let attack = attacks[i];
+                attacksElement.innerHTML += button(attack.id, attack.text, attack.selected) + "<br>";
+                
+                //We have to do this to add the event listener to the button
+                let buttonElement = document.getElementById(attack.id);
+                buttonElement.setAttribute("onClick", `javascript: optionClicked("${attack.id}")`);
+            }
+        }
+
+        prevAttackIds = attacks.map((attack) => attack.id);
+    },
+
+    setTargets: (targets) => {
+        // console.log("Setting targets: ");
+        // console.log(targets);
+
+        let shouldUpdate = targets.length != prevTargetIds.length;
+
+        for(let i = 0; i < targets.length; i++) {
+            if(!prevTargetIds.includes(targets[i].id)) {
+                shouldUpdate = true;
+                break;
+            }
+        };
+
+        if(shouldUpdate) {
+            let targetsElement = document.getElementById("targets");
+            targetsElement.innerHTML = targets.length > 0 ? "<br>Targets:<br>" : "";
+
+            for(let i = 0; i < targets.length; i++) {
+                let target = targets[i];
+                targetsElement.innerHTML += button(target.id, target.text) + "<br>";
+
+                let buttonElement = document.getElementById(target.id);
+                buttonElement.setAttribute("onClick", `javascript: optionClicked("${target.id}")`);
+            }
+        }
+
+        prevTargetIds = targets.map((target) => target.id);
     }
 
 }

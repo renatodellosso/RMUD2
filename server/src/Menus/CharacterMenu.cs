@@ -20,7 +20,9 @@ namespace Menus
         {
             List<Input> inputs = new()
             {
-                back
+                back,
+                new(InputMode.Option, "mainHand", "Main Hand"),
+                new(InputMode.Option, "armor", "Armor"),
             };
 
             return inputs.ToArray();
@@ -30,6 +32,22 @@ namespace Menus
         {
             if (action.action == "back")
                 session?.SetMenu(new LocationMenu(session));
+            else if(action.action == "mainHand")
+            {
+                Player? player = session?.Player;
+
+                if(player == null || player.mainHand == null)
+                    session?.Log("You have no weapon equipped.");
+                else session?.Log(player.mainHand.Overview());
+            }
+            else if(action.action == "armor")
+            {
+                Player? player = session?.Player;
+
+                if (player == null || player.armor == null)
+                    session?.Log("You have no armor equipped.");
+                else session?.Log(player.armor.Overview());
+            }
         }
     }
 }

@@ -9,11 +9,13 @@ public class Input
 
     public InputMode mode;
     public string text, id;
+    public bool selected;
 
-    public Input(InputMode mode, string id, string text)
+    public Input(InputMode mode, string id, string text, bool selected = false)
     {
         this.mode = mode;
         this.id = id;
         this.text = text;
+        this.selected = selected;
     }
 }

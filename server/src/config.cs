@@ -70,8 +70,8 @@ static class Config
         public const int BASE_PLAYER_HP = 35;
         public const int HP_PER_CON = 5;
 
-        public const int BASE_STAMINA = 10;
-        public const int STAMINA_PER_END = 2;
+        public const int BASE_STAMINA = 5;
+        public const int STAMINA_PER_END = 1;
 
         public const float BASE_SELL_CUT = .7f;
         public const float SELL_CUT_PER_CHA = .05f;

@@ -251,10 +251,12 @@ public class Creature
 
     public Attack[] GetAttacks()
     {
-        List<Attack?> attacks = new()
+        List<Attack?> attacks = new();
+
+        foreach(Attack attack in Weapon?.attacks.Values)
         {
-            Weapon?.Attack
-        };
+            attacks.Add(attack);
+        }
 
         attacks = attacks.Where(a => a?.CanUse(this) ?? false).ToList();
 

@@ -43,8 +43,7 @@ namespace Menus
                 for (int i = 0; i < recipes.Length; i++)
                 {
                     Recipe recipe = recipes[i];
-                    if(recipe.MaxCraftable(session?.Player) > 0)
-                        inputs.Add(new(InputMode.Option, i.ToString(), recipe.summary));
+                    inputs.Add(new(InputMode.Option, i.ToString(), recipe.summary));
                 }
             }
             else
@@ -53,9 +52,13 @@ namespace Menus
 
                 Recipe recipe = recipes[int.Parse(state)];
                 int max = recipe.MaxCraftable(session?.Player);
-                inputs.Add(new(InputMode.Option, max.ToString(), $"Max - {max}"));
-                inputs.Add(new(InputMode.Option, "1", $"1"));
-                inputs.Add(new(InputMode.Text, "amt", $"Enter an amt, between 1 and {max}"));
+
+                if (max > 1)
+                {
+                    inputs.Add(new(InputMode.Option, max.ToString(), $"Max - {max}"));
+                    inputs.Add(new(InputMode.Option, "1", $"1"));
+                    inputs.Add(new(InputMode.Text, "amt", $"Enter an amt, between 1 and {max}"));
+                }
             }
 
             return inputs.ToArray();

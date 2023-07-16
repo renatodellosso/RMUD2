@@ -36,5 +36,10 @@ namespace ItemTypes
 
             player.armor = item;
         }
+
+        public override string Overview(Dictionary<string, object> data)
+        {
+            return base.Overview(data) + $"<br>Defense: {defense}";
+        }
     }
 }

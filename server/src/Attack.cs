@@ -13,22 +13,25 @@ public class Attack
 
     public AbilityScore abilityScore;
 
-    public Weapon weapon;
+    public Weapon? weapon;
 
-    public int staminaCost = 1;
+    public int staminaCost;
 
     public virtual Action<Creature, Creature> execute => Execute;
     public virtual Func<Creature, List<Creature>> getTargets => GetTargets;
 
-    public Attack(string id, string name, Die damage, AbilityScore abilityScore, Weapon weapon, int staminaCost = 1)
+    public Attack(string id, string name, Die damage, AbilityScore abilityScore, int staminaCost = 2, Weapon? weapon = null)
     {
         this.id = id;
         this.name = name;
         this.damage = damage;
         this.abilityScore = abilityScore;
         this.weapon = weapon;
-        this.staminaCost = 1;
+        this.staminaCost = staminaCost;
     }
+
+    public Attack(string id, string name, int damage, AbilityScore abilityScore, int staminaCost = 2)
+        : this(id, name, new(damage), abilityScore, staminaCost) { }
 
     public int RollDamage(Creature attacker, Creature target)
     {
@@ -63,13 +66,13 @@ public class Attack
             //We calculate the damage so can log how much was dealt, then actually deal the damage. This ensures players who die from the attack still get the log message
             int rolledDmg = RollDamage(attacker, target);
             int damage = target.CalculateDamage(rolledDmg);
-            attacker.Location?.Log($"{attacker.FormattedName} hit {target.FormattedName} for {damage} ({rolledDmg} - {rolledDmg-damage}) damage with {weapon.FormattedName}!");
+            attacker.Location?.Log($"{attacker.FormattedName} hit {target.FormattedName} for {damage} ({rolledDmg} - {rolledDmg-damage}) damage with {name}!");
             target.TakeDamage(damage, attacker);
         }
         else
         {
             //Miss
-            attacker.Location?.Log($"{attacker.FormattedName} missed {target.FormattedName} with {weapon.FormattedName}!");
+            attacker.Location?.Log($"{attacker.FormattedName} missed {target.FormattedName} with {name}!");
         }
     }
 
@@ -98,6 +101,18 @@ public class Attack
     public bool CanUse(Creature creature)
     {
         return creature.stamina >= staminaCost;
+    }
+
+    public virtual string Overview()
+    {
+        return $"{name}: Deals {damage} + {abilityScore} damage. Costs {staminaCost} stamina";
+    }
+
+    public void ApplyWeapon(Weapon weapon)
+    {
+        this.weapon = weapon;
+        id = weapon.id + "." + id;
+        name += $" ({weapon.FormattedName})";
     }
 
 }

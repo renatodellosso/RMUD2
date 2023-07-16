@@ -17,8 +17,16 @@ namespace Items
             { "coin", new SimpleItem("coin", "Gold Coin", 0.05f, "A shiny gold coin.", sellValue : 1, color: "yellow") },
 
             //Weapons
-            { "spear", new Weapon("spear", "Spear", AbilityScore.Strength, new(8), "A stick with a pointy end.", 5, sellValue: 20) },
-            { "axe", new Weapon("axe", "Axe", AbilityScore.Strength, new(10), "Good for chopping, both logs and necks.", 8, sellValue: 25) },
+            { "spear", new Weapon("spear", "Spear", new Attack[]
+                {
+                    new("stab", "Stab", 8, AbilityScore.Strength, 2),
+                    new("power", "Power Thrust", 10, AbilityScore.Strength, 3)
+                }, "A stick with a pointy end.", 5, sellValue: 20) },
+            { "axe", new Weapon("axe", "Axe", new Attack[]
+                {
+                    new("chop", "Chop", 8, AbilityScore.Strength, 2),
+                    new("swing", "Swing", new(4, 3), AbilityScore.Strength, 4)
+                }, "Good for chopping, both logs and necks.", 8, sellValue: 25) },
             { "pickaxe", new Weapon("pickaxe", "Pickaxe", AbilityScore.Strength, new(4), "A useful mining tool that could serve as a weapon in a pinch.",
                 8, sellValue: 20) },
 

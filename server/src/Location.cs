@@ -144,7 +144,7 @@ public abstract class Location
                 //The order we add these determines the order they appear in
                 //We want to add the most common options first, but keep exit last
                 inputs.Add(new(InputMode.Option, "look", "Look around"));
-                inputs.Add(new(InputMode.Option, "combat", "Combat"));
+                //inputs.Add(new(InputMode.Option, "combat", "Combat"));
 
                 //Dialogue
                 List<Creature> dialogueCreatures = new();
@@ -175,12 +175,12 @@ public abstract class Location
                         if (exit != null && Get(exit.location) != null)
                             inputs.Add(new(InputMode.Option, exit.location, $"({exit.direction}) {Get(exit.location).FormattedName(session.Player)}"));
                 }
-                else if (state.Equals("combat"))
-                {
-                    Attack[] attacks = session.Player?.GetAttacks() ?? Array.Empty<Attack>();
-                    foreach (Attack attack in attacks)
-                        inputs.Add(new(InputMode.Option, attack.id, attack.name));
-                }
+                //else if (state.Equals("combat"))
+                //{
+                //    Attack[] attacks = session.Player?.GetAttacks() ?? Array.Empty<Attack>();
+                //    foreach (Attack attack in attacks)
+                //        inputs.Add(new(InputMode.Option, attack.id, attack.name));
+                //}
                 else if (args[0].Equals("atktarget"))
                 {
                     //args[1] is the weapon, args[2] is the attack
@@ -260,8 +260,8 @@ public abstract class Location
                     state = "move";
                 else if (action.action.Equals("look"))
                     session.Log(GetOverviewMsg(session.Player));
-                else if (action.action.Equals("combat"))
-                    state = "combat";
+                //else if (action.action.Equals("combat"))
+                //    state = "combat";
                 else if (action.action.Equals("interact"))
                     state = "interact";
                 else if (action.action == "chat")
@@ -321,42 +321,42 @@ public abstract class Location
 
                         }
                     }
-                    else if (state.Equals("combat"))
-                    {
-                        List<Attack> attacks = new(); //The list of attacks we'll check for
-                        attacks.AddRange(session.Player?.Weapon?.attacks.Values.ToArray() ?? Array.Empty<Attack>()); //Add all the attacks from the player's weapon
+                    //else if (state.Equals("combat"))
+                    //{
+                    //    List<Attack> attacks = new(); //The list of attacks we'll check for
+                    //    attacks.AddRange(session.Player?.Weapon?.attacks.Values.ToArray() ?? Array.Empty<Attack>()); //Add all the attacks from the player's weapon
 
-                        foreach (Attack attack in attacks)
-                        {
-                            if (attack.id.Equals(action.action))
-                            {
-                                state = $"atktarget.{attack.weapon.id}.{attack.id}"; //State will use periods to separate data
-                                addStateToPrev = false;
-                                break;
-                            }
-                        }
-                    }
-                    else if (args[0].Equals("atk"))
-                    {
-                        //args[1] is the weapon, args[2] is the attack, args[3] is the target
-                        List<ItemHolder<Item>> weapons = new() //The list of ItemHolders we'll check for the weapon
-                        {
-                            session.Player?.mainHand
-                        };
+                    //    foreach (Attack attack in attacks)
+                    //    {
+                    //        if (attack.id.Equals(action.action))
+                    //        {
+                    //            state = $"atktarget.{attack.weapon.id}.{attack.id}"; //State will use periods to separate data
+                    //            addStateToPrev = false;
+                    //            break;
+                    //        }
+                    //    }
+                    //}
+                    //else if (args[0].Equals("atk"))
+                    //{
+                    //    //args[1] is the weapon, args[2] is the attack, args[3] is the target
+                    //    List<ItemHolder<Item>> weapons = new() //The list of ItemHolders we'll check for the weapon
+                    //    {
+                    //        session.Player?.mainHand
+                    //    };
 
-                        Weapon? weapon = weapons.Where(w => w.id.Equals(args[1])).First().Item as Weapon;
-                        if (weapon != null)
-                        {
-                            Attack? attack = weapon.attacks[args[2]];
-                            List<Creature> targets = attack?.getTargets(session.Player) ?? new();
+                    //    Weapon? weapon = weapons.Where(w => w.id.Equals(args[1])).First().Item as Weapon;
+                    //    if (weapon != null)
+                    //    {
+                    //        Attack? attack = weapon.attacks[args[2]];
+                    //        List<Creature> targets = attack?.getTargets(session.Player) ?? new();
 
-                            attack?.execute(session.Player, targets.Where(t => t.baseId.Equals(args[3])).First());
+                    //        attack?.execute(session.Player, targets.Where(t => t.baseId.Equals(args[3])).First());
 
-                            state = "combat";
-                            addStateToPrev = false;
-                        }
-                        else Utils.Log("No weapon found");
-                    }
+                    //        state = "combat";
+                    //        addStateToPrev = false;
+                    //    }
+                    //    else Utils.Log("No weapon found");
+                    //}
                     else if (stateArgs[0].Equals("interact"))
                     {
                         if (stateArgs.Length == 1)

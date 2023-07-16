@@ -28,9 +28,11 @@ public class Session
     public bool SidebarChanged => DidSidebarChange();
     public bool resendSidebar = false;
 
-    public bool processingAction = false;
+    public string currentAction = "";
 
     public DateTime lastActionTime = DateTime.Now;
+
+    public CombatHandler combatHandler = new();
 
     public static Session CreateSession()
     {
@@ -112,16 +114,11 @@ public class Session
                 int nextXp = player.XpToNextLevel;
                 text.Add(Utils.Style($"Level: {player.level} - {player.xp}/{nextXp} XP{(player.xp >= nextXp ? " - Rest to level up!" : "")}", color));
 
-                color = "green";
-                int max = player.MaxHealth;
-                if (player.health < max * .25) color = "red";
-                else if(player.health < max * .5) color = "orange";
-                else if (player.health < max * .75) color = "yellow";
                 text.Add($"HP: {Utils.FormatHealth(player.health, player.MaxHealth)}<br>" +
                     $"DT: {player.DodgeThreshold}");
 
                 color = "green";
-                max = player.MaxStamina;
+                int max = player.MaxStamina;
                 if (player.stamina < max * .25) color = "red";
                 else if (player.stamina < max * .5) color = "orange";
                 else if (player.stamina < max * .75) color = "yellow";
@@ -192,6 +189,20 @@ public class Session
     public static Session? Find(Account account)
     {
         return Find(account._id);
+    }
+
+    public ServerAction<object>[] GetCombatSidebar()
+    {
+        Input[] attacks = combatHandler.GetAttacks();
+        Input[] targets = combatHandler.GetTargets();
+
+        ServerAction<object>[] actions = new ServerAction<object>[]
+        {
+            new ActionList.SetAttacks(attacks),
+            new ActionList.SetTargets(targets),
+        };
+
+        return actions;
     }
 
 }

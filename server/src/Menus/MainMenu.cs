@@ -97,6 +97,9 @@ namespace Menus
                                     //If the player doesn't have a reset location, set it to the respawn location
                                     player.resetLocation ??= Config.Gameplay.RESPAWN_LOCATION;
                                     player.visitedRooms = new();
+
+                                    session.combatHandler.session = session;
+
                                     player.Update();
                                 }
                                 else

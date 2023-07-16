@@ -37,4 +37,14 @@ namespace ActionList
         public SentAtTime(long time) : base("sentAtTime", time) { }
     }
 
+    public class SetAttacks : ServerAction<object>
+    {
+        public SetAttacks(Input[] attacks) : base("setAttacks", attacks) { }
+    }
+
+    public class SetTargets : ServerAction<object>
+    {
+        public SetTargets(Input[] targets) : base("setTargets", targets) { }
+    }
+
 }

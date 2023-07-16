@@ -22,7 +22,7 @@ public class Die : IFormattable
     }
 
     public Die(int dieSize, Func<int> modifier) : this(dieSize, 1, modifier) { } //Modifier as Func
-    public Die(int dieSize, int modifier) : this(dieSize, 1, () => modifier) { } //Modifier as value
+    public Die(int dieSize, int numOfDice = 1, int modifier = 0) : this(dieSize, numOfDice, () => modifier) { } //Modifier as value
     public Die(int dieSize) : this(dieSize, () => 0) { } //No modifier
 
     public int Roll()

@@ -170,14 +170,19 @@ public static class Network
 
                 if (session != null)
                 {
-                    if (session.processingAction && session.lastActionTime > DateTime.Now.AddMilliseconds(-2 * 1000)) //Always 
-                        Utils.Log("Session is processing an action, ignoring request");
+                    if (session.currentAction != "" && session.currentAction != "heartbeat" && session.lastActionTime > DateTime.Now.AddMilliseconds(-2 * 1000)) //Always 
+                        Utils.Log($"Session is processing an action, ignoring request. Current Action: {session.currentAction}");
                     else
                     {
                         session.lastActionTime = DateTime.Now;
-                        session.processingAction = true;
+                        session.currentAction = action.action;
 
-                        if (!defaultClientActions.ContainsKey(action.action)) session.menu?.HandleInput(action, response); //? means if not null
+                        if (!defaultClientActions.ContainsKey(action.action))
+                        {
+                            if(action.action.StartsWith("combat."))
+                                session.combatHandler.HandleInput(action.action.Substring(7));
+                            else session.menu?.HandleInput(action, response); //? means if not null
+                        }
 
                         response.Add(new ActionList.SetInput(session.menu?.GetInputs(response)));
                         if (session.logChanged) response.Add(new ActionList.SetLog(session.log));
@@ -186,8 +191,17 @@ public static class Network
                         if (session.SidebarChanged)
                             response.Add(new ActionList.SetSidebar(sidebar));
 
+                        if (session.Player != null)
+                        {
+                            ServerAction<object>[] combatSidebar = session.GetCombatSidebar();
+                            foreach (ServerAction<object> a in combatSidebar)
+                            {
+                                response.Add(a);
+                            }
+                        }
+
                         session.logChanged = false;
-                        session.processingAction = false;
+                        session.currentAction = "";
                     }
                 }
                 else Utils.Log("Session is null!");

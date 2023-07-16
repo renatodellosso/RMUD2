@@ -21,15 +21,33 @@ namespace ItemTypes
         public Weapon(string id, string name, AbilityScore abilityScore, Die damage, string description = "No description provided", int weight = 0, int sellValue = 0)
             : base(id, name, weight, description)
         {
-            attacks.Add(id, new Attack(id, FormattedName, damage, abilityScore, this)); //Make sure that key and id are the same!
+            attacks.Add(id, new Attack(id, FormattedName, damage, abilityScore, 2, this)); //Make sure that key and id are the same!
             this.sellValue = sellValue;
         }
 
-        
+        public Weapon(string id, string name, Attack[] attacks, string description = "No description provided", int weight = 0, int sellValue = 0)
+            : base(id, name, weight, description)
+        {
+            this.sellValue = sellValue;
+
+            foreach (Attack attack in attacks)
+            {
+                attack.ApplyWeapon(this);
+
+                this.attacks.Add(attack.id, attack);
+            }
+        }
 
         public override string Overview(Dictionary<string, object> data)
         {
-            return base.Overview(data) + $"<br>Deals {Attack.damage} damage";
+            string msg = base.Overview(data) + "<br>Attack Options:";
+            
+            foreach(KeyValuePair<string, Attack> attack in attacks)
+            {
+                msg += $"<br>-{attack.Value.Overview()}";
+            }
+
+            return msg;
         }
 
         protected override bool CanEquip(Player player, ItemHolder<Weapon> item)

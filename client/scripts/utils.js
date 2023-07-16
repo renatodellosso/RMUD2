@@ -49,7 +49,11 @@ const httpReq = (body, onReturn) => {
         console.log(responseData);
 
         responseData.actions.forEach(action => {
-            serverActions[action.action](action.args);
+            try {
+                serverActions[action.action](action.args);
+            } catch(e) {
+                console.error(e);
+            }
         });
 
         if(onReturn != null) {
@@ -88,8 +92,8 @@ const inputSubmitted = async (id) => {
 
 //HTML Elements
 
-const button = (id, text) => {
-    let button = `<button id=${id}><p class="buttonText">${text}</p></button>`;
+const button = (id, text, selected = false) => {
+    let button = `<button id=${id} ${selected ? "class='selected'" :""}}><p class="buttonText">${text}</p></button>`;
 
     return button;
 }
