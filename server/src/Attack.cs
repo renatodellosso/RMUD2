@@ -80,7 +80,7 @@ public class Attack
     {
         List<Creature> targets = new();
 
-        bool pvp = attacker.Location?.safe ?? false;
+        bool pvp = !attacker.Location?.safe ?? false; //Used to be: bool pvp = attacker.Location?.safe (dumbest line of coded I ever wrote)
 
         List<Creature> creatures = attacker.Location?.creatures ?? new();
         IEnumerable<Creature>? attackable = creatures?.Where(c => c.attackable) ?? null;

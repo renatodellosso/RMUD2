@@ -50,6 +50,7 @@ const httpReq = (body, onReturn) => {
 
         responseData.actions.forEach(action => {
             try {
+                console.log("Executing action: " + action.action);
                 serverActions[action.action](action.args);
             } catch(e) {
                 console.error(e);

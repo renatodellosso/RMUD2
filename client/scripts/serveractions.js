@@ -1,14 +1,14 @@
 let serverActions = {
     
     setToken: (args) => {
-        console.log("Setting token: " + args);
+        // console.log("Setting token: " + args);
         var token = args;
         localStorage.setItem("rmud2Token", token);
     },
 
     setInput: (args) => {
-        console.log("Setting input: ");
-        console.log(args);
+        // console.log("Setting input: ");
+        // console.log(args);
 
         let shouldUpdate = typeof prevInput === "undefined" || args.length == 0 || args.length != prevInput.length;
         console.log(`Prev Input (Updating: ${shouldUpdate}): `);
@@ -69,8 +69,8 @@ let serverActions = {
     },
 
     setLog: (args) => {
-        console.log("Adding log: ");
-        console.log(args);
+        // console.log("Adding log: ");
+        // console.log(args);
 
         let log = document.getElementById("log");
         log.innerHTML = "";
@@ -83,15 +83,15 @@ let serverActions = {
     },
 
     clearLog: (args) => {
-        console.log("Clearing log");
+        // console.log("Clearing log");
 
         let log = document.getElementById("log");
         log.innerHTML = "";
     },
 
     setSidebar: (args) => {
-        console.log("Setting sidebar: ");
-        console.log(args);
+        // console.log("Setting sidebar: ");
+        // console.log(args);
 
         let sidebar = document.getElementById("sidebarText");
         sidebar.innerHTML = "";
