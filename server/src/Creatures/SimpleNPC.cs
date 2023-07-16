@@ -13,7 +13,7 @@ namespace Creatures
     public class SimpleNPC : Creature
     {
 
-        public Action<Events.OnCreatureTickEventData>? onTick;
+        public Action<OnCreatureTickEventData>? onTick;
 
         int maxHealth;
         public override int MaxHealth => maxHealth;
@@ -22,7 +22,7 @@ namespace Creatures
         int minDrops = 1, maxDrops = 1;
 
         public SimpleNPC(string id, string name, string nameColor = "", Func<Session, DialogueMenu, Input[]>? talkInputs = null, Action<Session, ClientAction, DialogueMenu>? talkHandler = null, 
-            Action<Session>? talkStart = null, int maxHealth = 0, Action<Events.OnCreatureTickEventData>? onTick = null, Table<Func<ItemHolder<Item>>>? drops = null, 
+            Action<Session>? talkStart = null, int maxHealth = 0, Action<OnCreatureTickEventData>? onTick = null, Table<Func<ItemHolder<Item>>>? drops = null, 
             int minDrops = 1, int maxDrops = 1, int xp = 0, bool actual = true)
             : base(id, name, actual)
         {
@@ -48,8 +48,10 @@ namespace Creatures
             //Utils.Log($"Created {baseId}");
         }
 
-        protected override void Tick(int tickCount)
+        public override void Tick(int tickCount)
         {
+            base.Tick(tickCount);
+
             //Run onTick, as long as it's not null
             onTick?.Invoke(new(this));
         }

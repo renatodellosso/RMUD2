@@ -15,16 +15,19 @@ public class Attack
 
     public Weapon weapon;
 
+    public int staminaCost = 1;
+
     public virtual Action<Creature, Creature> execute => Execute;
     public virtual Func<Creature, List<Creature>> getTargets => GetTargets;
 
-    public Attack(string id, string name, Die damage, AbilityScore abilityScore, Weapon weapon)
+    public Attack(string id, string name, Die damage, AbilityScore abilityScore, Weapon weapon, int staminaCost = 1)
     {
         this.id = id;
         this.name = name;
         this.damage = damage;
         this.abilityScore = abilityScore;
         this.weapon = weapon;
+        this.staminaCost = 1;
     }
 
     public int RollDamage(Creature attacker, Creature target)
@@ -44,6 +47,8 @@ public class Attack
     void Execute(Creature attacker, Creature target)
     {
         Utils.Log($"Executing attack {id} on {target.baseId} from {attacker.baseId}!");
+
+        attacker.stamina -= staminaCost;
 
         int atkBonus = AttackBonus(attacker);        
         int roll = Utils.RandInt(20) + 1 + atkBonus; //We add 1, since RandInt(20) returns a number from 0 to 19, and we want 1 to 20
@@ -88,6 +93,11 @@ public class Attack
         }
 
         return targets;
+    }
+
+    public bool CanUse(Creature creature)
+    {
+        return creature.stamina >= staminaCost;
     }
 
 }

@@ -30,6 +30,7 @@ namespace Menus
                 $"STR: +{Config.Gameplay.CARRY_WEIGHT_PER_STR} lbs. max carry weight<br>" +
                 $"CON: +{Config.Gameplay.HP_PER_CON} HP<br>" +
                 $"AGI: +1 dodge threshold<br>" +
+                $"END: +{Config.Gameplay.STAMINA_PER_END} max stamina<br>" +
                 $"CHA: +{Config.Gameplay.SELL_CUT_PER_CHA * 100}% sell cut");
         }
 

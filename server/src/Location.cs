@@ -177,7 +177,7 @@ public abstract class Location
                 }
                 else if (state.Equals("combat"))
                 {
-                    Attack[] attacks = session.Player?.Weapon?.attacks.Values.ToArray() ?? Array.Empty<Attack>(); //Use Array.Empty instead of new Attack[0] to avoid allocating memory
+                    Attack[] attacks = session.Player?.GetAttacks() ?? Array.Empty<Attack>();
                     foreach (Attack attack in attacks)
                         inputs.Add(new(InputMode.Option, attack.id, attack.name));
                 }

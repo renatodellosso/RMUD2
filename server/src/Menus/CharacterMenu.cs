@@ -9,6 +9,8 @@ namespace Menus
     public class CharacterMenu : Menu
     {
 
+        public override bool ShowSidebar => true;
+
         public override void OnStart()
         {
             session?.Log(session.Player!.GetCharacterText());

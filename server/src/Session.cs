@@ -113,11 +113,19 @@ public class Session
                 text.Add(Utils.Style($"Level: {player.level} - {player.xp}/{nextXp} XP{(player.xp >= nextXp ? " - Rest to level up!" : "")}", color));
 
                 color = "green";
-                if (player.health < player.MaxHealth * .25) color = "red";
-                else if(player.health < player.MaxHealth * .5) color = "orange";
-                else if (player.health < player.MaxHealth * .75) color = "yellow";
+                int max = player.MaxHealth;
+                if (player.health < max * .25) color = "red";
+                else if(player.health < max * .5) color = "orange";
+                else if (player.health < max * .75) color = "yellow";
                 text.Add($"HP: {Utils.FormatHealth(player.health, player.MaxHealth)}<br>" +
                     $"DT: {player.DodgeThreshold}");
+
+                color = "green";
+                max = player.MaxStamina;
+                if (player.stamina < max * .25) color = "red";
+                else if (player.stamina < max * .5) color = "orange";
+                else if (player.stamina < max * .75) color = "yellow";
+                text.Add(Utils.Style($"Stamina: {player.stamina}/{player.MaxStamina}<br>", color));
 
                 text.Add($"Money: {Utils.Coins(player.coins)}");
 

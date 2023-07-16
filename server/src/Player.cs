@@ -23,6 +23,7 @@ public class Player : Creature
         //Use TryAdd instead of Add to avoid looking up the key twice
         if (!players.TryAdd(player._id, player))
             players[player._id] = player;
+        Utils.AddPlayerToOnTick(player);
     }
     //End of static stuff
 
@@ -171,6 +172,17 @@ public class Player : Creature
     {
         Location?.Leave(this, null);
         players.Remove(_id);
+    }
+
+    public override void CalculateStats()
+    {
+        base.CalculateStats();
+
+        //We want to avoid the below stuff, but we have to update it for old accounts
+        nameColor = "orange";
+
+        if(!abilityScores.ContainsKey(AbilityScore.Endurance))
+            abilityScores.Add(AbilityScore.Endurance, 0);
     }
 
 }

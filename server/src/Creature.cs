@@ -25,6 +25,9 @@ public class Creature
     public virtual int DodgeThreshold => 10 + Agility;
     public virtual int Defense => armor?.Item?.defense ?? 0;
 
+    public virtual int MaxStamina => Config.Gameplay.BASE_STAMINA + Config.Gameplay.STAMINA_PER_END * Endurance;
+    public int stamina = 0;
+
     //Null for either means creature has no dialogue. The string is the dialogue state
     public Func<Session, DialogueMenu, Input[]>? talkInputs = null;
     public Action<Session, ClientAction, DialogueMenu>? talkHandler = null;
@@ -48,6 +51,7 @@ public class Creature
         { AbilityScore.Dexterity, 0 },
         { AbilityScore.Constitution, 0 },
         { AbilityScore.Agility, 0 },
+        { AbilityScore.Endurance, 0 },
         { AbilityScore.Intelligence, 0 },
         { AbilityScore.Wisdom, 0 },
         { AbilityScore.Charisma, 0 }
@@ -58,6 +62,7 @@ public class Creature
     public int Dexterity => abilityScores[AbilityScore.Dexterity];
     public int Constitution => abilityScores[AbilityScore.Constitution];
     public int Agility => abilityScores[AbilityScore.Agility];
+    public int Endurance => abilityScores[AbilityScore.Endurance];
     public int Intelligence => abilityScores[AbilityScore.Intelligence];
     public int Wisdom => abilityScores[AbilityScore.Wisdom];
     public int Charisma => abilityScores[AbilityScore.Charisma];
@@ -140,9 +145,10 @@ public class Creature
         }
     }
 
-    protected virtual void Tick(int tickCount)
+    public virtual void Tick(int tickCount)
     {
-
+        if(stamina < MaxStamina)
+            stamina++;
     }
 
     public void MoveThroughRandomExit(int maxEnemies = -1)
@@ -236,12 +242,23 @@ public class Creature
     {
         inventory.addedWeight = (armor?.Weight ?? 0) + (mainHand?.Weight ?? 0) + (offHand?.Weight ?? 0);
         inventory.maxWeight = MaxCarryWeight;
-        nameColor = "orange";
     }
 
     public virtual float ScaleTableWeight(Floor floor)
     {
         return 1;
+    }
+
+    public Attack[] GetAttacks()
+    {
+        List<Attack?> attacks = new()
+        {
+            Weapon?.Attack
+        };
+
+        attacks = attacks.Where(a => a?.CanUse(this) ?? false).ToList();
+
+        return attacks.ToArray();
     }
 
 }

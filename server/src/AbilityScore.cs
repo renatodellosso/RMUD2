@@ -10,6 +10,7 @@ public enum AbilityScore
     Dexterity,
     Constitution,
     Agility,
+    Endurance,
     Intelligence,
     Wisdom,
     Charisma

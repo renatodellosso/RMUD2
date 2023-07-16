@@ -278,6 +278,13 @@ public static class Utils
     //Tick
     public static int tickCount = 0;
     public static event Action<int>? OnTick;
+
+    public static void AddPlayerToOnTick(Player player)
+    {
+        if (!OnTick?.GetInvocationList().Where(c => c.Target == player).Any() ?? false)
+            OnTick += player.Tick;
+    }
+
     /// <returns>How long to wait before the next tick</returns>
     public static int Tick() //We can't invoke OnTick outside of this class, so we need a method to do it
     {
