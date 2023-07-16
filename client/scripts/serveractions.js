@@ -166,7 +166,7 @@ let serverActions = {
 
         if(shouldUpdate) {
             let targetsElement = document.getElementById("targets");
-            targetsElement.innerHTML = targets.length > 0 ? "<br>Targets:<br>" : "";
+            targetsElement.innerHTML = targets.length > 0 ? "<br>Targets (Click to attack):<br>" : "";
 
             for(let i = 0; i < targets.length; i++) {
                 let target = targets[i];
