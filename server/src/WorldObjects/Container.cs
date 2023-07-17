@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Collections.Specialized.BitVector32;
 
 namespace WorldObjects
 {
@@ -33,7 +34,7 @@ namespace WorldObjects
             {
                 //If no item specifier is present
                 if (args.Length == 2)
-                    Utils.AddItemOptionsFromInventory(inputs, inventory);
+                    Utils.AddItemOptionsFromInventory(inputs, inventory, takeAll: true);
                 else if (args.Length == 3)
                     inputs.Add(new(InputMode.Option, "take", "Take"));
                 else if (args.Length == 4)
@@ -57,28 +58,47 @@ namespace WorldObjects
                 {
                     if (args.Length == 2)
                     {
-                        //Item not yet specified
-                        int index = -1;
-                        try
+                        if (action.action == "takeall")
                         {
-                            index = int.Parse(action.action);
-                        }
-                        catch
-                        {
-                            session.Log("Invalid index");
-                            return;
-                        }
+                            Player player = session.Player!;
 
-                        if (index < 0 || index >= inventory.Count)
-                        {
-                            session.Log("Invalid index");
-                            return;
-                        }
+                            for(int i = 0; i < inventory.Count; i++)
+                            {
+                                ItemHolder<Item> item = inventory[i];
+                                ItemHolder<Item>? transferred = inventory.Transfer(player.inventory, item);
+                                if (transferred != null)
+                                    session.Log($"Took {transferred.FormattedName} x{transferred.amt}");
+                                else
+                                    session.Log($"No room left in inventory");
 
-                        ItemHolder<Item> item = inventory[index];
-                        session.Log(item.Overview());
-                        addStateToPrev = false;
-                        state += "." + index;
+                                OnModified(session, ref state, ref addStateToPrev);
+                            }
+                        }
+                        else
+                        {
+                            //Item not yet specified
+                            int index = -1;
+                            try
+                            {
+                                index = int.Parse(action.action);
+                            }
+                            catch
+                            {
+                                session.Log("Invalid index");
+                                return;
+                            }
+
+                            if (index < 0 || index >= inventory.Count)
+                            {
+                                session.Log("Invalid index");
+                                return;
+                            }
+
+                            ItemHolder<Item> item = inventory[index];
+                            session.Log(item.Overview());
+                            addStateToPrev = false;
+                            state += "." + index;
+                        }
                     }
                     else if (args.Length == 3)
                     {
@@ -96,7 +116,7 @@ namespace WorldObjects
                             ItemHolder<Item>? item = inventory[int.Parse(args[2])];
 
                             int amt = int.Parse(action.action);
-                            if(amt <= 0 || amt > item.amt)
+                            if (amt <= 0 || amt > item.amt)
                             {
                                 session.Log($"Invalid amount. Must be between 1 and {item.amt}");
                                 return;
@@ -114,12 +134,8 @@ namespace WorldObjects
                             else
                             {
                                 session.Log($"Took {transferred.amt}x {transferred.FormattedName}");
-                                addStateToPrev = false;
-                                state = "back";
-                                session.Player.Update();
 
-                                if(RemoveIfEmpty && !inventory.Any())
-                                    Location.objects.Remove(this);
+                                OnModified(session, ref state, ref addStateToPrev);
                             }
                         }
                         catch
@@ -139,6 +155,16 @@ namespace WorldObjects
         protected virtual bool CanAccess(Creature creature)
         {
             return true;
+        }
+
+        void OnModified(Session session, ref string state, ref bool addStateToPrev)
+        {
+            addStateToPrev = false;
+            state = "back";
+            session.Player?.Update();
+
+            if (RemoveIfEmpty && !inventory.Any())
+                Location.objects.Remove(this);
         }
     }
 }

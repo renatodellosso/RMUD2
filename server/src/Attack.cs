@@ -11,7 +11,7 @@ public class Attack
 
     public Die damage;
 
-    public AbilityScore abilityScore;
+    public AbilityScore dmgAbilityScore, atkBonusAbilityScore;
 
     public Weapon? weapon;
 
@@ -20,31 +20,33 @@ public class Attack
     public virtual Action<Creature, Creature> execute => Execute;
     public virtual Func<Creature, List<Creature>> getTargets => GetTargets;
 
-    public Attack(string id, string name, Die damage, AbilityScore abilityScore, int staminaCost = 2, Weapon? weapon = null)
+    public Attack(string id, string name, Die damage, int staminaCost = 2, AbilityScore? dmgAbilityScore = AbilityScore.Strength, 
+        AbilityScore? atkBonusAbilityScore = AbilityScore.Dexterity, Weapon? weapon = null)
     {
+        atkBonusAbilityScore ??= AbilityScore.Dexterity;
+        dmgAbilityScore ??= AbilityScore.Strength;
+
         this.id = id;
         this.name = name;
         this.damage = damage;
-        this.abilityScore = abilityScore;
+        this.dmgAbilityScore = dmgAbilityScore.Value; //We use .Value because we know it's not null
+        this.atkBonusAbilityScore = atkBonusAbilityScore.Value;
         this.weapon = weapon;
         this.staminaCost = staminaCost;
     }
-
-    public Attack(string id, string name, int damage, AbilityScore abilityScore, int staminaCost = 2)
-        : this(id, name, new(damage), abilityScore, staminaCost) { }
 
     public int RollDamage(Creature attacker, Creature target)
     {
         Die die = damage.Clone();
 
-        die.modifier = () => attacker.abilityScores[abilityScore];
+        die.modifier = () => attacker.abilityScores[dmgAbilityScore];
 
         return die.Roll();
     }
 
     public int AttackBonus(Creature attacker)
     {
-        return attacker.abilityScores[abilityScore];
+        return attacker.abilityScores[dmgAbilityScore];
     }
 
     void Execute(Creature attacker, Creature target)
@@ -82,7 +84,7 @@ public class Attack
 
         bool pvp = !attacker.Location?.safe ?? false; //Used to be: bool pvp = attacker.Location?.safe (dumbest line of coded I ever wrote)
 
-        List<Creature> creatures = attacker.Location?.creatures ?? new();
+        HashSet<Creature> creatures = attacker.Location?.creatures ?? new();
         IEnumerable<Creature>? attackable = creatures?.Where(c => c.attackable) ?? null;
 
         if (attackable != null)
@@ -103,9 +105,18 @@ public class Attack
         return creature.stamina >= staminaCost;
     }
 
-    public virtual string Overview()
+    public virtual string Overview(Creature? creature = null, ItemHolder<Item>? item = null)
     {
-        return $"{name}: Deals {damage} + {abilityScore} damage. Costs {staminaCost} stamina";
+        string msg = name + ":";
+
+        msg += $" {(creature != null ? Utils.Modifier(AttackBonus(creature)) : $"+{atkBonusAbilityScore}")} to hit.";
+
+        Die damage = this.damage.Clone();
+        damage.modifier = () => creature?.abilityScores[dmgAbilityScore] ?? 0;
+        msg += $" Deals {damage}{(creature != null ? "" : $"+{dmgAbilityScore}")} damage.";
+        msg += $" Costs {staminaCost} stamina.";
+
+        return msg;
     }
 
     public void ApplyWeapon(Weapon weapon)

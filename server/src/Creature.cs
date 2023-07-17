@@ -22,11 +22,22 @@ public class Creature
     public bool attackable = true;
     public int health;
     public virtual int MaxHealth => 5 + Constitution;
-    public virtual int DodgeThreshold => 10 + Agility;
+    public virtual int DodgeThreshold => 10 + (int)Math.Ceiling((double)Agility / 2); //Decimal is even more precise than double
     public virtual int Defense => armor?.Item?.defense ?? 0;
 
     public virtual int MaxStamina => Config.Gameplay.BASE_STAMINA + Config.Gameplay.STAMINA_PER_END * Endurance;
-    public int stamina = 0;
+    public int stamina {
+        get
+        {
+            return (int)Math.Floor(rawStamina);
+        }
+        set
+        {
+            rawStamina = value;
+        }
+    }
+    public float rawStamina = 0f;
+    public virtual float StaminaRegen => Config.Gameplay.BASE_STAMINA_REGEN + MathF.Floor(Agility / 2) * Config.Gameplay.STAMINA_REGEN_PER_EVERY_OTHER_AGI;
 
     //Null for either means creature has no dialogue. The string is the dialogue state
     public Func<Session, DialogueMenu, Input[]>? talkInputs = null;
@@ -147,8 +158,11 @@ public class Creature
 
     public virtual void Tick(int tickCount)
     {
-        if(stamina < MaxStamina)
-            stamina++;
+        if (rawStamina < MaxStamina)
+        {
+            rawStamina += StaminaRegen * (inventory.Weight > MaxCarryWeight ? Config.Gameplay.STAMINA_REGEN_MULT_WHILE_ENCUMBERED : 1);
+            rawStamina = Math.Clamp(rawStamina, 0, MaxStamina);
+        }
     }
 
     public void MoveThroughRandomExit(int maxEnemies = -1)

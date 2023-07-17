@@ -48,7 +48,7 @@ namespace WorldObjects
             {
                 int[] amtRange = getAmtRange(session.Player!);
                 int amtPicked = Utils.RandInt(amtRange[0], amtRange[1] + 1);
-                ItemHolder<Item>? items = session.Player?.inventory.Add(new ItemHolder<Item>(itemId, amtPicked));
+                ItemHolder<Item>? items = session.Player?.inventory.Add(new ItemHolder<Item>(itemId, amtPicked), true);
 
                 if (items != null)
                 {

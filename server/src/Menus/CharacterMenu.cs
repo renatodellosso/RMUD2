@@ -38,7 +38,7 @@ namespace Menus
 
                 if(player == null || player.mainHand == null)
                     session?.Log("You have no weapon equipped.");
-                else session?.Log(player.mainHand.Overview());
+                else session?.Log(player.mainHand.Overview(player));
             }
             else if(action.action == "armor")
             {
@@ -46,7 +46,7 @@ namespace Menus
 
                 if (player == null || player.armor == null)
                     session?.Log("You have no armor equipped.");
-                else session?.Log(player.armor.Overview());
+                else session?.Log(player.armor.Overview(player));
             }
         }
     }

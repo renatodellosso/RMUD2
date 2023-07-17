@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 public class Session
 {
 
-    public static Dictionary<ObjectId, Session> sessions = new Dictionary<ObjectId, Session>();
+    public static Dictionary<ObjectId, Session> sessions = new();
 
     public ObjectId? accountId, playerId, id = ObjectId.GenerateNewId();
     public Account? Account => GetAccount();

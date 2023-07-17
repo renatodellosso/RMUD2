@@ -101,7 +101,8 @@ public class CombatHandler
             if (target == null)
                 return;
 
-            attack?.execute(player, target);
+            if(player.stamina >= attack.staminaCost)
+                attack?.execute(player, target);
         }
         else
         {

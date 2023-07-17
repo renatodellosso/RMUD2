@@ -55,6 +55,7 @@ public class Die : IFormattable
     public static implicit operator double(Die die) => die.Roll();
     public static implicit operator float(Die die) => die.Roll();
     public static implicit operator string(Die die) => die.ToString(null, null);
+    public static implicit operator Die(int size) => new(size);
 
     //Static methods for ease of use
     public static int Roll(int dieSize, int numOfDice, int modifier) => new Die(dieSize, numOfDice, () => modifier).Roll();

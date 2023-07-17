@@ -11,7 +11,7 @@ namespace Creatures
         public static readonly Table<MonsterEntry> MONSTERS = new(
 
             //Zombie
-            new(1, (actual) => new SimpleMonster("zombie", "Zombie", 5, new("bite", "Bite", AbilityScore.Strength, new(6)), 
+            new(1, (actual) => new SimpleMonster("zombie", "Zombie", 5, new("bite", "Bite", 6), 
                 drops: new(
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("rottenflesh"))
                 ),
@@ -37,7 +37,7 @@ namespace Creatures
             )),
 
             //Giant Rat
-            new(1, (actual) => new SimpleMonster("giantrat", "Giant Rat", 4, new("bite", "Bite", AbilityScore.Strength, new(4)),
+            new(1, (actual) => new SimpleMonster("giantrat", "Giant Rat", 4, new("bite", "Bite", 4),
                 drops: new(
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("meat"))
                 ),
@@ -50,7 +50,7 @@ namespace Creatures
             )),
 
             //Slime
-            new(1, (actual) => new SimpleMonster("slime", "Slime", 7, new("ooze", "Ooze", AbilityScore.Constitution, new(4)),
+            new(1, (actual) => new SimpleMonster("slime", "Slime", 7, new("ooze", "Ooze", 4, abilityScore: AbilityScore.Constitution),
                 drops: new(
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("slime"))
                 ), minDrops: 1, maxDrops: 2,
@@ -63,7 +63,7 @@ namespace Creatures
             )),
 
             //Troll
-            new(1, (actual) => new SimpleMonster("troll", "Troll", 15, new("punch", "Punch", AbilityScore.Strength, new(8)),
+            new(1, (actual) => new SimpleMonster("troll", "Troll", 15, new("punch", "Punch", 8),
                 drops: new(
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("taintedflesh"))
                 ), minDrops: 1, maxDrops: 2,
@@ -80,7 +80,7 @@ namespace Creatures
             )),
 
             //Blood Slime
-            new(1, (actual) => new SimpleMonster("bloodslime", "Blood Slime", 10, new("ooze", "Vampiric Ooze", AbilityScore.Constitution, new(6)),
+            new(1, (actual) => new SimpleMonster("bloodslime", "Blood Slime", 10, new("ooze", "Vampiric Ooze", 6, abilityScore: AbilityScore.Constitution),
                 drops: new(
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("slime")),
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("vampiricdust"))
@@ -95,7 +95,7 @@ namespace Creatures
             )),
 
             //Twig Blight
-            new(1, (actual) => new SimpleMonster("twigblight", "Twig Blight", 4, new("stab", "Stab", AbilityScore.Strength, new(6)),
+            new(1, (actual) => new SimpleMonster("twigblight", "Twig Blight", 4, new("stab", "Stab", 6),
                 drops: new(
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("log"))
                 ), minDrops: 1, maxDrops: 2,
@@ -108,7 +108,7 @@ namespace Creatures
             )),
 
             //Oak Blight
-            new(1, (actual) => new SimpleMonster("oakblight", "Oak Blight", 8, new("stab", "Stab", AbilityScore.Strength, new(6)),
+            new(1, (actual) => new SimpleMonster("oakblight", "Oak Blight", 8, new("stab", "Stab", 6),
                 drops: new(
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("log"))
                 ), minDrops: 2, maxDrops: 3,

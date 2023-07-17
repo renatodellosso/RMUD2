@@ -24,7 +24,7 @@ static class Config
     public const string ENV_PATH = "../../../.env";
 
     public const int MAX_SIGN_IN_TRIES = 5;
-    public static readonly TimeSpan LOCK_OUT_DURATION = new(0, 5, 0); //Hours, minutes, then seconds. Not sure why I can't use const here, but I can't, so I use static readonly
+    public static readonly TimeSpan LOCK_OUT_DURATION = new(0, 5, 0); //Hours, minutes, then seconds. I can only use const for primitives, so I use static readonly
 
     public const int CODE_LENGTH = 6;
 
@@ -38,10 +38,10 @@ static class Config
     public static class DungeonGeneration
     {
         public const int MIN_FLOORS = 3, MAX_FLOORS = 5;
-        public const int MIN_FLOOR_SIZE = 5, MAX_FLOOR_SIZE = 15;
+        public const int MIN_FLOOR_SIZE = 10, MAX_FLOOR_SIZE = 17;
 
         //MIN_FILL is the minimum % of the floor that has rooms
-        public const float EXIT_CHANCE = .4f, MIN_FILL = .3f, STAIR_CHANCE = .6f;
+        public const float EXIT_CHANCE = .3f, MIN_FILL = .35f, STAIR_CHANCE = .6f;
 
         public const int SLEEP_INTERVAL = 1000;
 
@@ -49,7 +49,7 @@ static class Config
         public const int MIN_MONSTERS = 1, MAX_MONSTERS = 3;
 
         public const float OBJECT_CHANCE = .5f;
-        public const int MIN_OBJECTS = 1, MAX_OBJECTS = 1;
+        public const int MIN_OBJECTS = 1, MAX_OBJECTS = 2;
     }
 
     public static class AI
@@ -75,6 +75,11 @@ static class Config
 
         public const int BASE_STAMINA = 5;
         public const int STAMINA_PER_END = 1;
+        public const int BASE_STAMINA_REGEN = 1;
+        public const float STAMINA_REGEN_PER_EVERY_OTHER_AGI = .05f;
+        public const float STAMINA_REGEN_MULT_WHILE_ENCUMBERED = .3f;
+
+        public const float XP_PER_WIS = .02f;
 
         public const float BASE_SELL_CUT = .7f;
         public const float SELL_CUT_PER_CHA = .05f;

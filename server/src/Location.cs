@@ -55,7 +55,7 @@ public abstract class Location
 
     protected virtual string Description => "";
 
-    public List<Creature> creatures = new();
+    public HashSet<Creature> creatures = new();
     public Player[] Players => creatures.Where(c => c is Player).Select(c => (Player)c).ToArray(); //.Select is used to transform each element
 
     public List<Exit> exits = new();
@@ -271,7 +271,7 @@ public abstract class Location
                     state = "inventory";
                     Player? player = session.Player;
 
-                    string msg = $"Currently Carrying ({player?.inventory.Weight}/{player?.inventory.MaxWeight}): ";
+                    string msg = $"Currently Carrying ({Utils.Weight(player?.inventory.Weight, false)}/{Utils.Weight(player?.inventory.MaxWeight)}): ";
 
                     msg += $"<br>Armor: {player?.armor?.FormattedName} - {Utils.Weight(player?.armor?.Weight)}";
                     msg += $"<br>Main Hand: {player?.mainHand?.FormattedName} - {Utils.Weight(player?.mainHand?.Weight)}";
@@ -468,9 +468,12 @@ public abstract class Location
         else return "This room is empty.";
     }
 
+    /// <summary>
+    /// Might be unnecessary now
+    /// </summary>
     void RemoveDuplicateCreatures()
     {
-        creatures = creatures.Distinct().ToList();
+        creatures = creatures.Distinct().ToHashSet();
     }
 
     /// <summary>

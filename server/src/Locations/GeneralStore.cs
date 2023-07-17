@@ -110,7 +110,8 @@ namespace Locations
                             menu.state = "sell";
                         else
                         {
-                            ItemHolder<Item>? item = session.Player!.inventory[int.Parse(args[1])].Clone();
+                            Player player = session.Player!;
+                            ItemHolder<Item>? item = player!.inventory[int.Parse(args[1])].Clone();
 
                             int amt = int.Parse(action.action);
                             if (amt <= 0 || amt > item.amt)
@@ -121,7 +122,7 @@ namespace Locations
 
                             item.amt = amt;
 
-                            ItemHolder<Item>? sold = session.Player!.inventory.Remove(item);
+                            ItemHolder<Item>? sold = player!.inventory.Remove(item);
 
                             if (sold == null || sold.amt == 0)
                             {
@@ -129,26 +130,12 @@ namespace Locations
                             }
                             else
                             {
-                                ItemHolder<Item> gold = new("coin", Utils.Round(sold.SellValue * session.Player.SellCut));
-                                ItemHolder<Item> leftOver = session.Player!.inventory.Add(gold)?.Clone() ?? gold.Clone();
-                                //If leftOver is null, then we add the full amount of gold to the player's inventory.
-                                //Otherwise, we add the amount of gold that was not added to the player's inventory.
-                                leftOver.amt = gold.amt - leftOver?.amt ?? 0;
 
-                                if (leftOver!.amt > 0)
-                                {
-                                    ItemHolder<Item> refunded = sold.Clone();
-                                    refunded.amt = (int)Math.Ceiling((double)leftOver.amt / refunded.Item!.SellValue);
+                                ItemHolder<Item> gold = new("coin", Utils.Round(sold.SellValue * player.SellCut));
+                                ItemHolder<Item> leftOver = player!.inventory.Add(gold, true)?.Clone() ?? gold.Clone();
 
-                                    leftOver.amt = refunded.amt * refunded.Item.SellValue; //How much gold to take away
-                                    session.Player.inventory.Add(refunded);
-                                    session.Player.inventory.Remove(leftOver);
-
-                                    session.Log($"You cannot carry any more coins. Refunded {refunded.amt}x {refunded.FormattedName}");
-                                }
-
-                                session.Log($"Sold {sold.amt}x {sold.FormattedName} for {Utils.Coins(sold.SellValue)}");
-                                session.Player.Update();
+                                session.Log($"Sold {sold.amt}x {sold.FormattedName} for {Utils.Coins(sold.SellValue * player.SellCut)}");
+                                player.Update();
                             }
 
                             menu.state = "sell";

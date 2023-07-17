@@ -26,11 +26,11 @@ namespace ItemTypes
             this.weight = weight;
         }
 
-        public virtual string Overview(Dictionary<string, object> data)
+        public virtual string Overview(ItemHolder<Item> item, Creature? creature = null)
         {
-            int amt = (int)data.GetValueOrDefault("amt", 0);
+            int amt = (int)item.data.GetValueOrDefault("amt", 0);
 
-            return $"{FormattedName} x{data["amt"]}:<br/>" +
+            return $"{FormattedName} x{item.data["amt"]}:<br/>" +
                 $"Worth {Utils.Coins(amt * SellValue)} total, {Utils.Coins(SellValue)} each ({Utils.Coins(SellValue / Weight)}/lb.)<br>" +
                 $"{Utils.Round(amt * Weight, 1)} lbs. total, {Weight} lbs. each<br>" +
                 $"{description}";

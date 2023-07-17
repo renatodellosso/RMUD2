@@ -45,7 +45,9 @@ public class Player : Creature
 
     public float SellCut => MathF.Min(Config.Gameplay.BASE_SELL_CUT + Config.Gameplay.SELL_CUT_PER_CHA * Charisma, 1f);
 
-    public override string FormattedName => $"[{level}] " + base.FormattedName;
+    float XpMult => 1 + Wisdom * Config.Gameplay.XP_PER_WIS;
+
+    public override string FormattedName => $"[{Utils.StyleLevel(level)}] " + base.FormattedName;
 
     [BsonIgnore] //We don't want to save this to the database
     public HashSet<DungeonLocation>? visitedRooms = new(); //We use a HashSet because we don't want duplicates
@@ -100,8 +102,12 @@ public class Player : Creature
     /// <param name="cause">The cause of the XP gain</param>
     public void AddXp(int amount, string cause)
     {
+        int baseAmt = amount;
+        amount = (int)Math.Ceiling(amount * XpMult); //We round up to the nearest integer so that bonuses feel noticeable
+
         xp += amount;
-        session?.Log($"You gained {amount} xp from {cause}.");
+
+        session?.Log($"You gained {Utils.Style(amount + " xp", "yellow")} from {cause}. ({baseAmt} * {Utils.Percent(XpMult)} = {amount} xp)");
 
         if (xp > XpToNextLevel && !hasSentLevelUpNotification)
         {
@@ -159,7 +165,13 @@ public class Player : Creature
         text += $"<br>Dodge Threshold: {DodgeThreshold}";
         text += $"<br>Defense: {Defense}";
 
-        text += $"<br>Sell Cut: {Utils.Percent(SellCut)}";
+        text += $"<br>Max Stamina: {MaxStamina} ({Utils.Modifier(Utils.Round(StaminaRegen, 2))}/s)";
+
+        if (inventory.Weight > MaxCarryWeight)
+            text += $" - Encumbered: Actual Stamina Regen: {Utils.Modifier(Utils.Round(StaminaRegen * Config.Gameplay.STAMINA_REGEN_MULT_WHILE_ENCUMBERED, 2))}/s";
+
+        text += $"<br><br>Sell Cut: {Utils.Percent(SellCut)}";
+        text += $"<br>XP Gain: {Utils.Percent(XpMult)}";
 
         text += Utils.Style("<br><br>Ability Scores:", bold: true);
         foreach(AbilityScore score in abilityScores.Keys)

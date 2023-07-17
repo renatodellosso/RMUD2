@@ -65,9 +65,9 @@ public class ItemHolder<T> where T : ItemTypes.Item
         return holder.Clone<Item>();
     }
 
-    public string Overview()
+    public string Overview(Creature? creature = null)
     {
-        return Item?.Overview(data) ?? "";
+        return Item?.Overview(this, creature) ?? "";
     }
 
 }

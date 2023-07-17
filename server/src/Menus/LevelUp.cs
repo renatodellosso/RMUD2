@@ -27,9 +27,11 @@ namespace Menus
 
             state = "abilityscores";
             session?.Log("Choose an ability score to increase:<br>" +
-                $"STR: +{Config.Gameplay.CARRY_WEIGHT_PER_STR} lbs. max carry weight<br>" +
+                $"STR: +{Config.Gameplay.CARRY_WEIGHT_PER_STR} lbs. max carry weight and +1 damage<br>" +
+                $"DEX: +1 attack bonus" +
                 $"CON: +{Config.Gameplay.HP_PER_CON} HP<br>" +
-                $"AGI: +1 dodge threshold<br>" +
+                $"AGI: Alternates +1 dodge threshold and +{Utils.Percent(Config.Gameplay.STAMINA_REGEN_PER_EVERY_OTHER_AGI)} stamina regen<br>" +
+                $"WIS: +{Utils.Percent(Config.Gameplay.XP_PER_WIS)} XP" +
                 $"END: +{Config.Gameplay.STAMINA_PER_END} max stamina<br>" +
                 $"CHA: +{Config.Gameplay.SELL_CUT_PER_CHA * 100}% sell cut");
         }

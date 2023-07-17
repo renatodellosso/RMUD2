@@ -96,12 +96,17 @@ public static class Utils
         return color ? Style(text, "yellow") : text;
     }
 
-    public static string Modifier(int mod)
+    public static string Modifier(float mod)
     {
         string text = mod.ToString();
         if (mod >= 0) text = "+" + text;
         else text = "-" + text;
         return text;
+    }
+
+    public static string Modifier(int mod)
+    {
+        return Modifier((float)mod);
     }
 
     public static string Percent(float percent)
@@ -114,9 +119,25 @@ public static class Utils
         return Percent((float)percent);
     }
 
-    public static string Weight(float? weight)
+    public static string Weight(float? weight, bool unit = true)
     {
-        return $"{Round(weight ?? 0, 2)} lbs.";
+        return $"{Round(weight ?? 0, 2)}" + (unit ? " lbs." : "");
+    }
+
+    public static string StyleLevel(int level)
+    {
+        string color = "white";
+        bool bold = false, underline = false;
+
+        if (level > 5) color = "yellow";
+        if (level > 10) color = "gold";
+        if (level > 20) color = "orange";
+        if (level > 30) color = "red";
+
+        if(level > 40) bold = true;
+        if(level > 50) underline = true;
+
+        return Style(level.ToString(), color, bold, underline);
     }
 
     public static bool HasItem(Creature creature, string id)
@@ -183,8 +204,11 @@ public static class Utils
         return direction;
     }
 
-    public static void AddItemOptionsFromInventory(List<Input> inputs, Inventory inventory, string[]? excludedIds = null)
+    public static void AddItemOptionsFromInventory(List<Input> inputs, Inventory inventory, string[]? excludedIds = null, bool takeAll = false)
     {
+        if (takeAll)
+            inputs.Add(new(InputMode.Option, "takeall", "Take All"));
+
         for (int i = 0; i < inventory.Count; i++)
             if(excludedIds == null || !excludedIds.Contains(inventory[i].id))
                 inputs.Add(new(InputMode.Option, i.ToString(), inventory[i].FormattedName + " x" + inventory[i].amt));

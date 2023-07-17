@@ -114,11 +114,12 @@ public class Inventory : IEnumerable<ItemHolder<Item>> //IEnumerable allows us t
 
 
     /// <returns>The items that were added</returns>
-    public ItemHolder<Item>? Add(ItemHolder<Item> item, bool ignoreMaxWeight = false)
+    public ItemHolder<Item>? Add(ItemHolder<Item> item, bool ignoreMaxWeight)
     {
         return Add(new ItemHolder<Item>[] { item }, ignoreMaxWeight).FirstOrDefault();
     }
 
+    //IMPORTANT: Do not remove! This is needed for Mongo to work
     public ItemHolder<Item>? Add(ItemHolder<Item> item)
     {
         return Add(item, false);

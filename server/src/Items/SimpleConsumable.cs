@@ -64,24 +64,24 @@ namespace Items
             session.Player?.Update();
         }
 
-        public override string Overview(Dictionary<string, object> data)
+        public override string Overview(ItemHolder<Item> item, Creature? creature = null)
         {
             try
             {
-                data.TryGetValue("uses", out object? currentUses);
+                item.data.TryGetValue("uses", out object? currentUses);
 
                 if (currentUses == null)
                 {
-                    data["uses"] = uses;
+                    item.data["uses"] = uses;
                     currentUses = uses;
                 }
 
-                return base.Overview(data) + (uses > 0 ? $"<br>{currentUses}/{uses} uses left" : "<br>Unlimited uses");
+                return base.Overview(item, creature) + (uses > 0 ? $"<br>{currentUses}/{uses} uses left" : "<br>Unlimited uses");
             }
             catch (Exception e)
             {
                 Utils.Log(e);
-                return base.Overview(data);
+                return base.Overview(item, creature);
             }
         }
     }
