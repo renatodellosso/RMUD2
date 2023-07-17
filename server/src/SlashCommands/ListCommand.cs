@@ -26,7 +26,7 @@ namespace SlashCommands
                 await cmd.DeferAsync(); //We need to await this
 
                 EmbedBuilder embed = new();
-                embed.Title = $"Online Players ({Session.sessions.Count})";
+                embed.Title = $"Online Players ({Utils.PlayersOnline})";
 
                 int unsignedIn = 0;
                 foreach (Session? session in Session.sessions.Values)
@@ -49,7 +49,7 @@ namespace SlashCommands
                     } else unsignedIn++;
                 }
 
-                embed.Description += $"+{unsignedIn} users not signed in";
+                embed.Description += $"+{unsignedIn} sessions not signed in";
 
                 await cmd.FollowupAsync(embed: embed.Build());
             } catch (Exception e)

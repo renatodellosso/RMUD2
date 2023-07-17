@@ -13,6 +13,8 @@ using System.Threading.Tasks;
 public static class Utils
 {
 
+    public static int PlayersOnline => Session.sessions.Where(s => s.Value.playerId != null).Count();
+
     public static string Log(string msg)
     {
         msg = $"[{DateTime.Now}]: {msg}";
@@ -294,6 +296,9 @@ public static class Utils
         long elapsed = DateTime.Now.Ticks - ticks;
         double elapsedMs = (double)elapsed / TimeSpan.TicksPerMillisecond;
 
+        if(tickCount % Config.BOT_STATUS_UPDATE_FREQUENCY == 0)
+            Bot.UpdateStatus();
+
         long ramUsed = GC.GetTotalMemory(false);
 
         //Check if we need to force garbage collection
@@ -318,6 +323,7 @@ public static class Utils
 
     //End events
 
+    //This is a continually-running thread
     public static void RemoveInactiveSessions()
     {
         while (true)
