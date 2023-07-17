@@ -29,7 +29,7 @@ static class Config
     public const int CODE_LENGTH = 6;
 
     public const int TICK_INTERVAL = 1000;
-    public const int BOT_STATUS_UPDATE_FREQUENCY = 10 * TICK_INTERVAL;
+    public const int BOT_STATUS_UPDATE_FREQUENCY = 10;
 
     public const long MAX_RAM = 1024 * 1024 * 1024; //1GB
 

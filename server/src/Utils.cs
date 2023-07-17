@@ -330,7 +330,7 @@ public static class Utils
         {
             Thread.Sleep(Config.SessionRemoval.CHECK_INTERVAL);
 
-            Utils.Log("Checking for inactive sessions...");
+            Log("Checking for inactive sessions...");
 
             List<ObjectId> toRemove = new(), nullSessions = new();
             foreach (ObjectId id in Session.sessions.Keys)
