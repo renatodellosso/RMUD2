@@ -13,8 +13,6 @@ using System.Threading.Tasks;
 public static class Utils
 {
 
-    public static int PlayersOnline => Session.sessions.Where(s => (s.Value?.playerId ?? null) != null).Count();
-
     public static string Log(string msg)
     {
         msg = $"[{DateTime.Now}]: {msg}";

@@ -12,6 +12,8 @@ namespace WorldObjects
 
         public Inventory inventory = new();
 
+        protected virtual bool RemoveIfEmpty => false;
+
         public Container(string id, string name, string location, ItemHolder<Item>[] items) : base(id, name, location)
         {
             inventory.Add(items);
@@ -115,6 +117,9 @@ namespace WorldObjects
                                 addStateToPrev = false;
                                 state = "back";
                                 session.Player.Update();
+
+                                if(RemoveIfEmpty && !inventory.Any())
+                                    Location.objects.Remove(this);
                             }
                         }
                         catch

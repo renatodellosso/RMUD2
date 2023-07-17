@@ -26,7 +26,7 @@ namespace SlashCommands
                 await cmd.DeferAsync(); //We need to await this
 
                 EmbedBuilder embed = new();
-                embed.Title = $"Online Players ({Utils.PlayersOnline})";
+                embed.Title = $"Online Players ({Player.Count})";
 
                 int unsignedIn = 0;
                 foreach (Session? session in Session.sessions.Values)

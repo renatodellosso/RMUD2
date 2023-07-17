@@ -25,6 +25,8 @@ public class Player : Creature
             players[player._id] = player;
         Utils.AddPlayerToOnTick(player);
     }
+
+    public static int Count => players.Count;
     //End of static stuff
 
     [BsonIgnore]

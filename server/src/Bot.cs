@@ -84,7 +84,7 @@ public static class Bot
     public static async void UpdateStatus()
     {
         Utils.Log("Updating bot status...");
-        await client.SetActivityAsync(new Game($"{Utils.PlayersOnline} Players Online"));
+        await client.SetActivityAsync(new Game($"{Player.Count} Players Online"));
     }
 
 }

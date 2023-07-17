@@ -54,6 +54,9 @@ public class Session
     {
         log.Add(msg);
         logChanged = true;
+
+        if(log.Count > Config.MAX_LOG_LENGTH)
+            log.RemoveAt(0);
     }
 
     /// <summary>

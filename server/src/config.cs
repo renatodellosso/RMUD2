@@ -33,6 +33,8 @@ static class Config
 
     public const long MAX_RAM = 1024 * 1024 * 1024; //1GB
 
+    public const int MAX_LOG_LENGTH = 30;
+
     public static class DungeonGeneration
     {
         public const int MIN_FLOORS = 3, MAX_FLOORS = 5;
@@ -86,7 +88,7 @@ static class Config
     public static class SessionRemoval
     {
         public const int CHECK_INTERVAL = 60000; //1 minute
-        public const int MAX_AGE = 600000; //10 minutes
+        public const int MAX_AGE = 120000; //2 minutes
     }
 
 }

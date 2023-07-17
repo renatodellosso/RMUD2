@@ -54,6 +54,9 @@ namespace WorldObjects
                 {
                     session.Log($"You took {items?.amt} {items?.FormattedName}.");
                     session.Player?.Update();
+
+                    state = "interact";
+                    addStateToPrev = false;
                 }
 
                 Delete(ref state, ref addStateToPrev);

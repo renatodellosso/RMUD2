@@ -12,6 +12,8 @@ namespace WorldObjects
 
         Creature creature;
 
+        protected override bool RemoveIfEmpty => true;
+
         public Corpse(Creature creature) : base(creature.baseId + "corpse", $"Corpse of {creature.FormattedName}", creature.location, Array.Empty<ItemHolder<Item>>())
         {
             this.creature = creature;
