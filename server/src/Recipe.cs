@@ -103,7 +103,8 @@ public class Recipe : IFormattable
         if (msg.EndsWith(", "))
             msg = msg.Remove(msg.Length - 2);
 
-        player?.AddXp(amt * xpValue, $"crafting {amt}x {output.First().FormattedName}");
+        if(xpValue > 0)
+            player?.AddXp(amt * xpValue, $"crafting {amt}x {output.First().FormattedName}");
 
         player?.session?.Log(msg);
         player?.Update();
