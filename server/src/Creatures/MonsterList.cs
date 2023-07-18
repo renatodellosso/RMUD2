@@ -101,7 +101,7 @@ namespace Creatures
             )),
 
             //Blood Slime
-            new(1, (actual) => new SimpleMonster("bloodslime", "Blood Slime", 10,
+            new(1, (actual) => new SimpleMonster("bloodslime", "Blood Slime", 20,
                 new(new Attack[] { new("ooze", "Vampiric Ooze", 6, DamageType.Poison, dmgAbilityScore: AbilityScore.Constitution, lifeSteal: .35f) }),
                 drops: new(
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("slime")),

@@ -53,7 +53,7 @@ namespace Menus
                 Recipe recipe = recipes[int.Parse(state)];
                 int max = recipe.MaxCraftable(session?.Player);
 
-                if (max > 1)
+                if (max >= 1)
                 {
                     inputs.Add(new(InputMode.Option, max.ToString(), $"Max - {max}"));
                     inputs.Add(new(InputMode.Option, "1", $"1"));
