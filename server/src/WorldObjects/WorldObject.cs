@@ -9,9 +9,9 @@ namespace WorldObjects
     public abstract class WorldObject
     {
 
-        public string id, name;
+        public string id, name, color = "wheat";
 
-        public virtual string FormattedName => name;
+        public virtual string FormattedName => Utils.Style(name, color);
 
         public string location;
         public Location Location => Location.Get(location);

@@ -188,7 +188,7 @@ namespace Creatures
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("taintedflesh")),
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("spore"))
                 ), minDrops: 2, maxDrops: 3,
-                xp: 125,
+                xp: 100,
                 onTick: (data) =>
                 {
                     if (Utils.tickCount % 2 == 0)
@@ -283,7 +283,7 @@ namespace Creatures
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("holyblood")),
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("longsword"))
                 ), minDrops: 1, maxDrops: 2,
-                xp: 120,
+                xp: 130,
                 scaleTableWeight: (floor) =>
                 {
                     return 0.8f - Math.Abs(floor.Depth - 4) * 0.4f + floor.holy;
@@ -345,7 +345,7 @@ namespace Creatures
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("taintedflesh")),
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("aberrantcluster"))
                 ), minDrops: 2, maxDrops: 3,
-                xp: 150,
+                xp: 200,
                 onTick: (data) =>
                 {
                     if (Utils.tickCount % 2 == 0)
