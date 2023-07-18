@@ -105,7 +105,7 @@ namespace Creatures
                 new(new Attack[] { new("ooze", "Vampiric Ooze", 6, DamageType.Poison, dmgAbilityScore: AbilityScore.Constitution, lifeSteal: .35f) }),
                 drops: new(
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("slime")),
-                    new KeyValuePair<float, Func<ItemHolder<Item>>>(0.5f, () => new("vampiricdust"))
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(1f, () => new("vampiricdust"))
                 ), minDrops: 1, maxDrops: 2,
                 xp: 50,
                 scaleTableWeight: (floor) =>

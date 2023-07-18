@@ -14,7 +14,7 @@ namespace Items
         //https://learn.microsoft.com/en-us/dotnet/api/system.collections.concurrent.concurrentdictionary-2?view=net-7.0
         static readonly ConcurrentDictionary<string, Item> ITEMS = new(new Dictionary<string, Item>()
         {
-            { "coin", new SimpleItem("coin", "Gold Coin", 0.05f, "A shiny gold coin.", sellValue : 1, color: "yellow") },
+            { "coin", new SimpleItem("coin", "Gold Coin", 0.01f, "A shiny gold coin.", sellValue : 1, color: "yellow") },
 
             //Weapons
             { "spear", new Weapon("spear", "Spear", new Attack[]
