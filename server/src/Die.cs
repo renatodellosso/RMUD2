@@ -7,12 +7,11 @@ using System.Threading.Tasks;
 public class Die : IFormattable
 {
 
-    public int dieSize, numOfDice;
-    public Func<int> modifier;
+    public int dieSize, numOfDice, modifier;
 
     public List<Die> bonusDice = new();
 
-    public Die(int dieSize, int numOfDice, Func<int> modifier, List<Die>? bonusDice = null)
+    public Die(int dieSize, int numOfDice = 1, int modifier = 0, List<Die>? bonusDice = null)
     {
         this.dieSize = dieSize;
         this.numOfDice = numOfDice;
@@ -21,9 +20,7 @@ public class Die : IFormattable
             this.bonusDice = bonusDice;
     }
 
-    public Die(int dieSize, Func<int> modifier) : this(dieSize, 1, modifier) { } //Modifier as Func
-    public Die(int dieSize, int numOfDice = 1, int modifier = 0) : this(dieSize, numOfDice, () => modifier) { } //Modifier as value
-    public Die(int dieSize) : this(dieSize, () => 0) { } //No modifier
+    public Die(int dieSize) : this(dieSize, 0) { } //No modifier
 
     public int Roll()
     {
@@ -36,7 +33,7 @@ public class Die : IFormattable
         foreach (Die die in bonusDice)
             total += die.Roll();
 
-        return total + modifier();
+        return total + modifier;
     }
 
     public Die Clone()
@@ -47,7 +44,8 @@ public class Die : IFormattable
     //IFormattable
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
-        return $"{numOfDice}d{dieSize}{(modifier() != 0 ? Utils.Modifier(modifier()) : "")}";
+        Utils.Log(modifier.ToString());
+        return $"{numOfDice}d{dieSize}{(modifier != 0 ? Utils.Modifier(modifier) : "")}";
     }
 
     //Implicit casts
@@ -58,7 +56,7 @@ public class Die : IFormattable
     public static implicit operator Die(int size) => new(size);
 
     //Static methods for ease of use
-    public static int Roll(int dieSize, int numOfDice, int modifier) => new Die(dieSize, numOfDice, () => modifier).Roll();
+    public static int Roll(int dieSize, int numOfDice, int modifier) => new Die(dieSize, numOfDice, modifier).Roll();
     public static int Roll(int dieSize, int modifier) => Roll(dieSize, 1, modifier);
     public static int Roll(int dieSize) => Roll(dieSize, 0);
 

@@ -50,7 +50,7 @@ public class Attack
     {
         Die die = damage.Clone();
 
-        die.modifier = () => attacker.abilityScores[dmgAbilityScore];
+        die.modifier += attacker.abilityScores[dmgAbilityScore];
 
         return die.Roll();
     }
@@ -136,7 +136,7 @@ public class Attack
         msg += $" {(creature != null ? Utils.Modifier(AttackBonus(creature)) : $"+{atkBonusAbilityScore}{Utils.Modifier(atkBonus)}")} to hit.";
 
         Die damage = this.damage.Clone();
-        damage.modifier = () => creature?.abilityScores[dmgAbilityScore] ?? 0;
+        damage.modifier += creature?.abilityScores[dmgAbilityScore] ?? 0;
         msg += $" Deals {damage}{(creature != null ? "" : $"+{dmgAbilityScore}")} {damageType} damage.";
         msg += $" Costs {staminaCost} stamina.";
         msg += $" Crits on a roll of {critThreshold}+ for {Math.Round(critMult, 1)}x damage.";
