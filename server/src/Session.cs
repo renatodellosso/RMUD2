@@ -104,6 +104,8 @@ public class Session
 
     public List<string> GetSidebar()
     {
+        combatHandler.session ??= this;
+
         List<string> text = new();
 
         Player? player = Player;
