@@ -9,7 +9,7 @@ namespace WorldObjects
     public abstract class WorldObject
     {
 
-        public string id, name, color = "wheat";
+        public string id, name, color = "green";
 
         public virtual string FormattedName => Utils.Style(name, color);
 
