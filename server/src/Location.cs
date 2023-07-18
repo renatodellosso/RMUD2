@@ -271,8 +271,8 @@ public abstract class Location
                     state = "inventory";
                     Player? player = session.Player;
 
-                    string msg = $"Currently Carrying ({Utils.Weight(player?.inventory.Weight, false)}/{Utils.Weight(player?.inventory.MaxWeight)}) - " +
-                        $"{Utils.Coins(player?.inventory.Sum(i => i.SellValue * player.SellCut) ?? 0)}: ";
+                    string msg = $"Currently Carrying ({Utils.Weight(player?.inventory.Weight, false)}/{Utils.Weight(player?.inventory.MaxWeight)}, " +
+                        $"{Utils.Coins(player?.inventory.Sum(i => i.SellValue * player.SellCut) ?? 0)} total): ";
 
                     msg += $"<br>Armor: {player?.armor?.FormattedName} - {Utils.Weight(player?.armor?.Weight)}";
                     msg += $"<br>Main Hand: {player?.mainHand?.FormattedName} - {Utils.Weight(player?.mainHand?.Weight)}";
