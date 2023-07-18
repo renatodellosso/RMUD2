@@ -345,7 +345,7 @@ namespace Creatures
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("taintedflesh")),
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("aberrantcluster"))
                 ), minDrops: 2, maxDrops: 3,
-                xp: 200,
+                xp: 180,
                 onTick: (data) =>
                 {
                     if (Utils.tickCount % 2 == 0)

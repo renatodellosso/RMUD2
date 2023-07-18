@@ -50,8 +50,8 @@ public class Recipe : IFormattable
     {
         string msg = summary + ": ";
 
-        foreach (ItemHolder<Item> item in ingredients)
-            msg += $"{item.FormattedName} x{item.amt}, ";
+        foreach (ItemHolder<Item>? item in ingredients)
+            msg += $"{item?.FormattedName ?? Utils.Style("ERROR", "red")} x{item.amt}, ";
 
         if (msg.EndsWith(", ")) msg = msg.Remove(msg.Length - 2);
 
