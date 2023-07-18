@@ -30,7 +30,7 @@ public class CombatHandler
                 inputs.Add(new Input(InputMode.Option, "attack." + attack.id, attack.name, attack == this.attack));
             }
 
-            attack ??= attacks[0];
+            attack ??= attacks.FirstOrDefault();
 
             return MarkInputsAsCombat(inputs.ToArray());
         }
