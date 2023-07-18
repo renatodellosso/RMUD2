@@ -147,8 +147,6 @@ public class Player : Creature
 
     void LevelUp(Action afterwards)
     {
-        level++;
-
         session?.SetMenu(new Menus.LevelUp(session, afterwards));
 
         hasSentLevelUpNotification = false;
@@ -167,8 +165,10 @@ public class Player : Creature
 
         text += $"<br>Max Stamina: {MaxStamina} ({Utils.Modifier(Utils.Round(StaminaRegen, 2))}/s)";
 
-        if (inventory.Weight > MaxCarryWeight)
-            text += $" - Encumbered: Actual Stamina Regen: {Utils.Modifier(Utils.Round(StaminaRegen * Config.Gameplay.STAMINA_REGEN_MULT_WHILE_ENCUMBERED, 2))}/s";
+        float excessWeight = inventory.Weight - MaxCarryWeight;
+        if (excessWeight > 0)
+            text += $" - Encumbered: Actual Stamina Regen: {Utils.Modifier(Utils.Round(StaminaRegen * 
+                (1 + excessWeight * Config.Gameplay.ENCUMBRANCE_STAMINA_REGEN_REDUCTION_PER_LB), 2))}/s";
 
         text += $"<br><br>Sell Cut: {Utils.Percent(SellCut)}";
         text += $"<br>XP Gain: {Utils.Percent(XpMult)}";

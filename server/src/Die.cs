@@ -47,7 +47,7 @@ public class Die : IFormattable
     //IFormattable
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
-        return $"{numOfDice}d{dieSize}{(modifier() >= 0 ? "+" : "")}{modifier()}";
+        return $"{numOfDice}d{dieSize}{(modifier() != 0 ? Utils.Modifier(modifier()) : "")}";
     }
 
     //Implicit casts

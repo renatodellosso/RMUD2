@@ -23,7 +23,9 @@ public class Creature
     public int health;
     public virtual int MaxHealth => 5 + Constitution;
     public virtual int DodgeThreshold => 10 + (int)Math.Ceiling((double)Agility / 2); //Decimal is even more precise than double
-    public virtual int Defense => armor?.Item?.defense ?? 0;
+    public int Defense => GetDefense();
+
+    public Dictionary<DamageType, int> resistances = new(); //Negative values are weaknesses
 
     public virtual int MaxStamina => Config.Gameplay.BASE_STAMINA + Config.Gameplay.STAMINA_PER_END * Endurance;
     public int stamina {
@@ -160,7 +162,8 @@ public class Creature
     {
         if (rawStamina < MaxStamina)
         {
-            rawStamina += StaminaRegen * (inventory.Weight > MaxCarryWeight ? Config.Gameplay.STAMINA_REGEN_MULT_WHILE_ENCUMBERED : 1);
+            float excessWeight = inventory.Weight - MaxCarryWeight;
+            rawStamina += StaminaRegen * (excessWeight > 0 ? 1 -  (excessWeight * Config.Gameplay.ENCUMBRANCE_STAMINA_REGEN_REDUCTION_PER_LB) : 1);
             rawStamina = Math.Clamp(rawStamina, 0, MaxStamina);
         }
     }
@@ -202,16 +205,16 @@ public class Creature
         weapon?.Attack?.execute(this, target);
     }
 
-    public int CalculateDamage(int damage)
+    public int CalculateDamage(int damage, DamageType? damageType = null)
     {
-        damage -= Defense;
+        damage -= GetDefense(damageType);
         damage = Math.Clamp(damage, 0, health);
         return damage;
     }
 
-    public void TakeDamage(int damage, object source, bool calculateDamage = false)
+    public void TakeDamage(int damage, DamageType damageType, object source, bool calculateDamage = false)
     {
-        if(calculateDamage) damage = CalculateDamage(damage);
+        if(calculateDamage) damage = CalculateDamage(damage, damageType);
         health -= damage;
         if (health <= 0)
             Die(new(source));
@@ -230,6 +233,7 @@ public class Creature
         OnDie(data);
     }
 
+    /// <returns>The amount healed</returns>
     public int Heal(int amt)
     {
         amt = Math.Min(amt, MaxHealth - health);
@@ -256,6 +260,8 @@ public class Creature
     {
         inventory.addedWeight = (armor?.Weight ?? 0) + (mainHand?.Weight ?? 0) + (offHand?.Weight ?? 0);
         inventory.maxWeight = MaxCarryWeight;
+
+        resistances ??= new();
     }
 
     public virtual float ScaleTableWeight(Floor floor)
@@ -275,6 +281,22 @@ public class Creature
         attacks = attacks.Where(a => a?.CanUse(this) ?? false).ToList();
 
         return attacks.ToArray();
+    }
+
+    public int GetDefense(DamageType? damageType = null)
+    {
+        if (damageType == null)
+            return armor?.Item?.Defense ?? 0;
+
+        resistances.TryGetValue(damageType.Value, out int resistance);
+        return (armor?.Item?.GetDefense(damageType) ?? 0) + resistance;
+    }
+
+    public float RestoreStamina(float amt, bool overrideMax = false)
+    {
+        float added = Math.Min(amt, overrideMax ? amt : MaxStamina - rawStamina);
+        rawStamina += added;
+        return added;
     }
 
 }

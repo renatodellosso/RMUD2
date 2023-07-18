@@ -15,7 +15,7 @@ public class Floor
     Vector2 size;
     public Vector2 startPos; //The starting position of layout generation
 
-    public float temperature = 0, arcane = 0; //Used for scaling monster tables
+    public float temperature = 0, arcane = 0, holy = 0; //Used for scaling monster tables
     public float Depth => position.x;
 
     public Table<Creatures.MonsterList.MonsterEntry>? monsters; 
@@ -32,13 +32,15 @@ public class Floor
 
         temperature = Utils.RandFloat(-1, 1);
         arcane = Utils.RandFloat(-1, 1);
+        holy = Utils.RandFloat(-1, 1);
 
         //Apparently we have to cast Vector2s to string to get the formatting, even though I made an implicit converter. TODO: Look into this
         Utils.Log($"Floor {position} Pre-Generation Stats:" +
             $"\n\tSize: {size} ({size.x * size.y} area, {size.x * size.y * Config.DungeonGeneration.MIN_FILL} min rooms)" +
             $"\n\tDepth: {Depth}" +
             $"\n\tTemp: {temperature}" +
-            $"\n\tArcane: {arcane}");
+            $"\n\tArcane: {arcane}" +
+            $"\n\tHoly: {holy}");
 
         //Generate the monster table
         Utils.Log($"Floor {position} monster table generation started...");

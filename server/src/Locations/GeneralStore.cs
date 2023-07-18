@@ -18,7 +18,8 @@ namespace Locations
         {
             new("pickaxe"),
             new("log"),
-            new("bottle")
+            new("bottle"),
+            new("cloth")
         };
 
         public GeneralStore()

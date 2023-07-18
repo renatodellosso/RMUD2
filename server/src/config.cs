@@ -37,7 +37,7 @@ static class Config
 
     public static class DungeonGeneration
     {
-        public const int MIN_FLOORS = 3, MAX_FLOORS = 5;
+        public const int MIN_FLOORS = 5, MAX_FLOORS = 7;
         public const int MIN_FLOOR_SIZE = 10, MAX_FLOOR_SIZE = 17;
 
         //MIN_FILL is the minimum % of the floor that has rooms
@@ -77,7 +77,7 @@ static class Config
         public const int STAMINA_PER_END = 1;
         public const int BASE_STAMINA_REGEN = 1;
         public const float STAMINA_REGEN_PER_EVERY_OTHER_AGI = .05f;
-        public const float STAMINA_REGEN_MULT_WHILE_ENCUMBERED = .3f;
+        public const float ENCUMBRANCE_STAMINA_REGEN_REDUCTION_PER_LB = .05f;
 
         public const float XP_PER_WIS = .02f;
 

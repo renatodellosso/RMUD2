@@ -18,16 +18,17 @@ namespace ItemTypes
 
         protected override string SlotName => "main hand";
 
-        public Weapon(string id, string name, Die damage, string description = "No description provided", int weight = 0, int sellValue = 0, AbilityScore? abilityScore = null)
-            : base(id, name, weight, description)
+        public Weapon(string id, string name, Die damage, DamageType damageType, string description = "No description provided", int weight = 0, int sellValue = 0, 
+            AbilityScore? abilityScore = null, string color = "white")
+            : base(id, name, weight, description, color)
         {
             //Make sure that key and id are the same!
-            attacks.Add(id, new Attack(id, FormattedName, damage, staminaCost: 2, weapon: this, atkBonusAbilityScore: abilityScore, dmgAbilityScore: abilityScore));
+            attacks.Add(id, new Attack(id, FormattedName, damage, damageType, staminaCost: 2, weapon: this, atkBonusAbilityScore: abilityScore, dmgAbilityScore: abilityScore));
             this.sellValue = sellValue;
         }
 
-        public Weapon(string id, string name, Attack[] attacks, string description = "No description provided", int weight = 0, int sellValue = 0)
-            : base(id, name, weight, description)
+        public Weapon(string id, string name, Attack[] attacks, string description = "No description provided", int weight = 0, int sellValue = 0, string color = "white")
+            : base(id, name, weight, description, color)
         {
             this.sellValue = sellValue;
 
@@ -38,6 +39,10 @@ namespace ItemTypes
                 this.attacks.Add(attack.id, attack);
             }
         }
+
+        public Weapon(Attack[] attacks, int weight = 0, int sellValue = 0, string color = "white")
+            : this("", "", attacks, "", weight, sellValue, color)
+        { }
 
         public override string Overview(ItemHolder<Item> item, Creature? creature = null)
         {

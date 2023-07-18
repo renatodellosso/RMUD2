@@ -16,7 +16,7 @@ namespace Items
         public override string FormattedName => color == "" ? name : Utils.Style(name, color);
 
         public SimpleItem(string id, string name, float weight, string description = "No description provided", int sellValue = 0, string color = "")
-            : base(id, name, weight, description)
+            : base(id, name, weight, description, color)
         {
             this.sellValue = sellValue;
             this.color = color;

@@ -17,11 +17,17 @@ public class Attack
 
     public int staminaCost;
 
+    public DamageType damageType;
+
+    int atkBonus, critThreshold;
+
+    float critMult, lifeSteal;
+
     public virtual Action<Creature, Creature> execute => Execute;
     public virtual Func<Creature, List<Creature>> getTargets => GetTargets;
 
-    public Attack(string id, string name, Die damage, int staminaCost = 2, AbilityScore? dmgAbilityScore = AbilityScore.Strength, 
-        AbilityScore? atkBonusAbilityScore = AbilityScore.Dexterity, Weapon? weapon = null)
+    public Attack(string id, string name, Die damage, DamageType damageType, int staminaCost = 2, AbilityScore? dmgAbilityScore = AbilityScore.Strength, 
+        AbilityScore? atkBonusAbilityScore = AbilityScore.Dexterity, Weapon? weapon = null, int atkBonus = 0, float critMult = 2, int critThreshold = 20, float lifeSteal = 0f)
     {
         atkBonusAbilityScore ??= AbilityScore.Dexterity;
         dmgAbilityScore ??= AbilityScore.Strength;
@@ -29,10 +35,15 @@ public class Attack
         this.id = id;
         this.name = name;
         this.damage = damage;
+        this.damageType = damageType;
         this.dmgAbilityScore = dmgAbilityScore.Value; //We use .Value because we know it's not null
         this.atkBonusAbilityScore = atkBonusAbilityScore.Value;
         this.weapon = weapon;
         this.staminaCost = staminaCost;
+        this.atkBonus = atkBonus;
+        this.critThreshold = critThreshold;
+        this.critMult = critMult;
+        this.lifeSteal = lifeSteal;
     }
 
     public int RollDamage(Creature attacker, Creature target)
@@ -46,7 +57,7 @@ public class Attack
 
     public int AttackBonus(Creature attacker)
     {
-        return attacker.abilityScores[dmgAbilityScore];
+        return attacker.abilityScores[dmgAbilityScore] + atkBonus;
     }
 
     void Execute(Creature attacker, Creature target)
@@ -55,21 +66,34 @@ public class Attack
 
         attacker.stamina -= staminaCost;
 
-        int atkBonus = AttackBonus(attacker);        
-        int roll = Utils.RandInt(20) + 1 + atkBonus; //We add 1, since RandInt(20) returns a number from 0 to 19, and we want 1 to 20
+        int atkBonus = AttackBonus(attacker);
+        int baseRoll = Utils.RandInt(20) + 1; //We add 1, since RandInt(20) returns a number from 0 to 19, and we want 1 to 20
+        int roll = baseRoll + atkBonus;
 
-        if (attacker is Player)
-            ((Player)attacker).session?.Log($"{(roll - atkBonus)} + {atkBonus} = {roll} {(roll >= target.DodgeThreshold ? "Hit!" : "Miss!")}");
+        if (attacker is Player player)
+            player.session?.Log($"{(roll - atkBonus)} + {atkBonus} = {roll} {(roll >= target.DodgeThreshold || baseRoll >= critThreshold ? "Hit!" : "Miss!")}");
 
-        if (roll >= target.DodgeThreshold)
+        bool crit = baseRoll >= critThreshold;
+        if (roll >= target.DodgeThreshold || crit)
         {
-
             //Hit
             //We calculate the damage so can log how much was dealt, then actually deal the damage. This ensures players who die from the attack still get the log message
             int rolledDmg = RollDamage(attacker, target);
-            int damage = target.CalculateDamage(rolledDmg);
-            attacker.Location?.Log($"{attacker.FormattedName} hit {target.FormattedName} for {damage} ({rolledDmg} - {rolledDmg-damage}) damage with {name}!");
-            target.TakeDamage(damage, attacker);
+
+            if(crit)
+                rolledDmg = (int)Math.Round(rolledDmg * critMult);
+
+            int damage = target.CalculateDamage(rolledDmg, damageType);
+            attacker.Location?.Log($"{(crit ? "CRITICAL! " : "")}{attacker.FormattedName} hit {target.FormattedName} for {damage} " +
+                $"({rolledDmg} - {target.GetDefense(damageType)}) {damageType} damage with {name}!");
+            target.TakeDamage(damage, damageType, attacker);
+
+            if(lifeSteal > 0)
+            {
+                int heal = (int)Math.Round(damage * lifeSteal);
+                heal = attacker.Heal(heal);
+                attacker.Location?.Log($"{attacker.FormattedName} healed for {heal} health from {name}!");
+            }
         }
         else
         {
@@ -109,12 +133,16 @@ public class Attack
     {
         string msg = name + ":";
 
-        msg += $" {(creature != null ? Utils.Modifier(AttackBonus(creature)) : $"+{atkBonusAbilityScore}")} to hit.";
+        msg += $" {(creature != null ? Utils.Modifier(AttackBonus(creature)) : $"+{atkBonusAbilityScore}{Utils.Modifier(atkBonus)}")} to hit.";
 
         Die damage = this.damage.Clone();
         damage.modifier = () => creature?.abilityScores[dmgAbilityScore] ?? 0;
-        msg += $" Deals {damage}{(creature != null ? "" : $"+{dmgAbilityScore}")} damage.";
+        msg += $" Deals {damage}{(creature != null ? "" : $"+{dmgAbilityScore}")} {damageType} damage.";
         msg += $" Costs {staminaCost} stamina.";
+        msg += $" Crits on a roll of {critThreshold}+ for {Math.Round(critMult, 1)}x damage.";
+        
+        if(lifeSteal > 0)
+            msg += $" {Utils.Percent(lifeSteal)} lifesteal.";
 
         return msg;
     }
@@ -123,7 +151,7 @@ public class Attack
     {
         this.weapon = weapon;
         id = weapon.id + "." + id;
-        name += $" ({weapon.FormattedName})";
+        if(weapon.name != "") name += $" ({weapon.FormattedName})";
     }
 
 }

@@ -23,7 +23,9 @@ namespace Menus
 
         public override void OnStart()
         {
-            session?.Log($"{Utils.Style("Level up!", "yellow")} level {session.Player?.level - 1} -> level {Utils.Style(session.Player?.level.ToString(), "yellow")} ");
+            Player? player = session?.Player;
+            session?.Log($"{Utils.Style("Level up!", "yellow")} level {player?.level ?? 0} -> " +
+                $"level {Utils.Style((player?.level + 1 ?? 0).ToString(), "yellow")} ");
 
             state = "abilityscores";
             session?.Log("Choose an ability score to increase:<br>" +
@@ -31,8 +33,8 @@ namespace Menus
                 $"DEX: +1 attack bonus" +
                 $"CON: +{Config.Gameplay.HP_PER_CON} HP<br>" +
                 $"AGI: Alternates +1 dodge threshold and +{Utils.Percent(Config.Gameplay.STAMINA_REGEN_PER_EVERY_OTHER_AGI)} stamina regen<br>" +
-                $"WIS: +{Utils.Percent(Config.Gameplay.XP_PER_WIS)} XP" +
                 $"END: +{Config.Gameplay.STAMINA_PER_END} max stamina<br>" +
+                $"WIS: +{Utils.Percent(Config.Gameplay.XP_PER_WIS)} XP<br>" +
                 $"CHA: +{Config.Gameplay.SELL_CUT_PER_CHA * 100}% sell cut");
         }
 
@@ -76,7 +78,10 @@ namespace Menus
 
         void Exit()
         {
-            session?.Player?.Update();
+            Player player = session?.Player;
+            player.level++;
+            player.Update();
+
             session?.SetMenu(new Menus.LocationMenu(session));
             afterwards();
         }

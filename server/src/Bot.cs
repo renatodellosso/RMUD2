@@ -16,6 +16,7 @@ public static class Bot
     {
         { "list", new SlashCommands.ListCommand() },
         { "link", new SlashCommands.LinkCommand() },
+        { "user", new SlashCommands.UserCommand() }
     };
 
     public static async void Init()
@@ -72,8 +73,8 @@ public static class Bot
         Utils.Log($"Received slash command: {cmd.Data.Name}");
         try
         {
-            if (commands.ContainsKey(cmd.Data.Name))
-                await commands[cmd.Data.Name].Execute(cmd);
+            if (commands.TryGetValue(cmd.Data.Name, out DiscordSlashCommand value))
+                await value.Execute(cmd);
             else Utils.Log("Invalid slash command");
         } catch (Exception e)
         {

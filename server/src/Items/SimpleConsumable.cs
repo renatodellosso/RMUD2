@@ -20,8 +20,8 @@ namespace Items
         int uses = 1; //Set to -1 for infinite uses
 
         public SimpleConsumable(string id, string name, float weight, Action<Session>? onUse, string verb = "Use", string description = "No description provided",
-            int sellValue = 1, int uses = 1)
-            : base(id, name, weight, description)
+            int sellValue = 1, int uses = 1, string color = "white")
+            : base(id, name, weight, description, color)
         {
             this.verb = verb;
             this.onUse = onUse;

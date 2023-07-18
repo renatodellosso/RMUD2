@@ -100,7 +100,6 @@ public static class Utils
     {
         string text = mod.ToString();
         if (mod >= 0) text = "+" + text;
-        else text = "-" + text;
         return text;
     }
 

@@ -11,7 +11,8 @@ namespace ItemTypes
 
         protected abstract string SlotName { get; } //This is weird, but the internet says we have to
 
-        protected Equipable(string id, string name, float weight, string description = "No description provided") : base(id, name, weight, description)
+        protected Equipable(string id, string name, float weight, string description = "No description provided", string color = "white")
+            : base(id, name, weight, description, color)
         {
 
         }

@@ -18,6 +18,8 @@ namespace Locations
             new("axe"),
             new("spear"),
             new("pickaxe"),
+            new("longsword"),
+            new("mace"),
             new("breastplate"),
             new("chainmail")
         };
@@ -31,6 +33,7 @@ namespace Locations
             safe = true;
 
             objects.Add(new WorldObjects.CraftingStation("forge", "Forge", id, RecipeLists.FORGE));
+            objects.Add(new WorldObjects.CraftingStation("loom", "Loom", id, RecipeLists.LOOM));
 
             creatures.Add(new Creatures.SimpleNPC("daes", "Daes, Smith", 
                 talkStart: (session) =>
