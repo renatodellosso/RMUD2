@@ -152,32 +152,36 @@ let serverActions = {
     },
 
     setTargets: (targets) => {
-        // console.log("Setting targets: ");
-        // console.log(targets);
+        try {
+            // console.log("Setting targets: ");
+            // console.log(targets);
 
-        let shouldUpdate = targets.length != prevTargetIds.length;
-
-        for(let i = 0; i < targets.length; i++) {
-            if(!prevTargetIds.includes(targets[i].id)) {
-                shouldUpdate = true;
-                break;
-            }
-        };
-
-        if(shouldUpdate) {
-            let targetsElement = document.getElementById("targets");
-            targetsElement.innerHTML = targets.length > 0 ? "<br>Targets (Click to attack):<br>" : "";
+            let shouldUpdate = targets.length != prevTargetIds.length;
 
             for(let i = 0; i < targets.length; i++) {
-                let target = targets[i];
-                targetsElement.innerHTML += button(target.id, target.text) + "<br>";
+                if(!prevTargetIds.includes(targets[i].id)) {
+                    shouldUpdate = true;
+                    break;
+                }
+            };
 
-                let buttonElement = document.getElementById(target.id);
-                buttonElement.setAttribute("onClick", `javascript: optionClicked("${target.id}")`);
+            if(shouldUpdate) {
+                let targetsElement = document.getElementById("targets");
+                targetsElement.innerHTML = targets.length > 0 ? "<br>Targets (Click to attack):<br>" : "";
+
+                for(let i = 0; i < targets.length; i++) {
+                    let target = targets[i];
+                    targetsElement.innerHTML += button(target.id, target.text) + "<br>";
+
+                    let buttonElement = document.getElementById(target.id);
+                    buttonElement.setAttribute("onClick", `javascript: optionClicked("${target.id}")`);
+                }
             }
-        }
 
-        prevTargetIds = targets.map((target) => target.id);
+            prevTargetIds = targets.map((target) => target.id);
+        } catch(e) {
+            console.error(e);
+        }
     }
 
 }

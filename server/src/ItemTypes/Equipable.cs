@@ -9,7 +9,8 @@ namespace ItemTypes
     public abstract class Equipable<T> : Item where T : Item
     {
 
-        protected abstract string SlotName { get; } //This is weird, but the internet says we have to
+        protected virtual bool EquipInHands => false;
+        protected virtual bool EquipInArmor => false;
 
         protected Equipable(string id, string name, float weight, string description = "No description provided", string color = "white")
             : base(id, name, weight, description, color)
@@ -22,8 +23,11 @@ namespace ItemTypes
             Player player = session.Player ?? throw new Exception("Player is null!");
             List<Input> inputs = new();
 
-            if (player.mainHand != item)
-                inputs.Add(new(InputMode.Option, "equip", $"Equip in {SlotName} slot"));
+            if (EquipInHands && player.mainHand != item && player.offHand != item)
+            {
+                inputs.Add(new(InputMode.Option, "equipMainHand", $"Equip in main hand"));
+                inputs.Add(new(InputMode.Option, "equipOffHand", $"Equip in off hand"));
+            }
 
             return inputs;
         }
@@ -32,7 +36,9 @@ namespace ItemTypes
         {
             Player player = session.Player ?? throw new Exception("Player is null!");
             
-            if (action.action == "equip" && CanEquip(session.Player, item as ItemHolder<T>)) //As lets us cast the generic parameter
+            EquipmentSlot slot = (EquipmentSlot)Enum.Parse(typeof(EquipmentSlot), action.action["equip".Length..]);
+
+            if (action.action.StartsWith("equip") && CanEquip(session.Player, item as ItemHolder<T>, slot)) //As lets us cast the generic parameter
             {
                 try
                 {
@@ -40,7 +46,7 @@ namespace ItemTypes
                     casted.amt = 1;
                     //ItemHolder<T>? casted = item as ItemHolder<T> ?? throw new Exception("ItemHolder<T> is null!");
 
-                    Equip(session.Player, casted);
+                    Equip(session.Player, casted, slot);
 
                     player.Update();
 
@@ -54,7 +60,14 @@ namespace ItemTypes
             }
         }
 
-        protected abstract bool CanEquip(Player player, ItemHolder<T> item);
-        protected abstract void Equip(Player player, ItemHolder<T> item);
+        protected abstract bool CanEquip(Player player, ItemHolder<T> item, EquipmentSlot slot);
+        protected abstract void Equip(Player player, ItemHolder<T> item, EquipmentSlot slot);
     }
+}
+
+public enum EquipmentSlot
+{
+    MainHand,
+    OffHand,
+    Armor
 }

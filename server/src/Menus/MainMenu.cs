@@ -151,7 +151,7 @@ namespace Menus
                             player.Location.Enter(player, null);
                         } catch (Exception e)
                         {
-                            Utils.Log($"Player failed to enter location. Error: {e.Message} {e.StackTrace}");
+                            Utils.Log(e);
                         }
                     }
                     else session.Log(Utils.Style("Encountered an error: Player is null", "red"));
@@ -159,7 +159,7 @@ namespace Menus
                 else session.Log(Utils.Style("Encountered an error: Account is null", "red"));
             } catch (Exception ex) 
             {
-                Utils.Log($"Error in MainMenu.Play(): {ex.Message} {ex.StackTrace}");
+                Utils.Log(ex);
                 session.Log(Utils.Style("Encountered an uncaught error", "red"));
             }
         }
@@ -200,7 +200,7 @@ namespace Menus
             } 
             catch(Exception e)
             {
-                Utils.Log($"Error in MainMenu.InitPlayer(): {e.Message} {e.StackTrace}");
+                Utils.Log(e);
                 session.Log(Utils.Style("Encountered an error: Error with initializing player", "red"));
             }
         }

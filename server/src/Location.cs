@@ -135,7 +135,7 @@ public abstract class Location
     public virtual Input[] GetInputs(Session session, string state)
     {
         string[] args = state.Split('.');
-        List<Input> inputs = new List<Input>();
+        List<Input> inputs = new();
 
         try
         {

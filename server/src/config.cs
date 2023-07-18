@@ -79,7 +79,7 @@ static class Config
         public const float STAMINA_REGEN_PER_EVERY_OTHER_AGI = .05f;
         public const float ENCUMBRANCE_STAMINA_REGEN_REDUCTION_PER_LB = .05f;
 
-        public const float XP_PER_WIS = .02f;
+        public const float XP_PER_WIS = .03f;
 
         public const float BASE_SELL_CUT = .7f;
         public const float SELL_CUT_PER_CHA = .05f;

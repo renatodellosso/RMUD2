@@ -163,12 +163,11 @@ public class Player : Creature
         text += $"<br>Dodge Threshold: {DodgeThreshold}";
         text += $"<br>Defense: {Defense}";
 
-        text += $"<br>Max Stamina: {MaxStamina} ({Utils.Modifier(Utils.Round(StaminaRegen, 2))}/s)";
+        text += $"<br>Max Stamina: {MaxStamina} ({Utils.Modifier(Utils.Round(BaseStaminaRegen, 2))}/s)";
 
         float excessWeight = inventory.Weight - MaxCarryWeight;
         if (excessWeight > 0)
-            text += $" - Encumbered: Actual Stamina Regen: {Utils.Modifier(Utils.Round(StaminaRegen * 
-                (1 + excessWeight * Config.Gameplay.ENCUMBRANCE_STAMINA_REGEN_REDUCTION_PER_LB), 2))}/s";
+            text += $" - Encumbered: Actual Stamina Regen: {Utils.Modifier(Utils.Round(StaminaRegen))}/s";
 
         text += $"<br><br>Sell Cut: {Utils.Percent(SellCut)}";
         text += $"<br>XP Gain: {Utils.Percent(XpMult)}";

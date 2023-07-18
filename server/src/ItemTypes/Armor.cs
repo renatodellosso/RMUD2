@@ -9,7 +9,7 @@ namespace ItemTypes
     public class Armor : Equipable<Armor>
     {
 
-        protected override string SlotName => "armor";
+        protected override bool EquipInArmor => true;
 
         int defense = 0;
         public int Defense => GetDefense();
@@ -29,12 +29,12 @@ namespace ItemTypes
                 this.resistances = resistances;
         }
 
-        protected override bool CanEquip(Player player, ItemHolder<Armor> item)
+        protected override bool CanEquip(Player player, ItemHolder<Armor> item, EquipmentSlot slot)
         {
             return player.armor == null || player.armor != item; 
         }
 
-        protected override void Equip(Player player, ItemHolder<Armor> item)
+        protected override void Equip(Player player, ItemHolder<Armor> item, EquipmentSlot slot)
         {
             player.inventory.Remove(item);
 

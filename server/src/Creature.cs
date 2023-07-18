@@ -39,7 +39,8 @@ public class Creature
         }
     }
     public float rawStamina = 0f;
-    public virtual float StaminaRegen => Config.Gameplay.BASE_STAMINA_REGEN + MathF.Floor(Agility / 2) * Config.Gameplay.STAMINA_REGEN_PER_EVERY_OTHER_AGI;
+    public virtual float BaseStaminaRegen => Config.Gameplay.BASE_STAMINA_REGEN + MathF.Floor(Agility / 2) * Config.Gameplay.STAMINA_REGEN_PER_EVERY_OTHER_AGI;
+    public virtual float StaminaRegen => BaseStaminaRegen * (1 - Math.Max(0, inventory.Weight - MaxCarryWeight) * Config.Gameplay.ENCUMBRANCE_STAMINA_REGEN_REDUCTION_PER_LB);
 
     //Null for either means creature has no dialogue. The string is the dialogue state
     public Func<Session, DialogueMenu, Input[]>? talkInputs = null;
@@ -162,8 +163,7 @@ public class Creature
     {
         if (rawStamina < MaxStamina)
         {
-            float excessWeight = inventory.Weight - MaxCarryWeight;
-            rawStamina += StaminaRegen * (excessWeight > 0 ? 1 -  (excessWeight * Config.Gameplay.ENCUMBRANCE_STAMINA_REGEN_REDUCTION_PER_LB) : 1);
+            rawStamina += StaminaRegen;
             rawStamina = Math.Clamp(rawStamina, 0, MaxStamina);
         }
     }
@@ -276,6 +276,14 @@ public class Creature
         foreach(Attack attack in Weapon?.attacks.Values)
         {
             attacks.Add(attack);
+        }
+
+        if(offHand != null && offHand.Item is Weapon weapon)
+        {
+            foreach (Attack attack in weapon.attacks.Values)
+            {
+                attacks.Add(attack);
+            }
         }
 
         attacks = attacks.Where(a => a?.CanUse(this) ?? false).ToList();
