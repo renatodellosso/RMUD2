@@ -38,7 +38,7 @@ public class Player : Creature
     public override int MaxHealth => Config.Gameplay.BASE_PLAYER_HP + Constitution * Config.Gameplay.HP_PER_CON;
 
     public int xp = 0, level = 0;
-    public int XpToNextLevel => (int)Math.Round(30 + level * 50 + Math.Pow(level, 2.5) + Math.Pow(level * 50, 0.9));
+    public int XpToNextLevel => (int)Math.Round(30f + (level * 50f) + MathF.Pow(level, 2.75f) + MathF.Pow(level * 50f, 0.9f));
     public bool hasSentLevelUpNotification = false;
 
     public string? resetLocation;
