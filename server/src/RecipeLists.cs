@@ -25,7 +25,7 @@ public static class RecipeLists
         public static readonly Recipe HEALING_POTION =
             new(new ItemHolder<Item>[] { new("bottle", 1), new("holyblood", 2), new("vampiricdust", 2) }, "healingpotion", 1, 70);
         public static readonly Recipe LESSER_STAMINA_POTION =
-            new(new ItemHolder<Item>[] { new("bottle", 1), new("taintedflesh", 1), new("aberrantchunk", 1) }, "lesserstaminapotion", 1, 60);
+            new(new ItemHolder<Item>[] { new("bottle", 1), new("taintedflesh", 1), new("aberrantcluster", 1) }, "lesserstaminapotion", 1, 60);
         public static readonly Recipe DARK_CLOAK =
             new(new ItemHolder<Item>[] { new("cloth", 10), new("shadowessence", 3) }, "darkcloak", 1, 100);
         public static readonly Recipe BONE_CLUB = new("bone", 15, "boneclub", 1, 80);

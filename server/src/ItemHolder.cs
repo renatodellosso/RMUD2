@@ -18,7 +18,7 @@ public class ItemHolder<T> where T : ItemTypes.Item
         set => data["amt"] = value;
     }
 
-    public string FormattedName => Item.FormattedName;
+    public string FormattedName => Item?.FormattedName ?? Utils.Style("ERROR", "red");
 
     public float Weight => amt * Item.Weight;
 
