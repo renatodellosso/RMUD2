@@ -20,7 +20,7 @@ public class Die : IFormattable
             this.bonusDice = bonusDice;
     }
 
-    public Die(int dieSize) : this(dieSize, 0) { } //No modifier
+    public Die(int dieSize) : this(dieSize, 1) { } //No modifier
 
     public int Roll()
     {
