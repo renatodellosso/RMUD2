@@ -27,7 +27,7 @@ public class CombatHandler
 
             foreach (Attack attack in attacks)
             {
-                inputs.Add(new Input(InputMode.Option, "attack." + attack.id, attack.name, attack == this.attack));
+                inputs.Add(new Input(InputMode.Option, "attack." + attack.id, $"{attack.name} ({attack.staminaCost})", attack == this.attack));
             }
 
             attack ??= attacks.FirstOrDefault();

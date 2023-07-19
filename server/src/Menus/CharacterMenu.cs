@@ -22,6 +22,7 @@ namespace Menus
             {
                 back,
                 new(InputMode.Option, "mainHand", "Main Hand"),
+                new(InputMode.Option, "offHand", "Off Hand"),
                 new(InputMode.Option, "armor", "Armor"),
             };
 
@@ -39,6 +40,14 @@ namespace Menus
                 if(player == null || player.mainHand == null)
                     session?.Log("You have no weapon equipped.");
                 else session?.Log(player.mainHand.Overview(player));
+            }
+            else if (action.action == "offHand")
+            {
+                Player? player = session?.Player;
+
+                if (player == null || player.offHand == null)
+                    session?.Log("You have no weapon equipped.");
+                else session?.Log(player.offHand.Overview(player));
             }
             else if(action.action == "armor")
             {
