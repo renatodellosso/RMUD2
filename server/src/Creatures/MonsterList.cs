@@ -544,7 +544,7 @@ namespace Creatures
                 xp: 350,
                 scaleTableWeight: (floor) =>
                 {
-                    return 0.6f + (floor.Depth - 7) * 0.4f + floor.arcane;
+                    return 0.8f + (floor.Depth - 7) * 0.4f + floor.arcane;
                 },
                 resistances: new()
                 {
@@ -573,7 +573,7 @@ namespace Creatures
                 xp: 350,
                 scaleTableWeight: (floor) =>
                 {
-                    return 0.6f + (floor.Depth - 7) * 0.4f + floor.arcane;
+                    return 0.8f + (floor.Depth - 7) * 0.4f + floor.arcane;
                 },
                 resistances: new()
                 {
@@ -603,7 +603,7 @@ namespace Creatures
                 xp: 250,
                 scaleTableWeight: (floor) =>
                 {
-                    return 0.6f + (floor.Depth - 7) * 0.4f + floor.arcane;
+                    return 0.8f + (floor.Depth - 7) * 0.4f + floor.arcane;
                 },
                 resistances: new()
                 {
