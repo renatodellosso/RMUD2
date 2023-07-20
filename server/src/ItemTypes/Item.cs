@@ -37,15 +37,49 @@ namespace ItemTypes
                 $"{description}";
         }
 
-        public virtual List<Input> GetInputs(Session session, ItemHolder<Item> item)
+        public virtual List<Input> GetInputs(Session session, ItemHolder<Item> item, string state)
         {
-            //IMPORTANT: All actions 
-            return new List<Input>();
+            //IMPORTANT: All actions
+            List<Input> inputs = new();
+
+            if (session.Player?.inventory.Contains(item) ?? false) {
+                if (!state.Contains(".drop"))
+                    inputs.Add(new(InputMode.Option, "drop", "Drop"));
+                else
+                    Utils.AddItemAmountOptions(inputs, item);
+            }
+
+            return inputs;
         }
 
         public virtual void HandleInput(Session session, ClientAction action, ItemHolder<Item> item, ref string state, ref bool addStateToPrev)
         {
+            Player player = session.Player!;
+            if (player.inventory.Contains(item)) {
+                if (!state.Contains(".drop") && action.action == "drop")
+                    state += ".drop";
+                else if(state.Contains(".drop"))
+                {
+                    try
+                    {
+                        item = item.Clone();
+                        item.amt = int.Parse(action.action);
 
+                        player.Location?.objects.Add(new WorldObjects.DroppedItem(item, player.Location.id));
+                        session.Log($"You dropped {item.FormattedName} x{item.amt}.");
+
+                        state = "inventory";
+                        addStateToPrev = false;
+
+                        player.inventory.Remove(item); //This edits the original item's amount, so we do it last
+                        player.Update();
+                    }
+                    catch (Exception e)
+                    {
+                        session.Log($"Invalid amount");
+                    }
+                }
+            }
         }
 
     }

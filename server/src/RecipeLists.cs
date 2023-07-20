@@ -1,4 +1,5 @@
 ﻿using ItemTypes;
+using Items;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +10,14 @@ public static class RecipeLists
 {
     public static class All
     {
+        //If a recipe is infinitely repeatable (log to coal for example), it can't give XP
+
         public static readonly Recipe IRON_BAR = new(new ItemHolder<Item>[] { new("ironore", 1), new("coal", 1) }, "ironbar", 1, 5);
         public static readonly Recipe BREASTPLATE = new("ironbar", 4, "breastplate", 1, 20);
         public static readonly Recipe CHAINMAIL = new("ironbar", 6, "chainmail", 1, 30);
         public static readonly Recipe COOKED_MEAT = new(new ItemHolder<Item>[] { new("meat", 1), new("coal", 1) }, "cookedmeat", 1, 5);
         public static readonly Recipe GRILLED_MUSHROOM = new(new ItemHolder<Item>[] { new("mushroom", 1), new("coal", 1) }, "grilledmushroom", 1, 5);
-        public static readonly Recipe COAL = new("log", 1, "coal", 1, 5); //If we add multiple ways to get coal, maybe change this to COAL_FROM_LOG
+        public static readonly Recipe COAL = new("log", 1, "coal", 1); //If we add multiple ways to get coal, maybe change this to COAL_FROM_LOG. This used to infinitely repeatable, so it can't give XP
         public static readonly Recipe SPEAR = new(new ItemHolder<Item>[] { new("log", 1), new("ironbar", 1) }, "spear", 1, 10);
         public static readonly Recipe AXE = new(new ItemHolder<Item>[] { new("log", 1), new("ironbar", 3) }, "axe", 1, 20);
         public static readonly Recipe LONGSWORD = new(new ItemHolder<Item>[] { new("log", 1), new("ironbar", 5) }, "longsword", 1, 40);
@@ -45,6 +48,24 @@ public static class RecipeLists
             new(new ItemHolder<Item>[] { new("log", 10), new("spore", 5), new("holyblood", 1) }, "fungalarmor", 1, 225);
         public static readonly Recipe MIND_BREAKER =
             new(new ItemHolder<Item>[] { new("darksteel", 5), new("aberrantcluster", 5), new("holyblood", 1), new("spore", 1) }, "mindbreaker", 1, 225);
+        public static readonly Recipe SPORE = new("mushroom", 2, "spore", 1, 25);
+        public static readonly Recipe LIVING_STONE_ARMOR =
+            new(new ItemHolder<Item>[] { new("livingstone", 8), new("ironbar", 15), new("cloth", 10) }, "livingstonearmor", 1, 325);
+        public static readonly Recipe PYROMANCER_CLOAK =
+            new(new ItemHolder<Item>[] { new("ember", 10), new("firesteel", 3), new("cloth", 25) }, "pyromancercloak", 1, 275);
+        public static readonly Recipe FIRE_STEEL =
+            new(new ItemHolder<Item>[] { new("darksteel", 1), new("ember", 3) }, "firesteel", 1, 40);
+        public static readonly Recipe FLAME_TRIDENT =
+            new(new ItemHolder<Item>[] { new("ember", 10), new("firesteel", 5), new("cloth", 3), new("spear") }, "flametrident", 1, 275);
+        public static readonly Recipe GLACIER_ARMOR =
+            new(new ItemHolder<Item>[] { new("livingstone", 3), new("ice", 10), new("frostshard", 8) }, "glacierarmor", 1, 275);
+        public static readonly Recipe FROSTBITE =
+            new(new ItemHolder<Item>[] { new("darksteel", 12), new("ice", 10), new("frostshard", 12) }, "frostbite", 1, 275);
+        public static readonly Recipe BLOODRIPPER =
+            new(new ItemHolder<Item>[] { new("darksteel", 16), new("holyblood", 10), new("taintedflesh", 12) }, "bloodripper", 1, 325);
+        public static readonly Recipe ENDBRINGER =
+            new(new ItemHolder<Item>[] { new("unholyknife"), new("hereticsword"), new("mindbreaker"), new("druidaxe"), new("flametrident"), new("landslide"), new("boneclub"),
+            new("frostbite"), new("mindreaper"), new("bloodripper") }, "endbringer", 1, 1000);
     }
 
     public static readonly Recipe[] FORGE = new Recipe[]
@@ -64,7 +85,9 @@ public static class RecipeLists
         All.DARK_STEEL_BREASTPLATE,
         All.HERETIC_SWORD,
         All.CLERIC_ARMOR,
-        All.MIND_BREAKER
+        All.MIND_BREAKER,
+        All.FIRE_STEEL,
+        All.FLAME_TRIDENT
     };
 
     public static readonly Recipe[] CAMPFIRE = new Recipe[]
@@ -75,12 +98,67 @@ public static class RecipeLists
         All.LESSER_HEALING_POTION,
         All.HEALING_POTION,
         All.LESSER_STAMINA_POTION,
-        All.DRUID_AXE,
-        All.FUNGAL_ARMOR
     };
 
     public static readonly Recipe[] LOOM = new Recipe[]
     {
-        All.DARK_CLOAK
+        All.DARK_CLOAK,
+        All.PYROMANCER_CLOAK
     };
+
+    public static readonly Recipe[] GROVE = new Recipe[]
+    {
+        All.SPORE,
+        All.DRUID_AXE,
+        All.FUNGAL_ARMOR,
+        All.LIVING_STONE_ARMOR,
+        All.GLACIER_ARMOR,
+        All.FROSTBITE,
+        All.BLOODRIPPER,
+    };
+
+    public static readonly Recipe[] UNHOLY_ALTAR = new Recipe[]
+    {
+        All.ENDBRINGER
+    };
+
+    static readonly Recipe[] MYSTERIOUS_TRADER = new Recipe[]
+    {
+        new("returnscroll", 1.5f),
+        new("healingpotion", 2),
+        new("aberrantcluster", 3),
+        new("vampiricdust", 2),
+        new("spore", 2),
+        new("darksteel", 2),
+        new("hereticsword", 5),
+        new("unholyknife", 5),
+        new("clericarmor", 5),
+        new("fungalarmor", 5),
+        new("mindbreaker", 6),
+        new("druidaxe", 5),
+        new("ale", 1.2f),
+        new(DungeonTeleportationScroll.GetId(0)),
+        new(DungeonTeleportationScroll.GetId(1)),
+        new(DungeonTeleportationScroll.GetId(2)),
+        new(DungeonTeleportationScroll.GetId(3)),
+        new(DungeonTeleportationScroll.GetId(4)),
+        new(DungeonTeleportationScroll.GetId(5)),
+        new(DungeonTeleportationScroll.GetId(6)),
+    };
+
+    public static Recipe[] GenMysteriousTraderInventory()
+    {
+        HashSet<Recipe> shop = new(); //Use a hashset to prevent duplicates
+        int offerCount = Utils.RandInt(Config.Gameplay.MYSTERIOUS_TRADER_MIN_OFFERS, Config.Gameplay.MYSTERIOUS_TRADER_MAX_OFFERS+1);
+
+        int tries = 0;
+        while(shop.Count < offerCount && tries < Config.Gameplay.MYSTERIOUS_TRADER_MAX_OFFERS * 2)
+        {
+            shop.Add(MYSTERIOUS_TRADER[Utils.RandInt(MYSTERIOUS_TRADER.Length)]);
+            tries++;
+        }
+
+        return shop.ToArray();
+    }
+
 }

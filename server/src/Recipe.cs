@@ -42,6 +42,9 @@ public class Recipe : IFormattable
         : this("Crafted", input, new ItemHolder<Item>(output, outAmt), xpValue)
     { }
 
+    public Recipe(string id, float markUp) : this("Bought", new ItemHolder<Item>("coin", (int)Math.Round(ItemList.Get(id).SellValue * markUp)), new ItemHolder<Item>(id, 1))
+    { }
+
 
 
     public new string ToString() => ToString(null, null);

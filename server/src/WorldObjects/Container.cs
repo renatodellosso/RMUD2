@@ -64,15 +64,25 @@ namespace WorldObjects
 
                             for(int i = 0; i < inventory.Count; i++)
                             {
-                                ItemHolder<Item> item = inventory[i];
-                                ItemHolder<Item>? transferred = inventory.Transfer(player.inventory, item);
-                                if (transferred != null)
-                                    session.Log($"Took {transferred.FormattedName} x{transferred.amt}");
-                                else
-                                    session.Log($"No room left in inventory");
-
-                                OnModified(session, ref state, ref addStateToPrev);
+                                try
+                                {
+                                    ItemHolder<Item> item = inventory[i];
+                                    ItemHolder<Item>? transferred = inventory.Transfer(player.inventory, item);
+                                    if (transferred != null)
+                                    {
+                                        session.Log($"Took {transferred.FormattedName} x{transferred.amt}");
+                                        i--; //One less item in the inventory, so we need to go back one
+                                    }
+                                    else
+                                        session.Log($"No room left in inventory");
+                                }
+                                catch(Exception e)
+                                {
+                                    Utils.Log(e);
+                                }
                             }
+
+                            OnModified(session, ref state, ref addStateToPrev);
                         }
                         else
                         {

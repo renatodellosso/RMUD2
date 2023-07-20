@@ -18,10 +18,10 @@ namespace ItemTypes
 
         }
 
-        public override List<Input> GetInputs(Session session, ItemHolder<Item> item)
+        public override List<Input> GetInputs(Session session, ItemHolder<Item> item, string state)
         {
             Player player = session.Player ?? throw new Exception("Player is null!");
-            List<Input> inputs = new();
+            List<Input> inputs = base.GetInputs(session, item, state);
 
             if (EquipInHands && player.mainHand != item && player.offHand != item)
             {
@@ -34,6 +34,8 @@ namespace ItemTypes
 
         public override void HandleInput(Session session, ClientAction action, ItemHolder<Item> item, ref string state, ref bool addStateToPrev)
         {
+            base.HandleInput(session, action, item, ref state, ref addStateToPrev);
+
             Player player = session.Player ?? throw new Exception("Player is null!");
             
             EquipmentSlot slot = (EquipmentSlot)Enum.Parse(typeof(EquipmentSlot), action.action["equip".Length..]);

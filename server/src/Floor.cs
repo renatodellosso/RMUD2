@@ -9,7 +9,7 @@ public class Floor
 {
 
     public DungeonLocation[,] locations;
-    List<DungeonLocation> rooms = new();
+    public List<DungeonLocation> rooms = new();
 
     public Vector2 position; //x is depth, y is 0 if it's the floor, or >0 if it's a side floor
     Vector2 size;

@@ -12,7 +12,7 @@ namespace Items
 
         string verb = "Use";
 
-        Action<Session>? onUse;
+        protected Action<Session>? onUse;
 
         int sellValue = 1;
         public override int SellValue => sellValue;
@@ -29,13 +29,16 @@ namespace Items
             this.uses = uses;
         }
 
-        public override List<Input> GetInputs(Session session, ItemHolder<Item> item)
+        public override List<Input> GetInputs(Session session, ItemHolder<Item> item, string state)
         {
-            return new() { ((IConsumable)this).GetInput() }; //There has to be a better way to call interface methods
+            List<Input> inputs = base.GetInputs(session, item, state);
+            inputs.Add(((IConsumable)this).GetInput());
+            return inputs; //There has to be a better way to call interface methods
         }
 
         public override void HandleInput(Session session, ClientAction action, ItemHolder<Item> item, ref string state, ref bool addStateToPrev)
         {
+            base.HandleInput(session, action, item, ref state, ref addStateToPrev);
             if(action.action == "use")
                 Use(session, ref state, ref addStateToPrev, item.data);
         }
@@ -51,10 +54,11 @@ namespace Items
 
             data.TryGetValue("uses", out object? currentUses);
             data["uses"] = (int)(currentUses ?? uses) - 1;
+            data.TryGetValue("uses", out currentUses);
 
-            session.Log($"Used {name}.{(uses > 0 ? $" {(int)currentUses!-1}/{uses} uses remaining." : "")}");
+            session.Log($"Used {name}.{(uses > 0 ? $" {(int)currentUses!}/{uses} uses remaining." : "")}");
 
-            if ((int)(currentUses ?? uses) == 1) //Current uses is not updated yet, so if it was 1, it's now 0
+            if ((int)(currentUses ?? uses) <= 0)
             {
                 session.Player?.inventory.Remove(new ItemHolder<Item>(id, 1));
                 state = "inventory";

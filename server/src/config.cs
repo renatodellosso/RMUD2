@@ -37,7 +37,7 @@ static class Config
 
     public static class DungeonGeneration
     {
-        public const int MIN_FLOORS = 5, MAX_FLOORS = 7;
+        public const int MIN_FLOORS = 7, MAX_FLOORS = 9;
         public const int MIN_FLOOR_SIZE = 10, MAX_FLOOR_SIZE = 17;
 
         //MIN_FILL is the minimum % of the floor that has rooms
@@ -88,6 +88,9 @@ static class Config
         public const string RESPAWN_LOCATION = "townsquare";
 
         public const int MAX_ENEMIES_IN_ROOM = 3; //Only applies when a monster is moving through a room
+
+        public const int MYSTERIOUS_TRADER_MIN_OFFERS = 3;
+        public const int MYSTERIOUS_TRADER_MAX_OFFERS = 5;
     }
 
     public static class SessionRemoval

@@ -18,7 +18,10 @@ namespace WorldObjects
             new(1f, (location) => new Harvestable("coalvein", "Coal Vein", location, "A strip of raw coal runs through the wall.", "Mine", "coal",
                 getAmtRange: (player) => Utils.HasItem(player, "pickaxe") ? new int[] { 2, 3 } : new int[] { 1, 1 })),
             new(1f, (location) =>
-                new Harvestable("lostpurse", "Lost Purse", location, "A small purse, containing a handful of coins.", "Take", "coin", 2, 5))
+                new Harvestable("lostpurse", "Lost Purse", location, "A small purse, containing a handful of coins.", "Take", "coin", 2, 5)),
+            new(1f, (location) => new Harvestable("fungalgrowth", "Fungal Growth", location, "A small mound of fungus.", "Scrape Off", "spore", 1, 2)),
+            new(1f, (location) => new Harvestable("ember", "Stray Ember", location, "A stray ember, likely from something nearby.", "Pick Up", "ember", 1, 2)),
+            new(1f, (location) => new Harvestable("frost", "Frost", location, "Some frost has been collecting on the ground.", "Scrape Off", "ice", 1, 2))
         );
 
         public static Func<string, WorldObject> Get()

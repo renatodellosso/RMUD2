@@ -195,6 +195,12 @@ public class Inventory : IEnumerable<ItemHolder<Item>> //IEnumerable allows us t
         return added;
     }
 
+    /// <summary>
+    /// Adds items to another inventory and removes those items from this inventory
+    /// </summary>
+    /// <param name="other">The inventory to add the items to</param>
+    /// <param name="items">The items to transfer</param>
+    /// <returns>The items that were transferred</returns>
     public ItemHolder<Item>? Transfer(Inventory other, ItemHolder<Item> item)
     {
         return Transfer(other, new List<ItemHolder<Item>>() { item }).FirstOrDefault();
@@ -229,5 +235,17 @@ public class Inventory : IEnumerable<ItemHolder<Item>> //IEnumerable allows us t
         }
 
         return false;
+    }
+
+    public string GetText(string title)
+    {
+        string msg = $"{Utils.Style(title, bold: true)} ({Utils.Weight(Weight, false)}/{Utils.Weight(MaxWeight)})";
+
+        foreach(ItemHolder<Item> item in items)
+        {
+            msg += $"<br>-{item.FormattedName} x{item.amt} ({Utils.Weight(item.Weight)} total):";
+        }
+
+        return msg;
     }
 }

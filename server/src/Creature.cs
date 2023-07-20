@@ -1,6 +1,7 @@
 ﻿using Events;
 using ItemTypes;
 using Menus;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
@@ -86,6 +87,8 @@ public class Creature
     public Inventory inventory = new();
 
     public int xpValue = 0;
+
+    Dictionary<ObjectId, int> damagedBy = new();
 
     public Creature(string id, string name, bool actual = true) //Actual specifies whether this is a real creature or just being creatured to get data
     {
@@ -216,6 +219,19 @@ public class Creature
     {
         if(calculateDamage) damage = CalculateDamage(damage, damageType);
         health -= damage;
+
+        if (source is Player player)
+        {
+            try
+            {
+                damagedBy.Add(player._id, damage);
+            }
+            catch
+            {
+                damagedBy[player._id] += damage;
+            }
+        }
+
         if (health <= 0)
             Die(new(source));
     }
@@ -247,11 +263,15 @@ public class Creature
         location = "";
         Utils.OnTick -= Tick;
 
-        if (data.killer is Player player)
-        {
-            string cause = "killing " + FormattedName;
+        string cause = "killing " + FormattedName;
 
-            player.AddXp(xpValue, cause);
+        foreach (KeyValuePair<ObjectId, int> killer in damagedBy)
+        {
+            float contrib = killer.Value / MaxHealth;
+            //Utils.Log($"{killer.Key}: {killer.Value}/{MaxHealth} - {contrib}");
+
+            Player player = Player.Get(killer.Key);
+            player.AddXp((int)Math.Round(xpValue * contrib), cause + $" (dealt {Utils.Percent(contrib)} of damage)");
         }
     }
 
@@ -291,7 +311,7 @@ public class Creature
         return attacks.ToArray();
     }
 
-    public int GetDefense(DamageType? damageType = null)
+    public virtual int GetDefense(DamageType? damageType = null)
     {
         if (damageType == null)
             return armor?.Item?.Defense ?? 0;

@@ -21,9 +21,12 @@ namespace Creatures
         Table<Func<ItemHolder<Item>>>? drops;
         int minDrops = 1, maxDrops = 1;
 
-        public SimpleNPC(string id, string name, string nameColor = "", Func<Session, DialogueMenu, Input[]>? talkInputs = null, Action<Session, ClientAction, DialogueMenu>? talkHandler = null, 
-            Action<Session>? talkStart = null, int maxHealth = 0, Action<OnCreatureTickEventData>? onTick = null, Table<Func<ItemHolder<Item>>>? drops = null, 
-            int minDrops = 1, int maxDrops = 1, int xp = 0, bool actual = true, Dictionary<DamageType, int>? resistances = null)
+        int defense = 0;
+
+        public SimpleNPC(string id, string name, string nameColor = "", Func<Session, DialogueMenu, Input[]>? talkInputs = null, 
+            Action<Session, ClientAction, DialogueMenu>? talkHandler = null,  Action<Session>? talkStart = null, int maxHealth = 0, 
+            Action<OnCreatureTickEventData>? onTick = null, Table<Func<ItemHolder<Item>>>? drops = null,  int minDrops = 1, int maxDrops = 1, int xp = 0, bool actual = true, 
+            Dictionary<DamageType, int>? resistances = null, int defense = 0)
             : base(id, name, actual)
         {
             this.nameColor = nameColor;
@@ -47,6 +50,8 @@ namespace Creatures
 
             if(resistances != null)
                 this.resistances = resistances;
+
+            this.defense = defense;
 
             //Utils.Log($"Created {baseId}");
         }
@@ -87,6 +92,11 @@ namespace Creatures
             }
 
             base.OnDie(data);
+        }
+
+        public override int GetDefense(DamageType? damageType = null)
+        {
+            return base.GetDefense(damageType) + defense;
         }
 
     }

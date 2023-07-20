@@ -180,7 +180,7 @@ public static class Utils
         direction = direction.Replace('N', 's');
         direction = direction.Replace('S', 'n');
         direction = direction.Replace('E', 'w');
-        direction = direction.Replace('E', 'e');
+        direction = direction.Replace('W', 'e');
 
         direction = direction.ToUpper();
 
@@ -211,6 +211,15 @@ public static class Utils
         for (int i = 0; i < inventory.Count; i++)
             if(excludedIds == null || !excludedIds.Contains(inventory[i].id))
                 inputs.Add(new(InputMode.Option, i.ToString(), inventory[i].FormattedName + " x" + inventory[i].amt));
+    }
+
+    public static void AddItemAmountOptions(List<Input> inputs, ItemHolder<Item> item, int max = -1)
+    {
+        max = max == -1 ? item.amt : max;
+
+        inputs.Add(new(InputMode.Option, max.ToString(), $"Max - {max}"));
+        inputs.Add(new(InputMode.Option, 1.ToString(), "1"));
+        inputs.Add(new(InputMode.Text, "amt", $"Enter an amount between 1 and {max}"));
     }
 
     public static float Round(decimal num, int places)

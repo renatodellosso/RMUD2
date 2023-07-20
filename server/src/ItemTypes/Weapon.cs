@@ -18,7 +18,7 @@ namespace ItemTypes
 
         protected override bool EquipInHands => true;
 
-        public Weapon(string id, string name, Die damage, DamageType damageType, string description = "No description provided", int weight = 0, int sellValue = 0, 
+        public Weapon(string id, string name, Die damage, DamageType damageType, string description = "No description provided", float weight = 0, int sellValue = 0, 
             AbilityScore? abilityScore = null, string color = "white")
             : base(id, name, weight, description, color)
         {
@@ -27,7 +27,7 @@ namespace ItemTypes
             this.sellValue = sellValue;
         }
 
-        public Weapon(string id, string name, Attack[] attacks, string description = "No description provided", int weight = 0, int sellValue = 0, string color = "white")
+        public Weapon(string id, string name, Attack[] attacks, string description = "No description provided", float weight = 0, int sellValue = 0, string color = "white")
             : base(id, name, weight, description, color)
         {
             this.sellValue = sellValue;

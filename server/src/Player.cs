@@ -52,6 +52,8 @@ public class Player : Creature
     [BsonIgnore] //We don't want to save this to the database
     public HashSet<DungeonLocation>? visitedRooms = new(); //We use a HashSet because we don't want duplicates
 
+    public Vault? vault;
+
     public int coins
     {
         get

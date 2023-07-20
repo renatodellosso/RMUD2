@@ -16,6 +16,9 @@ public abstract class Location
         { "generalstore", new Locations.GeneralStore() },
         { "inn", new Locations.Inn() },
         { "blacksmith", new Locations.Blacksmith() },
+        { "woods", new Locations.Woods() },
+        { "bank", new Locations.Bank() },
+        { "grotto", new Locations.Grotto() }
     });
 
     public static Location? Get(string name)
@@ -224,11 +227,11 @@ public abstract class Location
                             inputs.Add(new(InputMode.Option, i.ToString(), item.FormattedName));
                         }
                     }
-                    else if (args.Length == 2)
+                    else
                     {
                         ItemHolder<Item>? item = session.Player?.inventory[int.Parse(args[1])];
                         if (item != null)
-                            inputs.AddRange(item.Item.GetInputs(session, item));
+                            inputs.AddRange(item.Item.GetInputs(session, item, state));
                         else Utils.Log($"Item {args[1]} not found!");
                     }
                 }

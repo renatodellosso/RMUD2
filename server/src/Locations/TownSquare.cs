@@ -28,6 +28,8 @@ namespace Locations
             Exit.AddExit(this, Get("generalstore"), "N", true);
             Exit.AddExit(this, Get("blacksmith"), "N", true);
             Exit.AddExit(this, Get("inn"), "S", true);
+            Exit.AddExit(this, Get("woods"), "N", true);
+            Exit.AddExit(this, Get("bank"), "W", true);
         }
 
     }

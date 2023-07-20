@@ -96,6 +96,10 @@ public class CombatHandler
         {
             input = input["target.".Length..]; //Start after target.
 
+            Attack[] attacks = player.GetAttacks();
+            if(!attacks.Contains(attack))
+                attack = attacks.FirstOrDefault();
+
             Creature? target = attack?.getTargets(player).FirstOrDefault(t => t.baseId == input);
 
             if (target == null)

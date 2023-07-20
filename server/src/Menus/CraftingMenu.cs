@@ -55,9 +55,7 @@ namespace Menus
 
                 if (max >= 1)
                 {
-                    inputs.Add(new(InputMode.Option, max.ToString(), $"Max - {max}"));
-                    inputs.Add(new(InputMode.Option, "1", $"1"));
-                    inputs.Add(new(InputMode.Text, "amt", $"Enter an amt, between 1 and {max}"));
+                    Utils.AddItemAmountOptions(inputs, recipe.output.First(), max);
                 }
             }
 

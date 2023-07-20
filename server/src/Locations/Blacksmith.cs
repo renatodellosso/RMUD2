@@ -15,6 +15,7 @@ namespace Locations
 
         Recipe[] shop = new Recipe[]
         {
+            new("ironbar", 2),
             new("axe"),
             new("spear"),
             new("pickaxe"),
@@ -35,47 +36,7 @@ namespace Locations
             objects.Add(new WorldObjects.CraftingStation("forge", "Forge", id, RecipeLists.FORGE));
             objects.Add(new WorldObjects.CraftingStation("loom", "Loom", id, RecipeLists.LOOM));
 
-            creatures.Add(new Creatures.SimpleNPC("daes", "Daes, Smith", 
-                talkStart: (session) =>
-                {
-                    //Talk Start
-                    session.Log(Utils.Dialogue(creatures.First(), "'Ello.")); //We use creatures.First() because we can't reference the NPC in its constructor.
-                },
-                talkInputs: (session, menu) =>
-                {
-                    List<Input> inputs = new();
-                    string[] args = menu.state.Split('.');
-
-                    if (menu.state == "")
-                    {
-                        //The option to leave/go back always goes first
-                        inputs.Add(new(InputMode.Option, "leave", "Goodbye"));
-                        inputs.Add(new(InputMode.Option, "buy", $"Buy"));
-                    }
-                    else
-                    {
-                        inputs.Add(menu.back);
-                    }
-
-                    return inputs.ToArray();
-                },
-                talkHandler: (session, action, menu) =>
-                {
-                    string[] args = menu.state.Split('.');
-
-                    if (menu.state == "")
-                    {
-                        if (action.action.Equals("leave"))
-                        {
-                            menu.state = "exit"; //Set the state to exit so we can exit the menu.
-                        }
-                        else if (action.action == "buy")
-                        {
-                            session?.SetMenu(new CraftingMenu("Blacksmith", shop));
-                        }
-                    }
-                }
-            ));
+            creatures.Add(new Creatures.Trader("daes", "Daes, Smith", "'Ello", shop));
         }
 
     }
