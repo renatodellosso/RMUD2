@@ -132,6 +132,7 @@ namespace Locations
                             player.vault.CalculateStats();
                         }
 
+                        player.vaultLevel = player.vault.level;
                         player.Update();
 
                         session.Log($"Acquired a {Utils.Weight(player.vault.maxWeight)} vault!");

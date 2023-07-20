@@ -53,6 +53,7 @@ public class Player : Creature
     public HashSet<DungeonLocation>? visitedRooms = new(); //We use a HashSet because we don't want duplicates
 
     public Vault? vault;
+    public int vaultLevel;
 
     public int coins
     {
@@ -199,7 +200,8 @@ public class Player : Creature
         if(!abilityScores.ContainsKey(AbilityScore.Endurance))
             abilityScores.Add(AbilityScore.Endurance, 0);
 
-        vault.CalculateStats();
+        if(vault != null) vault.level = vaultLevel;
+        vault?.CalculateStats();
     }
 
 }
