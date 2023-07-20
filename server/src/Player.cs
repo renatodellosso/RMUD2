@@ -198,6 +198,8 @@ public class Player : Creature
 
         if(!abilityScores.ContainsKey(AbilityScore.Endurance))
             abilityScores.Add(AbilityScore.Endurance, 0);
+
+        vault.CalculateStats();
     }
 
 }

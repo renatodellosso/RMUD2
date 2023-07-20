@@ -278,6 +278,8 @@ namespace Locations
         {
             Player player = session.Player!;
 
+            player.vault?.CalculateStats();
+
             session.Log(Utils.Dialogue(creatures.First(), "Good day to you."));
 
             int level = player?.vault?.level ?? -1;
