@@ -473,7 +473,7 @@ namespace Creatures
                         if (location != null)
                         {
                             foreach (Creature creature in location.creatures)
-                                if (creature != data.self)
+                                if (creature != data.self && creature is Player)
                                     creature.TakeDamage(10, DamageType.Cold, data.self, true);
                         }
                     }
@@ -517,7 +517,7 @@ namespace Creatures
                         if (location != null)
                         {
                             foreach (Creature creature in location.creatures)
-                                if (creature != data.self)
+                                if (creature != data.self && creature is Player)
                                     creature.TakeDamage(10, DamageType.Cold, data.self, true);
                         }
                     }
