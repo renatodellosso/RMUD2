@@ -52,7 +52,7 @@ namespace Items
             { "unholyknife", new Weapon("unholyknife", "Unholy Knife", new Attack[]
                 {
                     new("stab", "Stab", new(8, modifier: 2), DamageType.Cold, 2, lifeSteal: .1f),
-                    new("soulrend", "Soul Rend", new(4, 4), DamageType.Necrotic, 5, critMult: 3, lifeSteal: .1f)
+                    new("soulrend", "Soul Rend", new(4, 4), DamageType.Necrotic, 5, critMult: 3, lifeSteal: .15f)
                 }, "A blasphemous blade.", 4, sellValue: 65, color: "red")
             },
             { "hereticsword", new Weapon("hereticsword", "Heretic", new Attack[]
