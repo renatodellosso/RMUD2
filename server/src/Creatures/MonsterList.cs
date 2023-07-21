@@ -390,7 +390,7 @@ namespace Creatures
             )),
 
             //SPECIAL: Mysterious Trader - Not a monster
-            new(1, (actual) => new Trader("mysterioustrader", "Mysterious Trader", "I bring you wonders from the beyond", RecipeLists.GenMysteriousTraderInventory(),
+            new(0.25f, (actual) => new Trader("mysterioustrader", "Mysterious Trader", "I bring you wonders from the beyond", RecipeLists.GenMysteriousTraderInventory(),
                 canSell: false, nameColor: "blue")),
 
             //Fire Elemental
