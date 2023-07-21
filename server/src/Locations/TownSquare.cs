@@ -9,7 +9,8 @@ namespace Locations
     public class TownSquare : Location
     {
 
-        protected override string Description => "A rocky and overgrown town center lies around you.";
+        protected override string Description => "A rocky and overgrown town center lies around you." +
+            "s<img src=\"https://cdn.cloudflare.steamstatic.com/steam/apps/489830/ss_5d19c69d33abca6f6271d75f371d4241c0d6b2d1.1920x1080.jpg?t=1650909796\" alt=\"Flowers in Chania\">";
 
         public TownSquare()
         {
