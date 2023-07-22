@@ -81,7 +81,7 @@ namespace Creatures
         {
             //Create a corpse
             Corpse corpse = new Corpse(this);
-            Location.objects.Add(corpse);
+            Location?.objects.Add(corpse);
             
             //Add drops to the corpse
             if (drops != null && minDrops > 0 && maxDrops > 0)
