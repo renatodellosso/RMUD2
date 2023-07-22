@@ -90,11 +90,16 @@ public class Creature
 
     Dictionary<ObjectId, int> damagedBy = new();
 
+    public string originalId = "", originalName = "";
+
     public Creature(string id, string name, bool actual = true) //Actual specifies whether this is a real creature or just being creatured to get data
     {
         if (actual)
         {
             Utils.OnTick += Tick;
+
+            originalId = id;
+            originalName = name;
 
             //If multiple creatures have the same ID, add a number to the end of the ID
             int counter = 0;
@@ -108,10 +113,11 @@ public class Creature
             }
 
             ids.Add(id);
-            baseId = id;
-            this.name = name;
             //Utils.Log($"ID: {baseId}, Counter: {counter}");
         }
+
+        baseId = id;
+        this.name = name;
 
         CalculateStats();
     }
@@ -267,11 +273,17 @@ public class Creature
 
         foreach (KeyValuePair<ObjectId, int> killer in damagedBy)
         {
-            float contrib = killer.Value / MaxHealth;
+            float contrib = (float)killer.Value / MaxHealth;
             //Utils.Log($"{killer.Key}: {killer.Value}/{MaxHealth} - {contrib}");
 
             Player player = Player.Get(killer.Key);
+
+            //We do this before adding XP, because adding XP updates the player in the DB
+            if (player.bestiary.TryAdd(originalId, originalName))
+                player.session?.Log(Utils.Style($"Added {Utils.Style(originalName, nameColor)} to bestiary!", "wheat"));
+
             player.AddXp((int)Math.Round(xpValue * contrib), cause + $" (dealt {Utils.Percent(contrib)} of damage)");
+
         }
     }
 
@@ -289,7 +301,7 @@ public class Creature
         return 1;
     }
 
-    public Attack[] GetAttacks()
+    public Attack[] GetAttacks(bool checkCanUse = true)
     {
         List<Attack?> attacks = new();
 
@@ -306,7 +318,8 @@ public class Creature
             }
         }
 
-        attacks = attacks.Where(a => a?.CanUse(this) ?? false).ToList();
+        if(checkCanUse)
+            attacks = attacks.Where(a => a?.CanUse(this) ?? false).ToList();
 
         return attacks.ToArray();
     }
@@ -325,6 +338,36 @@ public class Creature
         float added = Math.Min(amt, overrideMax ? amt : MaxStamina - rawStamina);
         rawStamina += added;
         return added;
+    }
+
+    public string GetBestiaryEntry()
+    {
+        string msg = Utils.Style(FormattedName, bold: true, underline: true);
+
+        msg += $"<br>Health: {MaxHealth}";
+        msg += $"<br>Stamina: {MaxStamina}";
+        msg += $"<br>Defense: {Defense}";
+        msg += $"<br>XP Value: {Utils.XP(xpValue)}";
+
+        msg += "<br><br>Abilty Scores:";
+        foreach (KeyValuePair<AbilityScore, int> ability in abilityScores)
+        {
+            msg += $"<br>-{ability.Key}: {ability.Value}";
+        }
+
+        msg += "<br><br>Resistances:";
+        foreach (KeyValuePair<DamageType, int> resistance in resistances)
+        {
+            msg += $"<br>-{resistance.Key}: {resistance.Value}";
+        }
+
+        msg += "<br><br>Attacks:";
+        foreach (Attack attack in GetAttacks(false))
+        {
+            msg += $"<br>-{attack.Overview(this)}";
+        }
+
+        return msg;
     }
 
 }

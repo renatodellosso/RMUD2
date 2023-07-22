@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 public class Table<T>
 {
 
-    KeyValuePair<float, T>[] contents = Array.Empty<KeyValuePair<float, T>>();
+    public KeyValuePair<float, T>[] contents = Array.Empty<KeyValuePair<float, T>>();
     
     float total = 0;
+
+    public int Count => contents.Length;
 
     public Table(params KeyValuePair<float, T>[] contents)
     {

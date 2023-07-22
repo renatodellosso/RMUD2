@@ -144,3 +144,11 @@ button:active {
 .selected {
     background-color: darkslategray;
 }
+
+.unavailable {
+    background-color: indianred;
+}
+
+.unavailable.selected {
+    background-color: darkred;
+}

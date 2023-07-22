@@ -92,8 +92,13 @@ public static class Utils
     public static string Coins(float amt, bool color = true)
     {
         amt = Round(amt);
-        string text = $"{amt}C";
+        string text = $"{Format(amt)}C";
         return color ? Style(text, "yellow") : text;
+    }
+
+    public static string XP(int amt)
+    {
+        return Style(Format(amt) + " xp", "yellow");
     }
 
     public static string Modifier(float mod)
@@ -125,18 +130,36 @@ public static class Utils
 
     public static string StyleLevel(int level)
     {
-        string color = "white";
-        bool bold = false, underline = false;
+        string color = "white", bracketColor = "white";
+        bool bold = false, underline = false, bracketBold = false, bracketUnderline = false;
 
-        if (level > 5) color = "yellow";
-        if (level > 10) color = "gold";
-        if (level > 20) color = "orange";
-        if (level > 30) color = "red";
+        if (level >= 5) color = "yellow";
+        if (level >= 10) color = "gold";
+        if (level >= 20) color = "orange";
+        if (level >= 25) bold = true;
+        if (level >= 30) color = "orangered";
+        if(level >= 40) color = "red";
+        if(level >= 50) underline = true;
+        if (level >= 60) color = "lightseagreen";
+        if (level >= 70) bracketBold = true;
+        if (level >= 75) underline = true;
+        if (level >= 80) color = "turquoise";
+        if (level >= 90) color = "cyan";
+        if (level >= 100) bracketColor = "darkgoldenrod";
 
-        if(level > 40) bold = true;
-        if(level > 50) underline = true;
+        string prefix = Style($"[{Style(level.ToString(), color, bold, underline)}]", bracketColor, bracketBold, bracketUnderline);
 
-        return Style(level.ToString(), color, bold, underline);
+        return prefix;
+    }
+
+    public static string Format(int num)
+    {
+        return Format((float)num);
+    }
+
+    public static string Format(float num)
+    {
+        return num.ToString("N0"); //Format with commas
     }
 
     public static bool HasItem(Creature creature, string id)

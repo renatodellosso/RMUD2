@@ -117,7 +117,8 @@ public class Session
             {
                 string color = player.xp >= player.XpToNextLevel ? "yellow" : "white";
                 int nextXp = player.XpToNextLevel;
-                text.Add(Utils.Style($"Level: {player.level} - {player.xp}/{nextXp} XP{(player.xp >= nextXp ? " - Rest to level up!" : "")}", color));
+                text.Add(Utils.Style($"Level: {player.level} - {Utils.Format(player.xp)}/{Utils.Format(nextXp)} XP" +
+                    $"{(player.xp >= nextXp ? $" - Rest to level up {player.GetNumOfLevelUpsAvailable()}x!" : "")}", color));
 
                 text.Add($"HP: {Utils.FormatHealth(player.health, player.MaxHealth)}<br>" +
                     $"DT: {player.DodgeThreshold}");

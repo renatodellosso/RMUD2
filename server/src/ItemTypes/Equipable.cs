@@ -28,14 +28,16 @@ namespace ItemTypes
                 inputs.Add(new(InputMode.Option, "equipMainHand", $"Equip in main hand"));
                 inputs.Add(new(InputMode.Option, "equipOffHand", $"Equip in off hand"));
             }
+            else if (EquipInArmor && (ItemHolder<Item>)player.armor != item)
+            {
+                inputs.Add(new(InputMode.Option, "equipArmor", $"Equip in armor slot"));
+            }
 
             return inputs;
         }
 
         public override void HandleInput(Session session, ClientAction action, ItemHolder<Item> item, ref string state, ref bool addStateToPrev)
         {
-            base.HandleInput(session, action, item, ref state, ref addStateToPrev);
-
             Player player = session.Player ?? throw new Exception("Player is null!");
             
             EquipmentSlot slot = (EquipmentSlot)Enum.Parse(typeof(EquipmentSlot), action.action["equip".Length..]);
@@ -52,6 +54,8 @@ namespace ItemTypes
 
                     player.Update();
 
+                    session.Log($"Equipped {item.FormattedName}");
+
                     state = "inventory";
                     addStateToPrev = false;
                 }
@@ -60,6 +64,7 @@ namespace ItemTypes
                     Utils.Log($"Caught error equiping Equipable of type: {GetType()}. Error: {e.Message}\n{e.StackTrace}");
                 }
             }
+            else base.HandleInput(session, action, item, ref state, ref addStateToPrev);
         }
 
         protected abstract bool CanEquip(Player player, ItemHolder<T> item, EquipmentSlot slot);

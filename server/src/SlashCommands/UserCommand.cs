@@ -46,7 +46,7 @@ namespace SlashCommands
                 {
                     Player? player = Player.Get(account.playerId.Value);
 
-                    embed.Description += $"\n**Level: {player.level}** ({player.xp}/{player.XpToNextLevel})";
+                    embed.Description += $"\n**Level: {player.level}** ({Utils.Format(player.xp)}/{Utils.Format(player.XpToNextLevel)})";
 
                     embed.Description += $"\n\n**{player.session?.menu.Status ?? "Offline"}**";
 
@@ -57,7 +57,7 @@ namespace SlashCommands
                     embed.Description += $"\nOff Hand: {player.offHand?.Item?.name ?? "Empty"}";
                     embed.Description += $"\nArmor: {player.armor?.Item?.name ?? "None"}";
 
-                    embed.Description += $"\n\nCoins: {player.coins}";
+                    embed.Description += $"\n\nCoins: {Utils.Format(player.coins)}";
 
                     embed.Description += $"\n\n**Ability Scores:**";
                     foreach (KeyValuePair<AbilityScore, int> score in player.abilityScores)

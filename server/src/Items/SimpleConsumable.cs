@@ -38,9 +38,9 @@ namespace Items
 
         public override void HandleInput(Session session, ClientAction action, ItemHolder<Item> item, ref string state, ref bool addStateToPrev)
         {
-            base.HandleInput(session, action, item, ref state, ref addStateToPrev);
             if(action.action == "use")
                 Use(session, ref state, ref addStateToPrev, item.data);
+            else base.HandleInput(session, action, item, ref state, ref addStateToPrev);
         }
 
         public string Verb()

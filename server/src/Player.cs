@@ -38,7 +38,7 @@ public class Player : Creature
     public override int MaxHealth => Config.Gameplay.BASE_PLAYER_HP + Constitution * Config.Gameplay.HP_PER_CON;
 
     public int xp = 0, level = 0;
-    public int XpToNextLevel => (int)Math.Round(30f + (level * 50f) + MathF.Pow(level, 2.75f) + MathF.Pow(level * 50f, 0.9f));
+    public int XpToNextLevel => CalculateNextXPRequirement(level);
     public bool hasSentLevelUpNotification = false;
 
     public string? resetLocation;
@@ -47,13 +47,16 @@ public class Player : Creature
 
     float XpMult => 1 + Wisdom * Config.Gameplay.XP_PER_WIS;
 
-    public override string FormattedName => $"[{Utils.StyleLevel(level)}] " + base.FormattedName;
+    public override string FormattedName => $"{Utils.StyleLevel(level)} " + base.FormattedName;
 
     [BsonIgnore] //We don't want to save this to the database
     public HashSet<DungeonLocation>? visitedRooms = new(); //We use a HashSet because we don't want duplicates
 
     public Vault? vault;
     public int vaultLevel;
+
+    //Value is the name, since we don't want to look up every monster in the table every time we want to display the bestiary
+    public Dictionary<string, string> bestiary = new();
 
     public int coins
     {
@@ -110,7 +113,7 @@ public class Player : Creature
 
         xp += amount;
 
-        session?.Log($"You gained {Utils.Style(amount + " xp", "yellow")} from {cause}. ({baseAmt} * {Utils.Percent(XpMult)} = {amount} xp)");
+        session?.Log($"You gained {Utils.XP(amount)} from {cause}. ({baseAmt} * {Utils.Percent(XpMult)} = {amount} xp)");
 
         if (xp > XpToNextLevel && !hasSentLevelUpNotification)
         {
@@ -160,7 +163,7 @@ public class Player : Creature
     public string GetCharacterText()
     {
         string text = Utils.Style(FormattedName, bold: true, underline: true);
-        text += Utils.Style($"<br>Level {level} - {xp}/{XpToNextLevel} XP", xp >= XpToNextLevel ? "yellow" : "white");
+        text += Utils.Style($"<br>Level {level} - {Utils.Format(xp)}/{Utils.Format(XpToNextLevel)} XP", xp >= XpToNextLevel ? "yellow" : "white");
         text += $"<br>{Utils.FormatHealth(health, MaxHealth, addedText: "HP")}";
 
         text += $"<br>Dodge Threshold: {DodgeThreshold}";
@@ -202,6 +205,25 @@ public class Player : Creature
 
         if(vault != null) vault.level = vaultLevel;
         vault?.CalculateStats();
+
+        bestiary ??= new();
+    }
+
+    int CalculateNextXPRequirement(int level)
+    {
+        return (int)Math.Round(30f + (level * 50f) + MathF.Pow(level, 2.75f) + MathF.Pow(level * 50f, 0.9f));
+    }
+
+    public int GetNumOfLevelUpsAvailable()
+    {
+        int level = this.level;
+
+        while(CalculateNextXPRequirement(level) <= xp)
+        {
+            level++;
+        }
+
+        return level - this.level;
     }
 
 }

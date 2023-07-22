@@ -20,8 +20,8 @@ let serverActions = {
                     shouldUpdate = true;
                     break;
                 }
-                else if(args[i].id != prevInput[i].id) {
-                    console.log("Input IDs don't match, updating");
+                else if(args[i].id != prevInput[i].id || args[i].text != prevInput[i].text) {
+                    console.log("Input IDs/text don't match, updating");
                     console.log("New input: ");
                     console.log(args[i]);
                     console.log("Old input: ");
@@ -125,14 +125,18 @@ let serverActions = {
 
         let shouldUpdate = attacks.length != prevAttackIds.length;
 
+        let unavailable = 0
         for(let i = 0; i < attacks.length; i++) {
+            if(!attacks[i].available) unavailable++;
+
             if(!prevAttackIds.includes(attacks[i].id) || (attacks[i].selected && attacks[i].id != selectedAttack)) {
                 shouldUpdate = true;
                 if(attacks[i].selected) selectedAttack = attacks[i].id;
                 break;
-
             }
         };
+        if(unavailable != prevUnavailable)
+            shouldUpdate = true;
 
         if(shouldUpdate) {
             let attacksElement = document.getElementById("attacks");
@@ -140,7 +144,7 @@ let serverActions = {
 
             for(let i = 0; i < attacks.length; i++) {
                 let attack = attacks[i];
-                attacksElement.innerHTML += button(attack.id, attack.text, attack.selected) + "<br>";
+                attacksElement.innerHTML += button(attack.id, attack.text, attack.selected, !attack.available) + "<br>";
                 
                 //We have to do this to add the event listener to the button
                 let buttonElement = document.getElementById(attack.id);
@@ -149,6 +153,7 @@ let serverActions = {
         }
 
         prevAttackIds = attacks.map((attack) => attack.id);
+        prevUnavailable = unavailable;
     },
 
     setTargets: (targets) => {
@@ -159,7 +164,7 @@ let serverActions = {
             let shouldUpdate = targets.length != prevTargetIds.length;
 
             for(let i = 0; i < targets.length; i++) {
-                if(!prevTargetIds.includes(targets[i].id)) {
+                if(!prevTargetIds.includes(targets[i].id) || !prevTargetNames.includes(targets[i].text)) {
                     shouldUpdate = true;
                     break;
                 }
@@ -179,6 +184,7 @@ let serverActions = {
             }
 
             prevTargetIds = targets.map((target) => target.id);
+            prevTargetNames = targets.map((target) => target.text);
         } catch(e) {
             console.error(e);
         }

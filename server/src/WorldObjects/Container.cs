@@ -112,41 +112,23 @@ namespace WorldObjects
                     }
                     else if (args.Length == 3)
                     {
+                        ItemHolder<Item> item = inventory[int.Parse(args[2])];
+
                         //Item specified
-                        if (action.action.Equals("take"))
+                        if (action.action.Equals("take") && item.amt > 1)
                         {
                             addStateToPrev = false;
                             state += ".take";
                         }
+                        else TakeItem(session, item, 1, ref state, ref addStateToPrev);
                     }
                     else if (args.Length == 4)
                     {
                         try
                         {
-                            ItemHolder<Item>? item = inventory[int.Parse(args[2])];
-
                             int amt = int.Parse(action.action);
-                            if (amt <= 0 || amt > item.amt)
-                            {
-                                session.Log($"Invalid amount. Must be between 1 and {item.amt}");
-                                return;
-                            }
-
-                            item = item.Clone();
-                            item.amt = amt;
-
-                            ItemHolder<Item>? transferred = inventory.Transfer(session.Player.inventory, item);
-
-                            if (transferred == null || transferred.amt == 0)
-                            {
-                                session.Log($"You cannot carry any more {item.Item?.name}");
-                            }
-                            else
-                            {
-                                session.Log($"Took {transferred.amt}x {transferred.FormattedName}");
-
-                                OnModified(session, ref state, ref addStateToPrev);
-                            }
+                            ItemHolder<Item> item = inventory[int.Parse(args[2])];
+                            TakeItem(session, item, amt, ref state, ref addStateToPrev);
                         }
                         catch
                         {
@@ -170,11 +152,40 @@ namespace WorldObjects
         void OnModified(Session session, ref string state, ref bool addStateToPrev)
         {
             addStateToPrev = false;
-            state = "back";
             session.Player?.Update();
 
-            if (RemoveIfEmpty && !inventory.Any())
-                Location.objects.Remove(this);
+            if (!inventory.Any())
+            {
+                state = "interact";
+                if (RemoveIfEmpty
+                    )
+                    Location.objects.Remove(this);
+            }
+        }
+
+        void TakeItem(Session session, ItemHolder<Item> item, int amt, ref string state, ref bool addStateToPrev)
+        {
+            if (amt <= 0 || amt > item.amt)
+            {
+                session.Log($"Invalid amount. Must be between 1 and {item.amt}");
+                return;
+            }
+
+            item = item.Clone();
+            item.amt = amt;
+
+            ItemHolder<Item>? transferred = inventory.Transfer(session.Player.inventory, item);
+
+            if (transferred == null || transferred.amt == 0)
+            {
+                session.Log($"You cannot carry any more {item.Item?.name}");
+            }
+            else
+            {
+                session.Log($"Took {transferred.amt}x {transferred.FormattedName}");
+
+                OnModified(session, ref state, ref addStateToPrev);
+            }
         }
     }
 }

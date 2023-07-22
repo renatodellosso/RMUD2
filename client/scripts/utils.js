@@ -93,8 +93,13 @@ const inputSubmitted = async (id) => {
 
 //HTML Elements
 
-const button = (id, text, selected = false) => {
-    let button = `<button id=${id} ${selected ? "class='selected'" :""}}><p class="buttonText">${text}</p></button>`;
+const button = (id, text, selected = false, unavailable = false) => {
+    let classes = "";
+
+    if(selected) classes += "selected ";
+    if(unavailable) classes += "unavailable ";
+
+    let button = `<button id=${id} class="${classes}"><p class="buttonText">${text}</p></button>`;
 
     return button;
 }

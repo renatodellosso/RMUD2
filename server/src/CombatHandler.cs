@@ -15,19 +15,24 @@ public class CombatHandler
 
     public Input[] GetAttacks()
     {
+        if(!session?.menu.ShowSidebar ?? true)
+        {
+            return Array.Empty<Input>();
+        }
+
         try
         {
             Player? player = Player;
             if (player == null)
                 return Array.Empty<Input>();
 
-            Attack[] attacks = player.GetAttacks();
+            Attack[] attacks = player.GetAttacks(false);
 
             List<Input> inputs = new();
 
             foreach (Attack attack in attacks)
             {
-                inputs.Add(new Input(InputMode.Option, "attack." + attack.id, $"{attack.name} ({attack.staminaCost})", attack == this.attack));
+                inputs.Add(new(InputMode.Option, "attack." + attack.id, $"{attack.name} ({attack.staminaCost})", attack == this.attack, player.stamina >= attack.staminaCost));
             }
 
             attack ??= attacks.FirstOrDefault();
@@ -43,6 +48,11 @@ public class CombatHandler
 
     public Input[] GetTargets()
     {
+        if (!session?.menu.ShowSidebar ?? true)
+        {
+            return Array.Empty<Input>();
+        }
+
         try
         {
             Player? player = Player;
@@ -96,17 +106,21 @@ public class CombatHandler
         {
             input = input["target.".Length..]; //Start after target.
 
-            Attack[] attacks = player.GetAttacks();
+            Attack[] attacks = player.GetAttacks(false);
             if(!attacks.Contains(attack))
                 attack = attacks.FirstOrDefault();
 
-            Creature? target = attack?.getTargets(player).FirstOrDefault(t => t.baseId == input);
+            if (attack.CanUse(player))
+            {
 
-            if (target == null)
-                return;
+                Creature? target = attack?.getTargets(player).FirstOrDefault(t => t.baseId == input);
 
-            if(player.stamina >= attack.staminaCost)
-                attack?.execute(player, target);
+                if (target == null)
+                    return;
+
+                if (player.stamina >= attack.staminaCost)
+                    attack?.execute(player, target);
+            }
         }
         else
         {

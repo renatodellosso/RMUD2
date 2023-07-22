@@ -84,7 +84,7 @@ public class Attack
                 rolledDmg = (int)Math.Round(rolledDmg * critMult);
 
             int damage = target.CalculateDamage(rolledDmg, damageType);
-            attacker.Location?.Log($"{(crit ? "CRITICAL! " : "")}{attacker.FormattedName} hit {target.FormattedName} for {damage} " +
+            attacker.Location?.Log($"{(crit ? Utils.Style("CRITICAL!", "orangered", true) + " " : "")}{attacker.FormattedName} hit {target.FormattedName} for {damage} " +
                 $"({rolledDmg} - {target.GetDefense(damageType)}) {damageType} damage with {name}!");
             target.TakeDamage(damage, damageType, attacker);
 

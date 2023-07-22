@@ -2,8 +2,10 @@ console.log("Loading complete");
 
 var prevInput = [];
 var prevAttackIds = [];
-var selectedAttack = ""
+var selectedAttack = "";
 var prevTargetIds = [];
+var prevTargetNames = [];
+var prevUnavailable = 0;
 
 httpReq({
     action: "init"

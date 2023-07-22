@@ -56,14 +56,14 @@ namespace ItemTypes
         {
             Player player = session.Player!;
             if (player.inventory.Contains(item)) {
-                if (!state.Contains(".drop") && action.action == "drop")
+                if (!state.Contains(".drop") && action.action == "drop" && item.amt > 1)
                     state += ".drop";
-                else if(state.Contains(".drop"))
+                else if(state.Contains(".drop") || item.amt == 1)
                 {
                     try
                     {
                         item = item.Clone();
-                        item.amt = int.Parse(action.action);
+                        item.amt = item.amt > 1 ? int.Parse(action.action) : 1;
 
                         player.Location?.objects.Add(new WorldObjects.DroppedItem(item, player.Location.id));
                         session.Log($"You dropped {item.FormattedName} x{item.amt}.");

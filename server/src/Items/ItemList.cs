@@ -86,7 +86,7 @@ namespace Items
             { "landslide", new Weapon("landslide", "Landslide", new Attack[]
                 {
                     new("slam", "Slam", new(12, 3, 4), DamageType.Bludgeoning, 3, critThreshold: 17, critMult: 3),
-                    new("groundpound", "Groudpount", new(6, 4), DamageType.Thunder, 6, atkBonus: 12, critThreshold: 18, critMult: 3),
+                    new("groundpound", "Groudpound", new(6, 4), DamageType.Thunder, 6, atkBonus: 12, critThreshold: 18, critMult: 3),
                     new("power", "Power Strike", new(12, 8, 10), DamageType.Bludgeoning, 10, atkBonus: 5, critThreshold: 16, critMult: 4)
                 }, "A massive warhammer, carved out of a single block of stone.", 25f, sellValue: 500, color: "slategrey")
             },
@@ -227,44 +227,45 @@ namespace Items
             //Consumables
             { "ale", new SimpleConsumable("ale", "Mug of Ale", 0.5f, (session) =>
                 {
-                    session?.Player?.Heal(2);
-                }, "Drink", "A frothy mug of bitter ale.", sellValue : 2)
+                    session?.Player?.Heal(3);
+                }, "Drink", "A frothy mug of bitter ale. Heals 3 health.", sellValue: 10)
             },
             { "mushroom", new SimpleConsumable("mushroom", "Mushroom", 0.1f, (session) =>
                 {
                     session?.Player?.Heal(1);
-                }, "Eat", "A small grey mushroom. Possibly edible.", sellValue : 1)
+                }, "Eat", "A small grey mushroom. Possibly edible.", sellValue: 1)
             },
             { "cookedmeat", new SimpleConsumable("cookedmeat", "Cooked Meat", 0.6f, (session) =>
                 {
-                    session?.Player?.Heal(3);
-                }, "Eat", "A grilled hunk of meat.", sellValue : 8)
+                    session?.Player?.Heal(10);
+                }, "Eat", "A grilled hunk of meat. Heals 10 health.", sellValue: 30)
             },
             { "grilledmushroom", new SimpleConsumable("grilledmushroom", "Grilled Mushroom", 0.1f, (session) =>
                 {
-                    session?.Player?.Heal(2);
-                }, "Eat", "An aromatic grilled mushroom. Probably not dangerous.", sellValue : 6)
+                    session?.Player?.Heal(10);
+                }, "Eat", "An aromatic grilled mushroom. Probably not dangerous. Heals 10 health.", sellValue: 10)
             },
             { "lesserhealingpotion", new SimpleConsumable("lesserhealingpotion", "Lesser Healing Potion", 0.5f, (session) =>
                 {
-                    session?.Player?.Heal(10);
-                }, "Drink", "A blood-red potion. A faint sparkling can be seen inside.", sellValue : 25, color: "red")
+                    session?.Player?.Heal(25);
+                }, "Drink", "A blood-red potion. A faint sparkling can be seen inside. Heals 25 health.", sellValue: 25, color: "red")
             },
             { "healingpotion", new SimpleConsumable("healingpotion", "Healing Potion", 1f, (session) =>
                 {
-                    session?.Player?.Heal(25);
-                }, "Drink", "A blood-red potion, with a few white clouds swirling around in it. A notable sparkling can be seen inside.", sellValue : 50, color: "red")
+                    session?.Player?.Heal(50);
+                }, "Drink", "A blood-red potion, with a few white clouds swirling around in it. A notable sparkling can be seen inside. Heals 50 health.", sellValue: 50, 
+                color: "red")
             },
             { "lesserstaminapotion", new SimpleConsumable("lesserstaminapotion", "Lesser Stamina Potion", 1f, (session) =>
                 {
-                    session?.Player?.RestoreStamina(10); //We can't use regular assignment here, so we call the method instead.
-                }, "Drink", "A light-purple potion. Various chunks can be seen inside.", sellValue : 50)
+                    session?.Player?.RestoreStamina(20); //We can't use regular assignment here, so we call the method instead.
+                }, "Drink", "A light-purple potion. Various chunks can be seen inside. Grants 20 stamina.", sellValue: 50)
             },
             { "returnscroll", new SimpleConsumable("returnscroll", "Scroll of Return", 2f, (session) =>
                 {
                     Player? player = session?.Player;
                     Location.Get(player?.resetLocation ?? "dungeonentrance")?.Enter(player, player?.Location ?? null);
-                }, "Use", "A long scroll, said to be able to teleport the reader back to a safe location.", sellValue : 75, color: "wheat")
+                }, "Use", "A long scroll, said to be able to teleport the reader back to a safe location.", sellValue: 75, color: "wheat")
             },
             { DungeonTeleportationScroll.GetId(0), new DungeonTeleportationScroll(0) },
             { DungeonTeleportationScroll.GetId(1), new DungeonTeleportationScroll(1) },
