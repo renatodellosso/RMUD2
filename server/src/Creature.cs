@@ -175,6 +175,9 @@ public class Creature
             rawStamina += StaminaRegen;
             rawStamina = Math.Clamp(rawStamina, 0, MaxStamina);
         }
+
+        if (health <= 0)
+            OnDie(new("Unkown"));
     }
 
     public void MoveThroughRandomExit(int maxEnemies = -1)
