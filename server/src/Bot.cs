@@ -28,7 +28,8 @@ public static class Bot
         {
             UseInteractionSnowflakeDate = false, //This avoids issues with not being able to interact after 3 seconds
             //I have no clue what this enum set up is. Might have something to do with the Flags attribute
-            GatewayIntents = GatewayIntents.GuildMembers | GatewayIntents.DirectMessages //Have to enable these here and on the bot page
+            //We need GuildMembers and GuildPresences to DM users
+            GatewayIntents = GatewayIntents.GuildMembers | GatewayIntents.GuildPresences | GatewayIntents.AllUnprivileged //Have to enable these here and on the bot page
         };
 
         client = new(config);
@@ -89,6 +90,23 @@ public static class Bot
     {
         Utils.Log("Updating bot status...");
         await client.SetActivityAsync(new Game($"{Player.Count} Players Online"));
+    }
+
+    public static void DMUser(ulong id, string msg)
+    {
+        try
+        {
+            Utils.Log($"Sending DM to {id}: {msg}");
+            SocketUser user = client.GetUser(id);
+            Utils.Log($"User: {user}");
+            if (user == null) return;
+
+            user.SendMessageAsync(msg);
+        }
+        catch (Exception e)
+        {
+            Utils.Log(e);
+        }
     }
 
 }

@@ -246,6 +246,7 @@ namespace Menus
                     passwordResetEnabled = false;
 
                     session?.Log("Password reset!");
+                    Bot.DMUser(account.discordId, $"RMUD2 password reset for account: {account.username}. If this was not you, contact Rgamer43 immediately.");
                 }
             }
 
@@ -265,6 +266,8 @@ namespace Menus
                 else
                 {
                     passwordResetCode = Utils.RandomCode();
+                    Bot.DMUser(account.discordId, $"Password reset requested for RMUD2 account: {account.username}. If this was you, run the /reset command and enter " +
+                        $"{passwordResetCode} as the code.");
                     session?.Log($"Run the /reset command in the Discord server to reset your password and enter {passwordResetCode} as the code.");
                 }
             }
