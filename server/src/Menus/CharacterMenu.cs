@@ -30,7 +30,8 @@ namespace Menus
                     new(InputMode.Option, "mainHand", "Main Hand"),
                     new(InputMode.Option, "offHand", "Off Hand"),
                     new(InputMode.Option, "armor", "Armor"),
-                    new(InputMode.Option, "bestiary", "Bestiary")
+                    new(InputMode.Option, "bestiary", "Bestiary"),
+                    new(InputMode.Option, "craftingmode", $"Craft Using {(player.craftFromVault ? "Inventory" : "Vault")} Items")
                 });
 
                 if (player.vault != null)
@@ -92,6 +93,11 @@ namespace Menus
                     }
 
                     session.Log(msg);
+                }
+                else if (action.action == "craftingmode")
+                {
+                    player.craftFromVault = !player.craftFromVault;
+                    session.Log($"Crafting mode set to {(player.craftFromVault ? "Vault" : "Inventory")}.");
                 }
             }
             else if (state == "bestiary")

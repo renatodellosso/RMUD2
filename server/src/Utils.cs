@@ -27,6 +27,25 @@ public static class Utils
     }
 
     /// <summary>
+    /// Sends a message to every session
+    /// </summary>
+    public static void Announce(string msg)
+    {
+        Log("Sending server announcement: " + msg);
+
+        string source = "SERVER ANNOUNCEMENT";
+        string wrapper = new('-', $"[{source}]: {msg}".Length);
+
+        msg = $"[{Style(source, "aquamarine", true, true)}]: {msg}";
+        msg = wrapper + "<br>" + msg + "<br>" + wrapper;
+
+        foreach (Session session in Session.sessions.Values.Where(s => s != null)) //Send to all sessions that aren't null
+        {
+            session.Log(msg);
+        }
+    }
+
+    /// <summary>
     /// Creates a random salt that is cryptographically secure
     /// </summary>
     /// <returns>Returns the salt</returns>
@@ -121,6 +140,12 @@ public static class Utils
     public static string Percent(double percent)
     {
         return Percent((float)percent);
+    }
+
+    public static string PercentModifer(float percent)
+    {
+        if(percent >= 0) return "+" + Percent(percent);
+        return "-" + Percent(percent);
     }
 
     public static string Weight(float? weight, bool unit = true)
@@ -340,6 +365,24 @@ public static class Utils
             OnTick += player.Tick;
     }
 
+    public static void RemoveDungeonCreatures()
+    {
+        Log("Removing dungeon inhabitants from OnTick...");
+        Delegate[] invocationList = OnTick?.GetInvocationList() ?? Array.Empty<Delegate>();
+
+        foreach (Delegate d in invocationList)
+        {
+            if (d.Target is Creature creature)
+            {
+                if (creature.Location == null)
+                {
+                    creature.Die(new("Dungeon Removal"));
+                    OnTick -= (Action<int>)d;
+                }
+            }
+        }
+    }
+
     /// <returns>How long to wait before the next tick</returns>
     public static int Tick() //We can't invoke OnTick outside of this class, so we need a method to do it
     {
@@ -368,7 +411,18 @@ public static class Utils
 
         double ramUsedGB = (double)ramUsed / 1000000000;
 
-        Log($"Tick #{tickCount} complete. Took {elapsedMs}ms. RAM Usage: {Round(ramUsedGB, 3)} GB");
+        int ticksTillDungeonReset = Config.RESET_DUNGEON_AFTER_TICKS - (tickCount % Config.RESET_DUNGEON_AFTER_TICKS) - 1;
+        if (Config.RESET_DUNGEON_NOTIFICATION_POINTS.Contains(ticksTillDungeonReset))
+        {
+            Log("Notifying players of dungeon reset...");
+            TimeSpan timeRemaining = TimeSpan.FromMilliseconds(Config.TICK_INTERVAL * ticksTillDungeonReset);
+            Announce($"Dungeon will reset in {timeRemaining.Minutes}m{timeRemaining.Seconds}s!");
+        }
+
+        if(ticksTillDungeonReset == 0)
+            Dungeon.Reset();
+
+        Log($"Tick #{tickCount} complete. Took {elapsedMs}ms. RAM Usage: {Round(ramUsedGB, 3)} GB. Regenerating Dungeon in {ticksTillDungeonReset} ticks");
 
         tickCount++;
         return (int)(Config.TICK_INTERVAL - elapsedMs);

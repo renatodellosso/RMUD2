@@ -66,6 +66,18 @@ public static class RecipeLists
         public static readonly Recipe ENDBRINGER =
             new(new ItemHolder<Item>[] { new("unholyknife"), new("hereticsword"), new("mindbreaker"), new("druidaxe"), new("flametrident"), new("landslide"), new("boneclub"),
             new("frostbite"), new("mindreaper"), new("bloodripper") }, "endbringer", 1, 1000);
+        public static readonly Recipe APPRENTICE_ROBE =
+            new("cloth", 15, "apprenticerobe", 1, 125);
+        public static readonly Recipe JOURNEYMAN_ROBE =
+            new(new ItemHolder<Item>[] { new("apprenticerobe", 1), new("spore", 8), new("vampiricdust", 4) }, "journeymanrobe", 1, 250);
+        public static readonly Recipe SAGE_ROBE =
+            new(new ItemHolder<Item>[] { new("journeymanrobe", 1), new("aberrantcluster", 8), new("holyblood", 4), new("frostshard", 4), new("shadowessence", 4), 
+                new("livingstone") }, "sagerobe", 1, 500);
+        public static readonly Recipe HELLSTEEL =
+            new(new ItemHolder<Item>[] { new("firesteel", 1), new("darksteel", 2), new("holyblood", 1), new("ember", 3), new("brimstone") }, "hellsteel", 1, 80);
+        public static readonly Recipe TRUE_PYROMANCER_CLOAK =
+            new(new ItemHolder<Item>[] { new("pyromancercloack", 1), new("hellsteel", 5), new("holyblood", 10), new("brimstone", 5), new("vampiricdust", 5), new("coal", 10) }, 
+                "truepyromancercloak", 1, 1200);
     }
 
     public static readonly Recipe[] FORGE = new Recipe[]
@@ -87,7 +99,7 @@ public static class RecipeLists
         All.CLERIC_ARMOR,
         All.MIND_BREAKER,
         All.FIRE_STEEL,
-        All.FLAME_TRIDENT
+        All.FLAME_TRIDENT,
     };
 
     public static readonly Recipe[] CAMPFIRE = new Recipe[]
@@ -103,7 +115,10 @@ public static class RecipeLists
     public static readonly Recipe[] LOOM = new Recipe[]
     {
         All.DARK_CLOAK,
-        All.PYROMANCER_CLOAK
+        All.PYROMANCER_CLOAK,
+        All.APPRENTICE_ROBE,
+        All.JOURNEYMAN_ROBE,
+        All.SAGE_ROBE
     };
 
     public static readonly Recipe[] GROVE = new Recipe[]
@@ -120,6 +135,16 @@ public static class RecipeLists
     public static readonly Recipe[] UNHOLY_ALTAR = new Recipe[]
     {
         All.ENDBRINGER
+    };
+
+    public static readonly Recipe[] DEMON_STATUE = new Recipe[]
+    {
+        All.FIRE_STEEL,
+        All.FLAME_TRIDENT,
+        All.PYROMANCER_CLOAK,
+        All.BLOODRIPPER,
+        All.HELLSTEEL,
+        All.TRUE_PYROMANCER_CLOAK
     };
 
     static readonly Recipe[] MYSTERIOUS_TRADER = new Recipe[]

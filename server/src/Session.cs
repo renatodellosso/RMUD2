@@ -139,9 +139,9 @@ public class Session
                     text.Add(location?.GetCreatureListMessage(player));
                 }
 
-                text.Add($"Main Hand: {player.mainHand?.Item?.FormattedName ?? "Empty" }<br>" +
-                         $"Off Hand: {player.offHand?.Item?.FormattedName ?? "Empty"}<br>" +
-                         $"Armor: {player.armor?.Item?.FormattedName ?? "None"}");
+                text.Add($"Main Hand: {player.mainHand?.FormattedName ?? "Empty" }<br>" +
+                         $"Off Hand: {player.offHand?.FormattedName ?? "Empty"}<br>" +
+                         $"Armor: {player.armor?.FormattedName ?? "None"}");
 
                 text.Add($"Carrying: {Utils.Round(player.inventory.Weight, 1)}/{Utils.Round(player.inventory.MaxWeight, 1)} lbs.");
             }

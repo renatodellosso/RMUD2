@@ -20,23 +20,31 @@ namespace WorldObjects
 
         public override List<Input> GetInputs(Player player, string state)
         {
-            return new List<Input>()
-            {
-                new(InputMode.Option, "craft", "Craft"),
-            };
+            //return new List<Input>()
+            //{
+            //    new(InputMode.Option, "craft", "Craft"),
+            //};
+
+            return new List<Input>();
         }
 
         public override void HandleInput(Session session, ClientAction action, ref string state, ref bool addStateToPrev)
         {
-            if(action.action == "back")
-            {
-                state = "interact";
-                addStateToPrev = false;
-            }
-            else if(action.action == "craft")
-            {
-                session.SetMenu(new CraftingMenu(name, recipes));
-            }
+            //if(action.action == "back")
+            //{
+            //    state = "interact";
+            //    addStateToPrev = false;
+            //}
+            //else if(action.action == "craft")
+            //{
+                
+            //}
+        }
+
+        public override void OnStart(Session session)
+        {
+            session.SetMenu(new CraftingMenu(name, recipes));
+            base.OnStart(session);
         }
     }
 }

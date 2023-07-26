@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 //So I remember, this is called a generic class
-public class ItemHolder<T> where T : ItemTypes.Item
+public class ItemHolder<T> where T : Item
 {
 
     public string id;
@@ -18,7 +18,7 @@ public class ItemHolder<T> where T : ItemTypes.Item
         set => data["amt"] = value;
     }
 
-    public string FormattedName => Item?.FormattedName ?? Utils.Style("ERROR", "red");
+    public string FormattedName => (Reforge.Get(this)?.FormattedName + " " ?? "") + Item?.FormattedName ?? Utils.Style("ERROR", "red");
 
     public float Weight => amt * Item.Weight;
 
@@ -59,9 +59,11 @@ public class ItemHolder<T> where T : ItemTypes.Item
         return Clone<T>();
     }
 
-    //Important! This is remove the reference to the item
-    public static implicit operator ItemHolder<Item>(ItemHolder<T> holder)
+    //Important! This is to remove the reference to the item
+    public static implicit operator ItemHolder<Item>?(ItemHolder<T>? holder)
     {
+        if (holder == null)
+            return null;
         return holder.Clone<Item>();
     }
 

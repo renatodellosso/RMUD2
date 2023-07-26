@@ -23,7 +23,7 @@ public class Attack
 
     float critMult, lifeSteal;
 
-    public virtual Action<Creature, Creature> execute => Execute;
+    public virtual Action<Creature, Creature, ItemHolder<Weapon>?> execute => Execute;
     public virtual Func<Creature, List<Creature>> getTargets => GetTargets;
 
     public Attack(string id, string name, Die damage, DamageType damageType, int staminaCost = 2, AbilityScore? dmgAbilityScore = AbilityScore.Strength, 
@@ -46,39 +46,63 @@ public class Attack
         this.lifeSteal = lifeSteal;
     }
 
-    public int RollDamage(Creature attacker, Creature target)
+    public int GetStaminaCost(Creature? attacker, ItemHolder<Weapon>? item)
+    {
+        return staminaCost + (Reforge.Get(item)?.stamina ?? 0);
+    }
+
+    Die GetDamage(Creature? attacker, ItemHolder<Weapon>? item)
     {
         Die die = damage.Clone();
 
-        die.modifier += attacker.abilityScores[dmgAbilityScore];
+        die.modifier += attacker?.GetAbilityScore(dmgAbilityScore) ?? 0;
+        die.modifier += Reforge.Get(item)?.dmgBonus ?? 0;
 
+        return die;
+    }
+
+    int GetCritThreshold(Creature? attacker, ItemHolder<Weapon>? item)
+    {
+        return critThreshold + (Reforge.Get(item)?.critTheshold ?? 0);
+    }
+
+    float GetCritMult(Creature? attacker, ItemHolder<Weapon>? item)
+    {
+        return critMult + (Reforge.Get(item)?.critMult ?? 0);
+    }
+
+    public int RollDamage(Creature attacker, Creature target, ItemHolder<Weapon>? item)
+    {
+        Die die = GetDamage(attacker, item);
         return die.Roll();
     }
 
-    public int AttackBonus(Creature attacker)
+    public int AttackBonus(Creature attacker, ItemHolder<Item>? item)
     {
-        return attacker.abilityScores[dmgAbilityScore] + atkBonus;
+        return attacker.GetAbilityScore(dmgAbilityScore) + atkBonus + (Reforge.Get(item)?.atkBonus ?? 0);
     }
 
-    void Execute(Creature attacker, Creature target)
+    void Execute(Creature attacker, Creature target, ItemHolder<Weapon>? item)
     {
         Utils.Log($"Executing attack {id} on {target.baseId} from {attacker.baseId}!");
 
-        attacker.stamina -= staminaCost;
+        attacker.stamina -= GetStaminaCost(attacker, item);
 
-        int atkBonus = AttackBonus(attacker);
+        int atkBonus = AttackBonus(attacker, item);
         int baseRoll = Utils.RandInt(20) + 1; //We add 1, since RandInt(20) returns a number from 0 to 19, and we want 1 to 20
         int roll = baseRoll + atkBonus;
+        int critThreshold = GetCritThreshold(attacker, item);
+        float critMult = GetCritMult(attacker, item);
 
         if (attacker is Player player)
-            player.session?.Log($"{(roll - atkBonus)} + {atkBonus} = {roll} {(roll >= target.DodgeThreshold || baseRoll >= critThreshold ? "Hit!" : "Miss!")}");
+            player.session?.Log($"{roll - atkBonus} + {atkBonus} = {roll} {(roll >= target.DodgeThreshold || baseRoll >= critThreshold ? "Hit!" : "Miss!")}");
 
         bool crit = baseRoll >= critThreshold;
         if (roll >= target.DodgeThreshold || crit)
         {
             //Hit
             //We calculate the damage so can log how much was dealt, then actually deal the damage. This ensures players who die from the attack still get the log message
-            int rolledDmg = RollDamage(attacker, target);
+            int rolledDmg = RollDamage(attacker, target, item);
 
             if(crit)
                 rolledDmg = (int)Math.Round(rolledDmg * critMult);
@@ -124,21 +148,21 @@ public class Attack
         return targets;
     }
 
-    public bool CanUse(Creature creature)
+    public bool CanUse(Creature creature, ItemHolder<Weapon>? item)
     {
-        return creature.stamina >= staminaCost;
+        return creature.stamina >= GetStaminaCost(creature, item);
     }
 
-    public virtual string Overview(Creature? creature = null, ItemHolder<Item>? item = null)
+    public virtual string Overview(Creature? creature = null, ItemHolder<Weapon>? item = null)
     {
         string msg = name + ":";
 
-        msg += $" {(creature != null ? Utils.Modifier(AttackBonus(creature)) : $"+{atkBonusAbilityScore}{Utils.Modifier(atkBonus)}")} to hit.";
+        msg += $" {(creature != null ? Utils.Modifier(AttackBonus(creature, item)) : $"+{atkBonusAbilityScore}{Utils.Modifier(atkBonus)}")} to hit.";
 
         Die damage = this.damage.Clone();
-        damage.modifier += creature?.abilityScores[dmgAbilityScore] ?? 0;
-        msg += $" Deals {damage}{(creature != null ? "" : $"+{dmgAbilityScore}")} {damageType} damage.";
-        msg += $" Costs {staminaCost} stamina.";
+        damage.modifier += creature?.GetAbilityScore(dmgAbilityScore) ?? 0;
+        msg += $" Deals {GetDamage(creature, item)}{(creature != null ? "" : $"+{dmgAbilityScore}")} {damageType} damage.";
+        msg += $" Costs {GetStaminaCost(creature, item)} stamina.";
         msg += $" Crits on a roll of {critThreshold}+ for {Math.Round(critMult, 1)}x damage.";
         
         if(lifeSteal > 0)

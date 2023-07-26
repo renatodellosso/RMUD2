@@ -32,7 +32,9 @@ public class CombatHandler
 
             foreach (Attack attack in attacks)
             {
-                inputs.Add(new(InputMode.Option, "attack." + attack.id, $"{attack.name} ({attack.staminaCost})", attack == this.attack, player.stamina >= attack.staminaCost));
+                ItemHolder<Weapon>? item = player.GetItemHolderFromAttack(attack);
+                inputs.Add(new(InputMode.Option, "attack." + attack.id, $"{attack.name} ({attack.GetStaminaCost(player, item)})", attack == this.attack, 
+                    player.stamina >= attack.GetStaminaCost(player, item)));
             }
 
             attack ??= attacks.FirstOrDefault();
@@ -110,16 +112,17 @@ public class CombatHandler
             if(!attacks.Contains(attack))
                 attack = attacks.FirstOrDefault();
 
-            if (attack.CanUse(player))
-            {
+            ItemHolder<Weapon>? item = player.GetItemHolderFromAttack(attack) ?? null;
 
+            if (attack?.CanUse(player, item) ?? false)
+            {
                 Creature? target = attack?.getTargets(player).FirstOrDefault(t => t.baseId == input);
 
                 if (target == null)
                     return;
 
-                if (player.stamina >= attack.staminaCost)
-                    attack?.execute(player, target);
+                if (player.stamina >= attack?.GetStaminaCost(player, item))
+                    attack?.execute(player, target, item);
             }
         }
         else
@@ -128,7 +131,7 @@ public class CombatHandler
 
             Utils.Log($"Setting attack to {input}");
             attack = player.GetAttacks().FirstOrDefault(a => a.id == input);
-            Utils.Log($"Attack: {attack.id}");
+            Utils.Log($"Attack: {attack?.id}");
         }
     }
 

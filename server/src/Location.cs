@@ -18,7 +18,9 @@ public abstract class Location
         { "blacksmith", new Locations.Blacksmith() },
         { "woods", new Locations.Woods() },
         { "bank", new Locations.Bank() },
-        { "grotto", new Locations.Grotto() }
+        { "grotto", new Locations.Grotto() },
+        { "wizardhouse", new Locations.WizardHouse() },
+        { "deepwoods", new Locations.DeepWoods() }
     });
 
     public static Location? Get(string name)
@@ -30,6 +32,11 @@ public abstract class Location
         }
 
         return null;
+    }
+
+    public static void Remove(Location location)
+    {
+        locations.TryRemove(new(location.id, location));
     }
 
     public static void GenerateExits()
@@ -325,42 +332,6 @@ public abstract class Location
 
                         }
                     }
-                    //else if (state.Equals("combat"))
-                    //{
-                    //    List<Attack> attacks = new(); //The list of attacks we'll check for
-                    //    attacks.AddRange(session.Player?.Weapon?.attacks.Values.ToArray() ?? Array.Empty<Attack>()); //Add all the attacks from the player's weapon
-
-                    //    foreach (Attack attack in attacks)
-                    //    {
-                    //        if (attack.id.Equals(action.action))
-                    //        {
-                    //            state = $"atktarget.{attack.weapon.id}.{attack.id}"; //State will use periods to separate data
-                    //            addStateToPrev = false;
-                    //            break;
-                    //        }
-                    //    }
-                    //}
-                    //else if (args[0].Equals("atk"))
-                    //{
-                    //    //args[1] is the weapon, args[2] is the attack, args[3] is the target
-                    //    List<ItemHolder<Item>> weapons = new() //The list of ItemHolders we'll check for the weapon
-                    //    {
-                    //        session.Player?.mainHand
-                    //    };
-
-                    //    Weapon? weapon = weapons.Where(w => w.id.Equals(args[1])).First().Item as Weapon;
-                    //    if (weapon != null)
-                    //    {
-                    //        Attack? attack = weapon.attacks[args[2]];
-                    //        List<Creature> targets = attack?.getTargets(session.Player) ?? new();
-
-                    //        attack?.execute(session.Player, targets.Where(t => t.baseId.Equals(args[3])).First());
-
-                    //        state = "combat";
-                    //        addStateToPrev = false;
-                    //    }
-                    //    else Utils.Log("No weapon found");
-                    //}
                     else if (stateArgs[0].Equals("interact"))
                     {
                         if (stateArgs.Length == 1)
@@ -368,8 +339,9 @@ public abstract class Location
                             {
                                 if (obj.id.Equals(action.action))
                                 {
-                                    state = "interact." + obj.id;
                                     session.Log(obj.GetOverview(session.Player));
+                                    obj.OnStart(session);
+                                    state = "interact." + obj.id;
                                     break;
                                 }
                             }

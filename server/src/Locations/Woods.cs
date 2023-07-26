@@ -25,6 +25,8 @@ namespace Locations
         public override void AddExits()
         {
             Exit.AddExit(this, Get("grotto"), "E", true);
+            Exit.AddExit(this, Get("wizardhouse"), "W", true);
+            Exit.AddExit(this, Get("deepwoods"), "N", true);
         }
 
     }

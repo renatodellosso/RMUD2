@@ -31,7 +31,7 @@ namespace ItemTypes
         {
             int amt = (int)item.data.GetValueOrDefault("amt", 0);
 
-            return $"{FormattedName} x{item.data["amt"]}:<br/>" +
+            return $"{item.FormattedName} x{item.data["amt"]}:<br/>" +
                 $"Worth {Utils.Coins(amt * SellValue)} total, {Utils.Coins(SellValue)} each ({Utils.Coins(SellValue / Weight)}/lb.)<br>" +
                 $"{Utils.Round(amt * Weight, 1)} lbs. total, {Weight} lbs. each<br>" +
                 $"{description}";

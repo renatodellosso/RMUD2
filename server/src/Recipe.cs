@@ -74,7 +74,7 @@ public class Recipe : IFormattable
 
         foreach (ItemHolder<Item> item in ingredients)
         {
-            int amt = player.inventory.Where(i => i.id == item.id).Sum(i => i.amt);
+            int amt = player.CraftingInventory.Where(i => i.id == item.id).Sum(i => i.amt);
             if (amt < item.amt)
                 return 0;
 
@@ -93,12 +93,12 @@ public class Recipe : IFormattable
 
 
         foreach (ItemHolder<Item> item in ingredients)
-            player.inventory.Remove(new ItemHolder<Item>(item.id, item.amt * amt));
+            player.CraftingInventory.Remove(new ItemHolder<Item>(item.id, item.amt * amt));
 
         string msg = verb + " ";
         foreach (ItemHolder<Item> item in output)
         {
-            ItemHolder<Item>? added = player.inventory.Add(new ItemHolder<Item>(item.id, item.amt * amt), true);
+            ItemHolder<Item>? added = player.CraftingInventory.Add(new ItemHolder<Item>(item.id, item.amt * amt), true);
             if (added != null)
                 msg += $"{added.FormattedName} x{added.amt}, ";
         }

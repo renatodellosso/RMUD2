@@ -99,5 +99,21 @@ namespace Creatures
             return base.GetDefense(damageType) + defense;
         }
 
+        public override string GetBestiaryEntry()
+        {
+            string msg = base.GetBestiaryEntry();
+
+            msg += "<br><br>Drops:";
+            if (drops.Count > 0)
+            {
+                foreach (KeyValuePair<float, Func<ItemHolder<Item>>> drop in drops.contents)
+                {
+                    msg += $"<br>-{drop.Value().Item?.FormattedName}";
+                }
+            }
+
+            return msg;
+        }
+
     }
 }

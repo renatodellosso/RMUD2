@@ -649,6 +649,35 @@ namespace Creatures
                 constitution: Utils.RandInt(10),
                 defense: Utils.RandInt(10),
                 actual: actual //Breaks if we don't have this. It's used in dungeon generation
+            )),
+
+            //Flame Demon
+            new(1, (actual) => new SimpleMonster("flamedemon", "Flame Demon", 175,
+                new(new Attack[]
+                {
+                    new("torch", "Torch", new(12, 3, 8), DamageType.Fire, critThreshold: 16, lifeSteal: .2f),
+                    new("infernal", "Infernal Touch", new(20, 2), DamageType.Fire, atkBonus: -5, critThreshold: 18, critMult: 3.5f),
+                }),
+                drops: new(
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(3f, () => new("ember", Utils.RandInt(1, 3))),
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(1f, () => new("brimstone"))
+                ), minDrops: 1, maxDrops: 2,
+                xp: 325,
+                scaleTableWeight: (floor) =>
+                {
+                    return 0.8f + (floor.Depth - 8) * 0.4f;
+                },
+                resistances: new()
+                {
+                    { DamageType.Radiant, -10 },
+                    { DamageType.Necrotic, 5 },
+                    { DamageType.Fire, 10 }
+                },
+                strength: 2,
+                dexterity: 3,
+                agility: 6,
+                defense: 5,
+                actual: actual //Breaks if we don't have this. It's used in dungeon generation
             ))
         );
 

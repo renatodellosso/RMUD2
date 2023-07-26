@@ -47,6 +47,7 @@ namespace SlashCommands
                     Player? player = Player.Get(account.playerId.Value);
 
                     embed.Description += $"\n**Level: {player.level}** ({Utils.Format(player.xp)}/{Utils.Format(player.XpToNextLevel)})";
+                    embed.Description += $"\nPlaytime: {player.playtime.Hours}h{player.playtime.Minutes}m";
 
                     embed.Description += $"\n\n**{player.session?.menu.Status ?? "Offline"}**";
 
@@ -61,7 +62,7 @@ namespace SlashCommands
 
                     embed.Description += $"\n\n**Ability Scores:**";
                     foreach (KeyValuePair<AbilityScore, int> score in player.abilityScores)
-                        embed.Description += $"\n{score.Key}: {Utils.Modifier(score.Value)}";
+                        embed.Description += $"\n{score.Key}: {player.GetAbilityScore(score.Key)} ({Utils.Modifier(score.Value)})";
                 }
 
                 await cmd.FollowupAsync(embed: embed.Build());

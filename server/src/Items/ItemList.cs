@@ -187,7 +187,7 @@ namespace Items
                     { DamageType.Cold, 5 }
                 }
             )},
-            { "livingstonearmor", new Armor("livingstonearmor", "Living Stone Armor", 35, 450, 7, "Armor that encases the wearer in stone.",
+            { "livingstonearmor", new Armor("livingstonearmor", "Living Stone Armor", 35, 450, 9, "Armor that encases the wearer in stone.",
                 color: "slategrey",
                 resistances: new()
                 {
@@ -197,7 +197,8 @@ namespace Items
                     { DamageType.Fire, 3 },
                     { DamageType.Poison, 2 },
                     { DamageType.Cold, -3 }
-                }
+                },
+                strength: 2
             )},
             { "pyromancercloak", new Armor("pyromancercloak", "Pyromancer's Cloak", 5, 400, 4, "A flaming-red cloak that flickers in the light.",
                 color: "firebrick",
@@ -209,7 +210,27 @@ namespace Items
                     { DamageType.Fire, 10 },
                     { DamageType.Radiant, 4 },
                     { DamageType.Cold, -3 }
-                }
+                },
+                agility: 2,
+                intelligence: 2
+            )},
+            { "truepyromancercloak", new Armor("truepyromancercloak", "True Pyromancer's Cloak", 9, 800, 9, "A blazing cloak that banishes the dark. Smoke floats off the ends.",
+                color: "maroon",
+                resistances: new()
+                {
+                    { DamageType.Slashing, 2 },
+                    { DamageType.Bludgeoning, 2 },
+                    { DamageType.Piercing, 2 },
+                    { DamageType.Fire, 25 },
+                    { DamageType.Necrotic, 10 },
+                    { DamageType.Radiant, -5 },
+                    { DamageType.Cold, -5 }
+                },
+                strength: 2,
+                agility: 5,
+                endurance: 1,
+                intelligence: 5,
+                wisdom: 3
             )},
             { "glacierarmor", new Armor("glacierarmor", "Glacier", 20, 400, 7, "A set of immovable armor.",
                 color: "mediumturquoise",
@@ -222,6 +243,21 @@ namespace Items
                     { DamageType.Cold, 15 },
                     { DamageType.Poison, 3 }
                 }
+            )},
+            { "apprenticerobe", new Armor("apprenticerobe", "Apprentice's Robe", 5, 300, 2, "A plain brown robe, worn by apprentice scholars.",
+                color: "wheat",
+                intelligence: 2,
+                wisdom: 5
+            )},
+            { "journeymanrobe", new Armor("journeymanrobe", "Journeyman's Robe", 6, 600, 3, "A worn grey robe, worn by travelling sages.",
+                color: "wheat",
+                intelligence: 4,
+                wisdom: 10
+            )},
+            { "sagerobe", new Armor("sagerobe", "Sage's Robe", 8, 1000, 3, "A grey robe with some minor embellishments.",
+                color: "wheat",
+                intelligence: 6,
+                wisdom: 15
             )},
 
             //Consumables
@@ -296,8 +332,11 @@ namespace Items
             { "ember", new SimpleItem("ember", "Ember", 1f, "A softly-glowing, still hot ember.", sellValue: 20, color: "firebrick") },
             { "frostshard", new SimpleItem("frostshard", "Frostshard", 1f, "A crystal of perma-frozen ice.", sellValue: 20, color: "mediumturquoise") },
             { "ice", new SimpleItem("ice", "Ice", 1f, "A small chunk of ice.", sellValue: 10, color: "mediumturquoise") },
-            { "livingstone", new SimpleItem("livingstone", "Living Stone", 5f, "A rock carved out of an earthen creature.", sellValue: 50, color: "slategrey") },
+            { "livingstone", new SimpleItem("livingstone", "Living Stone", 5f, "A rock carved out of an earthen creature.", sellValue: 60, color: "slategrey") },
             { "firesteel", new SimpleItem("firesteel", "Firesteel", .8f, "A flickering, red ingot of a warm metal. Hot to the touch.", sellValue: 40, color: "firebrick") },
+            { "brimstone", new SimpleItem("brimstone", "Brimstone", 1.2f, "A dark reddish-black rock. Painful to the touch", sellValue: 60, color: "maroon") },
+            { "hellsteel", new SimpleItem("hellsteel", "Hellsteel", 1.5f, "A molten bar of infernal steel. Hurts to touch, smell, or just generally be around", sellValue: 60, 
+                color: "maroon") },
         });
 
         public static T? Get<T>(string id) where T : Item

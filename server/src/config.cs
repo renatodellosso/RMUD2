@@ -35,9 +35,15 @@ static class Config
 
     public const int MAX_LOG_LENGTH = 30;
 
+    public const int RESET_DUNGEON_AFTER_TICKS = 3 * 60 * 60; //3 hours
+    public static readonly int[] RESET_DUNGEON_NOTIFICATION_POINTS = new int[]
+    {
+        30, 60, 120, 180, 240, 300, 360, 420, 480, 540, 600, //30 seconds, 1-10 minutes
+    };
+
     public static class DungeonGeneration
     {
-        public const int MIN_FLOORS = 7, MAX_FLOORS = 9;
+        public const int MIN_FLOORS = 10, MAX_FLOORS = 12;
         public const int MIN_FLOOR_SIZE = 10, MAX_FLOOR_SIZE = 17;
 
         //MIN_FILL is the minimum % of the floor that has rooms
@@ -91,6 +97,8 @@ static class Config
 
         public const int MYSTERIOUS_TRADER_MIN_OFFERS = 3;
         public const int MYSTERIOUS_TRADER_MAX_OFFERS = 5;
+
+        public const int REFORGE_COST = 100;
     }
 
     public static class SessionRemoval

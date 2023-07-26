@@ -60,6 +60,7 @@ public class Creature
 
     public virtual Weapon? Weapon => mainHand?.Item as Weapon;
 
+    //This is the base ability scores, don't read values from here. Use GetAbilityScore instead
     public Dictionary<AbilityScore, int> abilityScores = new()
     {
         { AbilityScore.Strength, 0 },
@@ -73,14 +74,14 @@ public class Creature
     };
 
     //Ability score methods for convenience
-    public int Strength => abilityScores[AbilityScore.Strength];
-    public int Dexterity => abilityScores[AbilityScore.Dexterity];
-    public int Constitution => abilityScores[AbilityScore.Constitution];
-    public int Agility => abilityScores[AbilityScore.Agility];
-    public int Endurance => abilityScores[AbilityScore.Endurance];
-    public int Intelligence => abilityScores[AbilityScore.Intelligence];
-    public int Wisdom => abilityScores[AbilityScore.Wisdom];
-    public int Charisma => abilityScores[AbilityScore.Charisma];
+    public int Strength => GetAbilityScore(AbilityScore.Strength);
+    public int Dexterity => GetAbilityScore(AbilityScore.Dexterity);
+    public int Constitution => GetAbilityScore(AbilityScore.Constitution);
+    public int Agility => GetAbilityScore(AbilityScore.Agility);
+    public int Endurance => GetAbilityScore(AbilityScore.Endurance);
+    public int Intelligence => GetAbilityScore(AbilityScore.Intelligence);
+    public int Wisdom => GetAbilityScore(AbilityScore.Wisdom);
+    public int Charisma => GetAbilityScore(AbilityScore.Charisma);
 
     public virtual int MaxCarryWeight => Config.Gameplay.BASE_CARRY_WEIGHT + Strength * Config.Gameplay.CARRY_WEIGHT_PER_STR;
 
@@ -214,7 +215,7 @@ public class Creature
     /// </summary>
     public void Attack(Creature target, Weapon weapon)
     {
-        weapon?.Attack?.execute(this, target);
+        weapon?.Attack?.execute(this, target, null);
     }
 
     public int CalculateDamage(int damage, DamageType? damageType = null)
@@ -245,7 +246,7 @@ public class Creature
             Die(new(source));
     }
 
-    void Die(CreatureDeathEventData data)
+    public void Die(CreatureDeathEventData data)
     {
         Utils.Log($"{name} died");
 
@@ -276,7 +277,7 @@ public class Creature
 
         foreach (KeyValuePair<ObjectId, int> killer in damagedBy)
         {
-            float contrib = (float)killer.Value / MaxHealth;
+            float contrib = Math.Clamp((float)killer.Value / MaxHealth, 0, 1);
             //Utils.Log($"{killer.Key}: {killer.Value}/{MaxHealth} - {contrib}");
 
             Player player = Player.Get(killer.Key);
@@ -322,7 +323,10 @@ public class Creature
         }
 
         if(checkCanUse)
-            attacks = attacks.Where(a => a?.CanUse(this) ?? false).ToList();
+        {
+            //Calling GetItemHolderFromAttack every time is a bit inefficient (It's in quadratic time!), but it shouldn't be a huge deal
+            attacks = attacks.Where(a => a?.CanUse(this, GetItemHolderFromAttack(a)) ?? false).ToList();
+        }
 
         return attacks.ToArray();
     }
@@ -333,7 +337,7 @@ public class Creature
             return armor?.Item?.Defense ?? 0;
 
         resistances.TryGetValue(damageType.Value, out int resistance);
-        return (armor?.Item?.GetDefense(damageType) ?? 0) + resistance;
+        return (armor?.Item?.GetDefense(armor, damageType) ?? 0) + resistance;
     }
 
     public float RestoreStamina(float amt, bool overrideMax = false)
@@ -343,7 +347,7 @@ public class Creature
         return added;
     }
 
-    public string GetBestiaryEntry()
+    public virtual string GetBestiaryEntry()
     {
         string msg = Utils.Style(FormattedName, bold: true, underline: true);
 
@@ -355,7 +359,7 @@ public class Creature
         msg += "<br><br>Abilty Scores:";
         foreach (KeyValuePair<AbilityScore, int> ability in abilityScores)
         {
-            msg += $"<br>-{ability.Key}: {ability.Value}";
+            msg += $"<br>-{ability.Key}: {GetAbilityScore(ability.Key)} ({ability.Value}{Utils.Modifier(GetAbilityScoreBonus(ability.Key))})";
         }
 
         msg += "<br><br>Resistances:";
@@ -371,6 +375,34 @@ public class Creature
         }
 
         return msg;
+    }
+
+    /// <summary>
+    /// Gets the bonus from armor, etc to the ability score
+    /// </summary>
+    public int GetAbilityScoreBonus(AbilityScore score)
+    {
+        return armor?.Item?.GetAbilityScoreBonus(score, armor) ?? 0;
+    }
+
+    public int GetAbilityScore(AbilityScore score)
+    {
+        return abilityScores[score] + GetAbilityScoreBonus(score);
+    }
+
+    public ItemHolder<Weapon>? GetItemHolderFromAttack(Attack attack)
+    {
+        try
+        {
+            ItemHolder<Item>?[] items = new ItemHolder<Item>?[] { mainHand, offHand };
+            ItemHolder<Weapon>?[] weapons = items.Where(i => i?.Item is Weapon).Cast<ItemHolder<Weapon>>().ToArray();
+            ItemHolder<Weapon>? weapon = weapons?.Where(w => w?.Item?.attacks?.ContainsValue(attack) ?? false)?.FirstOrDefault() ?? null;
+            return weapon;
+        }
+        catch
+        {
+            return null;
+        }
     }
 
 }

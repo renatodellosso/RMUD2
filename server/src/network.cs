@@ -174,6 +174,11 @@ public static class Network
                         Utils.Log($"Session is processing an action, ignoring request. Current Action: {session.currentAction}");
                     else
                     {
+                        Player? player = session.Player;
+
+                        if(player != null)
+                            player.playtime = player.playtime.Add(new(0, 0, 0, 0, milliseconds: (int)(DateTime.Now - session.lastActionTime).TotalMilliseconds));
+
                         session.lastActionTime = DateTime.Now;
                         session.currentAction = action.action;
 

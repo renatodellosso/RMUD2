@@ -46,11 +46,19 @@ namespace ItemTypes
 
         public override string Overview(ItemHolder<Item> item, Creature? creature = null)
         {
+            ItemHolder<Weapon> weapon = item.Clone<Weapon>();
+
             string msg = base.Overview(item, creature) + "<br>Attack Options:";
             
             foreach(KeyValuePair<string, Attack> attack in attacks)
             {
-                msg += $"<br>-{attack.Value.Overview(creature, item)}";
+                msg += $"<br>-{attack.Value.Overview(creature, weapon)}";
+            }
+
+            Reforge reforge = Reforge.Get(item);
+            if (reforge != null)
+            {
+                msg += $"<br>Reforge: {reforge.FormattedName}{reforge.Overview()}"; //Reforge overviews start with a line break
             }
 
             return msg;

@@ -70,7 +70,7 @@ namespace Creatures
                         {
                             Utils.Log($"{name} attacks! Stamina: {stamina}/{MaxStamina}");
                             Player player = players[Utils.RandInt(players.Count)];
-                            attack.execute(this, player);
+                            attack.execute(this, player, null);
                         }
                     }
                 }

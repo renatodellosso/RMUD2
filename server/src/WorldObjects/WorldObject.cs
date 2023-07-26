@@ -32,6 +32,11 @@ namespace WorldObjects
 
         public abstract void HandleInput(Session session, ClientAction action, ref string state, ref bool addStateToPrev);
 
+        public virtual void OnStart(Session session)
+        {
+
+        }
+
         public virtual void Delete(ref string state, ref bool addStateToPrev)
         {
             //Remove the object

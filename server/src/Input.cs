@@ -19,4 +19,6 @@ public class Input
         this.selected = selected;
         this.available = available;
     }
+
+    public Input(string id, string text, bool selected = false, bool available = false) : this(InputMode.Option, id, text, selected, available) { }
 }

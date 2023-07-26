@@ -9,7 +9,7 @@ public class Player : Creature
 {
 
     //Static stuff
-    static Dictionary<ObjectId, Player> players = new Dictionary<ObjectId, Player>();
+    public static Dictionary<ObjectId, Player> players = new Dictionary<ObjectId, Player>();
 
     public static Player Get(ObjectId id)
     {
@@ -57,6 +57,11 @@ public class Player : Creature
 
     //Value is the name, since we don't want to look up every monster in the table every time we want to display the bestiary
     public Dictionary<string, string> bestiary = new();
+
+    public TimeSpan playtime = TimeSpan.Zero;
+
+    public bool craftFromVault = false;
+    public Inventory CraftingInventory => craftFromVault ? vault! : inventory;
 
     public int coins
     {
@@ -163,6 +168,7 @@ public class Player : Creature
     public string GetCharacterText()
     {
         string text = Utils.Style(FormattedName, bold: true, underline: true);
+        text += $"<br>Time Played: {playtime.Hours}h{playtime.Minutes}m";
         text += Utils.Style($"<br>Level {level} - {Utils.Format(xp)}/{Utils.Format(XpToNextLevel)} XP", xp >= XpToNextLevel ? "yellow" : "white");
         text += $"<br>{Utils.FormatHealth(health, MaxHealth, addedText: "HP")}";
 
@@ -181,7 +187,7 @@ public class Player : Creature
         text += Utils.Style("<br><br>Ability Scores:", bold: true);
         foreach(AbilityScore score in abilityScores.Keys)
         {
-            text += $"<br>{score}: {Utils.Modifier(abilityScores[score])}";
+            text += $"<br>{score}: {GetAbilityScore(score)} ({abilityScores[score]}{Utils.Modifier(GetAbilityScoreBonus(score))})";
         }
 
         return text;
@@ -199,9 +205,6 @@ public class Player : Creature
 
         //We want to avoid the below stuff, but we have to update it for old accounts
         nameColor = "orange";
-
-        if(!abilityScores.ContainsKey(AbilityScore.Endurance))
-            abilityScores.Add(AbilityScore.Endurance, 0);
 
         if(vault != null) vault.level = vaultLevel;
         vault?.CalculateStats();
