@@ -62,7 +62,7 @@ public static class Utils
     /// </summary>
     /// <param name="text">The password to hash</param>
     /// <param name="salt">The salt</param>
-    /// <returns>The PBKDF2 hash</returns>
+    /// <returns>The Argon2id hash</returns>
     public static string HashPassword(string text, string salt)
     {
         text = Env.instance.pepper + text; //Add the pepper to the password

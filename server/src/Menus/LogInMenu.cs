@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using Discord;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -31,11 +32,15 @@ namespace Menus
         State state = State.Selection;
         bool waiting = false;
 
-        string username = "", password = "";
+        public string username = "";
+        string password = "";
 
         int tries = 0;
         Timer lockOut;
         TimeSpan lockOutDuration = Config.LOCK_OUT_DURATION;
+
+        public string passwordResetCode = "";
+        public bool passwordResetEnabled = false;
 
         public override string Status => mode == Mode.CreateAccount ? "Creating an account" : "Logging in";
 
@@ -72,7 +77,11 @@ namespace Menus
                     if (state == State.Username)
                         inputs.Add(new(InputMode.Text, "username", mode == Mode.CreateAccount ? "Enter a username" : "Enter your username"));
                     else if (state == State.Password)
-                        inputs.Add(new(InputMode.Secret, "password", mode == Mode.CreateAccount ? "Enter a password" : "Enter your password"));
+                    {
+                        if (mode == Mode.SignIn && !passwordResetEnabled) inputs.Add(new(InputMode.Option, "reset", "Forgot Password"));
+                        inputs.Add(new(InputMode.Secret, "password", mode == Mode.CreateAccount ? "Enter a password" : (passwordResetEnabled ? "Enter a new password" 
+                            : "Enter your password")));
+                    }
                     else if (state == State.ConfirmPassword)
                         inputs.Add(new(InputMode.Secret, "confirmPassword", "Reenter your password"));
                     else if (state == State.FinalConfirmation)
@@ -106,6 +115,7 @@ namespace Menus
                 {
                     if (action.action.Equals("back"))
                     {
+                        passwordResetEnabled = false;
                         if (state == State.Username)
                         {
                             state = State.Selection;
@@ -125,34 +135,42 @@ namespace Menus
                                 {
                                     username = action.action;
                                     state = State.Password;
-                                    session.ReplaceLog("Username: " + username);
-                                    session.Log(mode == Mode.CreateAccount ? "Enter a password:" : "Enter your password:");
+                                    session?.ReplaceLog("Username: " + username);
+                                    session?.Log(mode == Mode.CreateAccount ? "Enter a password:" : "Enter your password:");
                                 }
                                 else
                                 {
-                                    session.ReplaceLog(Utils.Style($"{action.action} is not a valid username.", "red") + " Please enter a new username:");
+                                    session?.ReplaceLog(Utils.Style($"{action.action} is not a valid username.", "red") + " Please enter a new username:");
                                 }
                             }
                             else
                             {
-                                session.ReplaceLog($"The username {action.action} is taken. Enter a new username:");
+                                session?.ReplaceLog($"The username {action.action} is taken. Enter a new username:");
                             }
                         }
                         else if (state == State.Password)
                         {
-                            password = action.action;
-                            if(!session.log.Last().Contains("Password") && session.log.Where(msg => msg.Contains("Password")).Count() > 0) session.PopLog();
-                            session.ReplaceLog("Password: *****");
-                            if (mode == Mode.CreateAccount)
+                            if (action.action != "reset")
                             {
-                                state = State.ConfirmPassword;
-                                session.Log("Reenter your password:");
+                                password = action.action;
+                                if (!session.log.Last().Contains("Password") && session.log.Where(msg => msg.Contains("Password")).Count() > 0) session.PopLog();
+                                session.ReplaceLog("Password: *****");
+                                if (mode == Mode.CreateAccount)
+                                {
+                                    state = State.ConfirmPassword;
+                                    session.Log("Reenter your password:");
+                                }
+                                else
+                                {
+                                    waiting = true;
+                                    Task.Run(SignIn);
+                                    session.Log(passwordResetEnabled ? "Updating password..." : "Signing in...");
+                                }
                             }
-                            else
+                            else if (mode == Mode.SignIn)
                             {
-                                waiting = true;
-                                Task.Run(SignIn);
-                                session.Log("Signing in...");
+                                //Password reset
+                                StartPasswordReset();
                             }
                         }
                         else if (state == State.ConfirmPassword)
@@ -190,28 +208,68 @@ namespace Menus
 
         void SignIn()
         {
-            ObjectId? result = Account.VerifyCredentials(username, password);
-            if (result != null)
+            if (!passwordResetEnabled)
             {
-                session.ReplaceLog(Utils.Style("Logged in!", "green"));
-                session.accountId = result;
-                session.SetMenu(new MainMenu(session));
+                ObjectId? result = Account.VerifyCredentials(username, password);
+                if (result != null)
+                {
+                    session.ReplaceLog(Utils.Style("Logged in!", "green"));
+                    session.accountId = result;
+                    session.SetMenu(new MainMenu(session));
+                }
+                else
+                {
+                    tries++;
+                    if (tries > Config.MAX_SIGN_IN_TRIES)
+                    {
+                        lockOut = new Timer(lockOutDuration);
+                        lockOutDuration *= 2;
+                        Utils.Log($"User exceeded sign in limit. Cooldown: {lockOut.FormattedTimeRemaining()}");
+                    }
+
+                    session.ReplaceLog(Utils.Style("Invalid username or password", "red"));
+                    Utils.Log("User failed sign in. Try: " + tries + "/" + Config.MAX_SIGN_IN_TRIES);
+                }
             }
             else
             {
-                tries++;
-                if (tries > Config.MAX_SIGN_IN_TRIES)
-                {
-                    lockOut = new Timer(lockOutDuration);
-                    lockOutDuration *= 2;
-                    Utils.Log($"User exceeded sign in limit. Cooldown: {lockOut.FormattedTimeRemaining()}");
-                }
+                Account? account = DB.Accounts.FindByUsername(username);
 
-                session.ReplaceLog(Utils.Style("Invalid username or password", "red"));
-                Utils.Log("User failed sign in. Try: " + tries + "/" + Config.MAX_SIGN_IN_TRIES);
+                if(account == null)
+                    session?.Log(Utils.Style($"No account found with the username: {username}", "red"));
+                else
+                {
+                    account.password = Utils.HashPassword(password, account.salt);
+                    account.Update();
+
+                    passwordResetCode = "";
+                    passwordResetEnabled = false;
+
+                    session?.Log("Password reset!");
+                }
             }
+
             waiting = false;
         }
         
+        void StartPasswordReset()
+        {
+            Account? account = DB.Accounts.FindByUsername(username);
+
+            if (account != null)
+            {
+                if(account.discordId == 0) //Ulongs default to 0
+                {
+                    session?.Log(Utils.Style("Account not linked to a Discord account. Password reset unavailable", "red"));
+                }
+                else
+                {
+                    passwordResetCode = Utils.RandomCode();
+                    session?.Log($"Run the /reset command in the Discord server to reset your password and enter {passwordResetCode} as the code.");
+                }
+            }
+            else session?.Log(Utils.Style($"No account found with the username: {username}", "red"));
+        }
+
     }
 }

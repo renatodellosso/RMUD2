@@ -10,13 +10,14 @@ using System.Threading.Tasks;
 public static class Bot
 {
 
-    static DiscordSocketClient client;
+    public static DiscordSocketClient client;
 
     static Dictionary<string, DiscordSlashCommand> commands = new()
     {
         { "list", new SlashCommands.ListCommand() },
         { "link", new SlashCommands.LinkCommand() },
-        { "user", new SlashCommands.UserCommand() }
+        { "user", new SlashCommands.UserCommand() },
+        { "reset", new SlashCommands.ResetCommand() }
     };
 
     public static async void Init()
@@ -26,6 +27,8 @@ public static class Bot
         DiscordSocketConfig config = new()
         {
             UseInteractionSnowflakeDate = false, //This avoids issues with not being able to interact after 3 seconds
+            //I have no clue what this enum set up is. Might have something to do with the Flags attribute
+            GatewayIntents = GatewayIntents.GuildMembers | GatewayIntents.DirectMessages //Have to enable these here and on the bot page
         };
 
         client = new(config);
@@ -38,7 +41,7 @@ public static class Bot
 
         //Log in
         Utils.Log("Bot logging in...");
-        await client.LoginAsync(Discord.TokenType.Bot, Env.instance.botKey);
+        await client.LoginAsync(TokenType.Bot, Env.instance.botKey);
 
         Utils.Log("Discord bot initialized");
     }
@@ -64,7 +67,7 @@ public static class Bot
         } catch (Exception e) 
         {
             Utils.Log("Caught error creating bot slash commands: " + e.Message);
-            Utils.Log(e.StackTrace);
+            Utils.Log(e);
         }
     }
 
