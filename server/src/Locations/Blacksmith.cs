@@ -22,7 +22,8 @@ namespace Locations
             new("longsword"),
             new("mace"),
             new("breastplate"),
-            new("chainmail")
+            new("chainmail"),
+            new("platearmor")
         };
 
         public Blacksmith()

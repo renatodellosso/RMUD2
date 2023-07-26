@@ -291,6 +291,7 @@ namespace Creatures
                 resistances: new()
                 {
                     { DamageType.Necrotic, -3 },
+                    { DamageType.Infernal, -3 },
                     { DamageType.Fire, 2 },
                     { DamageType.Radiant, 12 },
                     { DamageType.Psychic, 1 },
@@ -324,6 +325,7 @@ namespace Creatures
                 resistances: new()
                 {
                     { DamageType.Necrotic, -5 },
+                    { DamageType.Infernal, -5 },
                     { DamageType.Radiant, 6 },
                     { DamageType.Fire, 1 }
                 },
@@ -609,6 +611,7 @@ namespace Creatures
                 {
                     { DamageType.Radiant, 10 },
                     { DamageType.Necrotic, -10 },
+                    { DamageType.Infernal, -10 },
                     { DamageType.Cold, 5 }
                 },
                 strength: 5,
@@ -670,7 +673,7 @@ namespace Creatures
                 resistances: new()
                 {
                     { DamageType.Radiant, -10 },
-                    { DamageType.Necrotic, 5 },
+                    { DamageType.Infernal, 5 },
                     { DamageType.Fire, 10 }
                 },
                 strength: 2,

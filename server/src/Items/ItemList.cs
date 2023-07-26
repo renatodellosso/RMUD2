@@ -118,6 +118,13 @@ namespace Items
                     new("aura", "Unnatural Aura", new(20, 3, 10), DamageType.Aberrant, 8, atkBonus: 15, critThreshold: 17, lifeSteal: .3f)
                 }, "A twisted, ethereal longsword. Something about it is unnerving.", 13f, sellValue: 1000, color: "midnightblue")
             },
+            { "volcano", new Weapon("volcano", "Volcano", new Attack[]
+                {
+                    new("shoot", "Shoot", new(12, 4), DamageType.Fire, 3, critThreshold: 16, critMult: 2.5f, lifeSteal: .2f),
+                    new("power", "Power Shot", new(12, 5, 12), DamageType.Fire, 7, atkBonus: -3, critThreshold: 14, critMult: 3.5f),
+                    new("snipe", "Snipe", new(20, 4, 10), DamageType.Infernal, 8, atkBonus: -5, critThreshold: 17, critMult: 2.5f)
+                }, "A hot red greatbow, made for punching though armor.", 12f, sellValue: 1000, color: "maroon")
+            },
 
             //Armors
             { "peasantclothes", new Armor("peasantclothes", "Peasant Clothes", 5, 10, 0, "A ragged set of clothes.")},
@@ -132,6 +139,12 @@ namespace Items
                 resistances: new()
                 {
                     { DamageType.Bludgeoning, 2 },
+                }
+            )},
+            { "platearmor", new Armor("platearmor", "Platearmor", 25, 350, 8, "A set of metal plates that covers the wearer.",
+                resistances: new()
+                {
+                    { DamageType.Slashing, 3 },
                 }
             )},
             { "darkcloak", new Armor("darkcloak", "Dark Cloak", 10, 125, 3, "A shadowy cloak.", color: "darkslategrey",
@@ -222,7 +235,7 @@ namespace Items
                     { DamageType.Bludgeoning, 2 },
                     { DamageType.Piercing, 2 },
                     { DamageType.Fire, 25 },
-                    { DamageType.Necrotic, 10 },
+                    { DamageType.Infernal, 10 },
                     { DamageType.Radiant, -5 },
                     { DamageType.Cold, -5 }
                 },
@@ -258,6 +271,23 @@ namespace Items
                 color: "wheat",
                 intelligence: 6,
                 wisdom: 15
+            )},
+            { "hellplate", new Armor("hellplate", "Hellplate", 25, 800, 11, "A set of molten plate armor.",
+                color: "maroon",
+                resistances: new()
+                {
+                    { DamageType.Slashing, 3 },
+                    { DamageType.Bludgeoning, 1 },
+                    { DamageType.Piercing, 1 },
+                    { DamageType.Fire, 15 },
+                    { DamageType.Infernal, 10 },
+                    { DamageType.Radiant, -4 },
+                    { DamageType.Cold, -4 }
+                },
+                strength: 4,
+                constitution: 4,
+                agility: 5,
+                endurance: 3
             )},
 
             //Consumables
@@ -303,6 +333,12 @@ namespace Items
                     Location.Get(player?.resetLocation ?? "dungeonentrance")?.Enter(player, player?.Location ?? null);
                 }, "Use", "A long scroll, said to be able to teleport the reader back to a safe location.", sellValue: 75, color: "wheat")
             },
+            { "returnamulet", new SimpleConsumable("returnamulet", "Amulet of Return", 2f, (session) =>
+                {
+                    Player? player = session?.Player;
+                    Location.Get(player?.resetLocation ?? "dungeonentrance")?.Enter(player, player?.Location ?? null);
+                }, "Use", "An amulet with a large amethyst, said to be able to teleport the wearer back to a safe location.", sellValue: 500, color: "purple", uses: 10)
+            },
             { DungeonTeleportationScroll.GetId(0), new DungeonTeleportationScroll(0) },
             { DungeonTeleportationScroll.GetId(1), new DungeonTeleportationScroll(1) },
             { DungeonTeleportationScroll.GetId(2), new DungeonTeleportationScroll(2) },
@@ -310,6 +346,9 @@ namespace Items
             { DungeonTeleportationScroll.GetId(4), new DungeonTeleportationScroll(4) },
             { DungeonTeleportationScroll.GetId(5), new DungeonTeleportationScroll(5) },
             { DungeonTeleportationScroll.GetId(6), new DungeonTeleportationScroll(6) },
+            { DungeonTeleportationScroll.GetId(7), new DungeonTeleportationScroll(7) },
+            { DungeonTeleportationScroll.GetId(8), new DungeonTeleportationScroll(8) },
+            { DungeonTeleportationScroll.GetId(9), new DungeonTeleportationScroll(9) },
 
             //Misc Items
             { "rottenflesh", new SimpleItem("rottenflesh", "Rotten Flesh", 0.5f, "Rotten, decaying flesh, crawling with maggots. You probably shouldn't touch it.", sellValue: 1) },

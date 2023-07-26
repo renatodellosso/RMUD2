@@ -78,6 +78,12 @@ public static class RecipeLists
         public static readonly Recipe TRUE_PYROMANCER_CLOAK =
             new(new ItemHolder<Item>[] { new("pyromancercloack", 1), new("hellsteel", 5), new("holyblood", 10), new("brimstone", 5), new("vampiricdust", 5), new("coal", 10) }, 
                 "truepyromancercloak", 1, 1200);
+        public static readonly Recipe HELLPLATE =
+            new(new ItemHolder<Item>[] { new("platearmor", 1), new("hellsteel", 7), new("holyblood", 10), new("brimstone", 5), new("vampiricdust", 5), new("aberrantcluster", 3)},
+                "hellplate", 1, 1200);
+        public static readonly Recipe VOLCANO =
+            new(new ItemHolder<Item>[] { new("hellsteel", 5), new("holyblood", 8), new("brimstone", 5), new("vampiricdust", 7) },
+                "volcano", 1, 1200);
     }
 
     public static readonly Recipe[] FORGE = new Recipe[]
@@ -144,7 +150,8 @@ public static class RecipeLists
         All.PYROMANCER_CLOAK,
         All.BLOODRIPPER,
         All.HELLSTEEL,
-        All.TRUE_PYROMANCER_CLOAK
+        All.TRUE_PYROMANCER_CLOAK,
+        All.HELLPLATE
     };
 
     static readonly Recipe[] MYSTERIOUS_TRADER = new Recipe[]

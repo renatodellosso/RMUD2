@@ -17,5 +17,6 @@ public enum DamageType
     Psychic,
     Necrotic,
     Radiant,
-    Aberrant
+    Aberrant,
+    Infernal
 }

@@ -14,7 +14,7 @@ namespace Items
         int floorDepth;
 
         public DungeonTeleportationScroll(int floor)
-            : base(GetId(floor), $"Floor {floor+1} Teleportation Scroll", 2, null, "Use", $"Teleports the user to floor {floor+1}.", 75 * (floor + 1), 1, "wheat")
+            : base(GetId(floor), $"Teleport Scroll ({floor+1})", 2, null, "Use", $"Teleports the user to floor {floor+1}.", 45 * (floor + 1), 1, "wheat")
         {
             floorDepth = floor;
             onUse = OnUse;

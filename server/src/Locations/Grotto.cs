@@ -17,7 +17,7 @@ namespace Locations
             name = Utils.Style("The Grotto", "midnightblue");
             status = "In a Forsaken Place";
 
-            safe = false;
+            safe = true;
 
             objects.Add(new WorldObjects.CraftingStation("unholyalter", Utils.Style("Unholy Altar", "midnightblue"), id, RecipeLists.UNHOLY_ALTAR));
         }
