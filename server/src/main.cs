@@ -20,7 +20,6 @@ else
 }
 
 DB.Init();
-AI.Init();
 
 Dungeon.Generate();
 Location.GenerateExits();

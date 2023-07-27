@@ -177,7 +177,7 @@ public class Creature
             rawStamina = Math.Clamp(rawStamina, 0, MaxStamina);
         }
 
-        if (health <= 0)
+        if (health <= 0 && MaxHealth > 0)
             OnDie(new("Unkown"));
     }
 

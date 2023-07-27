@@ -77,9 +77,6 @@ namespace Creatures
 
                 if (Utils.tickCount % 3 == 0 && Utils.RandFloat() < .05f)
                     MoveThroughRandomExit(Config.Gameplay.MAX_ENEMIES_IN_ROOM);
-
-                //Flavor messages
-                FlavorMessage();
             } catch(Exception e)
             {
                 Utils.Log(e.Message + "\n" + e.StackTrace);

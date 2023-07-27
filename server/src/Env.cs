@@ -16,6 +16,4 @@ public class Env
 
     public string discordInvite = "";
 
-    public string openAIKey = "";
-
 }

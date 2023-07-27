@@ -64,19 +64,6 @@ namespace Creatures
             onTick?.Invoke(new(this));
         }
 
-        public void FlavorMessage()
-        {
-            Location? location = Location;
-            if (location != null)
-            {
-                Player[] players = location.Players;
-                if (players.Any() && Utils.RandFloat() < Config.Gameplay.FLAVOR_MSG_CHANCE) //Don't send flavor messages if there are no players to receive them
-                {
-                    AI.FlavorMessage(this);
-                }
-            }
-        }
-
         protected override void OnDie(CreatureDeathEventData data)
         {
             //Create a corpse

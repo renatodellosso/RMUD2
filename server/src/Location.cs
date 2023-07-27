@@ -388,9 +388,14 @@ public abstract class Location
                 {
                     if (prevStates.Any())
                     {
-                        state = prevStates.Last();
-                        prevStates.Remove(prevStates.Last());
-                        addStateToPrev = false;
+                        string prevState = state;
+
+                        do
+                        {
+                            state = prevStates.Last();
+                            prevStates.Remove(prevStates.Last());
+                            addStateToPrev = false;
+                        } while (state == prevState && prevStates.Any());
                     }
                     else
                         state = "";

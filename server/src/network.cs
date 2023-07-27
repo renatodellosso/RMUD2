@@ -159,7 +159,7 @@ public static class Network
                 {
                     double millisNow = DateTime.Now.ToUniversalTime().Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
                     Utils.Log($"Received HTTP request. Action: {action.action}, State: " +
-                        $"{(session != null ? session.menu.state : "N/A")}, Sent {Utils.Round(millisNow - action.time, 1)}ms ago");
+                        $"{(session != null ? session.menu.state : "N/A")}, Prev States: {session?.menu.prevStates.Count}, Sent {Utils.Round(millisNow - action.time, 1)}ms ago");
                 }
                 else stopwatch = null;
 
