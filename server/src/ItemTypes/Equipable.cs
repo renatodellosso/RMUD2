@@ -39,29 +39,32 @@ namespace ItemTypes
         public override void HandleInput(Session session, ClientAction action, ItemHolder<Item> item, ref string state, ref bool addStateToPrev)
         {
             Player player = session.Player ?? throw new Exception("Player is null!");
-            
-            EquipmentSlot slot = (EquipmentSlot)Enum.Parse(typeof(EquipmentSlot), action.action["equip".Length..]);
 
-            if (action.action.StartsWith("equip") && CanEquip(session.Player, item as ItemHolder<T>, slot)) //As lets us cast the generic parameter
+            if (action.action.StartsWith("equip"))
             {
-                try
+                EquipmentSlot slot = (EquipmentSlot)Enum.Parse(typeof(EquipmentSlot), action.action["equip".Length..]);
+
+                if (CanEquip(session.Player, item as ItemHolder<T>, slot)) //As lets us cast the generic parameter
                 {
-                    ItemHolder<T> casted = item.Clone<T>();
-                    casted.amt = 1;
-                    //ItemHolder<T>? casted = item as ItemHolder<T> ?? throw new Exception("ItemHolder<T> is null!");
+                    try
+                    {
+                        ItemHolder<T> casted = item.Clone<T>();
+                        casted.amt = 1;
+                        //ItemHolder<T>? casted = item as ItemHolder<T> ?? throw new Exception("ItemHolder<T> is null!");
 
-                    Equip(session.Player, casted, slot);
+                        Equip(session.Player, casted, slot);
 
-                    player.Update();
+                        player.Update();
 
-                    session.Log($"Equipped {item.FormattedName}");
+                        session.Log($"Equipped {item.FormattedName}");
 
-                    state = "inventory";
-                    addStateToPrev = false;
-                }
-                catch (Exception e)
-                {
-                    Utils.Log($"Caught error equiping Equipable of type: {GetType()}. Error: {e.Message}\n{e.StackTrace}");
+                        state = "inventory";
+                        addStateToPrev = false;
+                    }
+                    catch (Exception e)
+                    {
+                        Utils.Log($"Caught error equiping Equipable of type: {GetType()}. Error: {e.Message}\n{e.StackTrace}");
+                    }
                 }
             }
             else base.HandleInput(session, action, item, ref state, ref addStateToPrev);

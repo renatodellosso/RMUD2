@@ -224,7 +224,7 @@ public static class Network
         }
         catch (Exception e)
         {
-            //Utils.Log(e);
+            Utils.Log(e);
         }
 
         Thread.Sleep(100); //Wait for response to finish writing. I have no clue why we have to do this, but it gives errors w/o it

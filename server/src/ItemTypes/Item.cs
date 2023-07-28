@@ -43,10 +43,15 @@ namespace ItemTypes
             List<Input> inputs = new();
 
             if (session.Player?.inventory.Contains(item) ?? false) {
-                if (!state.Contains(".drop"))
+                if (!state.Contains(".drop") && !state.Contains(".trade"))
+                {
                     inputs.Add(new(InputMode.Option, "drop", "Drop"));
-                else
+                    inputs.Add(new(InputMode.Option, "trade", "Offer for Trade"));
+                }
+                else if (state.Contains(".drop") || state.EndsWith(".trade"))
                     Utils.AddItemAmountOptions(inputs, item);
+                else if (state.Contains(".trade"))
+                    Utils.AddItemAmountOptions(inputs, session.Player.inventory.Where(i => i.Item?.id == "coin").FirstOrDefault(), max: 99999, text: "Enter how many coins to trade for");
             }
 
             return inputs;
@@ -55,30 +60,106 @@ namespace ItemTypes
         public virtual void HandleInput(Session session, ClientAction action, ItemHolder<Item> item, ref string state, ref bool addStateToPrev)
         {
             Player player = session.Player!;
-            if (player.inventory.Contains(item)) {
-                if (!state.Contains(".drop") && action.action == "drop" && item.amt > 1)
-                    state += ".drop";
-                else if(state.Contains(".drop") || item.amt == 1)
+            if (player.inventory.Contains(item))
+            {
+                if (!state.Contains(".drop") && !state.Contains(".trade"))
+                {
+                    if (action.action == "drop") 
+                    {
+                        if (item.amt > 1)
+                            state += ".drop";
+                        else
+                            DropItem(session, action, item, ref state, ref addStateToPrev);
+                    }
+                    else if (action.action == "trade")
+                        state += ".trade";
+                }
+                else if (state.Contains(".drop") || state.EndsWith(".trade"))
                 {
                     try
                     {
-                        item = item.Clone();
-                        item.amt = item.amt > 1 ? int.Parse(action.action) : 1;
+                        ItemHolder<Item> newItem = item.Clone();
+                        try
+                        {
+                            newItem.amt = int.Parse(action.action);
 
-                        player.Location?.objects.Add(new WorldObjects.DroppedItem(item, player.Location.id));
-                        session.Log($"You dropped {item.FormattedName} x{item.amt}.");
-
-                        state = "inventory";
-                        addStateToPrev = false;
-
-                        player.inventory.Remove(item); //This edits the original item's amount, so we do it last
-                        player.Update();
+                            if (state.Contains(".drop"))
+                                DropItem(session, action, newItem, ref state, ref addStateToPrev);
+                            else if (state.Contains(".trade"))
+                            {
+                                state += "." + newItem.amt;
+                            }
+                        }
+                        catch
+                        {
+                            session.Log("Invalid amount");
+                        }
                     }
                     catch (Exception e)
                     {
                         session.Log($"Invalid amount");
                     }
                 }
+                else if (state.Contains(".trade"))
+                {
+                    string[] args = state.Split('.');
+                    int itemAmt = int.Parse(args.Last());
+
+                    int coinAmt = -1;
+
+                    try
+                    {
+                        coinAmt = int.Parse(action.action);
+                    }
+                    catch
+                    {
+                        session.Log("Invalid amount");
+                        return;
+                    }
+
+                    if (coinAmt < 0)
+                    {
+                        session.Log("You can't trade negative coins!");
+                        return;
+                    }
+
+                    ItemHolder<Item> offeredItem = item.Clone();
+                    offeredItem.amt = itemAmt;
+
+                    player.tradeOffers.Add(new(player, offeredItem, coinAmt));
+                    player.inventory.Remove(offeredItem.Clone());
+                    player.Update();
+
+                    state = "inventory";
+                    addStateToPrev = false;
+                }
+            }
+            else 
+                Utils.Log("Item not in inventory");
+        }
+
+        void DropItem(Session session, ClientAction action, ItemHolder<Item> item, ref string state, ref bool addStateToPrev)
+        {
+            try
+            {
+                Player player = session.Player!;
+
+                item = item.Clone();
+                item.amt = item.amt > 1 ? int.Parse(action.action) : 1;
+
+                player.Location?.objects.Add(new WorldObjects.DroppedItem(item, player.Location.id));
+                session.Log($"You dropped {item.FormattedName} x{item.amt}.");
+
+                state = "inventory";
+                addStateToPrev = false;
+
+                player.inventory.Remove(item); //This edits the original item's amount, so we do it last
+                player.Update();
+            }
+            catch (Exception e)
+            {
+                Utils.Log(e);
+                session.Log($"Invalid amount");
             }
         }
 

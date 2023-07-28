@@ -45,7 +45,9 @@ const httpReq = (body, onReturn) => {
         console.log(response);
         console.log("Response body:");
 
-        let responseData = await response.json();
+        let text = await response.text();
+        console.log(await text);
+        let responseData = JSON.parse(text);
         console.log(responseData);
 
         responseData.actions.forEach(action => {

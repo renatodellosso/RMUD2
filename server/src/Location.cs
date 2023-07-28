@@ -168,6 +168,7 @@ public abstract class Location
                 inputs.Add(new(InputMode.Option, "inventory", "Inventory"));
                 inputs.Add(new(InputMode.Option, "character", "Character"));
                 inputs.Add(new(InputMode.Option, "chat", "Chat"));
+                inputs.Add(new(InputMode.Option, "trade", "Trade"));
                 inputs.Add(new(InputMode.Option, "move", "Move"));
             }
             else
@@ -286,7 +287,7 @@ public abstract class Location
 
                     msg += $"<br>Armor: {player?.armor?.FormattedName} - {Utils.Weight(player?.armor?.Weight)}";
                     msg += $"<br>Main Hand: {player?.mainHand?.FormattedName} - {Utils.Weight(player?.mainHand?.Weight)}";
-                    if(player?.offHand != null) msg += $"<br>Off Hand: {player?.offHand?.FormattedName} - {Utils.Weight(player?.offHand?.Weight)}";
+                    if (player?.offHand != null) msg += $"<br>Off Hand: {player?.offHand?.FormattedName} - {Utils.Weight(player?.offHand?.Weight)}";
 
                     foreach (ItemHolder<Item> item in player?.inventory)
                     {
@@ -297,6 +298,8 @@ public abstract class Location
                 }
                 else if (args[0] == "character")
                     session.SetMenu(new Menus.CharacterMenu());
+                else if (args[0] == "trade")
+                    session.SetMenu(new Menus.TradeMenu());
                 else
                     Utils.Log("Invalid action: " + action.action);
             }
@@ -368,10 +371,17 @@ public abstract class Location
                         }
                         else
                         {
-                            ItemHolder<Item>? item = session.Player?.inventory[int.Parse(stateArgs[1])];
-                            if (item != null)
-                                item.Item?.HandleInput(session, action, item, ref state, ref addStateToPrev);
-                            else Utils.Log($"Item {args[1]} not found!");
+                            try
+                            {
+                                ItemHolder<Item>? item = session.Player?.inventory[int.Parse(stateArgs[1])];
+                                if (item != null)
+                                    item.Item?.HandleInput(session, action, item, ref state, ref addStateToPrev);
+                                else Utils.Log($"Item {args[1]} not found!");
+                            }
+                            catch (Exception e)
+                            {
+                                Utils.Log(e);
+                            }
                         }
                     }
                     else if (stateArgs[0] == "chat")

@@ -63,6 +63,8 @@ public class Player : Creature
     public bool craftFromVault = false;
     public Inventory CraftingInventory => craftFromVault ? vault! : inventory;
 
+    public List<TradeOffer> tradeOffers = new();
+
     public int coins
     {
         get
@@ -203,6 +205,11 @@ public class Player : Creature
     {
         base.CalculateStats();
 
+        float totalTradeWeight = 0;
+        foreach(TradeOffer offer in tradeOffers)
+            totalTradeWeight += offer.item.Weight;
+        inventory.addedWeight += totalTradeWeight;
+
         //We want to avoid the below stuff, but we have to update it for old accounts
         nameColor = "orange";
 
@@ -210,6 +217,9 @@ public class Player : Creature
         vault?.CalculateStats();
 
         bestiary ??= new();
+
+        if (tradeOffers == null)
+            tradeOffers = new();
     }
 
     int CalculateNextXPRequirement(int level)

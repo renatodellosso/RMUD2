@@ -261,13 +261,13 @@ public static class Utils
                 inputs.Add(new(InputMode.Option, i.ToString(), inventory[i].FormattedName + " x" + inventory[i].amt));
     }
 
-    public static void AddItemAmountOptions(List<Input> inputs, ItemHolder<Item> item, int max = -1)
+    public static void AddItemAmountOptions(List<Input> inputs, ItemHolder<Item> item, int max = -1, string text = "")
     {
         max = max == -1 ? item.amt : max;
 
         inputs.Add(new(InputMode.Option, max.ToString(), $"Max - {max}"));
         inputs.Add(new(InputMode.Option, 1.ToString(), "1"));
-        inputs.Add(new(InputMode.Text, "amt", $"Enter an amount between 1 and {max}"));
+        inputs.Add(new(InputMode.Text, "amt", text == "" ? $"Enter an amount between 1 and {max}" : text));
     }
 
     public static float Round(decimal num, int places)
