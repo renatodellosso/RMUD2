@@ -681,6 +681,99 @@ namespace Creatures
                 agility: 6,
                 defense: 5,
                 actual: actual //Breaks if we don't have this. It's used in dungeon generation
+            )),
+
+            //Hell Ogre
+            new(1, (actual) => new SimpleMonster("hellogre", "Hell Ogre", 250,
+                new(new Attack[]
+                {
+                    new("torch", "Torch", new(12, 3, 8), DamageType.Fire, critThreshold: 16),
+                    new("slam", "Slam", new(20, 2, 10), DamageType.Bludgeoning, critThreshold: 19, critMult: 3.75f),
+                }),
+                drops: new(
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(3f, () => new("ember", Utils.RandInt(1, 3))),
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(1f, () => new("brimstone")),
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("meat")),
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(0.5f, () => new("boneclub"))
+                ), minDrops: 2, maxDrops: 3,
+                xp: 425,
+                scaleTableWeight: (floor) =>
+                {
+                    return 0.8f + (floor.Depth - 9) * 0.4f;
+                },
+                resistances: new()
+                {
+                    { DamageType.Radiant, -10 },
+                    { DamageType.Infernal, 5 },
+                    { DamageType.Fire, 10 }
+                },
+                strength: 5,
+                dexterity: 4,
+                agility: -2,
+                defense: 7,
+                actual: actual //Breaks if we don't have this. It's used in dungeon generation
+            ))
+
+            //Brimstone Cat
+            new(1, (actual) => new SimpleMonster("brimstonecat", "Brimstone Cat", 220,
+                new(new Attack[]
+                {
+                    new("slash", "Slash", new(8, 4, 8), DamageType.Slashing, atkBonus: 12, critThreshold: 16),
+                    new("pounce", "Pounce", new(20, 3), DamageType.Bludgeoning, critThreshold: 17, critMult: 3.5f),
+                    new("bite", "Flame Bite", new(4, 12), DamageType.Infernal, critThreshold: 18, critMult: 3.5f),
+                }),
+                drops: new(
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(1f, () => new("ember", Utils.RandInt(1, 3))),
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(0.75f, () => new("brimstone")),
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("meat")),
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(1f, () => new("shadowessence"))
+                ), minDrops: 2, maxDrops: 3,
+                xp: 415,
+                scaleTableWeight: (floor) =>
+                {
+                    return 0.8f + (floor.Depth - 8) * 0.4f;
+                },
+                resistances: new()
+                {
+                    { DamageType.Radiant, -10 },
+                    { DamageType.Infernal, 5 },
+                    { DamageType.Fire, 10 },
+                    { DamageType.Cold, 3 }
+                },
+                strength: 5,
+                dexterity: 7,
+                agility: 6,
+                defense: 5,
+                actual: actual //Breaks if we don't have this. It's used in dungeon generation
+            )),
+
+            //Corrupted Templar
+            new(1, (actual) => new SimpleMonster("corruptedtemplar", "Corrupted Templar", 300,
+                (Weapon)ItemList.Get("endbringer"),
+                drops: new(
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(1f, () => new("aberrantcluster", Utils.RandInt(1, 3))),
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(0.75f, () => new("platearmor"))
+                ), minDrops: 2, maxDrops: 3,
+                xp: 475,
+                scaleTableWeight: (floor) =>
+                {
+                    return 0.8f + (floor.Depth - 9) * 0.4f;
+                },
+                resistances: new()
+                {
+                    { DamageType.Radiant, -5 },
+                    { DamageType.Infernal, 5 },
+                    { DamageType.Fire, 7 },
+                    { DamageType.Cold, 7 },
+                    { DamageType.Necrotic, 7 },
+                    { DamageType.Aberrant, 15 }
+                },
+                strength: 7,
+                dexterity: 7,
+                agility: 7,
+                endurance: 7,
+                defense: 9,
+                actual: actual //Breaks if we don't have this. It's used in dungeon generation
             ))
         );
 
