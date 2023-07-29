@@ -65,6 +65,8 @@ public class Player : Creature
 
     public List<TradeOffer> tradeOffers = new();
 
+    public bool hasUsedSoulGem = false;
+
     public int coins
     {
         get

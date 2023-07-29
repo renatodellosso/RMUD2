@@ -132,6 +132,20 @@ namespace Items
                     new("aura", "Aura of Darkness", new(20, 3, 10), DamageType.Necrotic, 8, atkBonus: 18, critThreshold: 16, lifeSteal: .3f)
                 }, "A shadowy katana, slices through armor like water.", 12f, sellValue: 1000, color: "darkslategrey")
             },
+            { "realitybreaker", new Weapon("realitybreaker", "Reality Breaker", new Attack[]
+                {
+                    new("slash", "Slash", new(10, 4, 4), DamageType.Psychic, 4, atkBonus: -2, critThreshold: 16, critMult: 2.75f),
+                    new("behead", "Behead", new(8, 12, 6), DamageType.Aberrant, 8, atkBonus: -2, lifeSteal: .6f, critThreshold: 17, critMult: 2.5f),
+                    new("mindbreak", "Mindbreak", new(4, 10, 10), DamageType.Aberrant, 8, atkBonus: 10, critThreshold: 14, lifeSteal: .5f)
+                }, "A heavy greatsword, able to cut through enemies' minds.", 20f, sellValue: 1000, color: "purple")
+            },
+            { "mammoth", new Weapon("mammoth", "Mammoth", new Attack[]
+                {
+                    new("shoot", "Shoot", new(12, 6), DamageType.Cold, 5, critThreshold: 16, critMult: 3.5f, lifeSteal: .2f),
+                    new("power", "Power Shot", new(12, 6, 18), DamageType.Cold, 8, atkBonus: -4, critThreshold: 14, critMult: 4f),
+                    new("snipe", "Snipe", new(20, 4, 10), DamageType.Cold, 9, atkBonus: -6, critThreshold: 17, critMult: 2.75f)
+                }, "A greatbow. Its thick strings propel arrows through nearly anything.", 20f, sellValue: 1000, color: "mediumturquoise")
+            },
 
             //Armors
             { "peasantclothes", new Armor("peasantclothes", "Peasant Clothes", 5, 10, 0, "A ragged set of clothes.")},
@@ -412,6 +426,23 @@ namespace Items
             { DungeonTeleportationScroll.GetId(7), new DungeonTeleportationScroll(7) },
             { DungeonTeleportationScroll.GetId(8), new DungeonTeleportationScroll(8) },
             { DungeonTeleportationScroll.GetId(9), new DungeonTeleportationScroll(9) },
+            { "soulgem", new SimpleConsumable("soulgem", "Soulgem", 1f, (session) =>
+                {
+                    Player? player = session?.Player;
+
+                    if(player != null) {
+                        for(int i = 0; i < player.abilityScores.Count; i++)
+                        {
+                            player.abilityScores[player.abilityScores.Keys.ElementAt(i)] += player.hasUsedSoulGem ? 1 : 10;
+                        }
+
+                        player.hasUsedSoulGem = true;
+                        player.Update();
+                    }
+
+                }, "Attune", "A large, perfectly-cut gem. Increases all ability scores by 10 on the first use and by 1 each additional time.", sellValue: 10000, 
+                color: "fuchsia", uses: 1)
+            },
 
             //Misc Items
             { "rottenflesh", new SimpleItem("rottenflesh", "Rotten Flesh", 0.5f, "Rotten, decaying flesh, crawling with maggots. You probably shouldn't touch it.", sellValue: 1) },
@@ -442,6 +473,8 @@ namespace Items
             { "otherworldlyshard", new SimpleItem("otherwordlyshard", "Otherworldly Shard", 0.1f, "A fragment of another universe. Glimpses of other realities can be seen " +
                 "flittering in and out", sellValue: 120, color: "purple") },
             { "umbralvapor", new SimpleItem("umbralvapor", "Umbral Vapor", 0.1f, "A few wisps of barely-visible vapor", sellValue: 90, color: "darkslategrey") },
+            { "mammothsoul", new SimpleItem("mammothsoul", "Mammoth Soul", 10f, "The soul from a long-dead giant beast. You can feel its power.", sellValue: 500, color: "cyan") },
+            { "demonsoul", new SimpleItem("demonsoul", "Demon Soul", 10f, "The soul from a powerful demon. You can feel its power.", sellValue: 500, color: "darkred") },
         });
 
         public static T? Get<T>(string id) where T : Item

@@ -752,7 +752,7 @@ namespace Creatures
                 (Weapon)ItemList.Get("endbringer"),
                 drops: new(
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(1f, () => new("aberrantcluster", Utils.RandInt(1, 3))),
-                    new KeyValuePair<float, Func<ItemHolder<Item>>>(0.75f, () => new("platearmor"))
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(0.75f, () => new("platearmor")),
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(0.75f, () => new("otherwordlyshard"))
                 ), minDrops: 2, maxDrops: 3,
                 xp: 475,
@@ -907,6 +907,94 @@ namespace Creatures
                 strength: 8,
                 dexterity: 6,
                 agility: 6,
+                defense: 9,
+                actual: actual //Breaks if we don't have this. It's used in dungeon generation
+            )),
+
+             //Mammoth Giant
+             new(1, (actual) => new SimpleMonster("mammothgiant", Utils.Style("Mammoth Giant", "cyan"), 500,
+                new(new Attack[]
+                {
+                    new("crush", "Crush", new(12, 5, 12), DamageType.Bludgeoning, critThreshold: 16, critMult: 3),
+                    new("gore", "Gore", new(20, 3), DamageType.Piercing, atkBonus: -5, critThreshold: 16, critMult: 4.5f, lifeSteal: .25f),
+                    new("frostbreath", "Frostbreath", new(20, 5), DamageType.Cold, atkBonus: 10)
+                }),
+                drops: new(
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("mammothsoul"))
+                ), minDrops: 1, maxDrops: 1,
+                xp: 1000,
+                scaleTableWeight: (floor) =>
+                {
+                    return floor.Depth == 10 ? 1 : 0;
+                },
+                resistances: new()
+                {
+                    { DamageType.Necrotic, 15 },
+                    { DamageType.Fire, -5 },
+                    { DamageType.Psychic, 5 },
+                    { DamageType.Poison, 5 },
+                    { DamageType.Cold, 30 },
+                },
+                onTick: (data) =>
+                {
+                    if (data.tickCount % 1 == 0)
+                    {
+                        Location? location = data.self.Location;
+                        if (location != null)
+                        {
+                            foreach (Creature creature in location.creatures)
+                                if (creature != data.self && creature is Player)
+                                    creature.TakeDamage(10, DamageType.Cold, data.self, true);
+                        }
+                    }
+                },
+                strength: 12,
+                dexterity: 10,
+                agility: 10,
+                defense: 13,
+                actual: actual //Breaks if we don't have this. It's used in dungeon generation
+            )),
+
+             //Hell Commander
+             new(1, (actual) => new SimpleMonster("hellcommander", Utils.Style("Hell Commander", "darkred"), 400,
+                new(new Attack[]
+                {
+                    new("slash", "Slash", new(8, 8, 15), DamageType.Slashing, atkBonus: 8, critThreshold: 18, critMult: 4),
+                    new("stomp", "Stomp", new(20, 4), DamageType.Bludgeoning, atkBonus: -5, critThreshold: 16, critMult: 2.5f),
+                    new("aura", "Aura of Cinders", new(20, 4), DamageType.Infernal, atkBonus: 20, critThreshold: 8, critMult: 1.5f, lifeSteal: .4f)
+                }),
+                drops: new(
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("demonsoul"))
+                ), minDrops: 1, maxDrops: 1,
+                xp: 1000,
+                scaleTableWeight: (floor) =>
+                {
+                    return floor.Depth == 10 ? 1 : 0;
+                },
+                resistances: new()
+                {
+                    { DamageType.Necrotic, 15 },
+                    { DamageType.Fire, -5 },
+                    { DamageType.Psychic, 5 },
+                    { DamageType.Poison, 5 },
+                    { DamageType.Cold, 30 },
+                },
+                onTick: (data) =>
+                {
+                    if (data.tickCount % 1 == 0)
+                    {
+                        Location? location = data.self.Location;
+                        if (location != null)
+                        {
+                            foreach (Creature creature in location.creatures)
+                                if (creature != data.self && creature is Player)
+                                    creature.TakeDamage(10, DamageType.Cold, data.self, true);
+                        }
+                    }
+                },
+                strength: 15,
+                dexterity: 7,
+                agility: 15,
                 defense: 9,
                 actual: actual //Breaks if we don't have this. It's used in dungeon generation
             ))

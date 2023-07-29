@@ -95,6 +95,15 @@ public static class RecipeLists
         public static readonly Recipe SHADOWDEATH =
             new(new ItemHolder<Item>[] { new("longsword", 1), new("darksteel", 10), new("shadowessence", 3), new("umbralvapor", 3), new("livingstone", 3) },
                 "shadowdeath", 1, 1500);
+        public static readonly Recipe REALITY_BREAKER =
+            new(new ItemHolder<Item>[] { new("longsword", 1), new("aberrantcluster", 10), new("shadowessence", 3), new("umbralvapor", 3), new("otherworldlyshard", 3),
+                new("livingstone") }, "realitybreaker", 1, 1500);
+        public static readonly Recipe MAMMOTH =
+            new(new ItemHolder<Item>[] { new("log", 12), new("aberrantcluster", 2), new("taintedflesh", 8), new("frostshard", 5), new("ice", 10),
+                new("livingstone", 2), new("umbralvapor") }, "mammoth", 1, 1500);
+        public static readonly Recipe SOUL_GEM =
+            new(new ItemHolder<Item>[] { new("endbringer"), new("volcano"), new("shadowdeath"), new("realitybreaker"), new("mammoth"), new("mammothsoul"), new("demonsoul") }, 
+                "soulgem", 1, 5000);
     }
 
     public static readonly Recipe[] FORGE = new Recipe[]
@@ -116,8 +125,7 @@ public static class RecipeLists
         All.CLERIC_ARMOR,
         All.MIND_BREAKER,
         All.FIRE_STEEL,
-        All.FLAME_TRIDENT,
-        All.RADIANCE
+        All.FLAME_TRIDENT
     };
 
     public static readonly Recipe[] CAMPFIRE = new Recipe[]
@@ -127,7 +135,7 @@ public static class RecipeLists
         All.COAL,
         All.LESSER_HEALING_POTION,
         All.HEALING_POTION,
-        All.LESSER_STAMINA_POTION,
+        All.LESSER_STAMINA_POTION
     };
 
     public static readonly Recipe[] LOOM = new Recipe[]
@@ -148,13 +156,16 @@ public static class RecipeLists
         All.GLACIER_ARMOR,
         All.FROSTBITE,
         All.BLOODRIPPER,
-        All.SHADOWDEATH
+        All.SHADOWDEATH,
+        All.UNNATURAL_SHIELD,
+        All.MAMMOTH,
+        All.REALITY_BREAKER
     };
 
     public static readonly Recipe[] UNHOLY_ALTAR = new Recipe[]
     {
         All.ENDBRINGER,
-        All.UNNATURAL_SHIELD
+        All.SOUL_GEM
     };
 
     public static readonly Recipe[] DEMON_STATUE = new Recipe[]
@@ -166,7 +177,9 @@ public static class RecipeLists
         All.HELLSTEEL,
         All.TRUE_PYROMANCER_CLOAK,
         All.HELLPLATE,
-        All.SHADOWPLATE
+        All.SHADOWPLATE,
+        All.RADIANCE,
+        All.VOLCANO
     };
 
     static readonly Recipe[] MYSTERIOUS_TRADER = new Recipe[]
