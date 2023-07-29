@@ -376,6 +376,8 @@ namespace Items
             { "brimstone", new SimpleItem("brimstone", "Brimstone", 1.2f, "A dark reddish-black rock. Painful to the touch", sellValue: 60, color: "maroon") },
             { "hellsteel", new SimpleItem("hellsteel", "Hellsteel", 1.5f, "A molten bar of infernal steel. Hurts to touch, smell, or just generally be around", sellValue: 60, 
                 color: "maroon") },
+            { "otherworldlyshard", new SimpleItem("otherwordlyshard", "Otherworldly Shard", 0.1f, "A fragment of another universe. Glimpses of other realities can be seen " +
+                "flittering in and out", sellValue: 120, color: "purple") },
         });
 
         public static T? Get<T>(string id) where T : Item

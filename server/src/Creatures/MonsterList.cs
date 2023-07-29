@@ -712,7 +712,7 @@ namespace Creatures
                 agility: -2,
                 defense: 7,
                 actual: actual //Breaks if we don't have this. It's used in dungeon generation
-            ))
+            )),
 
             //Brimstone Cat
             new(1, (actual) => new SimpleMonster("brimstonecat", "Brimstone Cat", 220,

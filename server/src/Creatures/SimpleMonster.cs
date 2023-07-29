@@ -1,5 +1,6 @@
 ﻿using Events;
 using ItemTypes;
+using Locations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,8 @@ namespace Creatures
         new Action<OnCreatureTickEventData>? onTick;
 
         Func<Floor, float>? scaleTableWeight;
+
+        int startDepth;
 
         public SimpleMonster(string id, string name, int maxHealth, Weapon weapon, int attackInterval = 3, Table<Func<ItemHolder<Item>>>? drops = null, int minDrops = 1,
             int maxDrops = 1, int xp = 0, Action<OnCreatureTickEventData>? onTick = null, Func<Floor, float>? scaleTableWeight = null, bool actual = true,
@@ -47,6 +50,12 @@ namespace Creatures
                 { AbilityScore.Wisdom, wisdom },
                 { AbilityScore.Charisma, charisma }
             };
+
+            if (actual)
+            {
+                if(Location is DungeonLocation loc)
+                startDepth = loc.floor.position.x;
+            }
         }
 
         public override void Tick(int tickCount)
@@ -75,8 +84,8 @@ namespace Creatures
                     }
                 }
 
-                if (Utils.tickCount % 3 == 0 && Utils.RandFloat() < .05f)
-                    MoveThroughRandomExit(Config.Gameplay.MAX_ENEMIES_IN_ROOM);
+                if (Utils.tickCount % 3 == 0 && Utils.RandFloat() < .15f)
+                    MoveThroughRandomExit(Config.Gameplay.MAX_ENEMIES_IN_ROOM, l => Math.Abs(startDepth - ((DungeonLocation)l).position.x) <= 1);
             } catch(Exception e)
             {
                 Utils.Log(e.Message + "\n" + e.StackTrace);

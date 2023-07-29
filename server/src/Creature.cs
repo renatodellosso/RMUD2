@@ -181,7 +181,7 @@ public class Creature
             OnDie(new("Unkown"));
     }
 
-    public void MoveThroughRandomExit(int maxEnemies = -1)
+    public void MoveThroughRandomExit(int maxEnemies = -1, Func<Location, bool>? filter = null)
     {
         Location? location = Location;
         if (location != null)
@@ -191,20 +191,23 @@ public class Creature
                 Exit exit;
                 int tries = 0, enemyCount = 0;
 
+                Exit[] validExits = location.exits.Where(e => filter == null || filter(Location.Get(e.location))).ToArray();
+
                 do
                 {
-                    if (tries >= location.exits.Count)
+                    if (tries >= validExits.Length)
                     {
-                        Utils.Log($"Creature {name} tried to move through a random exit, but there were no valid exits");
+                        //Utils.Log($"Creature {name} tried to move through a random exit, but there were no valid exits");
                         return;
                     }
 
-                    exit = location.exits[Utils.RandInt(location.exits.Count)]; //Min defaults to 0 (we made an overload)
+                    exit = validExits[Utils.RandInt(validExits.Length)]; //Min defaults to 0 (we made an overload)
                     enemyCount = Location.Get(exit.location)?.creatures.Where(c => c is not Player).Count() ?? 0; //IEnumerable.Count requires ()
 
                     tries++;
                 } while (maxEnemies != -1 && enemyCount > maxEnemies);
 
+                Utils.Log($"Creature {name} moved from {this.location} to {exit.location}");
                 Move(exit.location);
             }
         }
