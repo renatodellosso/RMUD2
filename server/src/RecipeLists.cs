@@ -84,6 +84,17 @@ public static class RecipeLists
         public static readonly Recipe VOLCANO =
             new(new ItemHolder<Item>[] { new("hellsteel", 5), new("holyblood", 8), new("brimstone", 5), new("vampiricdust", 7) },
                 "volcano", 1, 1200);
+        public static readonly Recipe SHADOWPLATE =
+            new(new ItemHolder<Item>[] { new("darksteelbreastplate", 1), new("umbralvapor", 3), new("brimstone", 1), new("vampiricdust", 7) }, "shadowplate", 1, 1200);
+        public static readonly Recipe UNNATURAL_SHIELD =
+            new(new ItemHolder<Item>[] { new("platearmor", 1), new("umbralvapor", 3), new("brimstone", 3), new("aberrantcluster", 7), new("otherworldlyshard", 3) }, 
+                "unnaturalshield", 1, 1500);
+        public static readonly Recipe RADIANCE =
+            new(new ItemHolder<Item>[] { new("clericarmor", 1), new("holyblood", 10), new("brimstone", 3), new("spore", 7), new("livingstone", 3) },
+                "radiance", 1, 1500);
+        public static readonly Recipe SHADOWDEATH =
+            new(new ItemHolder<Item>[] { new("longsword", 1), new("darksteel", 10), new("shadowessence", 3), new("umbralvapor", 3), new("livingstone", 3) },
+                "shadowdeath", 1, 1500);
     }
 
     public static readonly Recipe[] FORGE = new Recipe[]
@@ -106,6 +117,7 @@ public static class RecipeLists
         All.MIND_BREAKER,
         All.FIRE_STEEL,
         All.FLAME_TRIDENT,
+        All.RADIANCE
     };
 
     public static readonly Recipe[] CAMPFIRE = new Recipe[]
@@ -136,11 +148,13 @@ public static class RecipeLists
         All.GLACIER_ARMOR,
         All.FROSTBITE,
         All.BLOODRIPPER,
+        All.SHADOWDEATH
     };
 
     public static readonly Recipe[] UNHOLY_ALTAR = new Recipe[]
     {
-        All.ENDBRINGER
+        All.ENDBRINGER,
+        All.UNNATURAL_SHIELD
     };
 
     public static readonly Recipe[] DEMON_STATUE = new Recipe[]
@@ -151,7 +165,8 @@ public static class RecipeLists
         All.BLOODRIPPER,
         All.HELLSTEEL,
         All.TRUE_PYROMANCER_CLOAK,
-        All.HELLPLATE
+        All.HELLPLATE,
+        All.SHADOWPLATE
     };
 
     static readonly Recipe[] MYSTERIOUS_TRADER = new Recipe[]

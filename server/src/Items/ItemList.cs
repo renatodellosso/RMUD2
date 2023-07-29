@@ -125,6 +125,13 @@ namespace Items
                     new("snipe", "Snipe", new(20, 4, 10), DamageType.Infernal, 8, atkBonus: -5, critThreshold: 17, critMult: 2.5f)
                 }, "A hot red greatbow, made for punching though armor.", 12f, sellValue: 1000, color: "maroon")
             },
+            { "shadowdeath", new Weapon("shadowdeath", "Shadowdeath", new Attack[]
+                {
+                    new("slash", "Slash", new(12, 3, 6), DamageType.Cold, 3, atkBonus: 2, lifeSteal: .3f, critThreshold: 16, critMult: 1.75f),
+                    new("impale", "Impale", new(12, 5, 12), DamageType.Necrotic, 7, atkBonus: -2, lifeSteal: .6f, critThreshold: 17, critMult: 2.5f),
+                    new("aura", "Aura of Darkness", new(20, 3, 10), DamageType.Necrotic, 8, atkBonus: 18, critThreshold: 16, lifeSteal: .3f)
+                }, "A shadowy katana, slices through armor like water.", 12f, sellValue: 1000, color: "darkslategrey")
+            },
 
             //Armors
             { "peasantclothes", new Armor("peasantclothes", "Peasant Clothes", 5, 10, 0, "A ragged set of clothes.")},
@@ -175,7 +182,8 @@ namespace Items
                     { DamageType.Necrotic, 5 },
                     { DamageType.Psychic, -1 },
                     { DamageType.Fire, 2 },
-                    { DamageType.Radiant, 5 }
+                    { DamageType.Radiant, 5 },
+                    { DamageType.Infernal, -3 }
                 }
             )},
             { "fungalarmor", new Armor("fungalarmor", "Fungal Embrace", 12, 200, 5, "A set of armor, made out of wood overtaken with fungus.",
@@ -289,6 +297,61 @@ namespace Items
                 agility: 5,
                 endurance: 3
             )},
+            { "shadowplate", new Armor("shadowplate", "Shadowplate", 5, 800, 8, "A shadowy set of light armor.",
+                color: "darkslategrey",
+                resistances: new()
+                {
+                    { DamageType.Slashing, -1 },
+                    { DamageType.Bludgeoning, 1 },
+                    { DamageType.Piercing, 1 },
+                    { DamageType.Fire, -5 },
+                    { DamageType.Infernal, 3 },
+                    { DamageType.Radiant, -5 },
+                    { DamageType.Cold, 5 }
+                },
+                dexterity: 4,
+                agility: 5,
+                endurance: 3
+            )},
+            { "unnaturalshield", new Armor("unnaturalshield", "Unnatural Shield", 12, 1000, 12, "A set of tentacled, sinewy armor.",
+                color: "purple",
+                resistances: new()
+                {
+                    { DamageType.Slashing, 4 },
+                    { DamageType.Bludgeoning, 2 },
+                    { DamageType.Piercing, 2 },
+                    { DamageType.Necrotic, 6 },
+                    { DamageType.Infernal, 6 },
+                    { DamageType.Radiant, 6 },
+                    { DamageType.Cold, 5 },
+                    { DamageType.Aberrant, 15 }
+                },
+                dexterity: 6,
+                agility: 6,
+                endurance: 3,
+                intelligence: 10,
+                wisdom: 10,
+                charisma: 3
+            )},
+            { "radiance", new Armor("radiance", "Radiance", 20, 1000, 13, "A set of divinely blessed plate armor.",
+                color: "lavenderblush",
+                resistances: new()
+                {
+                    { DamageType.Slashing, 4 },
+                    { DamageType.Bludgeoning, 2 },
+                    { DamageType.Piercing, 2 },
+                    { DamageType.Necrotic, -5 },
+                    { DamageType.Infernal, 6 },
+                    { DamageType.Radiant, 15 },
+                    { DamageType.Fire, 10 },
+                    { DamageType.Cold, 5 }
+                },
+                dexterity: 4,
+                agility: 4,
+                endurance: 7,
+                wisdom: 5,
+                charisma: 5
+            )},
 
             //Consumables
             { "ale", new SimpleConsumable("ale", "Mug of Ale", 0.5f, (session) =>
@@ -378,6 +441,7 @@ namespace Items
                 color: "maroon") },
             { "otherworldlyshard", new SimpleItem("otherwordlyshard", "Otherworldly Shard", 0.1f, "A fragment of another universe. Glimpses of other realities can be seen " +
                 "flittering in and out", sellValue: 120, color: "purple") },
+            { "umbralvapor", new SimpleItem("umbralvapor", "Umbral Vapor", 0.1f, "A few wisps of barely-visible vapor", sellValue: 90, color: "darkslategrey") },
         });
 
         public static T? Get<T>(string id) where T : Item

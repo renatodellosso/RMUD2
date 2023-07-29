@@ -13,7 +13,15 @@ public static class ReforgeList
         { "sharp", new("sharp", "Sharp", dmgBonus: 1) },
         { "precise", new("precise", "Precise", atkBonus: 1) },
         { "brutal", new("brutal", "Brutal", critMult: 1) },
-        { "devastating", new("devastating", "Devastating", critThreshold: 1) },
+        { "devastating", new("devastating", "Devastating", critThreshold: -1) },
+        { "razeredged", new("razeredged", "Razer-Edged", dmgBonus: 2) },
+        { "exacting", new("exacting", "Exacting", atkBonus: 2) },
+        { "finisher", new("finisher", "Finisher", critMult: 2) },
+        { "destroyer", new("destroyer", "Destroyer", critThreshold: -2) },
+        { "ripper", new("ripper", "Ripper", dmgBonus: 3) },
+        { "elegant", new("elegant", "Elegant", atkBonus: 3) },
+        { "obliterating", new("obliterating", "Obliterating", critMult: 3) },
+        { "groundshaking", new("groundshaking", "groundshaking", critThreshold: -3) },
 
         //Armor Reforges
         { "sturdy", new("sturdy", "Sturdy", defense: 1) },
@@ -49,7 +57,15 @@ public static class ReforgeList
         new(1, "sharp"),
         new(1, "precise"),
         new(1, "brutal"),
-        new(1, "devastating")
+        new(1, "devastating"),
+        new(0.5f, "razeredged"),
+        new(0.5f, "exacting"),
+        new(0.5f, "finisher"),
+        new(0.5f, "destroyer"),
+        new(0.25f, "ripper"),
+        new(0.25f, "elegant"),
+        new(0.25f, "obliterating"),
+        new(0.25f, "groundshaking")
     );
 
     public static readonly Table<string> ARMOR_REFORGES = new

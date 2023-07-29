@@ -659,7 +659,7 @@ namespace Creatures
                 new(new Attack[]
                 {
                     new("torch", "Torch", new(12, 3, 8), DamageType.Fire, critThreshold: 16, lifeSteal: .2f),
-                    new("infernal", "Infernal Touch", new(20, 2), DamageType.Fire, atkBonus: -5, critThreshold: 18, critMult: 3.5f),
+                    new("infernal", "Infernal Touch", new(20, 2), DamageType.Infernal, atkBonus: -5, critThreshold: 18, critMult: 3.5f),
                 }),
                 drops: new(
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(3f, () => new("ember", Utils.RandInt(1, 3))),
@@ -753,6 +753,7 @@ namespace Creatures
                 drops: new(
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(1f, () => new("aberrantcluster", Utils.RandInt(1, 3))),
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(0.75f, () => new("platearmor"))
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(0.75f, () => new("otherwordlyshard"))
                 ), minDrops: 2, maxDrops: 3,
                 xp: 475,
                 scaleTableWeight: (floor) =>
@@ -772,6 +773,140 @@ namespace Creatures
                 dexterity: 7,
                 agility: 7,
                 endurance: 7,
+                defense: 9,
+                actual: actual //Breaks if we don't have this. It's used in dungeon generation
+            )),
+
+             //Brimstone Golem
+             new(1, (actual) => new SimpleMonster("brimstonegolem", "Brimstone Golem", 300,
+                new(new Attack[] {
+                    new("slam", "Slam", new(12, 4, 5), DamageType.Bludgeoning, critThreshold: 18, critMult: 3),
+                    new("hellquake", "Hellquake", new(8, 6), DamageType.Fire, atkBonus: 12, critThreshold: 17, critMult: 3.5f, lifeSteal: .35f),
+                    new("stomp", "Stomp", new(8, 8), DamageType.Bludgeoning, atkBonus: -5, critMult: 5)
+                }),
+                drops: new(
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(2f, () => new("livingstone")),
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(2f, () => new("brimstone")),
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(1f, () => new("landslide"))
+                ), minDrops: 2, maxDrops: 3,
+                xp: 500,
+                scaleTableWeight: (floor) =>
+                {
+                    return 0.8f + (floor.Depth - 9) * 0.4f + floor.arcane - floor.holy;
+                },
+                resistances: new()
+                {
+                    { DamageType.Radiant, -10 },
+                    { DamageType.Necrotic, 10 },
+                    { DamageType.Psychic, 30 },
+                    { DamageType.Aberrant, 5 },
+                    { DamageType.Poison, 30 },
+                    { DamageType.Cold, -5 },
+                    { DamageType.Fire, 30 },
+                    { DamageType.Infernal, 30 }
+                },
+                strength: 8,
+                actual: actual //Breaks if we don't have this. It's used in dungeon generation
+            )),
+
+             //Greater Angel
+             new(1, (actual) => new SimpleMonster("greaterangel", "Greater Angel", 275,
+                new(new Attack[]
+                {
+                    new("smite", "Smite", new(10, 5), DamageType.Radiant, atkBonus: 7, critThreshold: 17, lifeSteal: .7f, dmgAbilityScore: AbilityScore.Wisdom),
+                    new("mace", "Holy Mace", new(8, 7), DamageType.Slashing, critThreshold: 18, critMult: 4),
+                }),
+                drops: new(
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("holyblood", Utils.RandInt(2, 4))),
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("mace")),
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(0.5f, () => new("clericarmor"))
+                ), minDrops: 1, maxDrops: 3,
+                xp: 500,
+                scaleTableWeight: (floor) =>
+                {
+                    return 0.8f - Math.Abs(floor.Depth - 9) * 0.3f + floor.holy;
+                },
+                resistances: new()
+                {
+                    { DamageType.Necrotic, -5 },
+                    { DamageType.Infernal, -10 },
+                    { DamageType.Radiant, 30 },
+                    { DamageType.Fire, 5 },
+                    { DamageType.Psychic, 5 },
+                    { DamageType.Poison, 5 },
+                    { DamageType.Cold, 5 }
+                },
+                strength: 10,
+                dexterity: 8,
+                agility: 8,
+                wisdom: 7,
+                defense: 8,
+                actual: actual //Breaks if we don't have this. It's used in dungeon generation
+            )),
+
+             //Silent Shadow
+             new(1, (actual) => new SimpleMonster("silentshadow", "Silent Shadow", 225,
+                new(new Attack[]
+                {
+                    new("strangle", "Strangle", new(6, 10), DamageType.Bludgeoning, atkBonus: 7, critThreshold: 17, lifeSteal: .7f, dmgAbilityScore: AbilityScore.Wisdom),
+                    new("assassinate", "Assassinate", new(12, 7), DamageType.Slashing, critThreshold: 14, critMult: 3),
+                }),
+                drops: new(
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("shadowessence", Utils.RandInt(2, 4))),
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("darksteel", Utils.RandInt(1, 3))),
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("umbralvapor", 1))
+                ), minDrops: 1, maxDrops: 3,
+                xp: 430,
+                scaleTableWeight: (floor) =>
+                {
+                    return 0.8f - Math.Abs(floor.Depth - 8) * 0.3f - floor.holy + floor.arcane;
+                },
+                resistances: new()
+                {
+                    { DamageType.Necrotic, 30 },
+                    { DamageType.Radiant, 30 },
+                    { DamageType.Fire, -5 },
+                    { DamageType.Psychic, 5 },
+                    { DamageType.Poison, 30 },
+                    { DamageType.Cold, 30 }
+                },
+                strength: 5,
+                dexterity: 12,
+                agility: 12,
+                defense: 3,
+                actual: actual //Breaks if we don't have this. It's used in dungeon generation
+            )),
+
+             //Ice Demon
+             new(1, (actual) => new SimpleMonster("icedemon", "Ice Demon", 265,
+                new(new Attack[]
+                {
+                    new("chill", "Chill", new(12, 3, 8), DamageType.Cold, critThreshold: 16, lifeSteal: .4f),
+                    new("infernal", "Infernal Touch", new(20, 2), DamageType.Infernal, atkBonus: -5, critThreshold: 18, critMult: 3.5f, lifeSteal: .25f),
+                }),
+                drops: new(
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("ice", Utils.RandInt(2, 5))),
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("frostshard", Utils.RandInt(1, 3))),
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("brimstone", 1))
+                ), minDrops: 1, maxDrops: 3,
+                xp: 450,
+                scaleTableWeight: (floor) =>
+                {
+                    return 0.8f - Math.Abs(floor.Depth - 9) * 0.3f - floor.holy;
+                },
+                resistances: new()
+                {
+                    { DamageType.Necrotic, 10 },
+                    { DamageType.Radiant, -10 },
+                    { DamageType.Fire, -10 },
+                    { DamageType.Psychic, 5 },
+                    { DamageType.Poison, 30 },
+                    { DamageType.Cold, 30 },
+                    { DamageType.Infernal, 30 }
+                },
+                strength: 8,
+                dexterity: 6,
+                agility: 6,
                 defense: 9,
                 actual: actual //Breaks if we don't have this. It's used in dungeon generation
             ))
