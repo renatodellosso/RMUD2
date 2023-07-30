@@ -22,34 +22,47 @@ namespace Menus
 
         public override void OnStart()
         {
-            Account? account = session?.Account;
-
-            if (account == null)
-                Utils.Log("Account is null!");
-            else
+            try
             {
-                session?.ClearLog();
+                Account? account = session?.Account;
 
-                session?.Log("Welcome to RMUD2!");
-                session?.Log($"Signed in as {account?.username}");
+                if (account == null)
+                    Utils.Log("Account is null!");
+                else
+                {
+                    session?.ClearLog();
 
-                if (account?.discordId == 0)
-                    session?.Log($"You have {Utils.Style("not", "maroon")} linked your Discord account. Please do so to ensure you can recover your account");
+                    session?.Log("Welcome to RMUD2!");
+                    session?.Log($"Signed in as {account?.username}");
+
+                    if (account?.discordId == 0)
+                        session?.Log($"You have {Utils.Style("not", "maroon")} linked your Discord account. Please do so to ensure you can recover your account");
+                }
+            }
+            catch (Exception ex)
+            {
+                Utils.Log(ex);
             }
         }
 
         public override Input[] GetInputs(ServerResponse response)
         {
-            List<Input> inputs = new List<Input>();
+            List<Input> inputs = new();
 
-            if (!waiting)
+            try {
+                if (!waiting)
+                {
+                    Account? account = session?.Account;
+
+                    if (account?.discordId == 0)
+                        inputs.Add(new(InputMode.Option, "linkDiscord", "Link Discord Account"));
+
+                    inputs.Add(new(InputMode.Option, "play", "Play"));
+                }
+            }
+            catch (Exception ex)
             {
-                Account? account = session?.Account;
-
-                if (account?.discordId == 0)
-                    inputs.Add(new(InputMode.Option, "linkDiscord", "Link Discord Account"));
-
-                inputs.Add(new(InputMode.Option, "play", "Play"));
+                Utils.Log(ex);
             }
 
             return inputs.ToArray();
@@ -57,13 +70,19 @@ namespace Menus
 
         public override void HandleInput(ClientAction action, ServerResponse response)
         {
-            if (action.action.Equals("linkDiscord"))
-                LinkDiscord();
-            else if (action.action.Equals("play") && !loadingIntoGame)
+            try {
+                if (action.action.Equals("linkDiscord"))
+                    LinkDiscord();
+                else if (action.action.Equals("play") && !loadingIntoGame)
+                {
+                    loadingIntoGame = true;
+                    session?.Log("Loading...");
+                    Task.Run(Play);
+                }
+            }
+            catch (Exception ex)
             {
-                loadingIntoGame = true;
-                session?.Log("Loading...");
-                Task.Run(Play);
+                Utils.Log(ex);
             }
         }
 
