@@ -75,7 +75,7 @@ public class Reforge
         if (critTheshold != 0)
             msg += $"<br>-Critical Hit Threshold: {Utils.Modifier(critTheshold)}";
         if (critMult != 0)
-            msg += $"<br>-Critical Hit Multiplier: {Utils.Percent(critMult)}";
+            msg += $"<br>-Critical Hit Multiplier: {Utils.PercentModifer(critMult)}";
         if (stamina != 0)
             msg += $"<br>-Stamin Cost: {Utils.Modifier(stamina)}";
 
