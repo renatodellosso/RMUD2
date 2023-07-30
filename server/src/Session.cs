@@ -161,10 +161,12 @@ public class Session
     private Player? GetPlayer()
     {
         if (!SignedIn) return null;
-        else if (playerId == null) playerId = Account.playerId; //We don't want to get the account unless we have to, so we save the player ID
+        else if (playerId == null) playerId = Account?.playerId ?? null; //We don't want to get the account unless we have to, so we save the player ID
 
         if(playerId != null)
             return Player.Get(playerId.Value); //We use .Value on vars with ? to get the value if it's not null
+
+        Utils.Log($"Failed to retrieve player. Player Id: {playerId}. Account Id: {accountId}");
         return null;
     }
 
