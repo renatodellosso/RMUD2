@@ -207,6 +207,8 @@ public class Player : Creature
     {
         base.CalculateStats();
 
+        tradeOffers ??= new();
+
         float totalTradeWeight = 0;
         foreach(TradeOffer offer in tradeOffers)
             totalTradeWeight += offer.item.Weight;

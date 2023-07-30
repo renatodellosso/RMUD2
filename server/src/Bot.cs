@@ -67,7 +67,7 @@ public static class Bot
                 cmd.Create(client);
         } catch (Exception e) 
         {
-            Utils.Log("Caught error creating bot slash commands: " + e.Message);
+            Utils.Log("Caught error creating bot slash commands");
             Utils.Log(e);
         }
     }
@@ -82,7 +82,8 @@ public static class Bot
             else Utils.Log("Invalid slash command");
         } catch (Exception e)
         {
-            Utils.Log($"Caught error executing command: {cmd.Data.Name}, Error: {e.Message}\n{e.StackTrace}");
+            Utils.Log($"Caught error executing command: {cmd.Data.Name}");
+            Utils.Log(e);
         }
     }
 

@@ -95,7 +95,8 @@ public static class Network
                 }
             } catch (Exception e)
             {
-                Utils.Log($"Error in handler {id}: {e.Message}\n{e.StackTrace}");
+                Utils.Log($"Error in handler {id}");
+                Utils.Log(e);
             }
 
             Thread.Sleep(Config.HANDLER_SLEEP_INTERVAL);

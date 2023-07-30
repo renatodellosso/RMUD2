@@ -63,7 +63,8 @@ namespace ItemTypes
                     }
                     catch (Exception e)
                     {
-                        Utils.Log($"Caught error equiping Equipable of type: {GetType()}. Error: {e.Message}\n{e.StackTrace}");
+                        Utils.Log($"Caught error equiping Equipable of type: {GetType()}");
+                        Utils.Log(e);
                     }
                 }
             }

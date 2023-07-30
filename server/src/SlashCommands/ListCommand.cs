@@ -54,7 +54,8 @@ namespace SlashCommands
                 await cmd.FollowupAsync(embed: embed.Build());
             } catch (Exception e)
             {
-                Utils.Log($"Caught error executing slash command: {e.Message}\n{e.StackTrace}");
+                Utils.Log($"Caught error executing slash command;");
+                Utils.Log(e);
             }
         }
     }

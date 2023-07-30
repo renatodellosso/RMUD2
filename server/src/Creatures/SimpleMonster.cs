@@ -89,7 +89,7 @@ namespace Creatures
                         Math.Abs(startDepth - ((DungeonLocation)l).position.x) <= 1);
             } catch(Exception e)
             {
-                Utils.Log(e.Message + "\n" + e.StackTrace);
+                Utils.Log(e);
             }
         }
 
