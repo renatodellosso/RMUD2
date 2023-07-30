@@ -114,8 +114,8 @@ namespace Menus
                         session.playerId = account.playerId;
                         if (session.playerId != null)
                         {
-                            Utils.Log("Session.playerId is not null");
-                            player = Player.Get((ObjectId)session.playerId);
+                            Utils.Log("Session.playerId is not null. Id: " + session.playerId);
+                            player = session.Player;
 
                             if (player != null)
                             {
