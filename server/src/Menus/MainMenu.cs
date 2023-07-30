@@ -105,26 +105,26 @@ namespace Menus
                                 else
                                 {
                                     shouldInit = true;
-                                    //Utils.Log("LocationID is null");
+                                    Utils.Log("LocationID is null");
                                     //I'm leaving the logs in here for debugging purposes and so I can see what each else is
                                 }
                             }
                             else
                             {
                                 shouldInit = true;
-                                //Utils.Log("Player is null");
+                                Utils.Log("Player is null");
                             }
                         }
                         else
                         {
                             shouldInit = true;
-                            //Utils.Log("Session playerID is null");
+                            Utils.Log("Session playerID is null");
                         }
                     }
                     else
                     {
                         shouldInit = true;
-                        //Utils.Log("Account playerID is null");
+                        Utils.Log("Account playerID is null");
                     }
 
                     if (shouldInit) InitPlayer();
@@ -148,7 +148,7 @@ namespace Menus
                             if (player.Location == null)
                                 player.location = "dungeonentrance";
 
-                            player.Location.Enter(player, null);
+                            player.Location?.Enter(player, null);
                         } catch (Exception e)
                         {
                             Utils.Log(e);

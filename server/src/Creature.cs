@@ -207,7 +207,7 @@ public class Creature
                     tries++;
                 } while (maxEnemies != -1 && enemyCount > maxEnemies);
 
-                Utils.Log($"Creature {name} moved from {this.location} to {exit.location}");
+                //Utils.Log($"Creature {name} moved from {this.location} to {exit.location}");
                 Move(exit.location);
             }
         }
