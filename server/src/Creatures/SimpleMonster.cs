@@ -85,7 +85,8 @@ namespace Creatures
                 }
 
                 if (Utils.tickCount % 3 == 0 && Utils.RandFloat() < .15f)
-                    MoveThroughRandomExit(Config.Gameplay.MAX_ENEMIES_IN_ROOM, l => Math.Abs(startDepth - ((DungeonLocation)l).position.x) <= 1);
+                    MoveThroughRandomExit(Config.Gameplay.MAX_ENEMIES_IN_ROOM, l => l is DungeonLocation &&
+                        Math.Abs(startDepth - ((DungeonLocation)l).position.x) <= 1);
             } catch(Exception e)
             {
                 Utils.Log(e.Message + "\n" + e.StackTrace);
