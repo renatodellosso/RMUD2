@@ -104,6 +104,11 @@ public static class RecipeLists
         public static readonly Recipe SOUL_GEM =
             new(new ItemHolder<Item>[] { new("endbringer"), new("volcano"), new("shadowdeath"), new("realitybreaker"), new("mammoth"), new("mammothsoul"), new("demonsoul") }, 
                 "soulgem", 1, 5000);
+        public static readonly Recipe BEASTFORM =
+            new(new ItemHolder<Item>[] { new("cloth", 10), new("taintedflesh", 15), new("darksteel", 5), new("brimstone", 2) }, "beastform", 1, 1200);
+        public static readonly Recipe SNAKE_CLOAK =
+            new(new ItemHolder<Item>[] { new("cloth", 25), new("taintedflesh", 5), new("shadowessence", 5), new("otherworldlyshard", 2) }, 
+                "snakecloak", 1, 1200);
     }
 
     public static readonly Recipe[] FORGE = new Recipe[]
@@ -144,7 +149,8 @@ public static class RecipeLists
         All.PYROMANCER_CLOAK,
         All.APPRENTICE_ROBE,
         All.JOURNEYMAN_ROBE,
-        All.SAGE_ROBE
+        All.SAGE_ROBE,
+        All.SNAKE_CLOAK
     };
 
     public static readonly Recipe[] GROVE = new Recipe[]
@@ -156,6 +162,7 @@ public static class RecipeLists
         All.GLACIER_ARMOR,
         All.FROSTBITE,
         All.BLOODRIPPER,
+        All.BEASTFORM,
         All.SHADOWDEATH,
         All.UNNATURAL_SHIELD,
         All.MAMMOTH,

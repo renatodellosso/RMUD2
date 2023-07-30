@@ -366,6 +366,28 @@ namespace Items
                 wisdom: 5,
                 charisma: 5
             )},
+            { "beastform", new Armor("beastform", "Beastform", 20, 800, 8, "The skin of an unknown creature melded with metal plates.",
+                resistances: new()
+                {
+                    { DamageType.Slashing, 2 },
+                    { DamageType.Bludgeoning, 1 },
+                    { DamageType.Piercing, 2 },
+                    { DamageType.Necrotic, 2 },
+                    { DamageType.Cold, 5 }
+                },
+                strength: 5,
+                constitution: 3,
+                endurance: 5
+            )},
+            { "snakecloak", new Armor("snakecloak", "Snake's Cloak", 5, 800, 4, "A cloak that would make a good disguise.",
+                resistances: new()
+                {
+                    { DamageType.Cold, 3 }
+                },
+                intelligence: 3,
+                wisdom: 5,
+                charisma: 5
+            )},
 
             //Consumables
             { "ale", new SimpleConsumable("ale", "Mug of Ale", 0.5f, (session) =>
@@ -426,7 +448,7 @@ namespace Items
             { DungeonTeleportationScroll.GetId(7), new DungeonTeleportationScroll(7) },
             { DungeonTeleportationScroll.GetId(8), new DungeonTeleportationScroll(8) },
             { DungeonTeleportationScroll.GetId(9), new DungeonTeleportationScroll(9) },
-            { "soulgem", new SimpleConsumable("soulgem", "Soulgem", 1f, (session) =>
+            { "soulgem", new SimpleConsumable("soulgem", "Soul Gem", 1f, (session) =>
                 {
                     Player? player = session?.Player;
 
