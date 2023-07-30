@@ -22,15 +22,20 @@ namespace Menus
 
         public override void OnStart()
         {
-            Account account = session.Account;
+            Account? account = session?.Account;
 
-            session.ClearLog();
+            if (account == null)
+                Utils.Log("Account is null!");
+            else
+            {
+                session?.ClearLog();
 
-            session.Log("Welcome to RMUD2!");
-            session.Log($"Signed in as {account.username}");
+                session?.Log("Welcome to RMUD2!");
+                session?.Log($"Signed in as {account?.username}");
 
-            if (account.discordId == 0)
-                session.Log($"You have {Utils.Style("not", "maroon")} linked your Discord account. Please do so to ensure you can recover your account");
+                if (account?.discordId == 0)
+                    session?.Log($"You have {Utils.Style("not", "maroon")} linked your Discord account. Please do so to ensure you can recover your account");
+            }
         }
 
         public override Input[] GetInputs(ServerResponse response)
@@ -39,9 +44,9 @@ namespace Menus
 
             if (!waiting)
             {
-                Account account = session.Account;
+                Account? account = session?.Account;
 
-                if (account.discordId == 0)
+                if (account?.discordId == 0)
                     inputs.Add(new(InputMode.Option, "linkDiscord", "Link Discord Account"));
 
                 inputs.Add(new(InputMode.Option, "play", "Play"));
@@ -73,26 +78,32 @@ namespace Menus
 
         void Play()
         {
+            Utils.Log("Attempting to start game...");
             try
             {
-                Account account = session.Account;
+                Account? account = session?.Account;
 
                 if (account != null)
                 {
+                    Utils.Log("Account is not null");
                     //If something is invalid here, we make a new player
-                    Player player = null; //We have to set it to null to avoid issues later
+                    Player? player = null; //We have to set it to null to avoid issues later
                     bool shouldInit = false; //This lets us make sure only one player is created
                     if (account.playerId != null)
                     {
+                        Utils.Log("Account.playerId is not null");
                         session.playerId = account.playerId;
                         if (session.playerId != null)
                         {
+                            Utils.Log("Session.playerId is not null");
                             player = Player.Get((ObjectId)session.playerId);
 
                             if (player != null)
                             {
+                                Utils.Log("Player is not null");
                                 if (player.location != null)
                                 {
+                                    Utils.Log("Player.location is not null");
                                     player.location = player.resetLocation ?? Config.Gameplay.START_LOCATION;
                                     //If the player doesn't have a reset location, set it to the respawn location
                                     player.resetLocation ??= Config.Gameplay.RESPAWN_LOCATION;
@@ -101,6 +112,7 @@ namespace Menus
                                     session.combatHandler.session = session;
 
                                     player.Update();
+                                    Utils.Log("Successfully loaded player data");
                                 }
                                 else
                                 {
@@ -129,8 +141,8 @@ namespace Menus
 
                     if (shouldInit) InitPlayer();
 
-                    account = session.Account;
-                    player = account.Player;
+                    account = session?.Account;
+                    player = account?.Player;
 
                     if (player != null)
                     {
@@ -140,8 +152,8 @@ namespace Menus
 
                         player.CalculateStats();
 
-                        session.ClearLog();
-                        session.SetMenu(new LocationMenu(session));
+                        session?.ClearLog();
+                        session?.SetMenu(new LocationMenu(session));
 
                         try
                         {
@@ -154,25 +166,27 @@ namespace Menus
                             Utils.Log(e);
                         }
                     }
-                    else session.Log(Utils.Style("Encountered an error: Player is null", "red"));
+                    else session?.Log(Utils.Style("Encountered an error: Player is null", "red"));
                 }
-                else session.Log(Utils.Style("Encountered an error: Account is null", "red"));
+                else session?.Log(Utils.Style("Encountered an error: Account is null", "red"));
             } catch (Exception ex) 
             {
                 Utils.Log(ex);
-                session.Log(Utils.Style("Encountered an uncaught error", "red"));
+                session?.Log(Utils.Style("Encountered an uncaught error", "red"));
             }
+
+            Utils.Log("Finished attempting to start game");
         }
 
         public void InitPlayer()
         {
             try
             {
-                Account account = session.Account;
+                Account? account = session?.Account;
 
                 //Account doesn't have a player, we need to make a new one
-                Utils.Log($"Creating new player for {account.username}...");
-                session.Log("Setting up new game...");
+                Utils.Log($"Creating new player for {account?.username}...");
+                session?.Log("Setting up new game...");
 
                 Player player = new(account._id)
                 {
@@ -190,18 +204,18 @@ namespace Menus
                 player.CalculateStats();
 
                 account.playerId = player._id; //Make sure to set the ID!
-                account.Update();
+                account?.Update();
 
                 session.playerId = player._id;
 
                 DB.players.InsertOne(player);
-                Utils.Log($"Finished creating new player for {account.username}");
+                Utils.Log($"Finished creating new player for {account?.username}");
                 session.Log("Finished setting up new game");
             } 
             catch(Exception e)
             {
                 Utils.Log(e);
-                session.Log(Utils.Style("Encountered an error: Error with initializing player", "red"));
+                session?.Log(Utils.Style("Encountered an error: Error with initializing player", "red"));
             }
         }
 
