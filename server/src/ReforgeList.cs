@@ -21,7 +21,7 @@ public static class ReforgeList
         { "ripper", new("ripper", "Ripper", dmgBonus: 3) },
         { "elegant", new("elegant", "Elegant", atkBonus: 3) },
         { "obliterating", new("obliterating", "Obliterating", critMult: 3) },
-        { "groundshaking", new("groundshaking", "groundshaking", critThreshold: -3) },
+        { "groundshaking", new("groundshaking", "Groundshaking", critThreshold: -3) },
 
         //Armor Reforges
         { "sturdy", new("sturdy", "Sturdy", defense: 1) },
