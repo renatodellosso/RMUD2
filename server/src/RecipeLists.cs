@@ -76,7 +76,7 @@ public static class RecipeLists
         public static readonly Recipe HELLSTEEL =
             new(new ItemHolder<Item>[] { new("firesteel", 1), new("darksteel", 2), new("holyblood", 1), new("ember", 3), new("brimstone") }, "hellsteel", 1, 80);
         public static readonly Recipe TRUE_PYROMANCER_CLOAK =
-            new(new ItemHolder<Item>[] { new("pyromancercloack", 1), new("hellsteel", 5), new("holyblood", 10), new("brimstone", 5), new("vampiricdust", 5), new("coal", 10) }, 
+            new(new ItemHolder<Item>[] { new("pyromancercloak", 1), new("hellsteel", 5), new("holyblood", 10), new("brimstone", 5), new("vampiricdust", 5), new("coal", 10) }, 
                 "truepyromancercloak", 1, 1200);
         public static readonly Recipe HELLPLATE =
             new(new ItemHolder<Item>[] { new("platearmor", 1), new("hellsteel", 7), new("holyblood", 10), new("brimstone", 5), new("vampiricdust", 5), new("aberrantcluster", 3)},
