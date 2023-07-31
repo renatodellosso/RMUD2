@@ -45,7 +45,7 @@ namespace SlashCommands
             sessions = sessions.Where(s => ((Menus.LogInMenu)s.menu).username == account.username);
             sessions = sessions.Where(s => ((Menus.LogInMenu)s.menu).passwordResetCode == cmd.Data.Options.First().Value.ToString());
 
-            Session? session = sessions.FirstOrDefault();
+            Session? session = sessions.Any() ? sessions.FirstOrDefault() : null;
             if (session == null)
             {
                 await cmd.FollowupAsync(ephemeral: true, text: "Invalid code.");
