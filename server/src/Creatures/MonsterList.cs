@@ -663,7 +663,7 @@ namespace Creatures
                 }),
                 drops: new(
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(3f, () => new("ember", Utils.RandInt(1, 3))),
-                    new KeyValuePair<float, Func<ItemHolder<Item>>>(1f, () => new("brimstone"))
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(1f, () => new("brimstone", Utils.RandInt(4)))
                 ), minDrops: 1, maxDrops: 2,
                 xp: 325,
                 scaleTableWeight: (floor) =>
@@ -692,7 +692,7 @@ namespace Creatures
                 }),
                 drops: new(
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(3f, () => new("ember", Utils.RandInt(1, 3))),
-                    new KeyValuePair<float, Func<ItemHolder<Item>>>(1f, () => new("brimstone")),
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(1f, () => new("brimstone", Utils.RandInt(4))),
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("meat")),
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(0.5f, () => new("boneclub"))
                 ), minDrops: 2, maxDrops: 3,
@@ -724,7 +724,7 @@ namespace Creatures
                 }),
                 drops: new(
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(1f, () => new("ember", Utils.RandInt(1, 3))),
-                    new KeyValuePair<float, Func<ItemHolder<Item>>>(0.75f, () => new("brimstone")),
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(0.75f, () => new("brimstone", Utils.RandInt(4))),
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("meat")),
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(1f, () => new("shadowessence"))
                 ), minDrops: 2, maxDrops: 3,
@@ -786,7 +786,7 @@ namespace Creatures
                 }),
                 drops: new(
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(2f, () => new("livingstone")),
-                    new KeyValuePair<float, Func<ItemHolder<Item>>>(2f, () => new("brimstone")),
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(2f, () => new("brimstone", Utils.RandInt(4))),
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(1f, () => new("landslide"))
                 ), minDrops: 2, maxDrops: 3,
                 xp: 500,
@@ -887,7 +887,7 @@ namespace Creatures
                 drops: new(
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("ice", Utils.RandInt(2, 5))),
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("frostshard", Utils.RandInt(1, 3))),
-                    new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("brimstone", 1))
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("brimstone", Utils.RandInt(4))
                 ), minDrops: 1, maxDrops: 3,
                 xp: 450,
                 scaleTableWeight: (floor) =>

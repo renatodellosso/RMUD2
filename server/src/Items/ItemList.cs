@@ -128,8 +128,8 @@ namespace Items
             { "shadowdeath", new Weapon("shadowdeath", "Shadowdeath", new Attack[]
                 {
                     new("slash", "Slash", new(12, 3, 6), DamageType.Cold, 3, atkBonus: 2, lifeSteal: .3f, critThreshold: 16, critMult: 1.75f),
-                    new("impale", "Impale", new(12, 5, 12), DamageType.Necrotic, 7, atkBonus: -2, lifeSteal: .6f, critThreshold: 17, critMult: 2.5f),
-                    new("aura", "Aura of Darkness", new(20, 3, 10), DamageType.Necrotic, 8, atkBonus: 18, critThreshold: 16, lifeSteal: .3f)
+                    new("true", "True Strike", new(12, 3, 12), DamageType.Necrotic, 7, atkBonus: 15, lifeSteal: .6f, critThreshold: 15, critMult: 2f),
+                    new("aura", "Aura of Darkness", new(20, 1, 4), DamageType.Necrotic, 2, atkBonus: 25, critThreshold: 16)
                 }, "A shadowy katana, slices through armor like water.", 12f, sellValue: 1000, color: "darkslategrey")
             },
             { "realitybreaker", new Weapon("realitybreaker", "Reality Breaker", new Attack[]
