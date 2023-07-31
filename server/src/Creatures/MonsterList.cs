@@ -887,7 +887,7 @@ namespace Creatures
                 drops: new(
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("ice", Utils.RandInt(2, 5))),
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("frostshard", Utils.RandInt(1, 3))),
-                    new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("brimstone", Utils.RandInt(4))
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("brimstone", Utils.RandInt(4)))
                 ), minDrops: 1, maxDrops: 3,
                 xp: 450,
                 scaleTableWeight: (floor) =>
