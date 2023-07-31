@@ -753,7 +753,7 @@ namespace Creatures
                 drops: new(
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(1f, () => new("aberrantcluster", Utils.RandInt(1, 3))),
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(0.75f, () => new("platearmor")),
-                    new KeyValuePair<float, Func<ItemHolder<Item>>>(0.75f, () => new("otherwordlyshard"))
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(0.75f, () => new("otherworldlyshard"))
                 ), minDrops: 2, maxDrops: 3,
                 xp: 475,
                 scaleTableWeight: (floor) =>
