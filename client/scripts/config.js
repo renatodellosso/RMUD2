@@ -1,6 +1,13 @@
+let getUrl = () => {
+    url = window.location.href;
+    if(url.includes("file")) return "localhost:2001"
+    if(url.includes("https")) return "https://3.215.224.108:2002"
+    return "http://3.215.224.108:2001"
+}
+
 const config = {
     //Will try to connect to localhost if running on localhost, otherwise will try to connect to the server
-    url: window.location.href.includes("file") ? "localhost:2001" : "https://3.215.224.108:2002",
+    url: getUrl(),
     heartbeatInterval: 250,
     pingRecordLength: 25
 };
