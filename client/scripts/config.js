@@ -1,6 +1,6 @@
 const config = {
     //Will try to connect to localhost if running on localhost, otherwise will try to connect to the server
-    url: "http://" + (window.location.href.includes("file") ? "localhost" : "3.215.224.108") + ":2001",
+    url: "http://" + (window.location.href.includes("file") ? "localhost" : "https://3.215.224.108") + ":2002",
     heartbeatInterval: 250,
     pingRecordLength: 25
 };
