@@ -13,12 +13,12 @@ public static class RecipeLists
         //If a recipe is infinitely repeatable (log to coal for example), it can't give XP
 
         public static readonly Recipe IRON_BAR = new(new ItemHolder<Item>[] { new("ironore", 1), new("coal", 1) }, "ironbar", 1, 5);
-        public static readonly Recipe BREASTPLATE = new("ironbar", 4, "breastplate", 1, 20);
-        public static readonly Recipe CHAINMAIL = new("ironbar", 6, "chainmail", 1, 30);
+        public static readonly Recipe BREASTPLATE = new(new ItemHolder<Item>[] { new("ironbar", 4), new("cloth", 4) }, "breastplate", 1, 20);
+        public static readonly Recipe CHAINMAIL = new(new ItemHolder<Item>[] { new("ironbar", 7), new("cloth", 4) }, "chainmail", 1, 30);
         public static readonly Recipe COOKED_MEAT = new(new ItemHolder<Item>[] { new("meat", 1), new("coal", 1) }, "cookedmeat", 1, 5);
         public static readonly Recipe GRILLED_MUSHROOM = new(new ItemHolder<Item>[] { new("mushroom", 1), new("coal", 1) }, "grilledmushroom", 1, 5);
         public static readonly Recipe COAL = new("log", 1, "coal", 1); //If we add multiple ways to get coal, maybe change this to COAL_FROM_LOG. This used to infinitely repeatable, so it can't give XP
-        public static readonly Recipe SPEAR = new(new ItemHolder<Item>[] { new("log", 1), new("ironbar", 1) }, "spear", 1, 10);
+        public static readonly Recipe SPEAR = new(new ItemHolder<Item>[] { new("log", 2), new("ironbar", 1) }, "spear", 1, 10);
         public static readonly Recipe AXE = new(new ItemHolder<Item>[] { new("log", 1), new("ironbar", 3) }, "axe", 1, 20);
         public static readonly Recipe LONGSWORD = new(new ItemHolder<Item>[] { new("log", 1), new("ironbar", 5) }, "longsword", 1, 40);
         public static readonly Recipe MACE = new("ironbar", 5, "mace", 1, 45);
