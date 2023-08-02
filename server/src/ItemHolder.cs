@@ -18,7 +18,8 @@ public class ItemHolder<T> where T : Item
         set => data["amt"] = value;
     }
 
-    public string FormattedName => ((Reforge.Get(this)?.FormattedName + " ") ?? "") + Item?.FormattedName ?? Utils.Style("ERROR", "red");
+    //I don't like the double look-up for the Reforge
+    public string FormattedName => (Reforge.Get(this) != null ? Reforge.Get(this)?.FormattedName + " " : "") + Item?.FormattedName ?? Utils.Style("ERROR", "red");
 
     public float Weight => amt * Item.Weight;
 
