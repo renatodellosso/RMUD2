@@ -18,10 +18,10 @@ public static class ReforgeList
         { "exacting", new("exacting", "Exacting", atkBonus: 2) },
         { "finisher", new("finisher", "Finisher", critMult: 2) },
         { "destroyer", new("destroyer", "Destroyer", critThreshold: -2) },
-        { "ripper", new("ripper", "Ripper", dmgBonus: 3) },
-        { "elegant", new("elegant", "Elegant", atkBonus: 3) },
-        { "obliterating", new("obliterating", "Obliterating", critMult: 3) },
-        { "groundshaking", new("groundshaking", "Groundshaking", critThreshold: -3) },
+        { "ripper", new("ripper", "Ripper", color: "aquamarine", dmgBonus: 3) },
+        { "elegant", new("elegant", "Elegant", color: "aquamarine", atkBonus: 3) },
+        { "obliterating", new("obliterating", "Obliterating", color: "aquamarine", critMult: 3) },
+        { "groundshaking", new("groundshaking", "Groundshaking", color: "aquamarine", critThreshold: -3) },
 
         //Armor Reforges
         { "sturdy", new("sturdy", "Sturdy", defense: 1) },
