@@ -1,7 +1,7 @@
 let getUrl = () => {
     url = window.location.href;
     if(url.includes("file")) return "localhost:2001"
-    if(url.includes("https")) return "https://3.215.224.108:2002"
+    if(url.includes("https")) return "https://rmud2.com/connect"
     return "http://3.215.224.108:2001"
 }
 
