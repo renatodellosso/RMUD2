@@ -279,7 +279,7 @@ namespace Items
                     { DamageType.Poison, 3 }
                 }
             )},
-            { "apprenticerobe", new Armor("apprenticerobe", "Apprentice's Robe", 5, 300, 2, "A plain brown robe, worn by apprentice scholars.",
+            { "apprenticerobe", new Armor("apprenticerobe", "Apprentice's Robe", 5, 225, 2, "A plain brown robe, worn by apprentice scholars.",
                 color: "wheat",
                 intelligence: 2,
                 wisdom: 5

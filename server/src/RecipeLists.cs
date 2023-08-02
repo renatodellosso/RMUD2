@@ -67,7 +67,7 @@ public static class RecipeLists
             new(new ItemHolder<Item>[] { new("unholyknife"), new("hereticsword"), new("mindbreaker"), new("druidaxe"), new("flametrident"), new("landslide"), new("boneclub"),
             new("frostbite"), new("mindreaper"), new("bloodripper") }, "endbringer", 1, 1000);
         public static readonly Recipe APPRENTICE_ROBE =
-            new("cloth", 15, "apprenticerobe", 1, 125);
+            new(new ItemHolder<Item>[] { new("cloth", 25), new("aberrantcluster", 3), new("holyblood", 3) }, "apprenticerobe", 1, 125);
         public static readonly Recipe JOURNEYMAN_ROBE =
             new(new ItemHolder<Item>[] { new("apprenticerobe", 1), new("spore", 8), new("vampiricdust", 4) }, "journeymanrobe", 1, 250);
         public static readonly Recipe SAGE_ROBE =
