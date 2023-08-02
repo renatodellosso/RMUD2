@@ -10,7 +10,7 @@ namespace Items
     public class SimpleItem : Item
     {
         int sellValue = 0;
-        public override int SellValue => sellValue;
+        public override int SellValue(ItemHolder<Item>? item) => sellValue;
 
         string color = "";
         public override string FormattedName => color == "" ? name : Utils.Style(name, color);

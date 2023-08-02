@@ -59,7 +59,7 @@ namespace Creatures
                         ItemHolder<Item>? item = session.Player!.inventory[int.Parse(args[1])];
                         inputs.Add(new(InputMode.Option, item.amt.ToString(), $"Max - {item.amt}"));
                         inputs.Add(new(InputMode.Text, "sell",
-                            $"How many to sell? Sell for {Utils.Coins(Utils.Round(item.Item.SellValue * session.Player.SellCut), false)} each " +
+                            $"How many to sell? Sell for {Utils.Coins(Utils.Round(item.Item.SellValue(item) * session.Player.SellCut), false)} each " +
                             $"({Utils.Coins(Utils.Round(item.SellValue * session.Player.SellCut), false)} total)"));
                     }
                 }

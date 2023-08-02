@@ -17,7 +17,7 @@ namespace ItemTypes
         Dictionary<DamageType, int> resistances = new();
 
         int sellValue = 0;
-        public override int SellValue => sellValue;
+        public override int SellValue(ItemHolder<Item>? item) => sellValue;
 
         Dictionary<AbilityScore, int> abilityScoreBonuses = new();
 

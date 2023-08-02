@@ -16,7 +16,7 @@ namespace ItemTypes
         float weight = 0;
         public virtual float Weight => weight; //Using virtual methods for stats is probably the way to go, since it allows for more adaptability
 
-        public virtual int SellValue => 0;
+        public virtual int SellValue(ItemHolder<Item>? item) => 0;
 
         public Item(string id, string name, float weight, string description = "No description provided", string color = "white")
         {
@@ -32,7 +32,7 @@ namespace ItemTypes
             int amt = (int)item.data.GetValueOrDefault("amt", 0);
 
             return $"{item.FormattedName} x{item.data["amt"]}:<br/>" +
-                $"Worth {Utils.Coins(amt * SellValue)} total, {Utils.Coins(SellValue)} each ({Utils.Coins(SellValue / Weight)}/lb.)<br>" +
+                $"Worth {Utils.Coins(amt * SellValue(item))} total, {Utils.Coins(SellValue(item))} each ({Utils.Coins(SellValue(item) / Weight)}/lb.)<br>" +
                 $"{Utils.Round(amt * Weight, 1)} lbs. total, {Weight} lbs. each<br>" +
                 $"{description}";
         }

@@ -32,7 +32,7 @@ public class Recipe : IFormattable
     { }
 
     public Recipe(string id)
-        : this("Bought", new ItemHolder<Item>("coin", ItemList.Get(id).SellValue), new ItemHolder<Item>(id, 1))
+        : this("Bought", new ItemHolder<Item>("coin", ItemList.Get(id).SellValue(null)), new ItemHolder<Item>(id, 1))
     { }
 
     public Recipe(string input, int inAmt, string output, int outAmt, int xpValue = 0)
@@ -42,7 +42,7 @@ public class Recipe : IFormattable
         : this("Crafted", input, new ItemHolder<Item>(output, outAmt), xpValue)
     { }
 
-    public Recipe(string id, float markUp) : this("Bought", new ItemHolder<Item>("coin", (int)Math.Round(ItemList.Get(id).SellValue * markUp)), new ItemHolder<Item>(id, 1))
+    public Recipe(string id, float markUp) : this("Bought", new ItemHolder<Item>("coin", (int)Math.Round(ItemList.Get(id).SellValue(null) * markUp)), new ItemHolder<Item>(id, 1))
     { }
 
 

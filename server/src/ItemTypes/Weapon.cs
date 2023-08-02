@@ -14,7 +14,7 @@ namespace ItemTypes
         public virtual Attack? Attack => attacks.Values.First();
 
         int sellValue = 0;
-        public override int SellValue => sellValue;
+        public override int SellValue(ItemHolder<Item>? item) => sellValue;
 
         protected override bool EquipInHands => true;
 

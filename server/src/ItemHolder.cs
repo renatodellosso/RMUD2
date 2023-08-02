@@ -23,7 +23,7 @@ public class ItemHolder<T> where T : Item
 
     public float Weight => amt * Item.Weight;
 
-    public int SellValue => amt * Item.SellValue;
+    public int SellValue => amt * Item.SellValue(this);
 
     public T? Item => Items.ItemList.Get<T>(id);
 
