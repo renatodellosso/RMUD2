@@ -18,7 +18,7 @@ public class ItemHolder<T> where T : Item
         set => data["amt"] = value;
     }
 
-    public string FormattedName => (Reforge.Get(this)?.FormattedName + " " ?? "") + Item?.FormattedName ?? Utils.Style("ERROR", "red");
+    public string FormattedName => ((Reforge.Get(this)?.FormattedName + " ") ?? "") + Item?.FormattedName ?? Utils.Style("ERROR", "red");
 
     public float Weight => amt * Item.Weight;
 
