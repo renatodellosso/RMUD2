@@ -20,6 +20,11 @@ namespace Locations
             safe = true;
 
             objects.Add(new WorldObjects.CraftingStation("campfire", "Campfire", id, RecipeLists.CAMPFIRE));
+
+            creatures.Add(new Creatures.SimpleNPC("firetender", "Fire Tender", "firebrick",
+                talkStart: (session) => session.Log($"The {Utils.Style("Fire Tender", "firebrick")} silently burns logs in the campfire."),
+                talkInputs: (session, menu) => new Input[] { new("leave", "Goodbye") },
+                talkHandler: (session, action, menu) => menu.state = "exit"));
         }
 
         public override void AddExits()

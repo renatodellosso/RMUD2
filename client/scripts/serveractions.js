@@ -20,7 +20,7 @@ let serverActions = {
                     shouldUpdate = true;
                     break;
                 }
-                else if(args[i].id != prevInput[i].id || args[i].text != prevInput[i].text) {
+                else if(args[i].id != prevInput[i].id || (args[i].text != prevInput[i].text && args[i].text != prevInput[i].text.substring(4))) {
                     console.log("Input IDs/text don't match, updating");
                     console.log("New input: ");
                     console.log(args[i]);
@@ -30,6 +30,20 @@ let serverActions = {
                     shouldUpdate = true;
                     break;
                 }
+            }
+        }
+
+        //Update keybinds
+        inputs = [];
+        for (let i = 0; i < args.length && i < 10; i++) {
+            if(args[i].mode == 0)
+            {
+                inputs.push(args[i].id);
+
+                let num = i + 1;
+                if (num == 10) num = 0;
+
+                args[i].text = `[${num}] ${args[i].text}`;
             }
         }
 
@@ -61,6 +75,12 @@ let serverActions = {
                     });
                 }
             };
+        }
+
+        //Undo Keybind text
+        for (let i = 0; i < args.length && i < 10; i++) {
+            if(args[i].mode == 0)
+                args[i].text = args[i].text.substring(4);
         }
 
         prevInput = args;

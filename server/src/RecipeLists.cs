@@ -109,6 +109,8 @@ public static class RecipeLists
         public static readonly Recipe SNAKE_CLOAK =
             new(new ItemHolder<Item>[] { new("cloth", 25), new("taintedflesh", 5), new("shadowessence", 5), new("otherworldlyshard", 2) }, 
                 "snakecloak", 1, 1200);
+        public static readonly Recipe REALITYSHATTER =
+            new(new ItemHolder<Item>[] { new("mindreaper", 1), new("aberrantcluster", 15), new("darksteel", 5), new("otherwordlyshard", 2) }, "realityshatter", 1, 1200);
     }
 
     public static readonly Recipe[] FORGE = new Recipe[]
@@ -186,7 +188,8 @@ public static class RecipeLists
         All.HELLPLATE,
         All.SHADOWPLATE,
         All.RADIANCE,
-        All.VOLCANO
+        All.VOLCANO,
+        All.REALITYSHATTER
     };
 
     static readonly Recipe[] MYSTERIOUS_TRADER = new Recipe[]

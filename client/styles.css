@@ -112,7 +112,10 @@ button:active {
     width: 85%;
     border-right: 1px solid white;
     padding-bottom: 0;
-    margin-bottom: 0;
+    margin-bottom: 1px;
+
+    display: flex;
+    flex-direction: column-reverse;
 }
 
 #log {
@@ -132,6 +135,7 @@ button:active {
     margin-bottom: 0;
     width: 100%;
     display: flex;
+    bottom: 0;
 }
 
 #sidebar {

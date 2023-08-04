@@ -46,7 +46,7 @@ const httpReq = (body, onReturn) => {
         console.log("Response body:");
 
         let text = await response.text();
-        console.log(await text);
+        // console.log(await text);
         let responseData = JSON.parse(text);
         console.log(responseData);
 
@@ -114,5 +114,25 @@ const textInput = (id, placeholder) => {
 
 //End of HTML Elements
 
+//Keybinds
+document.addEventListener("keyup", (event) => {
+    console.log("Received keydown event: " + event.key);
+
+    try {
+        let num = parseInt(event.key) - 1;
+
+        if (num < 0)
+            num = 9;
+
+        input = inputs[num];
+        if(input != null) {
+            console.log("Input found: " + input);
+            optionClicked(input);
+        }
+    }
+    catch(e) {
+        console.error(e);
+    }
+});
 
 console.log("Utils loaded");

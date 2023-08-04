@@ -146,6 +146,13 @@ namespace Items
                     new("snipe", "Snipe", new(20, 4, 10), DamageType.Cold, 9, atkBonus: -6, critThreshold: 17, critMult: 2.75f)
                 }, "A greatbow. Its thick strings propel arrows through nearly anything.", 20f, sellValue: 1000, color: "mediumturquoise")
             },
+            { "realityshatter", new Weapon("realityshatter", "Realityshatter", new Attack[]
+                {
+                    new("stab", "Stab", new(12, 5, 6), DamageType.Aberrant, 2, atkBonus: -2, lifeSteal: .2f),
+                    new("execute", "Execute", new(20, 2, modifier: 8), DamageType.Psychic, 9, atkBonus: 3, critThreshold: 13, lifeSteal: .3f),
+                    new("mindshatter", "Mind Shatter", new(8, 8), DamageType.Aberrant, 7, atkBonus: -3, critThreshold: 17, lifeSteal: .4f)
+                }, "A truly psychopathic knife, meant to drive victims mad.", 3f, sellValue: 1000, color: "plum")
+            },
 
             //Armors
             { "peasantclothes", new Armor("peasantclothes", "Peasant Clothes", 5, 10, 0, "A ragged set of clothes.")},

@@ -6,6 +6,7 @@ var selectedAttack = "";
 var prevTargetIds = [];
 var prevTargetNames = [];
 var prevUnavailable = 0;
+var inputs = []; //For keybinds
 
 httpReq({
     action: "init"
@@ -21,4 +22,3 @@ httpReq({
         }, config.heartbeatInterval);
     }, 500);
 });
-

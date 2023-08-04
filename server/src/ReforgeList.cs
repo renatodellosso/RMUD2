@@ -14,14 +14,17 @@ public static class ReforgeList
         { "precise", new("precise", "Precise", atkBonus: 1) },
         { "brutal", new("brutal", "Brutal", critMult: 1) },
         { "devastating", new("devastating", "Devastating", critThreshold: -1) },
+        { "draining", new("draining", "Draining", lifesteal: .1f) },
         { "razeredged", new("razeredged", "Razer-Edged", dmgBonus: 2) },
         { "exacting", new("exacting", "Exacting", atkBonus: 2) },
         { "finisher", new("finisher", "Finisher", critMult: 2) },
         { "destroyer", new("destroyer", "Destroyer", critThreshold: -2) },
+        { "vampiric", new("vampiric", "Vampiric", lifesteal: .2f) },
         { "ripper", new("ripper", "Ripper", color: "aquamarine", dmgBonus: 3) },
         { "elegant", new("elegant", "Elegant", color: "aquamarine", atkBonus: 3) },
         { "obliterating", new("obliterating", "Obliterating", color: "aquamarine", critMult: 3) },
         { "groundshaking", new("groundshaking", "Groundshaking", color: "aquamarine", critThreshold: -3) },
+        { "parasitic", new("parasitic", "Parasitic", color: "aquamarine", lifesteal: .3f) },
 
         //Armor Reforges
         { "sturdy", new("sturdy", "Sturdy", defense: 1) },

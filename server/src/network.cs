@@ -183,7 +183,7 @@ public static class Network
                         session.lastActionTime = DateTime.Now;
                         session.currentAction = action.action;
 
-                        if(action.action != "heartbeat" || Utils.tickCount % 4 == 0)
+                        //if(action.action != "heartbeat" || Utils.tickCount % 4 == 0)
                             session.logChanged = true;
 
                         if (!defaultClientActions.ContainsKey(action.action))

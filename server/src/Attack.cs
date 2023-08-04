@@ -71,6 +71,11 @@ public class Attack
         return critMult + (Reforge.Get(item)?.critMult ?? 0);
     }
 
+    float GetLifesteal(Creature? attacker, ItemHolder<Weapon>? item)
+    {
+        return lifeSteal + (Reforge.Get(item)?.lifesteal ?? 0);
+    }
+
     public int RollDamage(Creature attacker, Creature target, ItemHolder<Weapon>? item)
     {
         Die die = GetDamage(attacker, item);
@@ -93,6 +98,7 @@ public class Attack
         int roll = baseRoll + atkBonus;
         int critThreshold = GetCritThreshold(attacker, item);
         float critMult = GetCritMult(attacker, item);
+        float lifesteal = GetLifesteal(attacker, item);
 
         if (attacker is Player player)
             player.session?.Log($"{roll - atkBonus} + {atkBonus} = {roll} {(roll >= target.DodgeThreshold || baseRoll >= critThreshold ? "Hit!" : "Miss!")}");

@@ -10,7 +10,7 @@ public class Reforge
     public string FormattedName => color != "" ? Utils.Style(name, color) : name;
 
     public int atkBonus = 0, dmgBonus = 0, critTheshold = 0, defense = 0, stamina = 0;
-    public float critMult = 0;
+    public float critMult = 0, lifesteal = 0;
 
     public Dictionary<AbilityScore, int> abilityScores = new()
     {
@@ -24,7 +24,7 @@ public class Reforge
         { AbilityScore.Charisma, 0}
     };
 
-    public Reforge(string id, string name, string color = "", int atkBonus = 0, int dmgBonus = 0, int critThreshold = 0, int defense = 0, float critMult = 0, int stamina = 0,
+    public Reforge(string id, string name, string color = "", int atkBonus = 0, int dmgBonus = 0, int critThreshold = 0, int defense = 0, float critMult = 0, int stamina = 0, float lifesteal = 0,
         int strength = 0, int dexterity = 0, int constitution = 0, int agility = 0, int endurance = 0, int intelligence = 0, int wisdom = 0, int charisma = 0)
     {
         this.id = id;
@@ -37,6 +37,7 @@ public class Reforge
         this.defense = defense;
         this.critMult = critMult;
         this.stamina = stamina;
+        this.lifesteal = lifesteal;
 
         abilityScores[AbilityScore.Strength] = strength;
         abilityScores[AbilityScore.Dexterity] = dexterity;
@@ -78,6 +79,8 @@ public class Reforge
             msg += $"<br>-Critical Hit Multiplier: {Utils.PercentModifer(critMult)}";
         if (stamina != 0)
             msg += $"<br>-Stamin Cost: {Utils.Modifier(stamina)}";
+        if (lifesteal != 0)
+            msg += $"<br>-Lifesteal: {Utils.PercentModifer(lifesteal)}";
 
         if (defense != 0)
             msg += $"<br>-Defense: {Utils.Modifier(defense)}";

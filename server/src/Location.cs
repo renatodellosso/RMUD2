@@ -386,10 +386,17 @@ public abstract class Location
                     }
                     else if (stateArgs[0] == "chat")
                     {
-                        Player[] players = session.Player?.Location?.Players ?? Array.Empty<Player>();
-                        foreach(Player player in players)
-                            player.session?.Log(Utils.Dialogue(session.Player, action.action));
-                        state = "";
+                        if (Utils.IsInputSafe(action.action, false))
+                        {
+                            Player[] players = session.Player?.Location?.Players ?? Array.Empty<Player>();
+                            foreach (Player player in players)
+                                player.session?.Log(Utils.Dialogue(session.Player, action.action));
+                            state = "";
+                        }
+                        else
+                        {
+                            session.Log("Disallowed input");
+                        }
                     }
                 }
 

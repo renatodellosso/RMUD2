@@ -32,6 +32,8 @@ namespace Locations
             safe = true;
 
             creatures.Add(new Creatures.Trader("tarel", "Tarel, Shopkeeper", "What can I do for you today?", shop));
+
+            objects.Add(new WorldObjects.CraftingStation("loom", "Loom", id, RecipeLists.LOOM));
         }
 
     }

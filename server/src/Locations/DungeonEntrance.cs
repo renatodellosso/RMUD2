@@ -9,11 +9,7 @@ namespace Locations
     public class DungeonEntrance : Location
     {
 
-        protected override string Description => 
-            Utils.Style("Welcome to RMUD2!", bold: true) +
-            "<br>Thanks for playing my game. The core loop you'll need to do is explore the dungeon, kill monsters and loot their corpses, then use your loot to craft better items." +
-            "<br>You are heavily encouraged to poke around in the various menus and locations. See what you can find!" +
-            "<br><br>You are standing in a small, ruined courtyard. To the north lies two statues, one a knight and the other an unknown figure in hooded robes. " +
+        protected override string Description => "You are standing in a small, ruined courtyard. To the north lies two statues, one a knight and the other an unknown figure in hooded robes. " +
                     "Between them is a tunnel into the mountain.";
 
         public DungeonEntrance()

@@ -35,7 +35,6 @@ namespace Locations
             safe = true;
 
             objects.Add(new WorldObjects.CraftingStation("forge", "Forge", id, RecipeLists.FORGE));
-            objects.Add(new WorldObjects.CraftingStation("loom", "Loom", id, RecipeLists.LOOM));
             objects.Add(new WorldObjects.Anvil(this));
 
             creatures.Add(new Creatures.Trader("daes", "Daes, Smith", "'Ello", shop));

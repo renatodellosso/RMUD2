@@ -8,9 +8,10 @@ using System.Drawing;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-public static class Utils
+public static partial class Utils
 {
 
     public static string Log(string msg)
@@ -194,15 +195,26 @@ public static class Utils
 
     //End formatting methods
 
+    [GeneratedRegex(@"(<([^>]+)>)")] //@ before a string mean literal interpretation (no escape characters)
+    private static partial Regex HTMLRegex();
+
     /// <summary>
     /// Checks if the input contains malicious text. NOT IMPLEMENTED YET
     /// </summary>
     /// <param name="text">The text to scan</param>
     /// <returns>Whether the text is safe or not</returns>
-    public static bool IsInputSafe(string text)
+    public static bool IsInputSafe(string text, bool strict = true)
     {
-        if (text.Contains(' ')) return false;
-        else if (text.Contains("<script")) return false;
+        Regex htmlRegex = HTMLRegex();
+
+        if (strict)
+        {
+            if (text.Length > 30) return false;
+            if (text.Contains(' ')) return false;
+        }
+
+        if (text.Length > 200) return false;
+        if(htmlRegex.IsMatch(text)) return false;
 
         return true;
     }
@@ -411,7 +423,7 @@ public static class Utils
 
         double ramUsedGB = (double)ramUsed / 1000000000;
 
-        int ticksTillDungeonReset = Config.RESET_DUNGEON_AFTER_TICKS - (tickCount % Config.RESET_DUNGEON_AFTER_TICKS) - 1;
+        int ticksTillDungeonReset = Config.RESET_DUNGEON_AFTER_TICKS - tickCount % Config.RESET_DUNGEON_AFTER_TICKS - 1;
         if (Config.RESET_DUNGEON_NOTIFICATION_POINTS.Contains(ticksTillDungeonReset))
         {
             Log("Notifying players of dungeon reset...");
