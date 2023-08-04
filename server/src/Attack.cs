@@ -172,7 +172,7 @@ public class Attack
         msg += $" Crits on a roll of {critThreshold}+ for {Math.Round(critMult, 1)}x damage.";
         
         if(lifeSteal > 0)
-            msg += $" {Utils.Percent(lifeSteal)} lifesteal.";
+            msg += $" {Utils.Percent(GetLifesteal(creature, item))} lifesteal.";
 
         return msg;
     }
