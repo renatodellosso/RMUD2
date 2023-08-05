@@ -377,6 +377,12 @@ public static partial class Utils
             OnTick += player.Tick;
     }
 
+    public static void AddLocationToOnTick(Location location)
+    {
+        if (!OnTick?.GetInvocationList().Where(c => c.Target == location).Any() ?? false)
+            OnTick += location.OnTick;
+    }
+
     public static void RemoveDungeonCreatures()
     {
         Log("Removing dungeon inhabitants from OnTick...");
@@ -434,6 +440,8 @@ public static partial class Utils
         if(ticksTillDungeonReset == 0)
             Dungeon.Reset();
 
+        RemoveDuplicateSessions();
+
         Log($"Tick #{tickCount} complete. Took {elapsedMs}ms. RAM Usage: {Round(ramUsedGB, 3)} GB. Regenerating Dungeon in {ticksTillDungeonReset} ticks");
 
         tickCount++;
@@ -484,6 +492,27 @@ public static partial class Utils
                     Log(e);
                 }
             }
+        }
+    }
+
+    public static void RemoveDuplicateSessions()
+    {
+        HashSet<ObjectId> accountsFound = new();
+        HashSet<Session> sessions = new();
+
+        foreach(Session session in Session.sessions.Values)
+        {
+            if(session.accountId == null || !accountsFound.Contains(session.accountId.Value))
+            {
+                if(session.accountId != null) accountsFound.Add(session.accountId.Value);
+                sessions.Add(session);
+            }
+        }
+            
+        Session.sessions.Clear();
+        foreach(Session session in sessions)
+        {
+            Session.sessions.Add(session.id.Value, session);
         }
     }
 

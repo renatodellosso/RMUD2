@@ -107,31 +107,35 @@ const button = (id, text, selected = false, unavailable = false) => {
 }
 
 const textInput = (id, placeholder) => {
-    let input = `<form id=${id}><input id="${id}Text" type="${secret ? "password" : "text"}" placeholder="${placeholder}" tabindex="0"></form>`;
+    let input = `<form id=${id}><input class="input" id="${id}Text" type="${secret ? "password" : "text"}" placeholder="${placeholder}" tabindex="0"></form>`;
 
     return input;
 }
 
 //End of HTML Elements
 
+var isTyping = false;
+
 //Keybinds
 document.addEventListener("keyup", (event) => {
-    console.log("Received keydown event: " + event.key);
+    console.log("Received keydown event: " + event.key + ", IsTyping: " + isTyping);
 
-    try {
-        let num = parseInt(event.key) - 1;
+    if(!isTyping) {
+        try {
+            let num = parseInt(event.key) - 1;
 
-        if (num < 0)
-            num = 9;
+            if (num < 0)
+                num = 9;
 
-        input = inputs[num];
-        if(input != null) {
-            console.log("Input found: " + input);
-            optionClicked(input);
+            input = inputs[num];
+            if(input != null) {
+                console.log("Input found: " + input);
+                optionClicked(input);
+            }
         }
-    }
-    catch(e) {
-        console.error(e);
+        catch(e) {
+            console.error(e);
+        }
     }
 });
 

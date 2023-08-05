@@ -55,6 +55,7 @@ public abstract class Location
     public static void Add(Location location)
     {
         locations.TryAdd(location.id, location);
+        Utils.AddLocationToOnTick(location);
     }
 
     //Actual class data below
@@ -481,6 +482,19 @@ public abstract class Location
     {
         foreach (Player player in Players)
             player.session?.Log(msg);
+    }
+
+    /// <summary>
+    /// Gets added to Utils.OnTick automatically when we register the location
+    /// </summary>
+    public virtual void OnTick(int tickCount)
+    {
+        IEnumerable<Player> missingPlayers = Players.Where(p => p.location != id);
+        foreach (Player player in missingPlayers)
+        {
+            creatures.Remove(player);
+            Utils.Log($"Removed player {player.name} from room they were not in");
+        }
     }
 
 }

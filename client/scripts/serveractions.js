@@ -68,10 +68,18 @@ let serverActions = {
                     
                     let inputElement = document.getElementById(arg.id);
                     document.getElementById(arg.id + "Text").focus(); //Focus on the input element, so the user can automatically types
+                    
                     inputElement.addEventListener("submit", (event) => {
                         event.preventDefault();
                         inputSubmitted(arg.id);
                         return false;
+                    });
+                    
+                    inputElement.addEventListener("keydown", (e) => {
+                        isTyping = true;
+                        setTimeout(() => {
+                            isTyping = false;
+                        }, 1000);
                     });
                 }
             };
