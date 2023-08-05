@@ -17,7 +17,8 @@ public static class Bot
         { "list", new SlashCommands.ListCommand() },
         { "link", new SlashCommands.LinkCommand() },
         { "user", new SlashCommands.UserCommand() },
-        { "reset", new SlashCommands.ResetCommand() }
+        { "reset", new SlashCommands.ResetCommand() },
+        { "leaderboard", new SlashCommands.LeaderboardCommand() }
     };
 
     public static async void Init()

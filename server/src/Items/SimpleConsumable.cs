@@ -15,7 +15,7 @@ namespace Items
         protected Action<Session>? onUse;
 
         int sellValue = 1;
-        public override int SellValue(ItemHolder<Item>? item) => (int)(sellValue * (uses > 0 && item != null ? (float)item.data["uses"] / uses : 1));
+        public override int SellValue(ItemHolder<Item>? item) => (int)(sellValue * (uses > 0 && item != null ? (int)item.data["uses"] / uses : 1));
 
         int uses = 1; //Set to -1 for infinite uses
 

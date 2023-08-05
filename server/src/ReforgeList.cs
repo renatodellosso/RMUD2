@@ -61,14 +61,17 @@ public static class ReforgeList
         new(1, "precise"),
         new(1, "brutal"),
         new(1, "devastating"),
+        new(1, "draining"),
         new(0.5f, "razeredged"),
         new(0.5f, "exacting"),
         new(0.5f, "finisher"),
         new(0.5f, "destroyer"),
+        new(0.5f, "vampiric"),
         new(0.25f, "ripper"),
         new(0.25f, "elegant"),
         new(0.25f, "obliterating"),
-        new(0.25f, "groundshaking")
+        new(0.25f, "groundshaking"),
+        new(0.25f, "parasitic")
     );
 
     public static readonly Table<string> ARMOR_REFORGES = new

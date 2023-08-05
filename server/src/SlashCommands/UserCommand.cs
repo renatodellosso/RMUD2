@@ -54,9 +54,9 @@ namespace SlashCommands
                     embed.Description += $"\n\nMax HP: {player.MaxHealth}";
                     embed.Description += $"\nDT: {player.DodgeThreshold}";
 
-                    embed.Description += $"\n\nMain Hand: {player.mainHand?.Item?.name ?? "Empty"}";
-                    embed.Description += $"\nOff Hand: {player.offHand?.Item?.name ?? "Empty"}";
-                    embed.Description += $"\nArmor: {player.armor?.Item?.name ?? "None"}";
+                    embed.Description += $"\n\nMain Hand: {player.mainHand?.UnformattedName?? "Empty"}";
+                    embed.Description += $"\nOff Hand: {player.offHand?.UnformattedName ?? "Empty"}";
+                    embed.Description += $"\nArmor: {player.armor?.UnformattedName ?? "None"}";
 
                     embed.Description += $"\n\nCoins: {Utils.Format(player.coins)}";
 
