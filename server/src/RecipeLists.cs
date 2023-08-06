@@ -128,9 +128,9 @@ public static class RecipeLists
         public static readonly Recipe SOUL_COIN_2_4 =
             new(new ItemHolder<Item>[] { new("soulcoin1"), new("ember", 6) }, "soulcoin2", 1, 600);
         public static readonly Recipe SOUL_COIN_3_1 =
-            new(new ItemHolder<Item>[] { new("soulcoin2", 3), new("mammothsoul") }, "soulcoin3", 3, 1800);
+            new(new ItemHolder<Item>[] { new("soulcoin2", 3), new("mammothsoul") }, "soulcoin3", 3, 1000);
         public static readonly Recipe SOUL_COIN_3_2 =
-            new(new ItemHolder<Item>[] { new("soulcoin2", 3), new("demonsoul") }, "soulcoin3", 3, 1800);
+            new(new ItemHolder<Item>[] { new("soulcoin2", 3), new("demonsoul") }, "soulcoin3", 3, 1000);
     }
 
     public static readonly Recipe[] FORGE = new Recipe[]

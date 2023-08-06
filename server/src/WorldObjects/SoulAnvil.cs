@@ -81,7 +81,7 @@ namespace WorldObjects
 
                             for(int i = 0; i < tierNum; i++)
                             {
-                                if(state == "armor")
+                                if(state.EndsWith("armor"))
                                     reforges.Add(ReforgeList.SOUL_ARMOR_REFORGES.GetWithWeight());
                                 else
                                     reforges.Add(ReforgeList.SOUL_WEAPON_REFORGES.GetWithWeight());

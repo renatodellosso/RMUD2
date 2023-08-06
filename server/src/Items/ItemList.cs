@@ -505,8 +505,8 @@ namespace Items
             { "mammothsoul", new SimpleItem("mammothsoul", "Mammoth Soul", 10f, "The soul from a long-dead giant beast. You can feel its power.", sellValue: 500, color: "cyan") },
             { "demonsoul", new SimpleItem("demonsoul", "Demon Soul", 10f, "The soul from a powerful demon. You can feel its power.", sellValue: 500, color: "darkred") },
             { "soulcoin1", new SimpleItem("soulcoin1", "Soul Coin (Weak)", 0.1f, "A warm, burnt-red coin, infused with a soul.", sellValue: 500, color: "darkred") },
-            { "soulcoin2", new SimpleItem("soulcoin2", "Soul Coin (Moderate)", 0.1f, "A warm, burnt-purple coin, infused with a soul.", sellValue: 1500, color: "darkmagenta") },
-            { "soulcoin3", new SimpleItem("soulcoin3", "Soul Coin (Strong)", 0.1f, "A burnt-blue coin, infused with a soul so strong the air around it vibrates.", sellValue: 5000, 
+            { "soulcoin2", new SimpleItem("soulcoin2", "Soul Coin (Moderate)", 0.1f, "A warm, burnt-purple coin, infused with a soul.", sellValue: 600, color: "darkmagenta") },
+            { "soulcoin3", new SimpleItem("soulcoin3", "Soul Coin (Strong)", 0.1f, "A burnt-blue coin, infused with a soul so strong the air around it vibrates.", sellValue: 700, 
                 color: "darkblue") },
         });
 
