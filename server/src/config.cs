@@ -73,7 +73,7 @@ static class Config
         public const int BASE_STAMINA = 5;
         public const int STAMINA_PER_END = 1;
         public const int BASE_STAMINA_REGEN = 1;
-        public const float STAMINA_REGEN_PER_EVERY_OTHER_AGI = .05f;
+        public const float STAMINA_REGEN_PER_EVERY_OTHER_AGI = .2f;
         public const float ENCUMBRANCE_STAMINA_REGEN_REDUCTION_PER_LB = .05f;
 
         public const float XP_PER_WIS = .03f;

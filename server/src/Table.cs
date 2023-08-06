@@ -72,6 +72,21 @@ public class Table<T>
         return contents.First().Value;
     }
 
+    public KeyValuePair<float, T> GetWithWeight()
+    {
+        //Loop through each item in contents, keeping track of how many we've searched so far. If searched + the current item's key pass id, return the value
+        float id = Utils.RandFloat(0, total), searched = 0;
+
+        foreach (KeyValuePair<float, T> pair in contents)
+        {
+            if (id <= searched + pair.Key)
+                return pair;
+            searched += pair.Key;
+        }
+
+        return contents.First();
+    }
+
     /// <summary>
     /// Applies an action to each item in the table
     /// </summary>

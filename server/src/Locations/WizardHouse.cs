@@ -30,6 +30,9 @@ namespace Locations
             safe = true;
 
             creatures.Add(new Creatures.Trader("wizard", "Aelades, Wizard", "What brings you here?", SHOP, "purple"));
+
+            objects.Add(new WorldObjects.CraftingStation("soulfurnace", Utils.Style("Soul Furnace", "darkred"), id, RecipeLists.SOUL_FURNACE));
+            objects.Add(new WorldObjects.SoulAnvil(this));
         }
 
     }

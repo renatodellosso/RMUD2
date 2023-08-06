@@ -111,6 +111,26 @@ public static class RecipeLists
                 "snakecloak", 1, 1200);
         public static readonly Recipe REALITYSHATTER =
             new(new ItemHolder<Item>[] { new("mindreaper", 1), new("aberrantcluster", 15), new("umbralvapor", 4), new("hellsteel", 5), new("otherwordlyshard", 4) }, "realityshatter", 1, 1200);
+        public static readonly Recipe SOUL_COIN_1_1 =
+            new(new ItemHolder<Item>[] { new("coin", ItemList.Get("soulcoin1").SellValue(null)), new("holyblood", 3) }, "soulcoin1", 1, 200);
+        public static readonly Recipe SOUL_COIN_1_2 =
+            new(new ItemHolder<Item>[] { new("coin", ItemList.Get("soulcoin1").SellValue(null)), new("aberrantcluster", 3) }, "soulcoin1", 1, 200);
+        public static readonly Recipe SOUL_COIN_1_3 =
+            new(new ItemHolder<Item>[] { new("coin", ItemList.Get("soulcoin1").SellValue(null)), new("taintedflesh", 3) }, "soulcoin1", 1, 200);
+        public static readonly Recipe SOUL_COIN_1_4 =
+            new(new ItemHolder<Item>[] { new("coin", ItemList.Get("soulcoin1").SellValue(null)), new("shadowessence", 3) }, "soulcoin1", 1, 200);
+        public static readonly Recipe SOUL_COIN_2_1 =
+            new(new ItemHolder<Item>[] { new("soulcoin1"), new("vampiricdust", 6) }, "soulcoin2", 1, 600);
+        public static readonly Recipe SOUL_COIN_2_2 =
+            new(new ItemHolder<Item>[] { new("soulcoin1"), new("spore", 6) }, "soulcoin2", 1, 600);
+        public static readonly Recipe SOUL_COIN_2_3 =
+            new(new ItemHolder<Item>[] { new("soulcoin1"), new("shadowessence", 6) }, "soulcoin2", 1, 600);
+        public static readonly Recipe SOUL_COIN_2_4 =
+            new(new ItemHolder<Item>[] { new("soulcoin1"), new("ember", 6) }, "soulcoin2", 1, 600);
+        public static readonly Recipe SOUL_COIN_3_1 =
+            new(new ItemHolder<Item>[] { new("soulcoin2", 3), new("mammothsoul") }, "soulcoin3", 3, 1800);
+        public static readonly Recipe SOUL_COIN_3_2 =
+            new(new ItemHolder<Item>[] { new("soulcoin2", 3), new("demonsoul") }, "soulcoin3", 3, 1800);
     }
 
     public static readonly Recipe[] FORGE = new Recipe[]
@@ -190,6 +210,20 @@ public static class RecipeLists
         All.RADIANCE,
         All.VOLCANO,
         All.REALITYSHATTER
+    };
+
+    public static readonly Recipe[] SOUL_FURNACE = new Recipe[]
+    {
+        All.SOUL_COIN_1_1,
+        All.SOUL_COIN_1_2,
+        All.SOUL_COIN_1_3,
+        All.SOUL_COIN_1_4,
+        All.SOUL_COIN_2_1,
+        All.SOUL_COIN_2_2,
+        All.SOUL_COIN_2_3,
+        All.SOUL_COIN_2_4,
+        All.SOUL_COIN_3_1,
+        All.SOUL_COIN_3_2
     };
 
     static readonly Recipe[] MYSTERIOUS_TRADER = new Recipe[]

@@ -130,7 +130,10 @@ public class Session
                 else if (player.stamina < max * .75) color = "yellow";
                 text.Add(Utils.Style($"Stamina: {player.stamina}/{player.MaxStamina}<br>", color));
 
-                text.Add($"Money: {Utils.Coins(player.coins)}");
+                int vaultCoins = player.vault != null && player.vault.Where(i => i.id == "coin").Any() ? player.vault.Where(i => i.id == "coin").First().amt : 0;
+                text.Add($"Money: {Utils.Coins(player.coins)}{(vaultCoins > 0 ? $" ({Utils.Coins(vaultCoins)} in vault)" : "")}");
+
+                text.Add($"Crafting from {(player.craftFromVault ? "vault" : "inventory")}");
 
                 Location? location = player.Location;
                 if (location != null)

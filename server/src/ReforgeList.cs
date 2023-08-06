@@ -53,6 +53,40 @@ public static class ReforgeList
         { "fine", new("fine", "Fine", charisma: 1) },
         { "ornate", new("ornate", "Ornate", charisma: 3) },
         { "exquisite", new("exquisite", "Exquisite", color: "aquamarine", charisma: 6) },
+
+        //Soul Weapon Reforges
+        { "infusedweapon", new("infusedweapon", "Infused", color: "darkred", atkBonus: 2, dmgBonus: 2, critThreshold: -1, critMult: .5f) },
+        { "rending", new("rending", "Rending", color: "darkred", atkBonus: 2, dmgBonus: 3, critThreshold: -2, critMult: 1f) },
+        { "soulrend", new("soulrend", "Soulrend", color: "darkmagenta", atkBonus: 2, dmgBonus: 3, critThreshold: -3, critMult: 2f) },
+        { "soulbreaker", new("soulbreaker", "Soulbreaker", color: "darkblue", atkBonus: 2, dmgBonus: 4, critThreshold: -4, critMult: 3f) },
+        { "leeching", new("leeching", "Leeching", color : "darkred", atkBonus : 2, dmgBonus : 2, critThreshold : -1, critMult : .5f, lifesteal: .2f) },
+        { "soulsnatcher", new("soulsnatcher", "Soul Snatcher", color : "darkmagenta", atkBonus : 3, dmgBonus : 2, critThreshold : -1, critMult : .5f, lifesteal: .3f) },
+        { "soulstealer", new("soulstealer", "Soul Stealer", color : "darkblue", atkBonus : 4, dmgBonus : 2, critThreshold : -1, critMult : .5f, lifesteal: .4f) },
+        { "seeking", new("seeking", "Seeking", color: "darkred", atkBonus: 4, dmgBonus: 2, critThreshold: -2, critMult: .5f) },
+        { "forseeing", new("forseeing", "Forseeing", color: "darkmagenta", atkBonus: 7, dmgBonus: 2, critThreshold: -3, critMult: .5f) },
+        { "inevitable", new("inevitable", "Inevitable", color: "darkblue", atkBonus: 10, dmgBonus: 2, critThreshold: -5, critMult: .5f) },
+
+        //Soul Armor Reforges
+        { "infusedarmor", new("infusedarmor", "Infused", color: "darkred", defense: 2, strength: 2, dexterity: 2, constitution: 2, agility: 2, endurance: 2, intelligence: 2, wisdom: 2,
+            charisma: 2) },
+        { "soulshield", new("soulshield", "Soulshield", color: "darkred", defense: 3, strength: 2, dexterity: 2, constitution: 3, agility: 3, endurance: 2, intelligence: 2, wisdom: 2,
+            charisma: 2) },
+        { "soulguard", new("soulguard", "Soulguard", color: "darkmagenta", defense: 5, strength: 2, dexterity: 2, constitution: 5, agility: 5, endurance: 2, intelligence: 2, wisdom: 2,
+            charisma: 2) },
+        { "soullock", new("soullock", "Soullock", color: "darkblue", defense: 7, strength: 2, dexterity: 2, constitution: 7, agility: 7, endurance: 2, intelligence: 2, wisdom: 2,
+            charisma: 2) },
+        { "vastmind", new("vastmind", "Vastmind", color: "darkred", defense: 2, strength: 2, dexterity: 2, constitution: 2, agility: 2, endurance: 2, intelligence: 3, wisdom: 3,
+            charisma: 3) },
+        { "truemind", new("truemind", "Truemind", color: "darkmagenta", defense: 2, strength: 2, dexterity: 2, constitution: 2, agility: 2, endurance: 2, intelligence: 5, wisdom: 5,
+            charisma: 5) },
+        { "endlessmind", new("endlessmind", "Endlessmind", color: "darkblue", defense: 2, strength: 2, dexterity: 2, constitution: 2, agility: 2, endurance: 2, intelligence: 7, wisdom: 7,
+            charisma: 7) },
+        { "rampage", new("rampage", "Rampage", color: "darkred", defense: 3, strength: 3, dexterity: 3, constitution: 3, agility: 3, endurance: 3, intelligence: 2, wisdom: 2,
+            charisma: 2) },
+        { "unstoppable", new("unstoppable", "Unstoppable", color: "darkmagenta", defense: 4, strength: 4, dexterity: 4, constitution: 4, agility: 4, endurance: 4, intelligence: 2, wisdom: 2,
+            charisma: 2) },
+        { "bloodbathed", new("bloodbathed", "Bloodbathed", color: "darkblue", defense: 5, strength: 5, dexterity: 5, constitution: 5, agility: 5, endurance: 5, intelligence: 2, wisdom: 2,
+            charisma: 2) },
     };
 
     public static readonly Table<string> WEAPON_REFORGES = new
@@ -100,6 +134,31 @@ public static class ReforgeList
         new(1, "fine"),
         new(0.5f, "ornate"),
         new(0.25f, "exquisite")
+    );
+
+    public static readonly Table<string> SOUL_WEAPON_REFORGES = new
+    (
+        new(1, "infusedweapon"),
+        new(1f, "leeching"),
+        new(0.4f, "soulsnatcher"),
+        new(0.15f, "soulstealer"),
+        new(1f, "rending"),
+        new(0.4f, "soulrend"),
+        new(0.15f, "soulbreaker"),
+        new(1f, "seeking"),
+        new(0.4f, "soulseeker"),
+        new(0.15f, "soulfinder")
+    );
+
+    public static readonly Table<string> SOUL_ARMOR_REFORGES = new
+    (
+        new(1, "infusedarmor"),
+        new(1f, "soulshield"),
+        new(0.4f, "soulguard"),
+        new(0.15f, "soullock"),
+        new(1f, "vastmind"),
+        new(0.4f, "truemind"),
+        new(0.15f, "endlessmind")
     );
 
 }
