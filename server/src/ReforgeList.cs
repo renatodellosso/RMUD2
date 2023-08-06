@@ -69,6 +69,10 @@ public static class ReforgeList
         //Soul Armor Reforges
         { "infusedarmor", new("infusedarmor", "Infused", color: "darkred", defense: 2, strength: 2, dexterity: 2, constitution: 2, agility: 2, endurance: 2, intelligence: 2, wisdom: 2,
             charisma: 2) },
+        { "potent", new("potent", "Potent", color: "darkmagenta", defense: 4, strength: 3, dexterity: 3, constitution: 3, agility: 3, endurance: 3, intelligence: 3, wisdom: 3,
+            charisma: 3) },
+        { "pure", new("pure", "Pure", color: "darkblue", defense: 5, strength: 4, dexterity: 4, constitution: 4, agility: 4, endurance: 4, intelligence: 4, wisdom: 4,
+            charisma: 4) },
         { "soulshield", new("soulshield", "Soulshield", color: "darkred", defense: 3, strength: 2, dexterity: 2, constitution: 3, agility: 3, endurance: 2, intelligence: 2, wisdom: 2,
             charisma: 2) },
         { "soulguard", new("soulguard", "Soulguard", color: "darkmagenta", defense: 5, strength: 2, dexterity: 2, constitution: 5, agility: 5, endurance: 2, intelligence: 2, wisdom: 2,
@@ -153,6 +157,8 @@ public static class ReforgeList
     public static readonly Table<string> SOUL_ARMOR_REFORGES = new
     (
         new(1, "infusedarmor"),
+        new(0.4f, "potent"),
+        new(0.15f, "pure"),
         new(1f, "soulshield"),
         new(0.4f, "soulguard"),
         new(0.15f, "soullock"),
