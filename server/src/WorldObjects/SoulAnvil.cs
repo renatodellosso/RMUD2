@@ -87,7 +87,15 @@ namespace WorldObjects
                                     reforges.Add(ReforgeList.SOUL_WEAPON_REFORGES.GetWithWeight());
                             }
 
-                            string reforge = reforges.OrderByDescending(r => r.Key).Last().Value;
+                            reforges = reforges.OrderByDescending(r => r.Key).ToList();
+
+                            string msg = "You rolled: ";
+                            foreach(KeyValuePair<float, string> r in reforges)
+                                msg += $"{Reforge.Get(r.Value)?.FormattedName}, ";
+                            msg = msg[..^2]; //Remove last comma and space
+                            session.Log(msg);
+
+                            string reforge = reforges.Last().Value;
 
                             //Reforge overviews start with a line break
                             session.Log($"You reforged your {item.FormattedName} to {Reforge.Get(reforge)?.FormattedName}.{Reforge.Get(reforge)?.Overview()}");
