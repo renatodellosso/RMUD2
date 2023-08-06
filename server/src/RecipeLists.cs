@@ -110,7 +110,7 @@ public static class RecipeLists
             new(new ItemHolder<Item>[] { new("cloth", 25), new("taintedflesh", 5), new("shadowessence", 5), new("otherworldlyshard", 2) }, 
                 "snakecloak", 1, 1200);
         public static readonly Recipe REALITYSHATTER =
-            new(new ItemHolder<Item>[] { new("mindreaper", 1), new("aberrantcluster", 15), new("umbralvapor", 4), new("hellsteel", 5), new("otherwordlyshard", 4) }, "realityshatter", 1, 1200);
+            new(new ItemHolder<Item>[] { new("mindreaper", 1), new("aberrantcluster", 15), new("umbralvapor", 4), new("hellsteel", 5), new("otherworldlyshard", 4) }, "realityshatter", 1, 1200);
         public static readonly Recipe SOUL_COIN_1_1 =
             new(new ItemHolder<Item>[] { new("coin", ItemList.Get("soulcoin1").SellValue(null)), new("holyblood", 3) }, "soulcoin1", 1, 200);
         public static readonly Recipe SOUL_COIN_1_2 =
