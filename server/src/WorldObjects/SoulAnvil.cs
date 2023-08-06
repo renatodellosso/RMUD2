@@ -92,7 +92,7 @@ namespace WorldObjects
                             //Reforge overviews start with a line break
                             session.Log($"You reforged your {item.FormattedName} to {Reforge.Get(reforge)?.FormattedName}.{Reforge.Get(reforge)?.Overview()}");
 
-                            if (action.action == "armor") //If item is the armor, we'll have casted it, which removes the reference to the actual armor
+                            if (state.EndsWith("armor")) //If item is the armor, we'll have casted it, which removes the reference to the actual armor
                                 player.armor.data["reforge"] = reforge;
                             else item.data["reforge"] = reforge;
 
