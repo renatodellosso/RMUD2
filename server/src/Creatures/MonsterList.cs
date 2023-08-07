@@ -486,7 +486,7 @@ namespace Creatures
             )),
 
             //Frost Golem
-            new(1, (actual) => new SimpleMonster("frostelemental", "Frost Elemental", 150,
+            new(1, (actual) => new SimpleMonster("frostgolem", "Frost Golem", 150,
                 new(new Attack[] {
                     new("slam", "Slam", new(8, 3, 7), DamageType.Cold, critThreshold: 16, critMult: 4),
                     new("freezingbreath", "Freezing Breath", new(6, 6), DamageType.Cold, atkBonus: 12, critThreshold: 17, critMult: 3.5f)
