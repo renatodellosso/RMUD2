@@ -171,6 +171,7 @@ public abstract class Location
                 inputs.Add(new(InputMode.Option, "chat", "Chat"));
                 inputs.Add(new(InputMode.Option, "trade", "Trade"));
                 inputs.Add(new(InputMode.Option, "move", "Move"));
+                inputs.Add(new(InputMode.Option, "help", "Help"));
             }
             else
             {
@@ -301,6 +302,8 @@ public abstract class Location
                     session.SetMenu(new Menus.CharacterMenu());
                 else if (args[0] == "trade")
                     session.SetMenu(new Menus.TradeMenu());
+                else if (args[0] == "help")
+                    session.SetMenu(new Menus.HelpMenu(session));
                 else
                     Utils.Log("Invalid action: " + action.action);
             }

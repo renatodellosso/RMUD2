@@ -21,13 +21,13 @@ public class Attack
 
     int atkBonus, critThreshold;
 
-    float critMult, lifeSteal;
+    float critMult, lifesteal;
 
     public virtual Action<Creature, Creature, ItemHolder<Weapon>?> execute => Execute;
     public virtual Func<Creature, List<Creature>> getTargets => GetTargets;
 
     public Attack(string id, string name, Die damage, DamageType damageType, int staminaCost = 2, AbilityScore? dmgAbilityScore = AbilityScore.Strength, 
-        AbilityScore? atkBonusAbilityScore = AbilityScore.Dexterity, Weapon? weapon = null, int atkBonus = 0, float critMult = 2, int critThreshold = 20, float lifeSteal = 0f)
+        AbilityScore? atkBonusAbilityScore = AbilityScore.Dexterity, Weapon? weapon = null, int atkBonus = 0, float critMult = 2, int critThreshold = 20, float lifesteal = 0f)
     {
         atkBonusAbilityScore ??= AbilityScore.Dexterity;
         dmgAbilityScore ??= AbilityScore.Strength;
@@ -43,7 +43,7 @@ public class Attack
         this.atkBonus = atkBonus;
         this.critThreshold = critThreshold;
         this.critMult = critMult;
-        this.lifeSteal = lifeSteal;
+        this.lifesteal = lifesteal;
     }
 
     public int GetStaminaCost(Creature? attacker, ItemHolder<Weapon>? item)
@@ -73,7 +73,7 @@ public class Attack
 
     float GetLifesteal(Creature? attacker, ItemHolder<Weapon>? item)
     {
-        return lifeSteal + (Reforge.Get(item)?.lifesteal ?? 0);
+        return lifesteal + (Reforge.Get(item)?.lifesteal ?? 0);
     }
 
     public int RollDamage(Creature attacker, Creature target, ItemHolder<Weapon>? item)
@@ -118,9 +118,9 @@ public class Attack
                 $"({rolledDmg} - {target.GetDefense(damageType)}) {damageType} damage with {name}!");
             target.TakeDamage(damage, damageType, attacker);
 
-            if(lifeSteal > 0)
+            if(lifesteal > 0)
             {
-                int heal = (int)Math.Round(damage * lifeSteal);
+                int heal = (int)Math.Round(damage * lifesteal);
                 heal = attacker.Heal(heal);
                 attacker.Location?.Log($"{attacker.FormattedName} healed for {heal} health from {name}!");
             }
@@ -136,19 +136,22 @@ public class Attack
     {
         List<Creature> targets = new();
 
-        bool pvp = !attacker.Location?.safe ?? false; //Used to be: bool pvp = attacker.Location?.safe (dumbest line of coded I ever wrote)
-
-        HashSet<Creature> creatures = attacker.Location?.creatures ?? new();
-        IEnumerable<Creature>? attackable = creatures?.Where(c => c.attackable) ?? null;
-
-        if (attackable != null)
+        if (attacker.health > 0)
         {
-            if(!pvp)
-                attackable = attackable.Where(c => c is not Player);
+            bool pvp = !attacker.Location?.safe ?? false; //Used to be: bool pvp = attacker.Location?.safe (dumbest line of coded I ever wrote)
 
-            foreach (Creature creature in attackable)
-                if (creature != attacker && creature.attackable)
-                    targets.Add(creature);
+            HashSet<Creature> creatures = attacker.Location?.creatures ?? new();
+            IEnumerable<Creature>? attackable = creatures?.Where(c => c.attackable) ?? null;
+
+            if (attackable != null)
+            {
+                if (!pvp)
+                    attackable = attackable.Where(c => c is not Player);
+
+                foreach (Creature creature in attackable)
+                    if (creature != attacker && creature.attackable && creature.location == attacker.location)
+                        targets.Add(creature);
+            }
         }
 
         return targets;
@@ -169,9 +172,9 @@ public class Attack
         damage.modifier += creature?.GetAbilityScore(dmgAbilityScore) ?? 0;
         msg += $" Deals {GetDamage(creature, item)}{(creature != null ? "" : $"+{dmgAbilityScore}")} {damageType} damage.";
         msg += $" Costs {GetStaminaCost(creature, item)} stamina.";
-        msg += $" Crits on a roll of {critThreshold}+ for {Math.Round(critMult, 1)}x damage.";
+        msg += $" Crits on a roll of {GetCritThreshold(creature, item)}+ for {Math.Round(GetCritMult(creature, item), 1)}x damage.";
         
-        if(lifeSteal > 0)
+        if(lifesteal > 0)
             msg += $" {Utils.Percent(GetLifesteal(creature, item))} lifesteal.";
 
         return msg;

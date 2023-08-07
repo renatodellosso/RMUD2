@@ -51,15 +51,15 @@ namespace Items
             },
             { "unholyknife", new Weapon("unholyknife", "Unholy Knife", new Attack[]
                 {
-                    new("stab", "Stab", new(8, modifier: 2), DamageType.Cold, 2, lifeSteal: .1f),
-                    new("soulrend", "Soul Rend", new(4, 4), DamageType.Necrotic, 5, critMult: 3, lifeSteal: .15f)
+                    new("stab", "Stab", new(8, modifier: 2), DamageType.Cold, 2, lifesteal: .1f),
+                    new("soulrend", "Soul Rend", new(4, 4), DamageType.Necrotic, 5, critMult: 3, lifesteal: .15f)
                 }, "A blasphemous blade.", 4, sellValue: 65, color: "red")
             },
             { "hereticsword", new Weapon("hereticsword", "Heretic", new Attack[]
                 {
-                    new("slash", "Slash", 10, DamageType.Slashing, 2, lifeSteal: .15f),
-                    new("stab", "Stab", new(10, modifier: 2), DamageType.Piercing, 3, lifeSteal: .15f, critMult: 4),
-                    new("soulrend", "Soul Rend", new(4, 4), DamageType.Necrotic, 5, critMult: 3, lifeSteal: .25f)
+                    new("slash", "Slash", 10, DamageType.Slashing, 2, lifesteal: .15f),
+                    new("stab", "Stab", new(10, modifier: 2), DamageType.Piercing, 3, lifesteal: .15f, critMult: 4),
+                    new("soulrend", "Soul Rend", new(4, 4), DamageType.Necrotic, 5, critMult: 3, lifesteal: .25f)
                 }, "A longsword, made for revealing dark truths.", 8, sellValue: 125, color: "khaki")
             },
             { "druidaxe", new Weapon("druidaxe", "Druid's Axe", new Attack[]
@@ -106,51 +106,51 @@ namespace Items
             },
             { "bloodripper", new Weapon("bloodripper", "Bloodripper", new Attack[]
                 {
-                    new("slice", "Slice", new(12, 2, 4), DamageType.Slashing, 4, lifeSteal: .4f, critThreshold: 15, critMult: 1.5f),
-                    new("gore", "Gore", new(12, 3, 5), DamageType.Slashing, 6, lifeSteal: .7f),
+                    new("slice", "Slice", new(12, 2, 4), DamageType.Slashing, 4, lifesteal: .4f, critThreshold: 15, critMult: 1.5f),
+                    new("gore", "Gore", new(12, 3, 5), DamageType.Slashing, 6, lifesteal: .7f),
                     new("behead", "Behead", new(20, 2), DamageType.Slashing, 8, critThreshold: 17)
                 }, "A huge, cruel-looking greatsword.", 17f, sellValue: 600, color: "red")
             },
             { "endbringer", new Weapon("endbringer", "Endbringer", new Attack[]
                 {
-                    new("slash", "Slash", new(12, 3, 6), DamageType.Aberrant, 3, lifeSteal: .2f, critThreshold: 16, critMult: 1.75f),
-                    new("impale", "Impale", new(12, 5, 12), DamageType.Aberrant, 7, atkBonus: -3, lifeSteal: .7f, critThreshold: 17, critMult: 2.5f),
-                    new("aura", "Unnatural Aura", new(20, 3, 10), DamageType.Aberrant, 8, atkBonus: 15, critThreshold: 17, lifeSteal: .3f)
+                    new("slash", "Slash", new(12, 3, 6), DamageType.Aberrant, 3, lifesteal: .2f, critThreshold: 16, critMult: 1.75f),
+                    new("impale", "Impale", new(12, 5, 12), DamageType.Aberrant, 7, atkBonus: -3, lifesteal: .7f, critThreshold: 17, critMult: 2.5f),
+                    new("aura", "Unnatural Aura", new(20, 3, 10), DamageType.Aberrant, 8, atkBonus: 15, critThreshold: 17, lifesteal: .3f)
                 }, "A twisted, ethereal longsword. Something about it is unnerving.", 13f, sellValue: 1000, color: "midnightblue")
             },
             { "volcano", new Weapon("volcano", "Volcano", new Attack[]
                 {
-                    new("shoot", "Shoot", new(12, 4), DamageType.Fire, 3, critThreshold: 16, critMult: 2.5f, lifeSteal: .2f),
+                    new("shoot", "Shoot", new(12, 4), DamageType.Fire, 3, critThreshold: 16, critMult: 2.5f, lifesteal: .2f),
                     new("power", "Power Shot", new(12, 5, 12), DamageType.Fire, 7, atkBonus: -3, critThreshold: 14, critMult: 3.5f),
                     new("snipe", "Snipe", new(20, 4, 10), DamageType.Infernal, 8, atkBonus: -5, critThreshold: 17, critMult: 2.5f)
                 }, "A hot red greatbow, made for punching though armor.", 12f, sellValue: 1000, color: "maroon")
             },
             { "shadowdeath", new Weapon("shadowdeath", "Shadowdeath", new Attack[]
                 {
-                    new("slash", "Slash", new(12, 3, 6), DamageType.Cold, 3, atkBonus: 2, lifeSteal: .3f, critThreshold: 16, critMult: 1.75f),
-                    new("true", "True Strike", new(12, 3, 12), DamageType.Necrotic, 7, atkBonus: 15, lifeSteal: .6f, critThreshold: 15, critMult: 2f),
+                    new("slash", "Slash", new(12, 3, 6), DamageType.Cold, 3, atkBonus: 2, lifesteal: .3f, critThreshold: 16, critMult: 1.75f),
+                    new("true", "True Strike", new(12, 3, 12), DamageType.Necrotic, 7, atkBonus: 15, lifesteal: .6f, critThreshold: 15, critMult: 2f),
                     new("aura", "Aura of Darkness", new(20, 1, 4), DamageType.Necrotic, 2, atkBonus: 25, critThreshold: 16)
                 }, "A shadowy katana, slices through armor like water.", 12f, sellValue: 1000, color: "darkslategrey")
             },
             { "realitybreaker", new Weapon("realitybreaker", "Reality Breaker", new Attack[]
                 {
                     new("slash", "Slash", new(10, 4, 4), DamageType.Psychic, 4, atkBonus: -2, critThreshold: 16, critMult: 2.75f),
-                    new("behead", "Behead", new(8, 12, 6), DamageType.Aberrant, 8, atkBonus: -2, lifeSteal: .6f, critThreshold: 17, critMult: 2.5f),
-                    new("mindbreak", "Mindbreak", new(4, 10, 10), DamageType.Aberrant, 8, atkBonus: 10, critThreshold: 14, lifeSteal: .5f)
+                    new("behead", "Behead", new(8, 12, 6), DamageType.Aberrant, 8, atkBonus: -2, lifesteal: .6f, critThreshold: 17, critMult: 2.5f),
+                    new("mindbreak", "Mindbreak", new(4, 10, 10), DamageType.Aberrant, 8, atkBonus: 10, critThreshold: 14, lifesteal: .5f)
                 }, "A heavy greatsword, able to cut through enemies' minds.", 20f, sellValue: 1000, color: "purple")
             },
             { "mammoth", new Weapon("mammoth", "Mammoth", new Attack[]
                 {
-                    new("shoot", "Shoot", new(12, 6), DamageType.Cold, 5, critThreshold: 16, critMult: 3.5f, lifeSteal: .2f),
+                    new("shoot", "Shoot", new(12, 6), DamageType.Cold, 5, critThreshold: 16, critMult: 3.5f, lifesteal: .2f),
                     new("power", "Power Shot", new(12, 6, 18), DamageType.Cold, 8, atkBonus: -4, critThreshold: 14, critMult: 4f),
                     new("snipe", "Snipe", new(20, 4, 10), DamageType.Cold, 9, atkBonus: -6, critThreshold: 17, critMult: 2.75f)
                 }, "A greatbow. Its thick strings propel arrows through nearly anything.", 20f, sellValue: 1000, color: "mediumturquoise")
             },
             { "realityshatter", new Weapon("realityshatter", "Realityshatter", new Attack[]
                 {
-                    new("stab", "Stab", new(12, 5, 6), DamageType.Aberrant, 2, atkBonus: -2, lifeSteal: .2f),
-                    new("execute", "Execute", new(20, 2, modifier: 8), DamageType.Psychic, 9, atkBonus: 3, critThreshold: 13, lifeSteal: .3f),
-                    new("mindshatter", "Mind Shatter", new(8, 8), DamageType.Aberrant, 7, atkBonus: -3, critThreshold: 17, lifeSteal: .4f)
+                    new("stab", "Stab", new(12, 5, 6), DamageType.Aberrant, 2, atkBonus: -2, lifesteal: .2f),
+                    new("execute", "Execute", new(20, 2, modifier: 8), DamageType.Psychic, 9, atkBonus: 3, critThreshold: 13, lifesteal: .3f),
+                    new("mindshatter", "Mind Shatter", new(8, 8), DamageType.Aberrant, 7, atkBonus: -3, critThreshold: 17, lifesteal: .4f)
                 }, "A truly psychopathic knife, meant to drive victims mad.", 3f, sellValue: 1000, color: "plum")
             },
 

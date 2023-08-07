@@ -102,7 +102,7 @@ namespace Creatures
 
             //Blood Slime
             new(1, (actual) => new SimpleMonster("bloodslime", "Blood Slime", 20,
-                new(new Attack[] { new("ooze", "Vampiric Ooze", 6, DamageType.Poison, dmgAbilityScore: AbilityScore.Constitution, lifeSteal: .35f) }),
+                new(new Attack[] { new("ooze", "Vampiric Ooze", 6, DamageType.Poison, dmgAbilityScore: AbilityScore.Constitution, lifesteal: .35f) }),
                 drops: new(
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("slime")),
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(1f, () => new("vampiricdust"))
@@ -249,8 +249,8 @@ namespace Creatures
             new(1, (actual) => new SimpleMonster("zombieslime", "Zombie Slime", 20,
                 new(new Attack[]
                 {
-                    new("ooze", "Ooze", 12, DamageType.Poison, critThreshold: 19, dmgAbilityScore: AbilityScore.Constitution, lifeSteal: .25f),
-                    new("necroticgoop", "Necrotic Goop", 12, DamageType.Necrotic, critThreshold: 18, dmgAbilityScore: AbilityScore.Constitution,lifeSteal: .4f)
+                    new("ooze", "Ooze", 12, DamageType.Poison, critThreshold: 19, dmgAbilityScore: AbilityScore.Constitution, lifesteal: .25f),
+                    new("necroticgoop", "Necrotic Goop", 12, DamageType.Necrotic, critThreshold: 18, dmgAbilityScore: AbilityScore.Constitution,lifesteal: .4f)
                 }),
                 drops: new(
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("slime")),
@@ -398,8 +398,8 @@ namespace Creatures
             //Fire Elemental
             new(1, (actual) => new SimpleMonster("firelemental", "Fire Elemental", 65,
                 new(new Attack[] {
-                    new("sear", "Sear", 20, DamageType.Fire, critThreshold: 17, lifeSteal: .4f),
-                    new("ignite", "Ignite", new(12, 2), DamageType.Fire, atkBonus: 3, critThreshold: 18, critMult: 3, lifeSteal: .6f)
+                    new("sear", "Sear", 20, DamageType.Fire, critThreshold: 17, lifesteal: .4f),
+                    new("ignite", "Ignite", new(12, 2), DamageType.Fire, atkBonus: 3, critThreshold: 18, critMult: 3, lifesteal: .6f)
                 }),
                 drops: new(
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("coal")),
@@ -424,8 +424,8 @@ namespace Creatures
             //Emberbug
             new(1, (actual) => new SimpleMonster("emberbug", "Ember Bug", 60,
                 new(new Attack[] {
-                    new("bite", "Bite", new(8, 2, 5), DamageType.Fire, critThreshold: 17, critMult: 4, lifeSteal: .4f),
-                    new("sear", "Sear", new(8, 2), DamageType.Fire, atkBonus: 8, critThreshold: 18, critMult: 3, lifeSteal: .3f)
+                    new("bite", "Bite", new(8, 2, 5), DamageType.Fire, critThreshold: 17, critMult: 4, lifesteal: .4f),
+                    new("sear", "Sear", new(8, 2), DamageType.Fire, atkBonus: 8, critThreshold: 18, critMult: 3, lifesteal: .3f)
                 }),
                 drops: new(
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("coal")),
@@ -451,7 +451,7 @@ namespace Creatures
             new(1, (actual) => new SimpleMonster("frostelemental", "Frost Elemental", 80,
                 new(new Attack[] {
                     new("slam", "Slam", new(8, 2, 5), DamageType.Cold, critThreshold: 17, critMult: 4),
-                    new("freezingbreath", "Freezing Breath", new(6, 4), DamageType.Cold, atkBonus: 8, critThreshold: 18, critMult: 3, lifeSteal: .3f)
+                    new("freezingbreath", "Freezing Breath", new(6, 4), DamageType.Cold, atkBonus: 8, critThreshold: 18, critMult: 3, lifesteal: .3f)
                 }),
                 drops: new(
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("frostshard")),
@@ -595,7 +595,7 @@ namespace Creatures
             new(1, (actual) => new SimpleMonster("lostpaladin", "Lost Paladin", 125,
                 new(new Attack[] {
                     new("slash", "Slash", new(12, 3, 5), DamageType.Bludgeoning, atkBonus: 5, critThreshold: 18, critMult: 3),
-                    new("smite", "Smite", new(10, 4, 10), DamageType.Radiant, atkBonus: 12, critThreshold: 17, critMult: 3.5f, lifeSteal: .4f),
+                    new("smite", "Smite", new(10, 4, 10), DamageType.Radiant, atkBonus: 12, critThreshold: 17, critMult: 3.5f, lifesteal: .4f),
                 }),
                 drops: new(
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(3f, () => new("holyblood")),
@@ -658,7 +658,7 @@ namespace Creatures
             new(1, (actual) => new SimpleMonster("flamedemon", "Flame Demon", 175,
                 new(new Attack[]
                 {
-                    new("torch", "Torch", new(12, 3, 8), DamageType.Fire, critThreshold: 16, lifeSteal: .2f),
+                    new("torch", "Torch", new(12, 3, 8), DamageType.Fire, critThreshold: 16, lifesteal: .2f),
                     new("infernal", "Infernal Touch", new(20, 2), DamageType.Infernal, atkBonus: -5, critThreshold: 18, critMult: 3.5f),
                 }),
                 drops: new(
@@ -781,7 +781,7 @@ namespace Creatures
              new(1, (actual) => new SimpleMonster("brimstonegolem", "Brimstone Golem", 300,
                 new(new Attack[] {
                     new("slam", "Slam", new(12, 4, 5), DamageType.Bludgeoning, critThreshold: 18, critMult: 3),
-                    new("hellquake", "Hellquake", new(8, 6), DamageType.Fire, atkBonus: 12, critThreshold: 17, critMult: 3.5f, lifeSteal: .35f),
+                    new("hellquake", "Hellquake", new(8, 6), DamageType.Fire, atkBonus: 12, critThreshold: 17, critMult: 3.5f, lifesteal: .35f),
                     new("stomp", "Stomp", new(8, 8), DamageType.Bludgeoning, atkBonus: -5, critMult: 5)
                 }),
                 drops: new(
@@ -813,7 +813,7 @@ namespace Creatures
              new(1, (actual) => new SimpleMonster("greaterangel", "Greater Angel", 275,
                 new(new Attack[]
                 {
-                    new("smite", "Smite", new(10, 5), DamageType.Radiant, atkBonus: 7, critThreshold: 17, lifeSteal: .7f, dmgAbilityScore: AbilityScore.Wisdom),
+                    new("smite", "Smite", new(10, 5), DamageType.Radiant, atkBonus: 7, critThreshold: 17, lifesteal: .7f, dmgAbilityScore: AbilityScore.Wisdom),
                     new("mace", "Holy Mace", new(8, 7), DamageType.Slashing, critThreshold: 18, critMult: 4),
                 }),
                 drops: new(
@@ -848,7 +848,7 @@ namespace Creatures
              new(1, (actual) => new SimpleMonster("silentshadow", "Silent Shadow", 225,
                 new(new Attack[]
                 {
-                    new("strangle", "Strangle", new(6, 10), DamageType.Bludgeoning, atkBonus: 7, critThreshold: 17, lifeSteal: .7f, dmgAbilityScore: AbilityScore.Wisdom),
+                    new("strangle", "Strangle", new(6, 10), DamageType.Bludgeoning, atkBonus: 7, critThreshold: 17, lifesteal: .7f, dmgAbilityScore: AbilityScore.Wisdom),
                     new("assassinate", "Assassinate", new(12, 7), DamageType.Slashing, critThreshold: 14, critMult: 3),
                 }),
                 drops: new(
@@ -881,8 +881,8 @@ namespace Creatures
              new(1, (actual) => new SimpleMonster("icedemon", "Ice Demon", 265,
                 new(new Attack[]
                 {
-                    new("chill", "Chill", new(12, 3, 8), DamageType.Cold, critThreshold: 16, lifeSteal: .4f),
-                    new("infernal", "Infernal Touch", new(20, 2), DamageType.Infernal, atkBonus: -5, critThreshold: 18, critMult: 3.5f, lifeSteal: .25f),
+                    new("chill", "Chill", new(12, 3, 8), DamageType.Cold, critThreshold: 16, lifesteal: .4f),
+                    new("infernal", "Infernal Touch", new(20, 2), DamageType.Infernal, atkBonus: -5, critThreshold: 18, critMult: 3.5f, lifesteal: .25f),
                 }),
                 drops: new(
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("ice", Utils.RandInt(2, 5))),
@@ -916,7 +916,7 @@ namespace Creatures
                 new(new Attack[]
                 {
                     new("crush", "Crush", new(12, 5, 12), DamageType.Bludgeoning, critThreshold: 16, critMult: 3),
-                    new("gore", "Gore", new(20, 3), DamageType.Piercing, atkBonus: -5, critThreshold: 16, critMult: 4.5f, lifeSteal: .25f),
+                    new("gore", "Gore", new(20, 3), DamageType.Piercing, atkBonus: -5, critThreshold: 16, critMult: 4.5f, lifesteal: .25f),
                     new("frostbreath", "Frostbreath", new(20, 5), DamageType.Cold, atkBonus: 10)
                 }),
                 drops: new(
@@ -961,7 +961,7 @@ namespace Creatures
                 {
                     new("slash", "Slash", new(8, 8, 15), DamageType.Slashing, atkBonus: 8, critThreshold: 18, critMult: 4),
                     new("stomp", "Stomp", new(20, 4), DamageType.Bludgeoning, atkBonus: -5, critThreshold: 16, critMult: 2.5f),
-                    new("aura", "Aura of Cinders", new(20, 4), DamageType.Infernal, atkBonus: 20, critThreshold: 8, critMult: 1.5f, lifeSteal: .4f)
+                    new("aura", "Aura of Cinders", new(20, 4), DamageType.Infernal, atkBonus: 20, critThreshold: 8, critMult: 1.5f, lifesteal: .4f)
                 }),
                 drops: new(
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("demonsoul"))
