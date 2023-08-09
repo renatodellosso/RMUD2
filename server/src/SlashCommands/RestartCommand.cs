@@ -14,6 +14,7 @@ namespace SlashCommands
     {
 
         static int voteCount = 0;
+        static bool restarting = false;
 
         public override void Create(Discord.WebSocket.DiscordSocketClient client)
         {
@@ -35,14 +36,17 @@ namespace SlashCommands
                 cmd.FollowupAsync($"Voted to restart the server. {voteCount}/{Player.Count} votes");
                 Utils.Announce($"{cmd.User.Username} voted to restart the server. {voteCount}/{Player.Count} votes");
 
-                if(voteCount > Player.Count / 2)
+                if(voteCount > Player.Count / 2 && !restarting)
                 {
                     Utils.Log("Restarting server in 30 seconds...");
                     Utils.Announce("Restarting server in 30 seconds...");
-                    await Task.Delay(20 * 1000);
+                    await Task.Run(()=> {
+                        restarting = true;
+                        Task.Delay(30 * 1000);
 
-                    Utils.Log("Restarting server...");
-                    Process.GetCurrentProcess().Kill();
+                        Utils.Log("Restarting server...");
+                        Environment.Exit(0);
+                    });
                 }
             } catch (Exception e)
             {
