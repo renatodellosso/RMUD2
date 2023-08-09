@@ -87,6 +87,12 @@ namespace Creatures
                 if (Utils.tickCount % 3 == 0 && Utils.RandFloat() < .15f)
                     MoveThroughRandomExit(Config.Gameplay.MAX_ENEMIES_IN_ROOM, l => l is DungeonLocation &&
                         Math.Abs(startDepth - ((DungeonLocation)l).position.x) <= 1);
+
+                if (!Location?.creatures.Contains(this) ?? false)
+                {
+                    Utils.Log($"{name} had a location id of {location}, but was not in the creature list!");
+                    Location.creatures.Add(this);
+                }
             } catch(Exception e)
             {
                 Utils.Log(e);

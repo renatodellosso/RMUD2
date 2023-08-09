@@ -92,6 +92,7 @@ public static class Dungeon
         {
             if (player.Location is DungeonLocation)
                 player.Move("dungeonentrance", true);
+            player.visitedRooms = new();
         }
 
         Utils.Log("Removing dungeon locations...");

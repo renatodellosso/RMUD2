@@ -208,7 +208,8 @@ public class Creature
                 } while (maxEnemies != -1 && enemyCount > maxEnemies);
 
                 //Utils.Log($"Creature {name} moved from {this.location} to {exit.location}");
-                Move(exit.location);
+                if(enemyCount < maxEnemies || maxEnemies == -1)
+                    Move(exit.location);
             }
         }
     }
