@@ -40,18 +40,21 @@ namespace SlashCommands
                 {
                     Utils.Log("Restarting server in 30 seconds...");
                     Utils.Announce("Restarting server in 30 seconds...");
-                    await Task.Run(()=> {
-                        restarting = true;
-                        Task.Delay(30 * 1000);
-
-                        Utils.Log("Restarting server...");
-                        Environment.Exit(0);
-                    });
+                    Restart();
                 }
             } catch (Exception e)
             {
                 Utils.Log(e);
             }
+        }
+
+        async Task Restart()
+        {
+            restarting = true;
+            Task.Delay(30 * 1000);
+
+            Utils.Log("Restarting server...");
+            Environment.Exit(0);
         }
     }
 }
