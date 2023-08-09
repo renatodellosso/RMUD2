@@ -99,6 +99,11 @@ public static class Dungeon
         {
             foreach(Location location in floor.locations)
             {
+                foreach(Creature creature in location.creatures)
+                {
+                    if(creature is not Player)
+                        creature.Die(null);
+                }
                 Location.Remove(location);
             }
         }
