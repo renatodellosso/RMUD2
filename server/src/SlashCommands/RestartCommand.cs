@@ -51,7 +51,7 @@ namespace SlashCommands
         async Task Restart()
         {
             restarting = true;
-            Task.Delay(30 * 1000);
+            await Task.Delay(30 * 1000);
 
             Utils.Log("Restarting server...");
             Environment.Exit(0);
