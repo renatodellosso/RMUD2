@@ -13,7 +13,7 @@ namespace SlashCommands
     public class RestartCommand : DiscordSlashCommand
     {
 
-        static int voteCount = 0;
+        static HashSet<ulong> votes = new();
         static bool restarting = false;
 
         public override void Create(Discord.WebSocket.DiscordSocketClient client)
@@ -31,12 +31,12 @@ namespace SlashCommands
 
             try
             {
-                voteCount++;
+                votes.Add(cmd.User.Id);
 
-                cmd.FollowupAsync($"Voted to restart the server. {voteCount}/{Player.Count} votes");
-                Utils.Announce($"{cmd.User.Username} voted to restart the server. {voteCount}/{Player.Count} votes");
+                cmd.FollowupAsync($"Voted to restart the server. {votes.Count}/{Player.Count} votes");
+                Utils.Announce($"{cmd.User.Username} voted to restart the server. {votes.Count}/{Player.Count} votes");
 
-                if(voteCount > Player.Count / 2 && !restarting)
+                if(votes.Count > Player.Count / 2 && !restarting)
                 {
                     Utils.Log("Restarting server in 30 seconds...");
                     Utils.Announce("Restarting server in 30 seconds...");
