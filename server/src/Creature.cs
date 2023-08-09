@@ -290,7 +290,6 @@ public class Creature
                 player.session?.Log(Utils.Style($"Added {Utils.Style(originalName, nameColor)} to bestiary!", "wheat"));
 
             player.AddXp((int)Math.Round(xpValue * contrib), cause + $" (dealt {Utils.Percent(contrib)} of damage)");
-
         }
     }
 

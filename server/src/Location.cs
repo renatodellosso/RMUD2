@@ -154,6 +154,7 @@ public abstract class Location
             {
                 //The order we add these determines the order they appear in
                 //We want to add the most common options first, but keep exit last
+                inputs.Add(new(InputMode.Option, "help", "Help"));
                 inputs.Add(new(InputMode.Option, "look", "Look around"));
                 //inputs.Add(new(InputMode.Option, "combat", "Combat"));
 
@@ -171,7 +172,6 @@ public abstract class Location
                 inputs.Add(new(InputMode.Option, "chat", "Chat"));
                 inputs.Add(new(InputMode.Option, "trade", "Trade"));
                 inputs.Add(new(InputMode.Option, "move", "Move"));
-                inputs.Add(new(InputMode.Option, "help", "Help"));
             }
             else
             {
