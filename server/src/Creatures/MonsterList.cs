@@ -988,7 +988,7 @@ namespace Creatures
                         {
                             foreach (Creature creature in location.creatures)
                                 if (creature != data.self && creature is Player)
-                                    creature.TakeDamage(10, DamageType.Cold, data.self, true);
+                                    creature.TakeDamage(10, DamageType.Infernal, data.self, true);
                         }
                     }
                 },
@@ -996,6 +996,51 @@ namespace Creatures
                 dexterity: 7,
                 agility: 15,
                 defense: 9,
+                actual: actual //Breaks if we don't have this. It's used in dungeon generation
+            )),
+
+             //Elder Tentacled Horror
+             new(1, (actual) => new SimpleMonster("eldertentacledhorror", Utils.Style("Elder Tentacled Horror", "purple"), 600,
+                new(new Attack[]
+                {
+                    new("swipe", "Swipe", new(12, 8, 10), DamageType.Poison, atkBonus: 15, critThreshold: 18, critMult: 4, lifesteal: .2f),
+                    new("beak", "Beak", new(6, 15), DamageType.Piercing, atkBonus: -5, critThreshold: 14, critMult: 2.5f, lifesteal: .5f),
+                    new("swallow", "Swallow", new(20, 6), DamageType.Infernal, atkBonus: -10, critThreshold: 16, critMult: 3.5f, lifesteal: 1f)
+                }),
+                drops: new(
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("otherwordlyshard", Utils.RandInt(1, 4))),
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("horrorbeak"))
+                ), minDrops: 1, maxDrops: 2,
+                xp: 1300,
+                scaleTableWeight: (floor) =>
+                {
+                    return 0.8f - Math.Abs(floor.Depth - 10) * 0.5f - floor.arcane;
+                },
+                resistances: new()
+                {
+                    { DamageType.Necrotic, 15 },
+                    { DamageType.Fire, -5 },
+                    { DamageType.Psychic, 5 },
+                    { DamageType.Poison, 5 },
+                    { DamageType.Cold, 30 },
+                },
+                onTick: (data) =>
+                {
+                    if (data.tickCount % 1 == 0)
+                    {
+                        Location? location = data.self.Location;
+                        if (location != null)
+                        {
+                            foreach (Creature creature in location.creatures)
+                                if (creature != data.self && creature is Player)
+                                    creature.TakeDamage(15, DamageType.Aberrant, data.self, true);
+                        }
+                    }
+                },
+                strength: 8,
+                dexterity: 15,
+                agility: 3,
+                defense: 11,
                 actual: actual //Breaks if we don't have this. It's used in dungeon generation
             ))
         );

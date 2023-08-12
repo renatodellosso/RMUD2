@@ -131,6 +131,24 @@ public static class RecipeLists
             new(new ItemHolder<Item>[] { new("soulcoin2", 3), new("mammothsoul") }, "soulcoin3", 3, 1000);
         public static readonly Recipe SOUL_COIN_3_2 =
             new(new ItemHolder<Item>[] { new("soulcoin2", 3), new("demonsoul") }, "soulcoin3", 3, 1000);
+        public static readonly Recipe ELDER_STEEL =
+            new(new ItemHolder<Item>[] { new("hellsteel", 1), new("soulcoin1", 2), new("horrorbeak", 1), new("holyblood", 4), new("brimstone", 2), new("otherwordlyshard", 2) }, "eldersteel", 1, 160);
+        public static readonly Recipe SOULSTEEL =
+            new(new ItemHolder<Item>[] { new("eldersteel", 1), new("soulcoin3", 1) }, "soulsteel", 1, 320);
+        public static readonly Recipe TRUE_RETURN_AMULET =
+            new(new ItemHolder<Item>[] { new("returnamulet"), new("soulsteel") }, "truereturnamulet", 1, 500);
+        public static readonly Recipe LYCANTHROPE =
+            new(new ItemHolder<Item>[] { new("beastform"), new("soulsteel") }, "lycanthrope", 1, 800);
+        public static readonly Recipe TRUE_RADIANCE =
+            new(new ItemHolder<Item>[] { new("radiance"), new("soulsteel", 2) }, "trueradiance", 1, 1600);
+        public static readonly Recipe MOUNTAIN =
+            new(new ItemHolder<Item>[] { new("mountain"), new("soulsteel", 2) }, "mountain", 1, 1600);
+        public static readonly Recipe ETERNAL_WANDERER_ROBES =
+            new(new ItemHolder<Item>[] { new("sagerobe"), new("soulsteel", 3) }, "eternalwandererrobes", 1, 1600);
+        public static readonly Recipe REALITYENDER =
+            new(new ItemHolder<Item>[] { new("realityshatter"), new("soulsteel", 3) }, "realityender", 1, 1600);
+        public static readonly Recipe REALITYBRINGER =
+            new(new ItemHolder<Item>[] { new("realityshatter"), new("soulsteel", 3) }, "realitybringer", 1, 1600);
     }
 
     public static readonly Recipe[] FORGE = new Recipe[]
@@ -214,6 +232,14 @@ public static class RecipeLists
 
     public static readonly Recipe[] SOUL_FURNACE = new Recipe[]
     {
+        All.ELDER_STEEL,
+        All.SOULSTEEL,
+        All.TRUE_RETURN_AMULET,
+        All.LYCANTHROPE,
+        All.TRUE_RADIANCE,
+        All.ETERNAL_WANDERER_ROBES,
+        All.REALITYENDER,
+        All.REALITYBRINGER,
         All.SOUL_COIN_1_1,
         All.SOUL_COIN_1_2,
         All.SOUL_COIN_1_3,
@@ -248,6 +274,7 @@ public static class RecipeLists
         new(DungeonTeleportationScroll.GetId(4)),
         new(DungeonTeleportationScroll.GetId(5)),
         new(DungeonTeleportationScroll.GetId(6)),
+        new("soulcoin1", 1.5f)
     };
 
     public static Recipe[] GenMysteriousTraderInventory()

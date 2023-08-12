@@ -153,6 +153,20 @@ namespace Items
                     new("mindshatter", "Mind Shatter", new(8, 8), DamageType.Aberrant, 7, atkBonus: -3, critThreshold: 17, lifesteal: .4f)
                 }, "A truly psychopathic knife, meant to drive victims mad.", 3f, sellValue: 1000, color: "plum")
             },
+            { "realityender", new Weapon("realityender", "Realityender", new Attack[]
+                {
+                    new("behead", "Behead", new(12, 7, 10), DamageType.Aberrant, 2, atkBonus: -2, lifesteal: .3f),
+                    new("execute", "Execute", new(20, 3, modifier: 8), DamageType.Psychic, 9, atkBonus: 3, critThreshold: 13, lifesteal: .4f),
+                    new("mindshatter", "Mind Shatter", new(12, 8), DamageType.Aberrant, 7, atkBonus: -3, critThreshold: 17, lifesteal: .5f)
+                }, "An ever-shifting greatsword, its true form forever unknowable.", 12f, sellValue: 2000, color: "plum")
+            },
+            { "realitybringer", new Weapon("realitybringer", "Realitybringer", new Attack[]
+                {
+                    new("behead", "Behead", new(12, 7, 10), DamageType.Aberrant, 2, atkBonus: -2, critMult: 3f, lifesteal: .2f),
+                    new("execute", "Execute", new(20, 3, modifier: 8), DamageType.Psychic, 9, atkBonus: 3, critThreshold: 13, critMult: 3f, lifesteal: .3f),
+                    new("mindshatter", "Mind Shatter", new(12, 8), DamageType.Aberrant, 7, atkBonus: -3, critThreshold: 17, critMult: 3f, lifesteal: .4f)
+                }, "An knife, meant to end the madness.", 2f, sellValue: 2000, color: "plum")
+            },
 
             //Armors
             { "peasantclothes", new Armor("peasantclothes", "Peasant Clothes", 5, 10, 0, "A ragged set of clothes.")},
@@ -395,6 +409,62 @@ namespace Items
                 wisdom: 5,
                 charisma: 5
             )},
+            { "lycanthrope", new Armor("lycanthrope", "Lycanthrope", 20, 1600, 11, "The skin of a twisted creature melded with otherwordly plates.",
+                color: "lightsteelblue",
+                resistances: new()
+                {
+                    { DamageType.Slashing, 4 },
+                    { DamageType.Bludgeoning, 2 },
+                    { DamageType.Piercing, 4 },
+                    { DamageType.Necrotic, 4 },
+                    { DamageType.Cold, 8 },
+                    { DamageType.Aberrant, 5 }
+                },
+                strength: 10,
+                constitution: 10,
+                endurance: 10
+            )},
+            { "trueradiance", new Armor("trueradiance", "True Radiance", 20, 2000, 15, "A set of divinely blessed plate armor, infused with powerful souls.",
+                color: "lightpink",
+                resistances: new()
+                {
+                    { DamageType.Slashing, 6 },
+                    { DamageType.Bludgeoning, 4 },
+                    { DamageType.Piercing, 4 },
+                    { DamageType.Necrotic, -8 },
+                    { DamageType.Infernal, 12 },
+                    { DamageType.Radiant, 35 },
+                    { DamageType.Fire, 25 },
+                    { DamageType.Cold, 10 },
+                    { DamageType.Aberrant, -5 }
+                },
+                strength: 10,
+                dexterity: 10,
+                agility: 8,
+                endurance: 12,
+                wisdom: 15,
+                charisma: 10
+            )},
+            { "mountain", new Armor("mountain", "Mountain", 35, 2000, 25, "Armor that entomb the bearer in impenetrable stone.",
+                color: "slategrey",
+                resistances: new()
+                {
+                    { DamageType.Slashing, 12 },
+                    { DamageType.Bludgeoning, 12 },
+                    { DamageType.Piercing, 12 },
+                    { DamageType.Fire, 12 },
+                    { DamageType.Poison, 12 },
+                    { DamageType.Cold, -20 }
+                },
+                strength: 5,
+                constitution: 10
+            )},
+            { "eternalwandererrobes", new Armor("eternalwandererrobes", "Eternal Wanderer's Robes", 15, 2000, 10, "Flowing robes covered in depictions of epics long past.",
+                color: "violet",
+                intelligence: 25,
+                wisdom: 130,
+                charisma: 25
+            )},
 
             //Consumables
             { "ale", new SimpleConsumable("ale", "Mug of Ale", 0.5f, (session) =>
@@ -444,6 +514,12 @@ namespace Items
                     Player? player = session?.Player;
                     Location.Get(player?.resetLocation ?? "dungeonentrance")?.Enter(player, player?.Location ?? null);
                 }, "Use", "An amulet with a large amethyst, said to be able to teleport the wearer back to a safe location.", sellValue: 500, color: "purple", uses: 10)
+            },
+            { "truereturnamulet", new SimpleConsumable("truereturnamulet", "True Amulet of Return", 2f, (session) =>
+                {
+                    Player? player = session?.Player;
+                    Location.Get(player?.resetLocation ?? "dungeonentrance")?.Enter(player, player?.Location ?? null);
+                }, "Use", "An amulet with a soul bound to it, said to be able to teleport the wearer back to a safe location.", sellValue: 1200, color: "darkmagenta", uses: 25)
             },
             { DungeonTeleportationScroll.GetId(0), new DungeonTeleportationScroll(0) },
             { DungeonTeleportationScroll.GetId(1), new DungeonTeleportationScroll(1) },
@@ -501,13 +577,16 @@ namespace Items
                 color: "maroon") },
             { "otherworldlyshard", new SimpleItem("otherwordlyshard", "Otherworldly Shard", 0.1f, "A fragment of another universe. Glimpses of other realities can be seen " +
                 "flittering in and out", sellValue: 120, color: "purple") },
-            { "umbralvapor", new SimpleItem("umbralvapor", "Umbral Vapor", 0.1f, "A few wisps of barely-visible vapor", sellValue: 90, color: "darkslategrey") },
+            { "umbralvapor", new SimpleItem("umbralvapor", "Umbral Vapor", 0.1f, "A few wisps of barely-visible vapor.", sellValue: 90, color: "darkslategrey") },
             { "mammothsoul", new SimpleItem("mammothsoul", "Mammoth Soul", 10f, "The soul from a long-dead giant beast. You can feel its power.", sellValue: 500, color: "cyan") },
             { "demonsoul", new SimpleItem("demonsoul", "Demon Soul", 10f, "The soul from a powerful demon. You can feel its power.", sellValue: 500, color: "darkred") },
             { "soulcoin1", new SimpleItem("soulcoin1", "Soul Coin (Weak)", 0.1f, "A warm, burnt-red coin, infused with a soul.", sellValue: 500, color: "darkred") },
             { "soulcoin2", new SimpleItem("soulcoin2", "Soul Coin (Moderate)", 0.1f, "A warm, burnt-purple coin, infused with a soul.", sellValue: 600, color: "darkmagenta") },
             { "soulcoin3", new SimpleItem("soulcoin3", "Soul Coin (Strong)", 0.1f, "A burnt-blue coin, infused with a soul so strong the air around it vibrates.", sellValue: 700, 
                 color: "darkblue") },
+            { "horrorbeak", new SimpleItem("horrorbeak", "Horror Beak", 0.3f, "The beak from a fully-grown Tentacled Horror.", sellValue: 400, color: "purple") },
+            { "eldersteel", new SimpleItem("eldersteel", "Elder Steel", 1.5f, "An ingot of tainted steel, corrupted by eldritch forces.", sellValue: 120, color: "purple") },
+            { "soulsteel", new SimpleItem("soulsteel", "Soulsteel", 1.5f, "A bar of elder steel infused with a powerful soul.", sellValue: 240, color: "darkmagenta") },
         });
 
         public static T? Get<T>(string id) where T : Item
