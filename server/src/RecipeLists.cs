@@ -149,6 +149,8 @@ public static class RecipeLists
             new(new ItemHolder<Item>[] { new("realityshatter"), new("soulsteel", 3) }, "realityender", 1, 1600);
         public static readonly Recipe REALITYBRINGER =
             new(new ItemHolder<Item>[] { new("realityshatter"), new("soulsteel", 3) }, "realitybringer", 1, 1600);
+        public static readonly Recipe KNOWING_SCROLL =
+            new(new ItemHolder<Item>[] { new("cloth", 5), new("soulcoin1", 1) }, "knowingscroll", 1, 200);
     }
 
     public static readonly Recipe[] FORGE = new Recipe[]
@@ -190,7 +192,8 @@ public static class RecipeLists
         All.APPRENTICE_ROBE,
         All.JOURNEYMAN_ROBE,
         All.SAGE_ROBE,
-        All.SNAKE_CLOAK
+        All.SNAKE_CLOAK,
+        All.KNOWING_SCROLL
     };
 
     public static readonly Recipe[] GROVE = new Recipe[]

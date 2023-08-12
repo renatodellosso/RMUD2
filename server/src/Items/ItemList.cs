@@ -1,4 +1,5 @@
 ﻿using ItemTypes;
+using Locations;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -520,6 +521,26 @@ namespace Items
                     Player? player = session?.Player;
                     Location.Get(player?.resetLocation ?? "dungeonentrance")?.Enter(player, player?.Location ?? null);
                 }, "Use", "An amulet with a soul bound to it, said to be able to teleport the wearer back to a safe location.", sellValue: 1200, color: "darkmagenta", uses: 25)
+            },
+            { "knowingscroll", new SimpleConsumable("knowingscroll", "Scroll of Knowing", 0.5f, (session) =>
+                {
+                    Player? player = session?.Player;
+                    Location? location = player?.Location;
+
+                    if (location is null)
+                        return;
+                    if(location is not DungeonLocation)
+                        player?.session?.Log("You are in a safe location.");
+                    else
+                    {
+                        Floor floor = (location as DungeonLocation).floor;
+                        player?.session?.Log($"You are on floor {floor.Depth+1} of the dungeon.<br>" +
+                                             $"Temperature: {Utils.Round(floor.temperature, 2)}<br>" +
+                                             $"Arcane: {Utils.Round(floor.arcane, 2)}<br>" +
+                                             $"Holy: {Utils.Round(floor.holy, 2)}<br>");
+                    }
+
+                }, "Read", "A scroll that carries information on your location.", sellValue: 200, color: "wheat", uses: 5)
             },
             { DungeonTeleportationScroll.GetId(0), new DungeonTeleportationScroll(0) },
             { DungeonTeleportationScroll.GetId(1), new DungeonTeleportationScroll(1) },
