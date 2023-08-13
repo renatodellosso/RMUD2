@@ -132,7 +132,7 @@ public static class RecipeLists
         public static readonly Recipe SOUL_COIN_3_2 =
             new(new ItemHolder<Item>[] { new("soulcoin2", 3), new("demonsoul") }, "soulcoin3", 3, 1000);
         public static readonly Recipe ELDER_STEEL =
-            new(new ItemHolder<Item>[] { new("hellsteel", 1), new("soulcoin1", 2), new("horrorbeak", 1), new("holyblood", 4), new("brimstone", 2), new("otherwordlyshard", 2) }, "eldersteel", 1, 160);
+            new(new ItemHolder<Item>[] { new("hellsteel", 1), new("soulcoin1", 2), new("horrorbeak", 1), new("holyblood", 4), new("brimstone", 2), new("otherworldlyshard", 2) }, "eldersteel", 1, 160);
         public static readonly Recipe SOULSTEEL =
             new(new ItemHolder<Item>[] { new("eldersteel", 1), new("soulcoin3", 1) }, "soulsteel", 1, 320);
         public static readonly Recipe TRUE_RETURN_AMULET =

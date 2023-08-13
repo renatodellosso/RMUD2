@@ -541,7 +541,8 @@ namespace Creatures
                 drops: new(
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(1.5f, () => new("aberrantcluster")),
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(1.5f, () => new("taintedflesh")),
-                    new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("mindreaper"))
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("mindreaper")),
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(.005f, () => new("otherwordlyshard"))
                 ), minDrops: 3, maxDrops: 4,
                 xp: 350,
                 scaleTableWeight: (floor) =>
@@ -753,7 +754,8 @@ namespace Creatures
                 drops: new(
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(1f, () => new("aberrantcluster", Utils.RandInt(1, 3))),
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(0.75f, () => new("platearmor")),
-                    new KeyValuePair<float, Func<ItemHolder<Item>>>(0.75f, () => new("otherworldlyshard"))
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(0.75f, () => new("otherworldlyshard")),
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(.01f, () => new("otherwordlyshard"))
                 ), minDrops: 2, maxDrops: 3,
                 xp: 475,
                 scaleTableWeight: (floor) =>
@@ -1008,8 +1010,9 @@ namespace Creatures
                     new("swallow", "Swallow", new(20, 6), DamageType.Infernal, atkBonus: -10, critThreshold: 16, critMult: 3.5f, lifesteal: 1f)
                 }),
                 drops: new(
-                    new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("otherwordlyshard", Utils.RandInt(1, 4))),
-                    new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("horrorbeak"))
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("otherworldlyshard", Utils.RandInt(1, 4))),
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("horrorbeak")),
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(.01f, () => new("otherwordlyshard"))
                 ), minDrops: 1, maxDrops: 2,
                 xp: 1300,
                 scaleTableWeight: (floor) =>

@@ -596,7 +596,7 @@ namespace Items
             { "brimstone", new SimpleItem("brimstone", "Brimstone", 1.2f, "A dark reddish-black rock. Painful to the touch", sellValue: 60, color: "maroon") },
             { "hellsteel", new SimpleItem("hellsteel", "Hellsteel", 1.5f, "A molten bar of infernal steel. Hurts to touch, smell, or just generally be around", sellValue: 60, 
                 color: "maroon") },
-            { "otherworldlyshard", new SimpleItem("otherwordlyshard", "Otherworldly Shard", 0.1f, "A fragment of another universe. Glimpses of other realities can be seen " +
+            { "otherworldlyshard", new SimpleItem("otherworldlyshard", "Otherworldly Shard", 0.1f, "A fragment of another universe. Glimpses of other realities can be seen " +
                 "flittering in and out", sellValue: 120, color: "purple") },
             { "umbralvapor", new SimpleItem("umbralvapor", "Umbral Vapor", 0.1f, "A few wisps of barely-visible vapor.", sellValue: 90, color: "darkslategrey") },
             { "mammothsoul", new SimpleItem("mammothsoul", "Mammoth Soul", 10f, "The soul from a long-dead giant beast. You can feel its power.", sellValue: 500, color: "cyan") },
@@ -608,6 +608,8 @@ namespace Items
             { "horrorbeak", new SimpleItem("horrorbeak", "Horror Beak", 0.3f, "The beak from a fully-grown Tentacled Horror.", sellValue: 400, color: "purple") },
             { "eldersteel", new SimpleItem("eldersteel", "Elder Steel", 1.5f, "An ingot of tainted steel, corrupted by eldritch forces.", sellValue: 120, color: "purple") },
             { "soulsteel", new SimpleItem("soulsteel", "Soulsteel", 1.5f, "A bar of elder steel infused with a powerful soul.", sellValue: 240, color: "darkmagenta") },
+            { "otherwordlyshard", new SimpleItem("otherwordlyshard", Utils.Style("Otherworldly Shard", italic: true), 0.1f, "A fragment of a slightly different universe. Subtley-off possibilities" +
+                " flitter in and out.", sellValue: 1, color: "blueviolet") },
         });
 
         public static T? Get<T>(string id) where T : Item
