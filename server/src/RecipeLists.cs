@@ -182,7 +182,9 @@ public static class RecipeLists
         All.CLERIC_ARMOR,
         All.MIND_BREAKER,
         All.FIRE_STEEL,
-        All.FLAME_TRIDENT
+        All.FLAME_TRIDENT,
+        All.SABERTOOTH,
+        All.TECTONIC
     };
 
     public static readonly Recipe[] CAMPFIRE = new Recipe[]
@@ -221,7 +223,8 @@ public static class RecipeLists
         All.MAMMOTH,
         All.REALITY_BREAKER,
         All.DIREWOLF,
-        All.PERMAFROST
+        All.PERMAFROST,
+        All.DELIRIUM
     };
 
     public static readonly Recipe[] UNHOLY_ALTAR = new Recipe[]
