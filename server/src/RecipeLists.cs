@@ -138,7 +138,7 @@ public static class RecipeLists
         public static readonly Recipe TRUE_RETURN_AMULET =
             new(new ItemHolder<Item>[] { new("returnamulet"), new("soulsteel") }, "truereturnamulet", 1, 500);
         public static readonly Recipe LYCANTHROPE =
-            new(new ItemHolder<Item>[] { new("beastform"), new("soulsteel") }, "lycanthrope", 1, 800);
+            new(new ItemHolder<Item>[] { new("direwolf"), new("soulsteel") }, "lycanthrope", 1, 800);
         public static readonly Recipe TRUE_RADIANCE =
             new(new ItemHolder<Item>[] { new("radiance"), new("soulsteel", 2) }, "trueradiance", 1, 1600);
         public static readonly Recipe MOUNTAIN =
@@ -151,6 +151,16 @@ public static class RecipeLists
             new(new ItemHolder<Item>[] { new("realityshatter"), new("soulsteel", 3) }, "realitybringer", 1, 1600);
         public static readonly Recipe KNOWING_SCROLL =
             new(new ItemHolder<Item>[] { new("cloth", 5), new("soulcoin1", 1) }, "knowingscroll", 1, 200);
+        public static readonly Recipe DIREWOLF =
+            new(new ItemHolder<Item>[] { new("beastform"), new("eldersteel") }, "direwolf", 1, 600);
+        public static readonly Recipe PERMAFROST =
+            new(new ItemHolder<Item>[] { new("frostwall"), new("eldersteel") }, "permafrost", 1, 600);
+        public static readonly Recipe SABERTOOTH =
+            new(new ItemHolder<Item>[] { new("mammoth"), new("eldersteel", 2) }, "sabertooth", 1, 600);
+        public static readonly Recipe TECTONIC =
+            new(new ItemHolder<Item>[] { new("volcano"), new("livingstone", 3), new("eldersteel", 3) }, "tectonic", 1, 600);
+        public static readonly Recipe DELIRIUM =
+            new(new ItemHolder<Item>[] { new("eldersteel", 5), new("otherwordlyshard", 3), new("livingstone", 2)}, "delirium", 1, 600);
     }
 
     public static readonly Recipe[] FORGE = new Recipe[]
@@ -209,7 +219,9 @@ public static class RecipeLists
         All.SHADOWDEATH,
         All.UNNATURAL_SHIELD,
         All.MAMMOTH,
-        All.REALITY_BREAKER
+        All.REALITY_BREAKER,
+        All.DIREWOLF,
+        All.PERMAFROST
     };
 
     public static readonly Recipe[] UNHOLY_ALTAR = new Recipe[]

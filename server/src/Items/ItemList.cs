@@ -147,6 +147,27 @@ namespace Items
                     new("snipe", "Snipe", new(20, 4, 10), DamageType.Cold, 9, atkBonus: -6, critThreshold: 17, critMult: 2.75f)
                 }, "A greatbow. Its thick strings propel arrows through nearly anything.", 20f, sellValue: 1000, color: "mediumturquoise")
             },
+            { "sabertooth", new Weapon("sabertooth", "Sabertooth", new Attack[]
+                {
+                    new("shoot", "Shoot", new(12, 7), DamageType.Cold, 5, critThreshold: 16, critMult: 3.5f, lifesteal: .25f),
+                    new("power", "Power Shot", new(12, 7, 18), DamageType.Cold, 8, atkBonus: -4, critThreshold: 14, critMult: 4f),
+                    new("snipe", "Snipe", new(20, 5, 10), DamageType.Cold, 9, atkBonus: -6, critThreshold: 17, critMult: 2.75f)
+                }, "An ancient greatbow. Its thick strings propel arrows through flesh and stone alike.", 20f, sellValue: 1500, color: "mediumturquoise")
+            },
+            { "tectonic", new Weapon("tectonic", "Tectonic", new Attack[]
+                {
+                    new("shoot", "Shoot", new(12, 5), DamageType.Fire, 3, critThreshold: 16, critMult: 2.5f, lifesteal: .2f),
+                    new("power", "Power Shot", new(12, 5, 24), DamageType.Fire, 7, atkBonus: -3, critThreshold: 14, critMult: 3.5f),
+                    new("snipe", "Snipe", new(20, 5, 10), DamageType.Infernal, 8, atkBonus: -5, critThreshold: 17, critMult: 2.5f)
+                }, "A molten greatbow, slow and heavy, yet unstoppable.", 12f, sellValue: 1500, color: "yellow")
+            },
+            { "delirium", new Weapon("delirium", "Delirium", new Attack[]
+                {
+                    new("thrust", "Thrust", new(12, 4, 6), DamageType.Psychic, 3, atkBonus: 5, lifesteal: .3f, critThreshold: 14, critMult: 1.75f),
+                    new("bend", "Bend Reality", new(8, 8), DamageType.Psychic, 6, atkBonus: 12, lifesteal: .45f, critThreshold: 20, critMult: 5.5f),
+                    new("terrorize", "Terrorize", new(3, 20, 6), DamageType.Psychic, 10, atkBonus: -2, lifesteal: .6f, critThreshold: 17, critMult: 2.75f),
+                }, "A longsword made to distort perceptions of reality. Reality has a tendency to realign with your perception of it. Be warned.", 8f, sellValue: 1500, color: "mediumvioletred")
+            },
             { "realityshatter", new Weapon("realityshatter", "Realityshatter", new Attack[]
                 {
                     new("stab", "Stab", new(12, 5, 6), DamageType.Aberrant, 2, atkBonus: -2, lifesteal: .2f),
@@ -410,6 +431,30 @@ namespace Items
                 wisdom: 5,
                 charisma: 5
             )},
+            { "direwolf", new Armor("direwolf", "Direwolf", 20, 800, 9, "The skin of an ancient creature.",
+                resistances: new()
+                {
+                    { DamageType.Slashing, 3 },
+                    { DamageType.Bludgeoning, 2 },
+                    { DamageType.Piercing, 3 },
+                    { DamageType.Necrotic, 3 },
+                    { DamageType.Cold, 7 }
+                },
+                strength: 7,
+                constitution: 6,
+                endurance: 6
+            )},
+            { "permafrost", new Armor("permafrost", "Permafrost", 15, 400, 10, "A set of full plate, forged out of eternal ice.",
+                color: "mediumturquoise",
+                resistances: new()
+                {
+                    { DamageType.Slashing, 3 },
+                    { DamageType.Fire, -5 },
+                    { DamageType.Radiant, -3 },
+                    { DamageType.Poison, 25 },
+                    { DamageType.Cold, 50 }
+                }
+            )},
             { "lycanthrope", new Armor("lycanthrope", "Lycanthrope", 20, 1600, 11, "The skin of a twisted creature melded with otherwordly plates.",
                 color: "lightsteelblue",
                 resistances: new()
@@ -460,10 +505,10 @@ namespace Items
                 strength: 5,
                 constitution: 10
             )},
-            { "eternalwandererrobes", new Armor("eternalwandererrobes", "Eternal Wanderer's Robes", 15, 2000, 10, "Flowing robes covered in depictions of epics long past.",
+            { "eternalwandererrobes", new Armor("eternalwandererrobes", "Eternal Wanderer's Robes", 15, 2000, 0, "Flowing robes covered in depictions of epics long past.",
                 color: "violet",
                 intelligence: 25,
-                wisdom: 130,
+                wisdom: 70,
                 charisma: 25
             )},
 
