@@ -1012,6 +1012,7 @@ namespace Creatures
                 drops: new(
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("otherworldlyshard", Utils.RandInt(1, 4))),
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("horrorbeak")),
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(0.25f, () => new("eldersteel")),
                     new KeyValuePair<float, Func<ItemHolder<Item>>>(.01f, () => new("otherwordlyshard"))
                 ), minDrops: 1, maxDrops: 2,
                 xp: 1300,
@@ -1044,6 +1045,37 @@ namespace Creatures
                 dexterity: 15,
                 agility: 3,
                 defense: 11,
+                actual: actual //Breaks if we don't have this. It's used in dungeon generation
+            )),
+
+            //Ancient Crusader
+            new(1, (actual) => new SimpleMonster("ancientcrusader", "Ancient Crusader", 750,
+                (Weapon)ItemList.Get("realitybreaker"),
+                attackInterval: 1,
+                drops: new(
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("platearmor")),
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(1, () => new("ironbar")),
+                    new KeyValuePair<float, Func<ItemHolder<Item>>>(0.75f, () => new("ancientsigil"))
+                ), minDrops: 2, maxDrops: 3,
+                xp: 1300,
+                scaleTableWeight: (floor) =>
+                {
+                    return 0.8f + (floor.Depth - 10) * 0.4f + floor.holy;
+                },
+                resistances: new()
+                {
+                    { DamageType.Radiant, -15 },
+                    { DamageType.Infernal, 20 },
+                    { DamageType.Fire, 15 },
+                    { DamageType.Cold, 15 },
+                    { DamageType.Necrotic, 25 },
+                    { DamageType.Aberrant, 20 }
+                },
+                strength: 7,
+                dexterity: 7,
+                agility: 7,
+                endurance: 7,
+                defense: 9,
                 actual: actual //Breaks if we don't have this. It's used in dungeon generation
             ))
         );

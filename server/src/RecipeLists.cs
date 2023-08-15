@@ -133,8 +133,12 @@ public static class RecipeLists
             new(new ItemHolder<Item>[] { new("soulcoin2", 3), new("demonsoul") }, "soulcoin3", 3, 1000);
         public static readonly Recipe ELDER_STEEL =
             new(new ItemHolder<Item>[] { new("hellsteel", 1), new("soulcoin1", 2), new("horrorbeak", 1), new("holyblood", 4), new("brimstone", 2), new("otherworldlyshard", 2) }, "eldersteel", 1, 160);
-        public static readonly Recipe SOULSTEEL =
+        public static readonly Recipe ANCIENT_STEEL =
+            new(new ItemHolder<Item>[] { new("hellsteel", 1), new("soulcoin1", 2), new("ancientsigil", 1), new("holyblood", 4), new("frostshard", 2), new("livingstone", 2) }, "ancientsteel", 1, 160);
+        public static readonly Recipe SOULSTEEL_1 =
             new(new ItemHolder<Item>[] { new("eldersteel", 1), new("soulcoin3", 1) }, "soulsteel", 1, 320);
+        public static readonly Recipe SOULSTEEL_2 =
+            new(new ItemHolder<Item>[] { new("ancientsteel", 1), new("soulcoin3", 1) }, "soulsteel", 1, 320);
         public static readonly Recipe TRUE_RETURN_AMULET =
             new(new ItemHolder<Item>[] { new("returnamulet"), new("soulsteel") }, "truereturnamulet", 1, 500);
         public static readonly Recipe LYCANTHROPE =
@@ -156,9 +160,9 @@ public static class RecipeLists
         public static readonly Recipe PERMAFROST =
             new(new ItemHolder<Item>[] { new("frostwall"), new("eldersteel") }, "permafrost", 1, 600);
         public static readonly Recipe SABERTOOTH =
-            new(new ItemHolder<Item>[] { new("mammoth"), new("eldersteel", 2) }, "sabertooth", 1, 600);
+            new(new ItemHolder<Item>[] { new("mammoth"), new("ancientsteel", 2) }, "sabertooth", 1, 600);
         public static readonly Recipe TECTONIC =
-            new(new ItemHolder<Item>[] { new("volcano"), new("livingstone", 3), new("eldersteel", 3) }, "tectonic", 1, 600);
+            new(new ItemHolder<Item>[] { new("volcano"), new("livingstone", 3), new("ancientsteel", 3) }, "tectonic", 1, 600);
         public static readonly Recipe DELIRIUM =
             new(new ItemHolder<Item>[] { new("eldersteel", 5), new("otherwordlyshard", 3), new("livingstone", 2)}, "delirium", 1, 600);
     }
@@ -251,7 +255,9 @@ public static class RecipeLists
     public static readonly Recipe[] SOUL_FURNACE = new Recipe[]
     {
         All.ELDER_STEEL,
-        All.SOULSTEEL,
+        All.ANCIENT_STEEL,
+        All.SOULSTEEL_1,
+        All.SOULSTEEL_2,
         All.TRUE_RETURN_AMULET,
         All.LYCANTHROPE,
         All.TRUE_RADIANCE,

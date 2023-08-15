@@ -651,9 +651,11 @@ namespace Items
             { "soulcoin3", new SimpleItem("soulcoin3", "Soul Coin (Strong)", 0.1f, "A burnt-blue coin, infused with a soul so strong the air around it vibrates.", sellValue: 700, 
                 color: "darkblue") },
             { "horrorbeak", new SimpleItem("horrorbeak", "Horror Beak", 0.3f, "The beak from a fully-grown Tentacled Horror.", sellValue: 400, color: "purple") },
+            { "ancientsigil", new SimpleItem("ancientsigil", "Ancient Sigil", 0.3f, "A holy symbol from some long-dead religion.", sellValue: 400, color: "lemonchiffon") },
             { "eldersteel", new SimpleItem("eldersteel", "Elder Steel", 1.5f, "An ingot of tainted steel, corrupted by eldritch forces.", sellValue: 120, color: "purple") },
+            { "ancientsteel", new SimpleItem("ancientsteel", "Ancient Steel", 1.5f, "An ingot of steel from a long-forgotten civiliation.", sellValue: 120, color: "lemonchiffon") },
             { "soulsteel", new SimpleItem("soulsteel", "Soulsteel", 1.5f, "A bar of elder steel infused with a powerful soul.", sellValue: 240, color: "darkmagenta") },
-            { "otherwordlyshard", new SimpleItem("otherwordlyshard", Utils.Style("Otherworldly Shard", italic: true), 0.1f, "A fragment of a slightly different universe. Subtley-off possibilities" +
+            { "otherwordlyshard", new SimpleItem("otherwordlyshard", Utils.Style("Otherwordly Shard", italic: true), 0.1f, "A fragment of a slightly different universe. Subtley-off possibilities" +
                 " flitter in and out.", sellValue: 1, color: "blueviolet") },
         });
 
