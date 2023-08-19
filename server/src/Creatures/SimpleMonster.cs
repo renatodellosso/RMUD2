@@ -85,8 +85,8 @@ namespace Creatures
                 }
 
                 if (Utils.tickCount % 3 == 0 && Utils.RandFloat() < .15f)
-                    MoveThroughRandomExit(Config.Gameplay.MAX_ENEMIES_IN_ROOM, l => l is DungeonLocation &&
-                        Math.Abs(startDepth - ((DungeonLocation)l).position.x) <= 1);
+                    MoveThroughRandomExit(Config.Gameplay.MAX_ENEMIES_IN_ROOM, l => l is DungeonLocation location1 &&
+                        Math.Abs(startDepth - location1.position.x) <= 1 && l.creatures.Where(c => c is not Player).Count() < Config.Gameplay.MAX_ENEMIES_IN_ROOM);
 
                 if (!Location?.creatures.Contains(this) ?? false)
                 {
