@@ -3,7 +3,7 @@ REMOTE=origin
 BRANCH=master
 cd ./../home/ubuntu/RMUD2
 git fetch
-pid=$(sudo lsof -t -i:443)
+pid=$(sudo lsof -t -i:2001)
 echo "Existing process: $pid"
 if [[ "$(git rev-parse $BRANCH)" != "$(git rev-parse "$REMOTE/$BRANCH")" ]] || [["$pid" == ""]]; then
     rm -rf ./cd.log
