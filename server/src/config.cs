@@ -21,7 +21,7 @@ static class Config
     /// </summary>
     public const int HANDLER_SLEEP_INTERVAL = 50;
 
-    public const string ENV_PATH = "../../../.env";
+    public const string ENV_PATH = ".env";
 
     public const int MAX_SIGN_IN_TRIES = 5;
     public static readonly TimeSpan LOCK_OUT_DURATION = new(0, 5, 0); //Hours, minutes, then seconds. I can only use const for primitives, so I use static readonly
