@@ -40,7 +40,7 @@ namespace SlashCommands
                 {
                     Utils.Log("Restarting server in 30 seconds...");
                     Utils.Announce("Restarting server in 30 seconds...");
-                    Restart();
+                    // Restart();
                 }
             } catch (Exception e)
             {
