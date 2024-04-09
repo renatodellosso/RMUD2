@@ -84,7 +84,7 @@ public class Attack
 
     public int AttackBonus(Creature attacker, ItemHolder<Item>? item)
     {
-        return attacker.GetAbilityScore(dmgAbilityScore) + atkBonus + (Reforge.Get(item)?.atkBonus ?? 0);
+        return attacker.GetAbilityScore(atkBonusAbilityScore) + atkBonus + (Reforge.Get(item)?.atkBonus ?? 0);
     }
 
     void Execute(Creature attacker, Creature target, ItemHolder<Weapon>? item)
