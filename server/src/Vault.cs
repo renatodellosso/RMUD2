@@ -22,6 +22,7 @@ public class Vault : Inventory
         new(5000, 500),
         new(7500, 650),
         new(10000, 850)
+        new(2147483647, 850)
     };
 
     public int level;
