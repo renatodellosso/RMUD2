@@ -5,7 +5,7 @@ using MongoDB.Driver;
 
 namespace SlashCommands
 {
-	public class LeaderboardCommand : DiscordSlashCommand
+	public class PlaytimeCommand : DiscordSlashCommand
 	{
 
 		public static Dictionary<string, ObjectId> codes = new();
@@ -29,16 +29,16 @@ namespace SlashCommands
 			foreach (Account account in accounts)
 			{
 				Player player = account.Player;
-				if (player != null && player.xp > 0)
+				if (player != null && player.playtime.Minutes > 0)
 				{
 					found.Add(new(account, player));
 				}
 			}
 
-			found.Sort((a, b) => b.Value.xp.CompareTo(a.Value.xp));
+			found.Sort((a, b) => b.Value.playtime.CompareTo(a.Value.playtime));
 
 			EmbedBuilder embed = new();
-			embed.WithTitle("RMUD2 Leaderboard");
+			embed.WithTitle("RMUD2 Playtime Leaderboard");
 
 			string desc = "";
 			for (int i = 0; i < found.Count; i++)
@@ -53,7 +53,7 @@ namespace SlashCommands
 					if (account.discordId != 0)
 						desc += $" (<@{account.discordId}>)";
 
-					desc += $" - Level: {player.level} ({Utils.Format(player.xp)} XP)\n";
+					desc += $" - Playtime: {player.playtime}\n";
 				}
 			}
 

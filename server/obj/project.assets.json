@@ -1893,11 +1893,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\rddel\\Coding Projects\\RMUD2\\server\\server.csproj",
+      "projectUniqueName": "D:\\CodingProjects\\RMUD2\\server\\server.csproj",
       "projectName": "server",
-      "projectPath": "C:\\Users\\rddel\\Coding Projects\\RMUD2\\server\\server.csproj",
+      "projectPath": "D:\\CodingProjects\\RMUD2\\server\\server.csproj",
       "packagesPath": "C:\\Users\\rddel\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\rddel\\Coding Projects\\RMUD2\\server\\obj\\",
+      "outputPath": "D:\\CodingProjects\\RMUD2\\server\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\rddel\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -1920,6 +1920,11 @@
         "warnAsError": [
           "NU1605"
         ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
       }
     },
     "frameworks": {
@@ -1963,7 +1968,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202\\RuntimeIdentifierGraph.json"
       }
     }
   }
