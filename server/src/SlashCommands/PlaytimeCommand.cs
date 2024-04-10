@@ -13,8 +13,8 @@ namespace SlashCommands
 		public override void Create(DiscordSocketClient client)
 		{
 			SlashCommandBuilder cmd = new SlashCommandBuilder();
-			cmd.WithName("leaderboard");
-			cmd.WithDescription("View the RMUD2 leaderboard");
+			cmd.WithName("playtime");
+			cmd.WithDescription("View the RMUD2 Playtime leaderboard");
 			cmd.WithDMPermission(true);
 			client.CreateGlobalApplicationCommandAsync(cmd.Build()); //Build the command
 		}
