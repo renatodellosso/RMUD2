@@ -14,7 +14,7 @@ namespace SlashCommands
 		{
 			SlashCommandBuilder cmd = new SlashCommandBuilder();
 			cmd.WithName("playtime");
-			cmd.WithDescription("View the RMUD2 Playtime leaderboard");
+			cmd.WithDescription("View the RMUD2 playtime leaderboard");
 			cmd.WithDMPermission(true);
 			client.CreateGlobalApplicationCommandAsync(cmd.Build()); //Build the command
 		}
