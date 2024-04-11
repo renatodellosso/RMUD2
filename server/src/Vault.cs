@@ -16,7 +16,7 @@
 		new(5000, 500),
 		new(7500, 650),
 		new(10000, 850),
-		new(int.MaxValue, 850)
+		new(99999999, 851)
 	};
 
 	public int level;
